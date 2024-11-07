@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: The distance between insanity and genius is measured only by success (c)
+subtitle:
 
 profile:
   align: right
@@ -16,14 +16,14 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-Hey there, welcome to my site!
+> _The distance between insanity and genius is measured only by success (c)_
 
-I'm a Machine Learning Engineer, currently focused on Computer Vision and GenAI.
+Hey there, welcome to my website!
 
-With over 6 years in the industry, I've worn different hats in AI projects, and you can check out my [Portfolio](https://xmarva.github.io/projects/) to see how I might be able to help with your next project.
+I'm a Machine Learning Engineer, currently focused on **Computer Vision** and **GenAI**.
 
-From time to time, I write about programming, AI, and whatever else comes to mind—find all that in my [Blog](https://xmarva.github.io/blog/).
+With over 6 years in the industry, I've worn different hats in AI projects, and you can check out my [Portfolio](https://xmarva.github.io/portfolio/) to see how I might be able to help with your next project.
 
-Want a quick snapshot of my experience? Visit my [CV](https://xmarva.github.io/cv/) page, where you can also grab a PDF version.
+From time to time, I write about AI and whatever else comes to mind—find all that in my [Blog](https://xmarva.github.io/blog/).
 
-Beyond AI, I’m into nature and hiking, learning new languages, and exploring psychoanalysis.
+I’m also into hiking and traveling, learning new languages, and exploring psychoanalysis.
