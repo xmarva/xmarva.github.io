@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Ultrasound Nerve Segmentation
+title: Ultrasound Segmentation
 description: 
 img: 
 importance: 8

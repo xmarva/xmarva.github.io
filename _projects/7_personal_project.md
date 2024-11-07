@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Gemma2 Fine-Tuning [Russian]
+title: Gemma2 Fine-Tuning
 description: 
 img: 
 importance: 2
