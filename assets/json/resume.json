@@ -12,7 +12,7 @@
       "postalCode": "",
       "city": "Buenos Aires",
       "countryCode": "AR",
-      "region": ""
+      "region": "Argentina"
     },
     "profiles": [
       {
@@ -109,34 +109,41 @@
       "location": "Kazan, Russia",
       "url": "https://eng.kpfu.ru",
       "area": "Mathematics",
-      "studyType": "BS",
+      "studyType": "BSc in Mathematics",
       "startDate": "2014-09-01",
       "endDate": "2017-05-01",
       "score": "",
-      "courses": ["Solid mechanics"]
+      "courses": ["Calculus", "Solid Mechanics"]
     }
   ],
   "certificates": [
     {
-      "name": "Fundamentals of Accelerated Computing with CUDA Python",
+      "name": "Accelerated Computing with CUDA Python",
       "date": "2021-11-01",
       "issuer": "NVIDIA",
       "url": "https://learn.nvidia.com/certificates?id=fb22271b89dd460a8b9c4b385c6a30f7",
-      "icon": "fa-solid fa-location-dot"
+      "icon": "fa-solid fa-file"
     },
     {
       "name": "AWS Cloud Technical Essentials",
       "date": "2021-20-01",
       "issuer": "Amazon Web Services",
       "url": "https://www.coursera.org/account/accomplishments/verify/KQGJ7GRE8F5Y",
-      "icon": "fa-solid fa-tag"
+      "icon": "fa-solid fa-file"
     }
   ],
   "publications": [
     {
+      "name": "Automatic processing and analysis of the quality healing of derma injury",
+      "publisher": "Advances in Intelligent Systems and Computing",
+      "releaseDate": "2019-01-01",
+      "url": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85051106511&doi=10.1007%2f978-3-319-97286-2_10&origin=inward&txGid=4b88c6e25606de1c50d811d9b4da249a",
+      "summary": "Analyze of the microscope’s bitmaps is usual task in biology. To illustrate the proposed method we used analyzing collagen in dermis snapshots. Methodic to automatic analyses of microscope snapshots is presented."
+    },
+    {
       "name": "Building the inhomogeneous finite element model by the data of computed tomography",
       "publisher": "Russian Journal of Biomechanics",
-      "releaseDate": "1905-06-30",
+      "releaseDate": "2018-01-01",
       "url": "https://www.scopus.com/record/display.uri?eid=2-s2.0-85057990702&doi=10.15593%2fRJBiomeh%2f2018.3.05&origin=inward&txGid=d62658851a5d2bfb7e10ac3b4a769701",
       "summary": "The aim of the work is to reveal a methodology for constructing a finite element model by tomography data. To evaluate the model, calculations of the femur were carried out."
     }
@@ -146,37 +153,51 @@
       "name": "Python",
       "level": "Advanced",
       "icon": "fa-solid fa-hashtag",
-      "keywords": []
+      "keywords": [
+        "flask",
+        "scrapy",
+        "docker"
+      ]
     },
     {
-      "name": "Data Analysis",
+      "name": "Data Science",
       "level": "Advanced",
       "icon": "fa-solid fa-hashtag",
-      "keywords": []
-    },
-    {
-      "name": "Data Visualization",
-      "level": "Middle",
-      "icon": "fa-solid fa-hashtag",
-      "keywords": []
+      "keywords": [
+        "pandas",
+        "matplotlib",
+        "plotly"
+      ]
     },
     {
       "name": "Machine Learning",
       "level": "Middle",
       "icon": "fa-solid fa-hashtag",
-      "keywords": []
+      "keywords": [
+        "numpy",
+        "scikit-learn",
+        "scipy"
+      ]
     },
     {
       "name": "Deep Learning",
       "level": "Advanced",
       "icon": "fa-solid fa-hashtag",
-      "keywords": []
+      "keywords": [
+        "pytorch",
+        "open-cv",
+        "hugging-face"
+      ]
     },
     {
       "name": "MLOps",
       "level": "Middle",
       "icon": "fa-solid fa-hashtag",
-      "keywords": []
+      "keywords": [
+        "aws-sagemaker",
+        "ml-flow",
+        "weights-and-biases"
+      ]
     }
   ],
   "languages": [
