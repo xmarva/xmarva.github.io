@@ -24,15 +24,85 @@
   },
   "work": [
     {
-      "name": "Cloi",
+      "name": "Stealth AI StartUp",
       "position": "Senior Machine Learning Engineer",
       "url": "",
       "startDate": "2021-01-01",
-      "endDate": "123-06-01",
-      "summary": "Led the launch of a Digital Fashion project, merging creative vision with advanced AI technology",
-      "highlights": ["Computer Vision", "GenAI", "3D"]
+      "endDate": "2023-06-01",
+      "summary": "Led R&D for Digital Fashion product",
+      "highlights": [
+        "Developed and optimized complex CV models for detection, segmentation and classification on images and videos", 
+        "Advanced 3D human pose detection (SMPL) using cutting-edge techniques", 
+        "Fine-tuned Generative Adversarial Networks (DALL-E) and Stable Diffusion"
+      ]
+    },
+    {
+      "name": "Tsifrovaya derevnya",
+      "position": "Machine Learning Engineer",
+      "url": "https://digital.tatarstan.ru",
+      "startDate": "2020-02-01",
+      "endDate": "2021-01-01",
+      "summary": "Innovated a cashier-less store concept akin to Amazon Go",
+      "highlights": [
+        "Trained CV models for classification, detection, and tracking to meet varied store needs.", 
+        "Engineered a robust multi-camera tracking system for seamless customer mapping", 
+        "Managed technical projects, coordinating teams and aligning timelines and deliverables"
+      ]
+    },
+    {
+      "name": "HART Digital",
+      "position": "Machine Learning Engineer",
+      "url": "https://hart-digital.com",
+      "startDate": "2018-11-01",
+      "endDate": "2019-12-01",
+      "summary": "Developed AI technologies for Unity3D & VR product",
+      "highlights": [
+        "Engineered an AI-driven pipeline to convert architectural blueprints into virtual 3D models of apartments or houses", 
+        "Leveraged advanced deep learning techniques to identify and segment objects within blueprints", 
+        "Designed and implemented algorithms to arrange virtual furniture based on room dimensions and pathways"
+      ]
+    },
+    {
+      "name": "Meanotek",
+      "position": "Data Scientist",
+      "url": "http://www.meanotek.io",
+      "startDate": "2017-08-01",
+      "endDate": "2018-09-01",
+      "summary": "Developed a complex AI product utilizing NLP technologies",
+      "highlights": [
+        "Defined technical specifications for text data markup, collaborating across teams", 
+        "Performed research and development of linguistic models for text generation and named entity recognition", 
+        "Designed scalable application architectures for complex linguistic tasks"
+      ]
     }
   ],
+  "volunteer": [
+    {
+    "organization": "Skillbox",
+    "position": "Machine Learning Course Instructor",
+    "url": "https://skillbox.ru",
+    "startDate": "2019-08-01",
+    "endDate": "2020-05-01",
+    "summary": "Shared knowledge with students from diverse backgrounds",
+    "highlights": [
+      "Took part in development of AI courses (Python, Machine Learning, Deep Learning, Mathematics)",
+      "Provided personal lessons and career mentorship for students"
+    ]
+  },
+  {
+    "organization": "Kazan Federal University",
+    "position": "Research Assistaint",
+    "url": "https://eng.kpfu.ru",
+    "startDate": "2016-10-01",
+    "endDate": "2017-05-01",
+    "summary": "Conducted biomechanics research projects",
+    "highlights": [
+      "Performed rigorous tests on bone samples using a mechanical press to ensure accuracy",
+      "Documented findings and contributed to a peer-reviewed publication",
+      "Applied advanced mathematical and mechanical methods to interpret research data effectively"
+    ]
+  }
+],
   "education": [
     {
       "institution": "Kazan Federal University",
@@ -74,7 +144,37 @@
   "skills": [
     {
       "name": "Python",
-      "level": "Master",
+      "level": "Advanced",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": []
+    },
+    {
+      "name": "Data Analysis",
+      "level": "Advanced",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": []
+    },
+    {
+      "name": "Data Visualization",
+      "level": "Middle",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": []
+    },
+    {
+      "name": "Machine Learning",
+      "level": "Middle",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": []
+    },
+    {
+      "name": "Deep Learning",
+      "level": "Advanced",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": []
+    },
+    {
+      "name": "MLOps",
+      "level": "Middle",
       "icon": "fa-solid fa-hashtag",
       "keywords": []
     }
