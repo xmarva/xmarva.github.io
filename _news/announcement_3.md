@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Just launched! :sparkles: :smile:
+Just launched this website! :sparkles:

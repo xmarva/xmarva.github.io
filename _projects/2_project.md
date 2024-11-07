@@ -1,6 +1,6 @@
 ---
 layout: page
-title: сachierless store
+title: Cachierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 1
