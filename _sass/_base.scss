@@ -16,7 +16,6 @@ div,
 li,
 span,
 strong {
-  font-family: Georgia, 'Times New Roman', Times, serif;
   color: var(--global-text-color);
 }
 
@@ -176,7 +175,6 @@ ul.task-list input[type="checkbox"] {
   }
 
   .card-title {
-    font-family: Georgia, 'Times New Roman', Times, serif;
     color: var(--global-text-color);
   }
 
@@ -625,7 +623,6 @@ footer.sticky-bottom {
 
     &:hover {
       .card-title {
-        font-family: Georgia, 'Times New Roman', Times, serif;
         color: var(--global-theme-color);
       }
     }
