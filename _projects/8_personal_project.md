@@ -3,7 +3,7 @@ layout: page
 title: ServoArm Manupulator
 description: 
 img: 
-importance: 1
+importance: 7
 category: personal
 related_publications: true
 ---

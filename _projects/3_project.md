@@ -1,9 +1,9 @@
 ---
 layout: page
-title: VR Florplan reconstruction 
+title: 3D Florplan Reconstruction 
 description: 
 img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
-importance: 1
+importance: 2
 category: work
 related_publications: true
 ---

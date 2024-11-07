@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Keyword Extraction Algorithms
+title: Keyword Extraction
 description: 
 img: 
-importance: 1
+importance: 5
 category: personal
 related_publications: true
 ---

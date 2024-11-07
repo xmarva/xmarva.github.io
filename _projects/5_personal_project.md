@@ -3,7 +3,7 @@ layout: page
 title: CubiCasa5k Detection
 description: 
 img: 
-importance: 1
+importance: 3
 category: personal
 related_publications: true
 ---

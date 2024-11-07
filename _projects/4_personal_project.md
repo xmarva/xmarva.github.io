@@ -3,7 +3,7 @@ layout: page
 title: Georgian Letters Dataset
 description: 
 img: 
-importance: 1
+importance: 4
 category: personal
 related_publications: true
 ---

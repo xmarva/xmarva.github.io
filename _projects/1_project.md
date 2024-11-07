@@ -3,7 +3,7 @@ layout: page
 title: Medical assistant
 description: 
 img: assets/img/projects/1_medical_assistant/main_img.png
-importance: 1
+importance: 4
 category: work
 related_publications: true
 ---

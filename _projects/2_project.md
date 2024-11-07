@@ -3,7 +3,7 @@ layout: page
 title: Cachierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
-importance: 1
+importance: 3
 category: work
 related_publications: true
 ---

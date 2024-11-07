@@ -3,7 +3,7 @@ layout: page
 title: Pandemic Vision
 description: 
 img: 
-importance: 1
+importance: 6
 category: personal
 related_publications: true
 ---

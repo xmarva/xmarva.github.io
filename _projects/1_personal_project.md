@@ -3,7 +3,7 @@ layout: page
 title: Ultrasound Nerve Segmentation
 description: 
 img: 
-importance: 1
+importance: 8
 category: personal
 related_publications: true
 ---
