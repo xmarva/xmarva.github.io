@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Cachierless Store
+title: сachierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 1
@@ -42,7 +42,7 @@ Each customer received a unique identifier upon entry, enabling tracking through
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/2.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
