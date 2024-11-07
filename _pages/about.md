@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Etc.
+subtitle: The distance between insanity and genius is measured only by success (c)
 
 profile:
   align: right
@@ -16,8 +16,14 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+Hey there, welcome to my site!
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+I'm a Machine Learning Engineer, currently focused on Computer Vision and GenAI.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+With over 6 years in the industry, I've worn different hats in AI projects, and you can check out my [Portfolio](https://xmarva.github.io/projects/) to see how I might be able to help with your next project.
+
+From time to time, I write about programming, AI, and whatever else comes to mind—find all that in my [Blog](https://xmarva.github.io/blog/).
+
+Want a quick snapshot of my experience? Visit my [CV](https://xmarva.github.io/cv/) page, where you can also grab a PDF version.
+
+Beyond AI, I’m into nature and hiking, learning new languages, and exploring psychoanalysis.
