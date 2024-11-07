@@ -38,7 +38,7 @@
     },
     {
       "name": "Tsifrovaya derevnya",
-      "position": "Machine Learning Engineer",
+      "position": "Senior Machine Learning Engineer",
       "url": "https://digital.tatarstan.ru",
       "startDate": "2020-02-01",
       "endDate": "2021-01-01",
@@ -117,6 +117,20 @@
     }
   ],
   "certificates": [
+    {
+      "name": "Software Processes and Agile Practices",
+      "date": "2024-06-01",
+      "issuer": "University of Alberta",
+      "url": "https://www.coursera.org/account/accomplishments/records/WC44T2REXH79",
+      "icon": "fa-solid fa-file"
+    },
+    {
+      "name": "Linux for Developers",
+      "date": "2022-12-01",
+      "issuer": "The Linux Foundation",
+      "url": "https://www.coursera.org/account/accomplishments/verify/LYFV245Y4582",
+      "icon": "fa-solid fa-file"
+    },
     {
       "name": "Accelerated Computing with CUDA Python",
       "date": "2021-11-01",
@@ -198,6 +212,16 @@
         "ml-flow",
         "weights-and-biases"
       ]
+    },
+    {
+      "name": "Developer Tools",
+      "level": "Advanced",
+      "icon": "fa-solid fa-hashtag",
+      "keywords": [
+        "vscodium",
+        "jupyter-notebook",
+        "jira"
+      ]
     }
   ],
   "languages": [
@@ -216,7 +240,24 @@
     {
       "name": "Computer Vision",
       "icon": "fa-solid fa-tag",
-      "keywords": [ ]
+      "keywords": [
+        "Object Detection",
+        "Semantic Segmentation",
+        "Object Tracking",
+        "Pose Estimation",
+        "3D Reconstruction"
+      ]
+    },
+    {
+      "name": "Generative AI",
+      "icon": "fa-solid fa-tag",
+      "keywords": [
+        "Representation Learning",
+        "Image Generation",
+        "Image Inpainting",
+        "Text Generation",
+        "Machine Translation"
+      ]
     }
   ]
 }
