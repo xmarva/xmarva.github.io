@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Proteing Structure Prediction
+title: Protein Structure Prediction
 description: 
 img: 
 importance: 1
