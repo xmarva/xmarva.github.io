@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Cachierless store
+title: Cashierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 3
@@ -21,6 +21,8 @@ This project aimed to build a fully automated, cashier-free retail experience fo
 
 Our goal was to create an intuitive shopping environment where customers could enter, pick up products, and leave without going through a traditional checkout.
 
+---
+
 ## Customer Identification
 
 <div class="row">
@@ -37,6 +39,8 @@ To gain access, customers registered with a store assistant, providing their pas
 Upon arriving at the store, customers would pass through turnstiles using this access card. The system also verified customer identity through facial recognition, creating a seamless and secure entry process.
 
 Each customer received a unique identifier upon entry, enabling tracking throughout their entire visit.
+
+---
 
 # Camera System and Calibration
 
@@ -55,6 +59,8 @@ Positioned throughout the store, these cameras had overlapping fields of view to
 
 To ensure consistent data from these multiple perspectives, we calibrated the cameras using a checkerboard pattern, allowing for precise alignment and accurate tracking across feeds.
 
+---
+
 ## Virtual Mapping and Tracking
 
 <div class="row">
@@ -72,6 +78,8 @@ As they moved through the aisles, the dot moved in real-time, providing a contin
 
 This enabled not only accurate tracking but also allowed us to analyze traffic patterns and identify popular sections within the store.
 
+---
+
 ## Object Detection and Recognition
 
 <div class="row">
@@ -88,6 +96,8 @@ For recognizing products and tracking customer interactions, we built an object 
 Every item in the store's inventory was represented by a set of images used to train the model. This allowed for high recognition accuracy even with varying product orientations and lighting conditions.
 
 Our object detection system relied on architectures such as YOLO, which are known for real-time, high-precision object recognition and classification.
+
+---
 
 # Action Recognition
 
