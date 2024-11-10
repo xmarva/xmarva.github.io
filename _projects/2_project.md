@@ -1,11 +1,13 @@
 ---
-layout: page
+layout: post
 title: Cashierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 3
 category: work
 related_publications: false
+toc:
+  sidebar: left
 ---
 
 <div class="row">
