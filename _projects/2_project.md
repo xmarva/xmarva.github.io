@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: Cashierless store
 description: 
 img: assets/img/projects/2_cachierless_store/main_img.png
