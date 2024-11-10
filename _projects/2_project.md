@@ -5,7 +5,7 @@ description:
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 3
 category: work
-related_publications: true
+related_publications: false
 ---
 
 <div class="row">
@@ -21,7 +21,8 @@ This project aimed to build a fully automated, cashier-free retail experience fo
 
 Our goal was to create an intuitive shopping environment where customers could enter, pick up products, and leave without going through a traditional checkout.
 
----
+\
+\
 
 ## Customer Identification
 
@@ -31,9 +32,10 @@ Upon arriving at the store, customers would pass through turnstiles using this a
 
 Each customer received a unique identifier upon entry, enabling tracking throughout their entire visit.
 
----
+\
+\
 
-# Camera System and Calibration
+## Camera System and Calibration
 
 The store was equipped with multiple inexpensive cameras, similar to those used in standard video surveillance.
 
@@ -41,7 +43,8 @@ Positioned throughout the store, these cameras had overlapping fields of view to
 
 To ensure consistent data from these multiple perspectives, we calibrated the cameras using a checkerboard pattern, allowing for precise alignment and accurate tracking across feeds.
 
----
+\
+\
 
 ## Virtual Mapping and Tracking
 
@@ -51,7 +54,8 @@ As they moved through the aisles, the dot moved in real-time, providing a contin
 
 This enabled not only accurate tracking but also allowed us to analyze traffic patterns and identify popular sections within the store.
 
----
+\
+\
 
 ## Object Detection and Recognition
 
@@ -61,7 +65,8 @@ Every item in the store's inventory was represented by a set of images used to t
 
 Our object detection system relied on architectures such as YOLO, which are known for real-time, high-precision object recognition and classification.
 
----
+\
+\
 
 # Action Recognition
 
