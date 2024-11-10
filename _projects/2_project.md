@@ -65,7 +65,7 @@ Our object detection system relied on architectures such as YOLO, which are know
 
 <br>
 
-# Action Recognition
+## Action Recognition
 
 We also integrated action recognition models focused on customer interactions with products.
 
