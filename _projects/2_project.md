@@ -25,15 +25,6 @@ Our goal was to create an intuitive shopping environment where customers could e
 
 ## Customer Identification
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Customer Identification
-</div>
-
 To gain access, customers registered with a store assistant, providing their passport, personal photo, and payment information. Once registered, each customer was issued a personalized access card.
 
 Upon arriving at the store, customers would pass through turnstiles using this access card. The system also verified customer identity through facial recognition, creating a seamless and secure entry process.
@@ -43,15 +34,6 @@ Each customer received a unique identifier upon entry, enabling tracking through
 ---
 
 # Camera System and Calibration
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Camera System and Calibration
-</div>
 
 The store was equipped with multiple inexpensive cameras, similar to those used in standard video surveillance.
 
@@ -63,15 +45,6 @@ To ensure consistent data from these multiple perspectives, we calibrated the ca
 
 ## Virtual Mapping and Tracking
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/3.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Virtual Mapping and Tracking
-</div>
-
 To monitor each customer’s movements, we projected their route as a virtual dot on a digital map of the store.
 
 As they moved through the aisles, the dot moved in real-time, providing a continuous, mapped record of their location and activity.
@@ -82,15 +55,6 @@ This enabled not only accurate tracking but also allowed us to analyze traffic p
 
 ## Object Detection and Recognition
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/4.png" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Object Detection and Recognition
-</div>
-
 For recognizing products and tracking customer interactions, we built an object detection model using a custom dataset of product images.
 
 Every item in the store's inventory was represented by a set of images used to train the model. This allowed for high recognition accuracy even with varying product orientations and lighting conditions.
@@ -100,15 +64,6 @@ Our object detection system relied on architectures such as YOLO, which are know
 ---
 
 # Action Recognition
-
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/5.png" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Action Recognition
-</div>
 
 We also integrated action recognition models focused on customer interactions with products.
 
