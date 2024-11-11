@@ -5,7 +5,9 @@ description:
 img: assets/img/projects/4-ai-fashion-app/main_img.png
 importance: 1
 category: work
-related_publications: true
+related_publications: false
+toc:
+  sidebar: left
 ---
 
 <div class="row">
@@ -23,6 +25,15 @@ We explored two fundamentally different approaches to digital clothing try-on. O
 
 ## Image-Based Try-On Approach
 
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/4-ai-fashion-app/virtual_try_on_app.gif" title="Virtual Try On App" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Virtual Try On App
+</div>
+
 Our first approach focused on achieving visually perfect try-on results through sophisticated image manipulation techniques. We implemented **[BipartGraph](https://arxiv.org/abs/2106.16076)**, a bipartite graph network that establishes dense correspondences between clothing and body regions.
 
 The core BipartGraph formulation can be expressed as:
@@ -34,6 +45,15 @@ $$
 where $\mathcal{V}_c$ represents clothing nodes, $\mathcal{V}_b$ represents body nodes, and $\mathcal{A}$ is the adjacency tensor.
 
 ### Human Parsing and Segmentation
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/4-ai-fashion-app/densepose.png" title="densepose" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    DensePose Inference
+</div>
 
 For precise human parsing, we utilized **[SCHP (Self-Correction Human Parsing)](https://arxiv.org/abs/1910.09777)** with a novel hierarchical correction mechanism:
 
@@ -53,6 +73,15 @@ where $M^l$ represents attention masks at different resolutions.
 
 ### Diffusion-Based Image Generation
 
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/4-ai-fashion-app/main_img.png" title="cashierless store" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    AI Fashion App
+</div>
+
 We implemented **[Stable Diffusion](https://arxiv.org/abs/2112.10752)** with custom conditioning for clothing synthesis. The diffusion process follows:
 
 $$
@@ -66,6 +95,15 @@ p_\theta(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x
 $$
 
 ### Style Transfer and Refinement
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/4-ai-fashion-app/virtual_try_on.png" title="virtual try on" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Stable Diffusion Based Virtual Try On
+</div>
 
 For style preservation, we employed **[AdaIN (Adaptive Instance Normalization)](https://arxiv.org/abs/1703.06868)**:
 
@@ -86,6 +124,15 @@ $$
 Our second approach focused on physical accuracy through detailed 3D modeling and simulation. We implemented **[SMPL-X](https://smpl-x.is.tue.mpg.de/)**, an expressive parametric body model.
 
 ### Body Shape Estimation
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/4-ai-fashion-app/smpl_unity.png" title="SMPL in Unity" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    SMPL in Unity
+</div>
 
 The SMPL-X model defines body shape through a differentiable function:
 
@@ -133,51 +180,3 @@ $$
 where $\phi(p)$ is the signed distance function at point $p$.
 
 <br>
-
-## System Integration and Optimization
-
-Both approaches required sophisticated optimization techniques:
-
-### Pipeline Architecture
-```mermaid
-graph TD
-    A[Input] --> B{Approach Selection}
-    B -->|Image-Based| C[Human Parsing]
-    B -->|3D-Based| D[Body Reconstruction]
-    C --> E[Garment Warping]
-    D --> F[Physics Simulation]
-    E --> G[Final Rendering]
-    F --> G
-```
-
-### Performance Optimization
-
-For the image-based approach, we implemented **[Knowledge Distillation](https://arxiv.org/abs/1503.02531)**:
-
-$$
-\mathcal{L}_{KD} = \alpha T^2 \text{KL}(\sigma(\frac{z_t}{T}), \sigma(\frac{z_s}{T})) + (1-\alpha)\mathcal{L}_{CE}
-$$
-
-For the 3D approach, we used **[Neural Mesh Simplification](https://arxiv.org/abs/2010.04008)**:
-
-$$
-\mathcal{L}_{mesh} = \lambda_1\mathcal{L}_{chamfer} + \lambda_2\mathcal{L}_{normal} + \lambda_3\mathcal{L}_{edge}
-$$
-
-<br>
-
-## Experimental Results
-
-We evaluated both approaches using multiple metrics:
-
-1. **Image-Based Approach**:
-   - FID (Fréchet Inception Distance): 18.3
-   - LPIPS (Learned Perceptual Image Patch Similarity): 0.089
-   - Processing time: ~1.5s per image
-
-2. **3D Mesh-Based Approach**:
-   - Mean vertex error: 1.8mm
-   - Strain error: 2.4%
-   - Processing time: ~8s per simulation
-
-The results demonstrated clear trade-offs between visual quality and physical accuracy, with each approach excelling in its intended use case.

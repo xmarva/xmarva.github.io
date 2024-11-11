@@ -5,7 +5,9 @@ description:
 img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
 importance: 2
 category: work
-related_publications: true
+related_publications: false
+toc:
+  sidebar: left
 ---
 
 <div class="row">
@@ -16,3 +18,4 @@ related_publications: true
 <div class="caption">
     VR Florplan reconstruction
 </div>
+

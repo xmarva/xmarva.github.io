@@ -71,6 +71,15 @@ Regular recalibration schedules were set, and camera lens distortion correction 
 
 ## Virtual Mapping and Tracking
 
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/3.png" title="Virtual Mapping and Tracking" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Virtual Mapping and Tracking
+</div>
+
 For customer tracking, we used **multi-camera tracking algorithms** based on **[deep sort](https://arxiv.org/pdf/1703.07402)** and **[Kalman filters](https://en.wikipedia.org/wiki/Kalman_filter#:~:text=The%20Kalman%20filter%20produces%20an,uncertainty%20are%20%22trusted%22%20more.)**. 
 
 Multi-camera tracking in a crowded environment is complex, as it requires handling occlusions, re-identifications, and maintaining continuity across camera views.
@@ -88,6 +97,15 @@ With **deep sort**, re-identification embeddings were generated to handle instan
 <br>
 
 ## Object Detection and Recognition
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="assets/img/projects/2_cachierless_store/4.png" title="Object Detection" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Object Detection
+</div>
 
 Our object recognition system was powered by **[EfficientDet](https://arxiv.org/pdf/1911.09070)**, a state-of-the-art object detection model. 
 
