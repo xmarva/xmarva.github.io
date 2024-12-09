@@ -20,8 +20,8 @@ Hey there, welcome to my website!
 
 I’m a **Machine Learning Engineer**, currently focused on **Computer Vision** and **GenAI**.
 
-I’m all about creating ✨beautiful✨ Deep Learning. To me, beauty is a mix of clean code, creative ideas, efficient models, and solid results.
+I’m all about creating ✨*beautiful*✨ Deep Learning. To me, beauty is a mix of clean code, creative ideas, efficient models, and solid results.
 
 It would be a very bold to claim I always succeed. Sometimes it’s a bit of a hot mess (who isn’t?). Still, I’m hooked on the idea of beauty and always chasing it.
 
-When I’m not lost in code you’ll find me out in nature, hiking or balancing life with Zen meditation and psychoanalysis. Also I firmly believe salmon nigiri is the pinnacle of existence 🍣
+When I’m not lost in code you’ll find me out in nature, hiking or finding balance through meditation. Psychoanalysis helps me to figure out myself and other humans. Also firmly believe *salmon nigiri* is the pinnacle of existence 🍣
