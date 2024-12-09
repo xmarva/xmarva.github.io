@@ -7,7 +7,7 @@ subtitle:
 profile:
   align: right
   image: eva_koroleva.jpg
-  image_circular: false # crops the image to make it circular
+  image_circular: true # crops the image to make it circular
   more_info: >
     <p>📍 Buenos Aires, Argentina </p>
 
