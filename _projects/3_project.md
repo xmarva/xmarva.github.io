@@ -26,7 +26,7 @@ Our mission was to transform raw architectural blueprints into realistic and acc
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.html path="https://youtu.be/ZECQHFttNLQ?si=Cb69SCoqUNWGo_QZ" class="img-fluid rounded z-depth-1" %}
+        {% include video.liquid path="https://youtu.be/ZECQHFttNLQ?si=Cb69SCoqUNWGo_QZ" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -96,8 +96,9 @@ The core of our placement strategy is a comprehensive scoring function:
 
 $$\text{Placement Score} = f(\text{Spatial Proximity}, \text{Style Compatibility}, \text{Functional Constraints})$$
 
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.html path="https://youtu.be/2i-dVo22lfg?si=mDKukZnSpW_8YS3U" class="img-fluid rounded z-depth-1" %}
+        {% include video.liquid path="https://youtu.be/2i-dVo22lfg?si=mDKukZnSpW_8YS3U" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
