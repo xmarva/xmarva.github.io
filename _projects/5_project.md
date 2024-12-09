@@ -2,7 +2,7 @@
 layout: page
 title: Protein Structure Prediction
 description: 
-img: assets/img/projects/4-ai-fashion-app/main_img.png
+img: assets/img/projects/5-protein-structure/main_img.png
 importance: 4
 category: work
 related_publications: false
