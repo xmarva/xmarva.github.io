@@ -24,13 +24,13 @@ The goal of [this project](https://getfloorplan.com) was to develop a solution f
 
 Our mission was to transform raw architectural blueprints into realistic and accurate 3D representations that could be explored in any browser—or even with VR headsets.
 
-To accurately recognize elements in floor plan drawings, we built a computer vision model system. For reconstructing those elements, our game development team used Unreal Engine. Additionally, we developed an algorithm for semi-automatically placing furniture, leveraging design presets and accounting for the identified parameters of the living space.
-
 <div class="row mt-3">
      <div class="col-sm mt-3 mt-md-0">
          {% include video.html path="https://youtu.be/ZECQHFttNLQ?si=Cb69SCoqUNWGo_QZ" class="img-fluid rounded z-depth-1" %}
      </div>
- </div>
+</div>
+
+To accurately recognize elements in floor plan drawings, we built a computer vision model system. For reconstructing those elements, our game development team used Unreal Engine. Additionally, we developed an algorithm for semi-automatically placing furniture, leveraging design presets and accounting for the identified parameters of the living space.
 
 ## Dataset
 
@@ -38,9 +38,9 @@ We focused heavily on creating and annotating a high-quality, diverse dataset. I
 
 Key components in the floor plans included:
 
-Walls
-Windows and doors
-Scale and dimension indicators
+- Walls
+- Windows and Doors
+- Scale and Dimension Indicators
 
 In addition to these, the annotations also captured masks for various secondary objects, furniture placement markers, and more.
 
@@ -100,4 +100,4 @@ $$\text{Placement Score} = f(\text{Spatial Proximity}, \text{Style Compatibility
      <div class="col-sm mt-3 mt-md-0">
          {% include video.html path="https://youtu.be/2i-dVo22lfg?si=mDKukZnSpW_8YS3U" class="img-fluid rounded z-depth-1" %}
      </div>
- </div>
+</div>
