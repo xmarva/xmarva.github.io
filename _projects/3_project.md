@@ -26,6 +26,12 @@ Our mission was to transform raw architectural blueprints into realistic and acc
 
 To accurately recognize elements in floor plan drawings, we built a computer vision model system. For reconstructing those elements, our game development team used Unreal Engine. Additionally, we developed an algorithm for semi-automatically placing furniture, leveraging design presets and accounting for the identified parameters of the living space.
 
+<div class="row mt-3">
+     <div class="col-sm mt-3 mt-md-0">
+         {% include video.html path="https://youtu.be/ZECQHFttNLQ?si=Cb69SCoqUNWGo_QZ" class="img-fluid rounded z-depth-1" %}
+     </div>
+ </div>
+
 ## Dataset
 
 We focused heavily on creating and annotating a high-quality, diverse dataset. Initially, we relied on manual efforts and tools like LabelBox. Later, we integrated segmentation models. While their performance wasn’t yet good enough for final outputs, they significantly sped up the manual annotation process.
@@ -89,3 +95,9 @@ We developed a groundbreaking algorithm for automatic interior design that goes 
 The core of our placement strategy is a comprehensive scoring function:
 
 $$\text{Placement Score} = f(\text{Spatial Proximity}, \text{Style Compatibility}, \text{Functional Constraints})$$
+
+<div class="row mt-3">
+     <div class="col-sm mt-3 mt-md-0">
+         {% include video.html path="https://youtu.be/2i-dVo22lfg?si=mDKukZnSpW_8YS3U" class="img-fluid rounded z-depth-1" %}
+     </div>
+ </div>
