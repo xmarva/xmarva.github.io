@@ -18,10 +18,10 @@ social: true # includes social icons at the bottom of the page
 
 Hey there, welcome to my website!
 
-I'm a Machine Learning Engineer, currently focused on **Computer Vision** and **GenAI**.
+I’m a **Machine Learning Engineer**, currently focused on **Computer Vision** and **GenAI**.
 
-With over 6 years in the industry, I've worn different hats in AI projects, and you can check out my [Portfolio](https://xmarva.github.io/portfolio/) to see how I might be able to help with your next project.
+In a nutshell, I’m passionate about creating ✨*beautiful*✨ Deep Learning. Beauty is a complex function of variables like clean, readable code, creative solutions, efficient resource use, and great results.
 
-From time to time, I write about AI and whatever else comes to mind—find all that in my [Blog](https://xmarva.github.io/blog/).
+It would be a very bold to claim I always make Deep Learning beautiful. Truth be told, sometimes it’s downright messy (who’s perfect, anyway?). But I’m enchanted by the idea of beauty and always strive to achieve it.
 
-I’m also into hiking and traveling, learning new languages, and exploring psychoanalysis.
+Beyond tech, I love nature and hiking, enjoy learning foreign languages, and find balance in life through psychoanalysis and Zen meditation. Also, I firmly believe there’s nothing in the world more important than salmon nigiri 🍣
