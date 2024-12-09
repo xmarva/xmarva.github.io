@@ -26,7 +26,7 @@ Our mission was to transform raw architectural blueprints into realistic and acc
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="https://youtu.be/ZECQHFttNLQ?si=Cb69SCoqUNWGo_QZ" class="img-fluid rounded z-depth-1" %}
+        {% include video.liquid path="https://www.youtube.com/embed/ZECQHFttNLQ?si=X_XsCcJDADp0hXU5" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -99,6 +99,6 @@ $$\text{Placement Score} = f(\text{Spatial Proximity}, \text{Style Compatibility
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include video.liquid path="https://youtu.be/2i-dVo22lfg?si=mDKukZnSpW_8YS3U" class="img-fluid rounded z-depth-1" %}
+        {% include video.liquid path="https://www.youtube.com/embed/2i-dVo22lfg?si=vCV6JhYxwyXiaLDZ" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
