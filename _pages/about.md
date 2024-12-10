@@ -24,4 +24,4 @@ I’m all about creating ✨*beautiful*✨ Deep Learning. To me, beauty is a mix
 
 It would be very bold to claim I always succeed. Sometimes it’s a bit of a hot mess (who isn’t?). Still, I’m hooked on the idea of beauty and always chasing it.
 
-When I’m not lost in code you’ll find me out in nature, hiking or finding balance through meditation. Psychoanalysis helps me to figure out myself and other humans. Also firmly believe *salmon nigiri* is the pinnacle of existence 🍣
+When I’m not lost in code you’ll find me out in nature, hiking or finding balance through meditation. Also firmly believe *salmon nigiri* is the pinnacle of existence 🍣
