@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://xmarva.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://xmarva.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-12-10T15:46:06+00:00</updated><id>https://xmarva.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">How to Write Good Python Code</title><link href="https://xmarva.github.io/blog/2023/python-code/" rel="alternate" type="text/html" title="How to Write Good Python Code"/><published>2023-02-07T15:09:00+00:00</published><updated>2023-02-07T15:09:00+00:00</updated><id>https://xmarva.github.io/blog/2023/python-code</id><content type="html" xml:base="https://xmarva.github.io/blog/2023/python-code/"><![CDATA[<p>Python is a fantastic programming language!</p> <p>It can be used for many things, like building websites, exploring data, and teaching machines to learn. If you already know Python or are just beginning, writing code that is strong, easy to read, and easy to keep up with is important. In this article, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">toc</span><span class="pi">:</span>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://xmarva.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://xmarva.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-12-10T16:23:44+00:00</updated><id>https://xmarva.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">How to Write Good Python Code</title><link href="https://xmarva.github.io/blog/2023/python-code/" rel="alternate" type="text/html" title="How to Write Good Python Code"/><published>2023-02-07T15:09:00+00:00</published><updated>2023-02-07T15:09:00+00:00</updated><id>https://xmarva.github.io/blog/2023/python-code</id><content type="html" xml:base="https://xmarva.github.io/blog/2023/python-code/"><![CDATA[<p>Python is a fantastic programming language!</p> <p>It can be used for many things, like building websites, exploring data, and teaching machines to learn. If you already know Python or are just beginning, writing code that is strong, easy to read, and easy to keep up with is important. In this article, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.</p> <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">toc</span><span class="pi">:</span>
   <span class="na">sidebar</span><span class="pi">:</span> <span class="s">left</span>
 </code></pre></div></div> <h2 id="-use-meaningful-naming-conventions">📚 Use Meaningful Naming Conventions</h2> <p>One of the most important aspects of good Python code is meaningful naming conventions. Choosing descriptive and concise names for variables, functions, and classes can help make your code more readable and understandable. Using proper naming conventions can also help you avoid naming conflicts, reduce the risk of errors, and simplify maintenance.</p> <p>For example, these are bad variable names:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">y</span> <span class="o">=</span> <span class="mi">10</span>
@@ -75,4 +75,176 @@
     </span><span class="sh">"""</span>
     <span class="c1"># calculate the difference between `a` and `b`
 </span>    <span class="k">return</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
-</code></pre></div></div> <p>Here, the comments provide a clear and concise explanation of the purpose and behaviour of each function. The use of docstrings makes it easy to understand what the functions do and what arguments they take in. This makes the code more readable and maintainable.</p>]]></content><author><name></name></author><category term="old-posts"/><category term="python,"/><category term="coding"/><summary type="html"><![CDATA[Let's look at the basic rules for writing great Python code]]></summary></entry></feed>
+</code></pre></div></div> <p>The comments provide a clear and concise explanation of the purpose and behaviour of each function.</p> <p>The use of docstrings makes it easy to understand what the functions do and what arguments they take in. This makes the code more readable and maintainable.</p> <h2 id="-use-modules-and-packages">🧰 Use Modules and Packages</h2> <p>Modules and packages are a great way to organize your code into reusable blocks. They allow you to group related code together and make it easier to manage, understand, and maintain.</p> <p>The Python Standard Library is an good resource for finding pre-existing modules and packages. You can import it into your programs to save time and effort.</p> <p>Consider a project to build a simple weather application that provides a given city’s current temperature and conditions. We can structure the project as follows:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>weather_app/
+    __init__.py
+    weather.py
+    utils/
+        __init__.py
+        api.py
+        data_processing.py
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">weather.py</code> is the main module that the user interacts with, which provides a single function to get the current weather information.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_current_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Gets the current weather information for the given city.
+
+    Args:
+        city (str): The city for which to get the weather information.
+
+    Returns:
+        dict: The weather information for the given city.
+    </span><span class="sh">"""</span>
+    <span class="n">weather_data</span> <span class="o">=</span> <span class="n">utils</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="nf">get_weather_data</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+    <span class="n">processed_data</span> <span class="o">=</span> <span class="n">utils</span><span class="p">.</span><span class="n">data_processing</span><span class="p">.</span><span class="nf">process_weather_data</span><span class="p">(</span><span class="n">weather_data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">processed_data</span>
+</code></pre></div></div> <p>The utils package contains two modules, <code class="language-plaintext highlighter-rouge">api.py</code> and <code class="language-plaintext highlighter-rouge">data_processing.py</code>, which contain helper functions to retrieve the raw weather data from an API and to process the raw data into a more readable format, respectively. These modules can be reused across different projects, so it makes sense to organize them into a separate package.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># api.py
+</span><span class="k">def</span> <span class="nf">get_weather_data</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Retrieves the raw weather data for the given city.
+
+    Args:
+        city (str): The city for which to retrieve the weather data.
+
+    Returns:
+        dict: The raw weather data for the given city.
+    </span><span class="sh">"""</span>
+    <span class="c1"># code to retrieve data from API
+</span>    <span class="k">return</span> <span class="n">raw_data</span>
+
+<span class="c1"># data_processing.py
+</span><span class="k">def</span> <span class="nf">process_weather_data</span><span class="p">(</span><span class="n">raw_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Processes the raw weather data into a more readable format.
+
+    Args:
+        raw_data (dict): The raw weather data.
+
+    Returns:
+        dict: The processed weather data.
+    </span><span class="sh">"""</span>
+    <span class="c1"># code to process data
+</span>    <span class="k">return</span> <span class="n">processed_data</span>
+</code></pre></div></div> <h2 id="-test-your-code">🧪 Test Your Code</h2> <p>Testing your code helps you catch bugs and ensure that your code works as expected. Writing test cases is also an good way to document your code and help others understand it. Try all possible scenarios when testing your code, including edge cases and error conditions.</p> <p>Consider a module <code class="language-plaintext highlighter-rouge">calculator.py</code> that implements a simple calculator with basic arithmetic operations. We can write test cases for each operation using a testing framework such as <code class="language-plaintext highlighter-rouge">unittest</code>.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">unittest</span>
+<span class="kn">import</span> <span class="n">calculator</span>
+
+<span class="k">class</span> <span class="nc">TestCalculator</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_addition</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_subtraction</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">subtract</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_multiplication</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_division</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">divide</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="p">.</span><span class="nf">main</span><span class="p">()</span>
+</code></pre></div></div> <p>Each test case tests a single operation in the calculator module and uses the assertEqual method to verify that the result of the operation is as expected. If any test fails, an error will be raised, and the test result will be reported as failed. For debugging, we can use the print statement to print the intermediate results or the values of variables in the code, or use a debugger such as <code class="language-plaintext highlighter-rouge">pdb</code> to step through the code and inspect the values of variables.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">calculator</span>
+<span class="kn">import</span> <span class="n">pdb</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">pdb</span><span class="p">.</span><span class="nf">set_trace</span><span class="p">()</span> <span class="c1"># Set a breakpoint
+</span><span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div> <h2 id="-document-your-code">📜 Document Your Code</h2> <p>Documenting your code with docstrings can help others understand what it does and how it works. Docstrings should provide a high-level overview of the code, including its purpose, usage, and limitations. They should also be written in a clear and natural language style.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Circle</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Class to represent a circle with a given radius.
+
+    Attributes:
+        radius (float): The radius of the circle.
+    </span><span class="sh">"""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Initializes the Circle class with a given radius.
+
+        Args:
+            radius (float): The radius of the circle.
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sh">"""</span><span class="s">
+        Calculates the area of the circle.
+
+        Returns:
+            float: The area of the circle.
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">circumference</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sh">"""</span><span class="s">
+        Calculates the circumference of the circle.
+
+        Returns:
+            float: The circumference of the circle.
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">radius</span>
+</code></pre></div></div> <p>The class has a docstring explaining its purpose and the attributes it has. Each method has its docstring explaining what it does and what arguments it takes and returns. This makes the code easier to understand and maintain and more accessible for others to use and build upon.</p> <h2 id="-handle-exceptions-gracefully">💥 Handle Exceptions Gracefully</h2> <p>Handling exceptions in your code is essential for ensuring that it continues to run even when unexpected events occur. Use <code class="language-plaintext highlighter-rouge">try</code> and <code class="language-plaintext highlighter-rouge">except</code> statements to handle exceptions and provide helpful error messages that explain what went wrong and how to fix it.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># code that may raise an exception
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">/</span> <span class="mi">0</span>
+<span class="k">except</span> <span class="nb">ZeroDivisionError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="c1"># handle the exception
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">An error occurred:</span><span class="sh">"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Please provide a non-zero value for division</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <p>The code inside the try block may raise a ZeroDivisionError exception. The except block handles the exception and prints a helpful error message to the user. This way, the program can continue running even when an unexpected error occurs.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># code that may raise an exception
+</span>    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">file.txt</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">FileNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="c1"># handle the exception
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">An error occurred:</span><span class="sh">"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Please provide a valid file path</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="c1"># handle any other exceptions
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">An unexpected error occurred:</span><span class="sh">"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+</code></pre></div></div> <p>In this example, the code inside the try block may raise a <code class="language-plaintext highlighter-rouge">FileNotFoundError</code> or any other exception.</p> <p>The first except block handles the FileNotFoundError and provides a helpful error message for the user. The second except block handles any other exceptions that may occur and provides a generic error message. This way, the program can continue running even when unexpected errors occur and provide helpful error messages to the user.</p> <h2 id="-use-keyword-arguments">🔑 Use Keyword Arguments</h2> <p>Keyword arguments are a powerful feature of Python that allows you to specify default values for function arguments and make your code more readable and flexible. Using keyword arguments can also help you reduce the number of lines of code in your programs and make them easier to understand.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sh">"</span><span class="s">Hello</span><span class="sh">"</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">greet</span><span class="p">(</span><span class="sh">"</span><span class="s">John</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># Output: Hello, John!
+</span><span class="nf">greet</span><span class="p">(</span><span class="sh">"</span><span class="s">Jane</span><span class="sh">"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="sh">"</span><span class="s">Hi</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># Output: Hi, Jane!
+</span></code></pre></div></div> <p>In this example, the greet function takes in two arguments: name and message. The message argument has a default value of “Hello”.</p> <p>When we call <code class="language-plaintext highlighter-rouge">greet("John")</code>, the default value of <code class="language-plaintext highlighter-rouge">"Hello"</code> is used for the message argument. But when we call <code class="language-plaintext highlighter-rouge">greet("Jane", message="Hi")</code>, the keyword argument is used instead, and the output is <code class="language-plaintext highlighter-rouge">"Hi, Jane!"</code>.</p> <h2 id="️-follow-the-zen-of-python">🧘‍♀️ Follow the Zen of Python</h2> <p>The Zen of Python is a collection of principles and guidelines for writing good Python code. It includes tips on writing simple, clear, and maintainable code and advice on choosing between different solutions.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">this</span>
+
+<span class="k">def</span> <span class="nf">sort_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># Simple is better than complex
+</span>    <span class="n">data</span><span class="p">.</span><span class="nf">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+<span class="c1"># Readability counts
+</span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c1"># Explicit is better than implicit
+</span>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="c1"># Flat is better than nested
+</span><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">lists</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">lists</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Use meaningful names
+</span><span class="k">def</span> <span class="nf">calculate_average_score</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">score</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># One obvious way to do it
+</span>    <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">count</span>
+</code></pre></div></div> <p>We follow the Zen of Python by:</p> <ul> <li>Writing straightforward code (e.g. the <code class="language-plaintext highlighter-rouge">sort_data</code> function)</li> <li>Choosing meaningful names for variables and functions (e.g. <code class="language-plaintext highlighter-rouge">calculate_average_score</code>)</li> <li>Keeping the code flat and avoiding nested structures where possible (e.g. the flatten function)</li> <li>Being explicit and transparent in our code (e.g. using return statements)</li> </ul> <h2 id="-refactor-your-code-regularly">🛠 Refactor Your Code Regularly</h2> <p>Refactoring is improving the structure and quality of your code without changing its external behaviour.</p> <p>It can help you identify areas that need improvement and make your code more maintainable over time. This can be especially important in projects with a long lifespan or requiring continuous updates.</p> <p>So you can simplify complex sections, make your code more efficient, and eliminate any redundant or unnecessary parts. You can also take advantage of new features or libraries that have become available since you wrote the original code.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Original code
+</span><span class="k">def</span> <span class="nf">calculate_sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">number</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Refactored code
+</span><span class="k">def</span> <span class="nf">calculate_sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nf">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+</code></pre></div></div> <p>We have refactored the <code class="language-plaintext highlighter-rouge">calculate_sum</code> function to use the built-in sum function instead of manually iterating over the numbers and adding them up. This code is more efficient and readable and takes advantage of a built-in feature of Python that can perform the same calculation.</p>]]></content><author><name></name></author><category term="old-posts"/><category term="python,"/><category term="coding"/><summary type="html"><![CDATA[Let's look at the basic rules for writing great Python code]]></summary></entry></feed>
