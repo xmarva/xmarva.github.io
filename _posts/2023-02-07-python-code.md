@@ -13,20 +13,21 @@ toc:
 Python is a fantastic programming language!
 
 It can be used for many things, like building websites, exploring data, and teaching machines to learn.
-If you already know Python or are just beginning, writing code that is strong, easy to read, and easy to keep up with is important.
-In this article, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.
 
-```yml
-toc:
-  sidebar: left
-```
+If you already know Python or are just beginning, writing code that is strong, easy to read, and easy to keep up with is important. 
+
+In this bogpost, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.
 
 ## 📚 Use Meaningful Naming Conventions
+
 One of the most important aspects of good Python code is meaningful naming conventions.
+
 Choosing descriptive and concise names for variables, functions, and classes can help make your code more readable and understandable.
+
 Using proper naming conventions can also help you avoid naming conflicts, reduce the risk of errors, and simplify maintenance.
 
 For example, these are bad variable names:
+
 ```python
 x = 5
 y = 10
@@ -100,8 +101,11 @@ def process_data(a, b, c, d):
 ```
 
 ## 💬 Write Comments
+
 Adding comments to your code is a great way to explain what it does and provide context for other developers.
+
 Comments should be used to explain complex code, provide additional information about the purpose of the code, and describe your thought process.
+
 Writing comments can also help you better understand your code when you return to it later.
 
 ```python
@@ -116,6 +120,7 @@ def calc_difference(a, b):
 ```
 
 The comments are not very descriptive or helpful in understanding the purpose of the functions.
+
 The first comment is trivial and adds no additional information. The second comment repeats what the function name already tells us.
 
 ```python
@@ -142,7 +147,10 @@ The comments provide a clear and concise explanation of the purpose and behaviou
 The use of docstrings makes it easy to understand what the functions do and what arguments they take in. This makes the code more readable and maintainable.
 
 ## 🧰 Use Modules and Packages
-Modules and packages are a great way to organize your code into reusable blocks. They allow you to group related code together and make it easier to manage, understand, and maintain.
+
+Modules and packages are a great way to organize your code into reusable blocks. 
+
+They allow you to group related code together and make it easier to manage, understand, and maintain.
 
 The Python Standard Library is an good resource for finding pre-existing modules and packages. You can import it into your programs to save time and effort.
 
@@ -177,7 +185,9 @@ def get_current_weather(city: str) -> dict:
     return processed_data
 ```
 
-The utils package contains two modules, `api.py` and `data_processing.py`, which contain helper functions to retrieve the raw weather data from an API and to process the raw data into a more readable format, respectively. These modules can be reused across different projects, so it makes sense to organize them into a separate package.
+The utils package contains two modules, `api.py` and `data_processing.py`, which contain helper functions to retrieve the raw weather data from an API and to process the raw data into a more readable format, respectively. 
+
+These modules can be reused across different projects, so it makes sense to organize them into a separate package.
 
 ```python
 # api.py
@@ -211,6 +221,7 @@ def process_weather_data(raw_data: dict) -> dict:
 
 ## 🧪 Test Your Code
 Testing your code helps you catch bugs and ensure that your code works as expected.
+
 Writing test cases is also an good way to document your code and help others understand it. Try all possible scenarios when testing your code, including edge cases and error conditions.
 
 Consider a module `calculator.py` that implements a simple calculator with basic arithmetic operations. We can write test cases for each operation using a testing framework such as `unittest`.
@@ -240,8 +251,11 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-Each test case tests a single operation in the calculator module and uses the assertEqual method to verify that the result of the operation is as expected. If any test fails, an error will be raised, and the test result will be reported as failed.
-For debugging, we can use the print statement to print the intermediate results or the values of variables in the code, or use a debugger such as `pdb` to step through the code and inspect the values of variables.
+Each test case tests a single operation in the calculator module and uses the `assertEqual` method to verify that the result of the operation is as expected. 
+
+If any test fails, an error will be raised, and the test result will be reported as failed.
+
+For debugging we can use the `print` statement to print the intermediate results or the values of variables in the code, or use a debugger such as `pdb` to step through the code and inspect the values of variables.
 
 ```python
 import calculator
@@ -253,7 +267,12 @@ print(result)
 ```
 
 ## 📜 Document Your Code
-Documenting your code with docstrings can help others understand what it does and how it works. Docstrings should provide a high-level overview of the code, including its purpose, usage, and limitations. They should also be written in a clear and natural language style.
+
+Documenting your code with docstrings can help others understand what it does and how it works. 
+
+Docstrings should provide a high-level overview of the code, including its purpose, usage, and limitations. 
+
+They should also be written in a clear and natural language style.
 
 ```python
 class Circle:
@@ -292,10 +311,17 @@ class Circle:
         return 2 * 3.14 * self.radius
 ```
 
-The class has a docstring explaining its purpose and the attributes it has. Each method has its docstring explaining what it does and what arguments it takes and returns. This makes the code easier to understand and maintain and more accessible for others to use and build upon.
+The class has a docstring explaining its purpose and the attributes it has. 
+
+Each method has its docstring explaining what it does and what arguments it takes and returns. 
+
+This makes the code easier to understand and maintain and more accessible for others to use and build upon.
 
 ## 💥 Handle Exceptions Gracefully
-Handling exceptions in your code is essential for ensuring that it continues to run even when unexpected events occur. Use `try` and `except` statements to handle exceptions and provide helpful error messages that explain what went wrong and how to fix it.
+
+Handling exceptions in your code is essential for ensuring that it continues to run even when unexpected events occur. 
+
+Use `try` and `except` statements to handle exceptions and provide helpful error messages that explain what went wrong and how to fix it.
 
 ```python
 try:
@@ -307,7 +333,11 @@ except ZeroDivisionError as error:
     print("Please provide a non-zero value for division")
 ```
 
-The code inside the try block may raise a ZeroDivisionError exception. The except block handles the exception and prints a helpful error message to the user. This way, the program can continue running even when an unexpected error occurs.
+The code inside the `try` block may raise a `ZeroDivisionError` exception. 
+
+The `except` block handles the exception and prints a helpful error message to the user. 
+
+This way, the program can continue running even when an unexpected error occurs.
 
 ```python
 try:
@@ -325,10 +355,16 @@ except Exception as error:
 
 In this example, the code inside the try block may raise a `FileNotFoundError` or any other exception.
 
-The first except block handles the FileNotFoundError and provides a helpful error message for the user. The second except block handles any other exceptions that may occur and provides a generic error message. This way, the program can continue running even when unexpected errors occur and provide helpful error messages to the user.
+The first `except` block handles the FileNotFoundError and provides a helpful error message for the user. 
+
+The second `except` block handles any other exceptions that may occur and provides a generic error message. 
+
+This way the program can continue running even when unexpected errors occur and provide helpful error messages to the user.
 
 ## 🔑 Use Keyword Arguments
+
 Keyword arguments are a powerful feature of Python that allows you to specify default values for function arguments and make your code more readable and flexible.
+
 Using keyword arguments can also help you reduce the number of lines of code in your programs and make them easier to understand.
 
 ```python
@@ -344,7 +380,10 @@ In this example, the greet function takes in two arguments: name and message. Th
 When we call `greet("John")`, the default value of `"Hello"` is used for the message argument. But when we call `greet("Jane", message="Hi")`, the keyword argument is used instead, and the output is `"Hi, Jane!"`.
 
 ## 🧘‍♀️ Follow the Zen of Python
-The Zen of Python is a collection of principles and guidelines for writing good Python code. It includes tips on writing simple, clear, and maintainable code and advice on choosing between different solutions.
+
+The Zen of Python is a collection of principles and guidelines for writing good Python code. 
+
+It includes tips on writing simple, clear, and maintainable code and advice on choosing between different solutions.
 
 ```python
 import this
