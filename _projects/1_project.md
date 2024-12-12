@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Medical assistant
+title: Medical Asssistant
 description: 
 img: assets/img/projects/1_medical_assistant/main_img.png
 importance: 5
