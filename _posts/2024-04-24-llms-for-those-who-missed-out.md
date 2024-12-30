@@ -5,7 +5,7 @@ date: 2024-04-24 15:09:00
 description: Let's talk about large language models. Once again.
 tags: nlp, llm
 categories: old-posts
-featured: true
+featured: false
 toc:
   sidebar: left
 ---
