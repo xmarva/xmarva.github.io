@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The Algebraic Foundations of Low-Rank Adaptation in Large Language Models
+title: The Algebraic Foundations of Low-Rank Adaptation
 date: 2024-12-30 15:09:00
 description: A mathematical exploration of parameter-efficient fine-tuning through matrix rank theory
 tags: nlp, llm, lora
