@@ -18,11 +18,11 @@ social: true # includes social icons at the bottom of the page
 
 Hey there, welcome to my website!
 
-I'm an 👩‍💻**AI Engineer & Researcher** working with **NLP**, **CV**, **GenAI**.
+I'm an 👩‍💻**AI Engineer & Researcher** working with **NLP**, **CV**, **3D**, **GenAI**.
 
 Currently, I’m studying **Cognitive Science** and am deeply interested in:\
-  🤔 Philosophy (Science | Language | Consciousness)\
-  🧠 Neurobiology and Psychology
+&nbsp;&nbsp;&nbsp;&nbsp;🤔 Philosophy (Science | Language | Consciousness)\
+&nbsp;&nbsp;&nbsp;&nbsp;🧠 Neurobiology and Psychology
 
 I can train models to generalize your data and generate new ones to solve practical tasks. But what kind of AI engineer doesn’t dream of solving the mystery of consciousness and contributing to the creation of strong AI?
 
