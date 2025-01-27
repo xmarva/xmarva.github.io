@@ -18,10 +18,14 @@ social: true # includes social icons at the bottom of the page
 
 Hey there, welcome to my website!
 
-I’m a **Machine Learning Engineer**, currently focused on **Computer Vision** and **GenAI**.
+I'm an **AI Engineer & Researcher** working with both classical and generative AI in **NLP** and **CV**.
 
-I’m all about creating ✨*beautiful*✨ Deep Learning. To me, beauty is a mix of clean code, creative ideas, efficient models, and solid results.
+Currently, I’m studying **Cognitive Science** and am deeply interested in philosophy (science, language, and consciousness), psychology, and neurobiology.
 
-It would be very bold to claim I always succeed. Sometimes it’s a bit of a hot mess (who isn’t?). Still, I’m hooked on the idea of beauty and always chasing it.
+I can train models to generalize your data and generate new ones to solve practical engineering tasks. But what kind of AI engineer doesn’t dream of solving the mystery of consciousness and contributing to the creation of strong AI?
 
-When I’m not lost in code you’ll find me out in nature, hiking or finding balance through meditation. Also firmly believe *salmon nigiri* is the pinnacle of existence 🍣
+I love creating ✨*beautiful*✨ solutions — clean code, creative ideas, efficient models, and solid results.
+
+It would be very bold to claim I always succeed. Sometimes it’s a bit messy (who hasn’t been there?), but I’m always chasing that ideal.
+
+In my free time, I enjoy being in nature, hiking, or finding balance through meditation. A good work-life balance is key to productive thinking. Also, salmon nigiri might just be the peak of human existence 🍣.
