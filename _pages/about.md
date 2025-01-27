@@ -21,6 +21,7 @@ Hey there, welcome to my website!
 I'm an 👩‍💻**AI Engineer & Researcher** working with **NLP**, **CV**, **3D**, **GenAI**.
 
 Currently, I’m studying **Cognitive Science** and am deeply interested in:\
+\
 &nbsp;&nbsp;&nbsp;&nbsp;🤔 Philosophy (Science | Language | Consciousness)\
 &nbsp;&nbsp;&nbsp;&nbsp;🧠 Neurobiology and Psychology
 
