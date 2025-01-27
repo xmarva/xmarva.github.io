@@ -20,8 +20,8 @@ Hey there, welcome to my website!
 
 I'm an 👩‍💻**AI Engineer & Researcher** working with **NLP**, **CV**, **GenAI**.
 
-Currently, I’m studying **Cognitive Science** and am deeply interested in:
-  🤔 Philosophy (Science | Language | Consciousness)
+Currently, I’m studying **Cognitive Science** and am deeply interested in:\
+  🤔 Philosophy (Science | Language | Consciousness)\
   🧠 Neurobiology and Psychology
 
 I can train models to generalize your data and generate new ones to solve practical tasks. But what kind of AI engineer doesn’t dream of solving the mystery of consciousness and contributing to the creation of strong AI?
