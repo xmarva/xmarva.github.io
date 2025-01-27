@@ -1,8 +1,8 @@
 ---
 layout: post
-title: The Algebraic Foundations of Low-Rank Adaptation
+title: Algebraic Foundations of Low-Rank Adaptation
 date: 2024-12-30 15:09:00
-description: A mathematical exploration of parameter-efficient fine-tuning through matrix rank theory
+description: Mathematical exploration of parameter-efficient fine-tuning through matrix rank theory
 tags: nlp, llm, lora
 categories: 
 featured: true
@@ -10,7 +10,7 @@ toc:
   sidebar: left
 ---
 
-## Prologue: The Paradox of Scale
+## The Paradox of Scale
 
 The evolution of language models presents us with an intriguing paradox: 
 while increasing model size enhances general capability, it simultaneously 
@@ -19,9 +19,9 @@ This tension between capacity and practicality forms the crucible where
 Low-Rank Adaptation (LoRA) emerges as an elegant solution. To understand its 
 mechanisms, we must first establish fundamental mathematical constructs.
 
-## I. Matrix Theory Foundations
+## Matrix Theory Foundations
 
-### 1.1 The Algebraic Scaffolding
+### The Algebraic Scaffolding
 
 A matrix $$A \in \mathbb{R}^{m \times n}$$ represents a linear transformation 
 between vector spaces $$\mathbb{R}^n \to \mathbb{R}^m$$. Each element $$a_{ij}$$ 
@@ -41,7 +41,7 @@ This duality between row and column space dimensionalities (proven via the
 Fundamental Theorem of Linear Algebra) becomes crucial for understanding 
 parameter efficiency.
 
-### 1.2 Rank-Constrained Transformations
+### Rank-Constrained Transformations
 
 Consider two matrices $$B \in \mathbb{R}^{m \times r}$$ and $$A \in \mathbb{R}^{r \times n}$$. 
 Their product $$BA$$ inherently satisfies:
@@ -56,9 +56,9 @@ low-rank factors reduces trainable parameters from $$mn$$ to $$r(m+n)$$ –
 an efficiency gain of $$\frac{mn}{r(m+n)}$$. For typical layers ($$m,n \sim 10^3$$, 
 $$r \sim 10^1$$), this yields ~100x parameter reduction.
 
-## II. The Low-Rank Adaptation Hypothesis
+## The Low-Rank Adaptation Hypothesis
 
-### 2.1 Intrinsic Dimensionality of Task Adaptation
+### Intrinsic Dimensionality of Task Adaptation
 
 Modern language models exhibit an intriguing property: while pretrained on 
 broad corpora, task-specific adaptation appears to operate in low-dimensional 
@@ -77,7 +77,7 @@ low ranks ($$r=8$$ achieves strong performance). This implies that while
 the original parameter space is vast, task-specific adjustments occupy 
 a small subspace.
 
-### 2.3 Geometric Interpretation
+### Geometric Interpretation
 
 Visualize the weight matrix as a point in $$\mathbb{R}^{mn}$$. Full fine-tuning 
 moves this point through the high-dimensional space. LoRA constrains movement 
@@ -96,9 +96,9 @@ $$
 where $$\sigma_i$$ denotes singular values. Rapidly decaying singular values 
 in $$\Delta W$$ (as observed empirically) enable accurate low-rank approximation.
 
-## III. Algorithmic Implementation
+## Algorithmic Implementation
 
-### 3.1 Parameterization and Initialization
+### Parameterization and Initialization
 
 For a pretrained weight matrix $$W_0$$, LoRA constructs:
 
@@ -115,7 +115,7 @@ The initialization strategy ensures $$\Delta W = 0$$ at training onset,
 preserving original model behavior. The $$\alpha/r$$ scaling normalizes 
 parameter updates across different ranks, maintaining stable learning dynamics.
 
-### 3.2 Gradient Dynamics
+### Gradient Dynamics
 
 Let $$\mathcal{L}$$ be the loss function. The gradient through the LoRA 
 parameters becomes:
@@ -130,9 +130,9 @@ low-rank factors, with the scaling term modulating update magnitudes.
 The rank $$r$$ therefore acts as a gradient multiplier – higher ranks 
 enable stronger gradient signals but increase parameter count.
 
-## IV. Practical Considerations and Variations
+## Practical Considerations and Variations
 
-### 4.1 Rank Selection Tradeoffs
+### Rank Selection Tradeoffs
 
 The choice of $$r$$ balances expressivity vs efficiency:
 - **Lower ranks (r=1-4):** Maximize parameter efficiency, suitable for 
@@ -150,7 +150,7 @@ $$
 Where $$c$$ is task-dependent. This suggests diminishing returns 
 beyond certain ranks.
 
-### 4.2 Architectural Variants
+### Architectural Variants
 
 1. **Bottleneck Adaptation:** Stack multiple low-rank layers 
    ($$W_0 + B_1A_1 + B_2A_2$$) for hierarchical adaptation
@@ -160,7 +160,7 @@ beyond certain ranks.
 4. **LoRA++:** Introduce learned scaling factors per layer instead 
    of fixed $$\alpha/r$$
 
-### 4.3 Compositional Adaptation
+### Compositional Adaptation
 
 For multi-task learning, LoRA enables parameter composition:
 
@@ -178,9 +178,9 @@ $$
 This facilitates efficient multi-task serving with $$\mathcal{O}(Kr)$$ 
 storage instead of $$\mathcal{O}(K)$$ full models.
 
-## V. Theoretical Implications
+## Theoretical Implications
 
-### 5.1 Implicit Regularization
+### Implicit Regularization
 
 The low-rank constraint acts as a strong regularizer, preventing 
 overfitting to small datasets. Consider the Rademacher complexity 
@@ -194,7 +194,7 @@ Compared to full fine-tuning's $$\mathcal{O}(\sqrt{mn/n})$$ complexity,
 LoRA's bound is significantly tighter, explaining its improved 
 generalization in low-data regimes.
 
-### 5.2 Information Bottleneck Perspective
+### Information Bottleneck Perspective
 
 Interpreting through the information bottleneck lens, LoRA 
 enforces:
