@@ -31,4 +31,6 @@ What I love is creating ✨*beautiful*✨ solutions — clean code, creative ide
 
 It would be very bold to claim I always succeed. Sometimes it’s a bit messy (who hasn’t been there?), but I’m always chasing that ideal.
 
-In my free time, I enjoy being in nature, hiking, or finding balance through meditation. A good work-life balance is key to productive thinking. Also, salmon nigiri might just be the peak of human existence 🍣.
+In my free time, I enjoy being in nature, hiking, running, cooking food, listening to music. My favorite bands are King Crimson, Clutch and Swans. I believe that good work-life balance and happiness is key to productive thinking.
+
+Also, salmon nigiri might just be the peak of human existence 🍣.
