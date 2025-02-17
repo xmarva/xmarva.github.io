@@ -26,7 +26,7 @@ The dorsolateral prefrontal cortex also activates during musical improvisation. 
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-02-13-ai-creativity/0.png" title="fMRI activation during creative tasks" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/posts/2025-02-16-creative-ai/0.png" title="fMRI activation during creative tasks" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -40,7 +40,7 @@ Blind individuals describe colors through analogies to sounds or textures (e.g.,
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-02-13-ai-creativity/1.png" title="Stable Diffusion-generated floral carpet" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="assets/img/posts/2025-02-16-creative-ai/1.png" title="Stable Diffusion-generated floral carpet" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
