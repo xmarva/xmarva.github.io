@@ -19,7 +19,7 @@ social: true # includes social icons at the bottom of the page
 Hey there, welcome to my website!
 
 I'm an 👩‍💻**ML Engineer & Researcher** working with \ 
-\
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; 💬 Natural Language Processing \
 &nbsp;&nbsp;&nbsp;&nbsp; 👀 Computer Vision \
 &nbsp;&nbsp;&nbsp;&nbsp; 🚀 Generative Models
