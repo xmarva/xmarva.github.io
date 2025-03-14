@@ -424,4 +424,59 @@
                 {% endif %}
                 
                 {% if categories != "" %}
-                &nbsp; &
+                &nbsp; &middot; &nbsp;
+                  {% for category in post.categories %}
+                  <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+            {% if post.thumbnail %}
+            <div class="post-thumbnail">
+              <img src="{{ post.thumbnail | relative_url }}" alt="{{ post.title | escape }}" />
+            </div>
+            {% endif %}
+          </div>
+        </li>
+        {% endunless %}
+      {% endfor %}
+    </ul>
+    <!-- Pagination controls -->
+    {% if page.pagination.enabled %}
+    <div class="pagination">
+      <ul class="pagination-links">
+        <li>
+          {% if paginator.previous_page %}
+          <a href="{{ paginator.previous_page_path | relative_url }}" class="previous-page">
+            <i class="fa-solid fa-chevron-left"></i> Previous
+          </a>
+          {% else %}
+          <span class="previous-page disabled">
+            <i class="fa-solid fa-chevron-left"></i> Previous
+          </span>
+          {% endif %}
+        </li>
+        <li>
+          <span class="page-number">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+        </li>
+        <li>
+          {% if paginator.next_page %}
+          <a href="{{ paginator.next_page_path | relative_url }}" class="next-page">
+            Next <i class="fa-solid fa-chevron-right"></i>
+          </a>
+          {% else %}
+          <span class="next-page disabled">
+            Next <i class="fa-solid fa-chevron-right"></i>
+          </span>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Add FontAwesome for icons -->
+  <script src="https://kit.fontawesome.com/your-code-here.js" crossorigin="anonymous"></script>
+</body>
+</html>
