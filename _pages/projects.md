@@ -6,60 +6,275 @@ description: Welcome to my project collection
 nav: true
 nav_order: 2
 display_categories: [work, personal]
-horizontal: false
 ---
 
-<!-- pages/projects.md -->
-<div class="projects">
-{% if site.enable_project_categories and page.display_categories %}
-  <!-- Display categorized projects -->
-  {% for category in page.display_categories %}
-  <a id="{{ category }}" href=".#{{ category }}">
-    <h2 class="category">{{ category }}</h2>
-  </a>
-  {% assign categorized_projects = site.projects | where: "category", category %}
-  {% assign sorted_projects = categorized_projects | sort: "importance" %}
-  <!-- Generate cards for each project -->
-  {% if page.horizontal %}
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2">
-    {% for project in sorted_projects %}
-      {% include projects_horizontal.liquid %}
-    {% endfor %}
+<div class="projects-wrapper">
+  <!-- Work Projects Section -->
+  <section id="work" class="project-section">
+    <h2 class="section-title">work</h2>
+    <div class="project-list">
+      {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
+      {% for project in work_projects %}
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-image">
+            {% if project.img %}
+            <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            {% else %}
+            <div class="no-image"></div>
+            {% endif %}
+          </div>
+          <div class="project-details">
+            <h3 class="project-title">{{ project.title }}</h3>
+            <div class="project-description">{{ project.description }}</div>
+            
+            <div class="project-meta">
+              {% if project.role %}
+              <div class="project-role">
+                <span class="meta-tag">{{ project.role }}</span>
+              </div>
+              {% endif %}
+              
+              {% if project.tech %}
+              <div class="project-tech">
+                {% for tech in project.tech %}
+                <span class="meta-tag tech-tag">{{ tech }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </div>
-  {% else %}
-  <div class="row row-cols-1 row-cols-md-2">
-    {% for project in sorted_projects %}
-      {% include projects.liquid %}
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% endfor %}
+  </section>
 
-{% else %}
-
-<!-- Display projects without categories -->
-
-{% assign sorted_projects = site.projects | sort: "importance" %}
-
-  <!-- Generate cards for each project -->
-
-{% if page.horizontal %}
-
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2">
-    {% for project in sorted_projects %}
-      {% include projects_horizontal.liquid %}
-    {% endfor %}
+  <!-- Personal Projects Section -->
+  <section id="personal" class="project-section">
+    <h2 class="section-title">personal</h2>
+    <div class="project-list">
+      {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
+      {% for project in personal_projects %}
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-image">
+            {% if project.img %}
+            <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            {% else %}
+            <div class="no-image"></div>
+            {% endif %}
+          </div>
+          <div class="project-details">
+            <h3 class="project-title">{{ project.title }}</h3>
+            <div class="project-description">{{ project.description }}</div>
+            
+            <div class="project-meta">
+              {% if project.role %}
+              <div class="project-role">
+                <span class="meta-tag">{{ project.role }}</span>
+              </div>
+              {% endif %}
+              
+              {% if project.tech %}
+              <div class="project-tech">
+                {% for tech in project.tech %}
+                <span class="meta-tag tech-tag">{{ tech }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+              
+              <div class="project-links">
+                {% if project.github %}
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+                {% endif %}
+                
+                {% if project.kaggle %}
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-kaggle"></i> Kaggle
+                </a>
+                {% endif %}
+                
+                {% if project.website %}
+                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-globe"></i> Website
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-  </div>
-  {% else %}
-  <div class="row row-cols-1 row-cols-md-3">
-    {% for project in sorted_projects %}
-      {% include projects.liquid %}
-    {% endfor %}
-  </div>
-  {% endif %}
-{% endif %}
+  </section>
 </div>
+
+<style>
+/* Base styling for projects page */
+.projects-wrapper {
+  font-family: var(--global-font-family);
+  color: var(--global-text-color);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Section styling */
+.project-section {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: var(--global-serif-font-family), Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--global-theme-color);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--global-divider-color);
+}
+
+/* Project card styling */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.project-card {
+  background-color: var(--global-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.project-content {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Project image */
+.project-image {
+  flex: 0 0 30%;
+  max-width: 280px;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.no-image {
+  background-color: var(--global-code-bg-color);
+  height: 100%;
+  min-height: 220px;
+}
+
+/* Project details */
+.project-details {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  font-family: var(--global-serif-font-family), Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--global-text-color);
+}
+
+.project-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: var(--global-text-color-light);
+}
+
+/* Project metadata (role, technologies, links) */
+.project-meta {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.project-role, .project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.meta-tag {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background-color: var(--global-theme-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tech-tag {
+  background-color: rgba(var(--global-theme-color-rgb), 0.15);
+  color: var(--global-theme-color);
+  border: 1px solid var(--global-theme-color);
+}
+
+/* Project links */
+.project-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--global-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.project-link:hover {
+  color: var(--global-theme-color);
+}
+
+.project-link i {
+  font-size: 1.1rem;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 900px) {
+  .project-content {
+    flex-direction: column;
+  }
+  
+  .project-image {
+    flex: none;
+    max-width: 100%;
+    height: 200px;
+  }
+  
+  .project-details {
+    padding: 1.5rem;
+  }
+}
+</style>
