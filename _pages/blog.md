@@ -15,6 +15,7 @@ pagination:
     before: 1 # The number of links before the current page
     after: 3 # The number of links after the current page
 ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +32,16 @@ pagination:
       color: var(--global-text-color);
       max-width: 100%;
       margin: 0 auto;
+    }
+
+    /* Section headings */
+    .section-heading {
+      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 2rem 0 1.5rem 0;
+      text-align: center;
+      color: var(--global-text-color);
     }
 
     /* Tags styling - matching project page */
@@ -215,7 +226,7 @@ pagination:
       align-items: center;
       font-size: 0.9rem;
       color: var(--global-text-color-light);
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
     }
 
@@ -259,13 +270,6 @@ pagination:
       margin-right: 0.25rem;
     }
 
-    /* Pagination */
-    .pagination {
-      margin-top: 3rem;
-      display: flex;
-      justify-content: center;
-    }
-
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .post-content {
@@ -293,27 +297,35 @@ pagination:
 </head>
 <body>
   <div class="blog-wrapper">
-    <!-- Tags and Categories section -->
-    {% if site.display_tags and site.display_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
+    <!-- Tags and Categories section - using only existing tags from posts -->
+    {% assign post_tags = '' | split: '' %}
+    {% for post in site.posts %}
+      {% for tag in post.tags %}
+        {% assign post_tags = post_tags | push: tag %}
+      {% endfor %}
+    {% endfor %}
+    {% assign uniq_tags = post_tags | uniq | sort %}
+    
+    {% if uniq_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
     <div class="tag-category-list">
       <ul class="p-0 m-0">
-        {% for tag in site.display_tags %}
+        {% for tag in uniq_tags %}
           <li>
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
+            <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | relative_url }}">
+              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}
             </a>
           </li>
           {% unless forloop.last %}
             <p>&bull;</p>
           {% endunless %}
         {% endfor %}
-        {% if site.display_categories.size > 0 and site.display_tags.size > 0 %}
+        {% if site.display_categories.size > 0 and uniq_tags.size > 0 %}
           <p>&bull;</p>
         {% endif %}
         {% for category in site.display_categories %}
           <li>
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
+            <a href="{{ category | strip | slugify | prepend: '/blog/category/' | relative_url }}">
+              <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}
             </a>
           </li>
           {% unless forloop.last %}
@@ -324,9 +336,10 @@ pagination:
     </div>
     {% endif %}
 
-    <!-- Featured Posts section - one per row -->
+    <!-- Featured Posts section with heading -->
     {% assign featured_posts = site.posts | where: "featured", "true" %}
     {% if featured_posts.size > 0 %}
+    <h2 class="section-heading">Pinned Posts</h2>
     <div class="featured-posts">
       {% for post in featured_posts %}
       <div class="featured-post-card">
@@ -363,8 +376,8 @@ pagination:
             {% if tags != "" %}
             &nbsp; &middot; &nbsp;
               {% for tag in post.tags %}
-              <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
-                <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+              <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}</a>
               {% endfor %}
             {% endif %}
             
@@ -372,8 +385,8 @@ pagination:
             {% if categories != "" %}
             &nbsp; &middot; &nbsp;
               {% for category in post.categories %}
-              <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-                <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+              <a href="{{ category | strip | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}</a>
               {% endfor %}
             {% endif %}
           </div>
@@ -384,7 +397,8 @@ pagination:
     <hr>
     {% endif %}
 
-    <!-- Regular Posts section - one per row -->
+    <!-- Regular Posts section with heading -->
+    <h2 class="section-heading">Latest Blogposts</h2>
     <ul class="post-list">
       {% if page.pagination.enabled %}
         {% assign postlist = paginator.posts %}
@@ -427,6 +441,7 @@ pagination:
                 &nbsp; &middot; &nbsp; {{ post.external_source }}
                 {% endif %}
               </div>
+              
               <div class="post-tags">
                 <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}">
                   <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
@@ -435,16 +450,16 @@ pagination:
                 {% if tags != "" %}
                 &nbsp; &middot; &nbsp;
                   {% for tag in post.tags %}
-                  <a href="{{ tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
-                    <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+                  <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}</a>
                   {% endfor %}
                 {% endif %}
                 
                 {% if categories != "" %}
                 &nbsp; &middot; &nbsp;
                   {% for category in post.categories %}
-                  <a href="{{ category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-                    <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+                  <a href="{{ category | strip | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}</a>
                   {% endfor %}
                 {% endif %}
               </div>
@@ -459,38 +474,6 @@ pagination:
         {% endunless %}
       {% endfor %}
     </ul>
-    <!-- Pagination controls -->
-    {% if page.pagination.enabled %}
-    <div class="pagination">
-      <ul class="pagination-links">
-        <li>
-          {% if paginator.previous_page %}
-          <a href="{{ paginator.previous_page_path | relative_url }}" class="previous-page">
-            <i class="fa-solid fa-chevron-left"></i> Previous
-          </a>
-          {% else %}
-          <span class="previous-page disabled">
-            <i class="fa-solid fa-chevron-left"></i> Previous
-          </span>
-          {% endif %}
-        </li>
-        <li>
-          <span class="page-number">{{ paginator.page }} of {{ paginator.total_pages }}</span>
-        </li>
-        <li>
-          {% if paginator.next_page %}
-          <a href="{{ paginator.next_page_path | relative_url }}" class="next-page">
-            Next <i class="fa-solid fa-chevron-right"></i>
-          </a>
-          {% else %}
-          <span class="next-page disabled">
-            Next <i class="fa-solid fa-chevron-right"></i>
-          </span>
-          {% endif %}
-        </li>
-      </ul>
-    </div>
-    {% endif %}
   </div>
 
   <!-- Add FontAwesome for icons -->
