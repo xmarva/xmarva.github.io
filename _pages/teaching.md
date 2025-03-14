@@ -172,10 +172,6 @@ nav_order: 6
   border-bottom: none;
 }
 
-.table tbody tr:hover {
-  background-color: var(--global-hover-color);
-}
-
 /* Column width adjustments */
 .table th:first-child,
 .table td:first-child {
@@ -190,11 +186,10 @@ nav_order: 6
 .materials-column {
   display: flex;
   gap: 1.5rem;
-  flex-wrap: wrap;
+  white-space: nowrap;
 }
 
 .materials-column a {
-  white-space: nowrap;
   color: var(--global-theme-color);
   text-decoration: none;
 }
