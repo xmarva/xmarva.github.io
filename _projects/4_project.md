@@ -8,6 +8,16 @@ category: work
 related_publications: false
 toc:
   sidebar: left
+
+role: Lead ML Engineer
+tech:
+  - Python
+  - PyTorch
+  - Stable Diffusion
+
+github: https://github.com/yourusername/project 
+kaggle: https://kaggle.com/datasets/yourproject 
+website: https://yourproject.com 
 ---
 
 <div class="row">

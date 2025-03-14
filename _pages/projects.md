@@ -11,7 +11,9 @@ display_categories: [work, personal]
 <div class="projects-wrapper">
   <!-- Work Projects Section -->
   <section id="work" class="project-section">
-    <h2 class="section-title">work</h2>
+    <a id="work" href=".#work">
+      <h2 class="section-title">work</h2>
+    </a>
     <div class="project-list">
       {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
       {% for project in work_projects %}
@@ -19,13 +21,19 @@ display_categories: [work, personal]
         <div class="project-content">
           <div class="project-image">
             {% if project.img %}
-            <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            <a href="{{ project.url | relative_url }}">
+              <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            </a>
             {% else %}
-            <div class="no-image"></div>
+            <a href="{{ project.url | relative_url }}">
+              <div class="no-image"></div>
+            </a>
             {% endif %}
           </div>
           <div class="project-details">
-            <h3 class="project-title">{{ project.title }}</h3>
+            <h3 class="project-title">
+              <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+            </h3>
             <div class="project-description">{{ project.description }}</div>
             
             <div class="project-meta">
@@ -52,7 +60,9 @@ display_categories: [work, personal]
 
   <!-- Personal Projects Section -->
   <section id="personal" class="project-section">
-    <h2 class="section-title">personal</h2>
+    <a id="personal" href=".#personal">
+      <h2 class="section-title">personal</h2>
+    </a>
     <div class="project-list">
       {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
       {% for project in personal_projects %}
@@ -60,13 +70,19 @@ display_categories: [work, personal]
         <div class="project-content">
           <div class="project-image">
             {% if project.img %}
-            <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            <a href="{{ project.url | relative_url }}">
+              <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+            </a>
             {% else %}
-            <div class="no-image"></div>
+            <a href="{{ project.url | relative_url }}">
+              <div class="no-image"></div>
+            </a>
             {% endif %}
           </div>
           <div class="project-details">
-            <h3 class="project-title">{{ project.title }}</h3>
+            <h3 class="project-title">
+              <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+            </h3>
             <div class="project-description">{{ project.description }}</div>
             
             <div class="project-meta">
@@ -113,9 +129,12 @@ display_categories: [work, personal]
 </div>
 
 <style>
+/* Import elegant fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
 /* Base styling for projects page */
 .projects-wrapper {
-  font-family: var(--global-font-family);
+  font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
   color: var(--global-text-color);
   max-width: 100%;
   margin: 0 auto;
@@ -127,13 +146,17 @@ display_categories: [work, personal]
 }
 
 .section-title {
-  font-family: var(--global-serif-font-family), Georgia, serif;
-  font-size: 2.2rem;
+  font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+  font-size: 2.4rem;
   font-weight: 600;
   color: var(--global-theme-color);
   margin-bottom: 2rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--global-divider-color);
+}
+
+a .section-title {
+  text-decoration: none;
 }
 
 /* Project card styling */
@@ -173,6 +196,11 @@ display_categories: [work, personal]
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.project-image:hover img {
+  transform: scale(1.05);
 }
 
 .no-image {
@@ -190,11 +218,21 @@ display_categories: [work, personal]
 }
 
 .project-title {
-  font-family: var(--global-serif-font-family), Georgia, serif;
-  font-size: 1.6rem;
+  font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+  font-size: 1.7rem;
   font-weight: 600;
   margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.project-title a {
   color: var(--global-text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project-title a:hover {
+  color: var(--global-theme-color);
 }
 
 .project-description {
@@ -216,6 +254,7 @@ display_categories: [work, personal]
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .meta-tag {
@@ -227,12 +266,19 @@ display_categories: [work, personal]
   background-color: var(--global-theme-color);
   color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.02em;
 }
 
 .tech-tag {
   background-color: rgba(var(--global-theme-color-rgb), 0.15);
   color: var(--global-theme-color);
   border: 1px solid var(--global-theme-color);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tech-tag:hover {
+  background-color: rgba(var(--global-theme-color-rgb), 0.25);
+  transform: translateY(-2px);
 }
 
 /* Project links */
@@ -250,11 +296,12 @@ display_categories: [work, personal]
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .project-link:hover {
   color: var(--global-theme-color);
+  transform: translateY(-2px);
 }
 
 .project-link i {
