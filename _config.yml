@@ -238,7 +238,6 @@ exclude:
   - _pages/about_einstein.md
   - _pages/publications.md
   - _pages/repositories.md
-  - _pages/teaching.md
   - _pages/profiles.md
   - _pages/dropdown.md
   - purgecss.config.js
