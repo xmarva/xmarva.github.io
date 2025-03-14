@@ -18,20 +18,20 @@ social: true # includes social icons at the bottom of the page
 
 Hey there, welcome to my website!
 
-I'm an 👩‍💻**AI Engineer & Researcher** working with **Language Processing** and **Computer Vision**.
-
-I’m studying **Cognitive Science** and am deeply interested in:\
+I'm an 👩‍💻**ML Engineer & Researcher** working with \ 
 \
-&nbsp;&nbsp;&nbsp;&nbsp;🤔 Philosophy of Mind \
-&nbsp;&nbsp;&nbsp;&nbsp;👩‍🔬 Neurobiology \
-&nbsp;&nbsp;&nbsp;&nbsp;🧠 Bayesian Brain
+&nbsp;&nbsp;&nbsp;&nbsp; 💬 Natural Language Processing \
+&nbsp;&nbsp;&nbsp;&nbsp; 👀 Computer Vision \
+&nbsp;&nbsp;&nbsp;&nbsp; 🚀 Generative Models
 
-I can train models to generalize your data and generate new ones to solve practical tasks. But what kind of AI engineer doesn’t dream of solving the mystery of consciousness and contributing to the creation of strong AI?
+I’m also interested in **Cognitive Science** and **Philosophy of Mind**.
 
 What I love is creating ✨*beautiful*✨ solutions — clean code, creative ideas, efficient models, and solid results.
 
 It would be very bold to claim I always succeed. Sometimes it’s a bit messy (who hasn’t been there?), but I’m always chasing that ideal.
 
-In my free time, I enjoy being in nature, hiking, running, cooking food, listening to music. My favorite bands are King Crimson, Clutch and Swans. I believe that good work-life balance and happiness is key to productive thinking.
+So, can develop and train models to generalize your data and generate new ones to solve practical tasks. But who in AI doesn't secretly hope to solve the problem of consciousness and play a part in creating strong AI?
+
+Outside of work I enjoy nature, hiking, staying active, cooking, learning languages, and exploring mindfulness through therapy. Good work-life balance and happiness is key to productive thinking.
 
 Also, salmon nigiri might just be the peak of human existence 🍣.
