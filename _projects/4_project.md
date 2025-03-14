@@ -1,7 +1,7 @@
 ---
 layout: page
 title: AI Fashion App
-description: Virtual Fitting Room based on Stable Diffusion and 3D ML.
+description: We explored two fundamentally different approaches to digital clothing try-on. Our mission was to investigate both image manipulation and 3D mesh-based solutions, each serving distinct use cases in the virtual fashion industry.
 img: assets/img/projects/4-ai-fashion-app/main_img.png
 importance: 1
 category: work
@@ -12,18 +12,18 @@ toc:
 role: Lead ML Engineer
 
 domains: 
+  - Computer Vision
   - GenAI
   - 3D
-  - Computer Vision
 
 tech:
   - Python
   - PyTorch
   - Stable Diffusion
+  - Human Pose Estimation
+  - 3D Shape Reconstruction
 
-github: https://github.com/yourusername/project 
-kaggle: https://kaggle.com/datasets/yourproject 
-website: https://yourproject.com 
+website: https://texelmoda.com
 ---
 
 <div class="row">
