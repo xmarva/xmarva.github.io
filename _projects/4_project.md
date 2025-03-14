@@ -1,7 +1,7 @@
 ---
 layout: page
 title: AI Fashion App
-description: 
+description: Virtual Fitting Room based on Stable Diffusion and 3D ML.
 img: assets/img/projects/4-ai-fashion-app/main_img.png
 importance: 1
 category: work
@@ -10,6 +10,12 @@ toc:
   sidebar: left
 
 role: Lead ML Engineer
+
+domains: 
+  - GenAI
+  - 3D
+  - Computer Vision
+
 tech:
   - Python
   - PyTorch

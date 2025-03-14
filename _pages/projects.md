@@ -31,22 +31,31 @@ display_categories: [work, personal]
             {% endif %}
           </div>
           <div class="project-details">
+            {% if project.domains %}
+            <div class="project-domains">
+              {% for domain in project.domains %}
+              <span class="domain-tag">{{ domain }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
             <h3 class="project-title">
               <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
             </h3>
+            
             <div class="project-description">{{ project.description }}</div>
             
             <div class="project-meta">
               {% if project.role %}
               <div class="project-role">
-                <span class="meta-tag">{{ project.role }}</span>
+                <span class="role-label">{{ project.role }}</span>
               </div>
               {% endif %}
               
               {% if project.tech %}
               <div class="project-tech">
                 {% for tech in project.tech %}
-                <span class="meta-tag tech-tag">{{ tech }}</span>
+                <span class="tech-tag">{{ tech }}</span>
                 {% endfor %}
               </div>
               {% endif %}
@@ -80,22 +89,31 @@ display_categories: [work, personal]
             {% endif %}
           </div>
           <div class="project-details">
+            {% if project.domains %}
+            <div class="project-domains">
+              {% for domain in project.domains %}
+              <span class="domain-tag">{{ domain }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
             <h3 class="project-title">
               <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
             </h3>
+            
             <div class="project-description">{{ project.description }}</div>
             
             <div class="project-meta">
               {% if project.role %}
               <div class="project-role">
-                <span class="meta-tag">{{ project.role }}</span>
+                <span class="role-label">{{ project.role }}</span>
               </div>
               {% endif %}
               
               {% if project.tech %}
               <div class="project-tech">
                 {% for tech in project.tech %}
-                <span class="meta-tag tech-tag">{{ tech }}</span>
+                <span class="tech-tag">{{ tech }}</span>
                 {% endfor %}
               </div>
               {% endif %}
@@ -171,42 +189,40 @@ a .section-title {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  height: 320px;  /* Fixed height for uniformity */
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
 .project-content {
   display: flex;
   flex-direction: row;
+  height: 100%;
 }
 
 /* Project image */
 .project-image {
-  flex: 0 0 30%;
-  max-width: 280px;
+  flex: 0 0 280px;
+  width: 280px;
+  height: 320px;
   overflow: hidden;
+  position: relative;
 }
 
 .project-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.3s ease;
-}
-
-.project-image:hover img {
-  transform: scale(1.05);
 }
 
 .no-image {
   background-color: var(--global-code-bg-color);
   height: 100%;
-  min-height: 220px;
 }
 
 /* Project details */
@@ -215,14 +231,40 @@ a .section-title {
   padding: 1.5rem 2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* Domain tags in top right corner */
+.project-domains {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  max-width: 40%;
+}
+
+.domain-tag {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--global-theme-color);
+  border: 1px solid var(--global-theme-color);
+  white-space: nowrap;
 }
 
 .project-title {
   font-family: 'Playfair Display', var(--global-serif-font-family), serif;
   font-size: 1.7rem;
   font-weight: 600;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.6rem 0; /* Reduced margin */
   letter-spacing: -0.02em;
+  padding-right: 6rem; /* Make space for domain tags */
 }
 
 .project-title a {
@@ -238,8 +280,12 @@ a .section-title {
 .project-description {
   font-size: 1rem;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--global-text-color-light);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 /* Project metadata (role, technologies, links) */
@@ -247,45 +293,45 @@ a .section-title {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .project-role, .project-tech {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
-.meta-tag {
-  display: inline-block;
-  padding: 0.35rem 0.8rem;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  background-color: var(--global-theme-color);
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.02em;
+.role-label {
+  font-weight: 600;
+  color: var(--global-theme-color);
+  font-size: 0.95rem;
 }
 
 .tech-tag {
-  background-color: rgba(var(--global-theme-color-rgb), 0.15);
-  color: var(--global-theme-color);
-  border: 1px solid var(--global-theme-color);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--global-text-color-light);
+  border: 1px solid var(--global-text-color-light);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .tech-tag:hover {
-  background-color: rgba(var(--global-theme-color-rgb), 0.25);
-  transform: translateY(-2px);
+  border-color: var(--global-theme-color);
+  color: var(--global-theme-color);
 }
 
 /* Project links */
 .project-links {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
   display: flex;
   gap: 1rem;
-  margin-top: 0.5rem;
 }
 
 .project-link {
@@ -296,12 +342,11 @@ a .section-title {
   text-decoration: none;
   font-weight: 500;
   font-size: 0.9rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .project-link:hover {
   color: var(--global-theme-color);
-  transform: translateY(-2px);
 }
 
 .project-link i {
@@ -310,18 +355,45 @@ a .section-title {
 
 /* Media queries for responsiveness */
 @media (max-width: 900px) {
+  .project-card {
+    height: auto;
+    min-height: 500px;
+  }
+  
   .project-content {
     flex-direction: column;
   }
   
   .project-image {
     flex: none;
-    max-width: 100%;
-    height: 200px;
+    width: 100%;
+    height: 220px;
   }
   
   .project-details {
     padding: 1.5rem;
+    min-height: 280px;
+  }
+  
+  .project-domains {
+    position: relative;
+    top: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    max-width: 100%;
+    margin-bottom: 0.8rem;
+  }
+  
+  .project-title {
+    padding-right: 0;
+  }
+  
+  .project-links {
+    position: relative;
+    bottom: 0;
+    right: 0;
+    margin-top: 1rem;
   }
 }
 </style>
