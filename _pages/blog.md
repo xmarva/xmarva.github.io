@@ -40,51 +40,8 @@ pagination:
       font-size: 2rem;
       font-weight: 600;
       margin: 2rem 0 1.5rem 0;
-      text-align: center;
-      color: var(--global-text-color);
-    }
-
-    /* Tags styling - matching project page */
-    .tag-category-list {
-      display: flex;
-      justify-content: center;
-      margin: 2rem 0;
-    }
-
-    .tag-category-list ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      list-style: none;
-    }
-
-    .tag-category-list li {
-      display: inline-block;
-    }
-
-    .tag-category-list a {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
+      text-align: left;
       color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
-
-    .tag-category-list a:hover {
-      transform: translateY(-2px);
-    }
-
-    .tag-category-list p {
-      margin: 0 0.3rem;
-      display: flex;
-      align-items: center;
-      color: var(--global-text-color-light);
     }
 
     /* Featured posts styling */
@@ -226,7 +183,7 @@ pagination:
       align-items: center;
       font-size: 0.9rem;
       color: var(--global-text-color-light);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
@@ -244,7 +201,7 @@ pagination:
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin: 0;
+      margin: 1rem 0 0 0;
       align-items: center;
     }
 
@@ -288,54 +245,11 @@ pagination:
         order: -1;
         margin-bottom: 1rem;
       }
-
-      .tag-category-list ul {
-        justify-content: center;
-      }
     }
   </style>
 </head>
 <body>
   <div class="blog-wrapper">
-    <!-- Tags and Categories section - using only existing tags from posts -->
-    {% assign post_tags = '' | split: '' %}
-    {% for post in site.posts %}
-      {% for tag in post.tags %}
-        {% assign post_tags = post_tags | push: tag %}
-      {% endfor %}
-    {% endfor %}
-    {% assign uniq_tags = post_tags | uniq | sort %}
-    
-    {% if uniq_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
-    <div class="tag-category-list">
-      <ul class="p-0 m-0">
-        {% for tag in uniq_tags %}
-          <li>
-            <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | relative_url }}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}
-            </a>
-          </li>
-          {% unless forloop.last %}
-            <p>&bull;</p>
-          {% endunless %}
-        {% endfor %}
-        {% if site.display_categories.size > 0 and uniq_tags.size > 0 %}
-          <p>&bull;</p>
-        {% endif %}
-        {% for category in site.display_categories %}
-          <li>
-            <a href="{{ category | strip | slugify | prepend: '/blog/category/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}
-            </a>
-          </li>
-          {% unless forloop.last %}
-            <p>&bull;</p>
-          {% endunless %}
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-
     <!-- Featured Posts section with heading -->
     {% assign featured_posts = site.posts | where: "featured", "true" %}
     {% if featured_posts.size > 0 %}
@@ -376,8 +290,9 @@ pagination:
             {% if tags != "" %}
             &nbsp; &middot; &nbsp;
               {% for tag in post.tags %}
-              <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
-                <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}</a>
+              {% assign clean_tag = tag | strip %}
+              <a href="{{ clean_tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-hashtag fa-sm"></i> {{ clean_tag }}</a>
               {% endfor %}
             {% endif %}
             
@@ -385,8 +300,9 @@ pagination:
             {% if categories != "" %}
             &nbsp; &middot; &nbsp;
               {% for category in post.categories %}
-              <a href="{{ category | strip | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-                <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}</a>
+              {% assign clean_category = category | strip %}
+              <a href="{{ clean_category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-tag fa-sm"></i> {{ clean_category }}</a>
               {% endfor %}
             {% endif %}
           </div>
@@ -450,16 +366,18 @@ pagination:
                 {% if tags != "" %}
                 &nbsp; &middot; &nbsp;
                   {% for tag in post.tags %}
-                  <a href="{{ tag | strip | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
-                    <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag | strip }}</a>
+                  {% assign clean_tag = tag | strip %}
+                  <a href="{{ clean_tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-hashtag fa-sm"></i> {{ clean_tag }}</a>
                   {% endfor %}
                 {% endif %}
                 
                 {% if categories != "" %}
                 &nbsp; &middot; &nbsp;
                   {% for category in post.categories %}
-                  <a href="{{ category | strip | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
-                    <i class="fa-solid fa-tag fa-sm"></i> {{ category | strip }}</a>
+                  {% assign clean_category = category | strip %}
+                  <a href="{{ clean_category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-tag fa-sm"></i> {{ clean_category }}</a>
                   {% endfor %}
                 {% endif %}
               </div>
