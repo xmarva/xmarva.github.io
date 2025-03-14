@@ -1,13 +1,27 @@
 ---
 layout: page
 title: Medical Asssistant
-description: 
+description: We developed a universal medical assistant that stores up-to-date information from scientific medical sources and assists in clinical decision-making.
 img: assets/img/projects/1_medical_assistant/main_img.png
 importance: 5
 category: work
 related_publications: false
 toc:
   sidebar: left
+
+role: Data Scientist
+
+domains: 
+  - NLP
+  - NeuroSymbolic AI
+
+tech:
+  - Data Pipelines
+  - NER
+  - Graph Databases
+  - LM and LLM
+
+website: http://www.meanotek.io
 ---
 
 <div class="row">

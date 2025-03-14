@@ -9,17 +9,16 @@ related_publications: false
 toc:
   sidebar: left
 
-role: Lead ML Engineer
+role: Computer Vision Engineer
 
 domains: 
   - Computer Vision
-  - Detection
-  - Segmentation
 
 tech:
   - SAM
   - Mask-RCNN
   - ResNet
+  - UnrealEngine
 
 website: https://getfloorplan.com
 ---

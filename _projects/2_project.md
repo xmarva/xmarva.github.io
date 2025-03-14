@@ -1,13 +1,25 @@
 ---
 layout: page
 title: Cashierless Store
-description: 
+description: Creating a seamless and secure environment where customers could browse, select products, and leave without traditional checkout processes.
 img: assets/img/projects/2_cachierless_store/main_img.png
 importance: 3
 category: work
 related_publications: false
 toc:
   sidebar: left
+
+role: ML Engineer
+
+domains: 
+  - Computer Vision
+
+tech:
+  - OpenCV
+  - ResNet
+  - MultiCamera Object Tracking
+
+website: https://digital.tatarstan.ru
 ---
 
 <div class="row">
