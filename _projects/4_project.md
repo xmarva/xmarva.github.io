@@ -17,8 +17,6 @@ domains:
   - 3D
 
 tech:
-  - Python
-  - PyTorch
   - Stable Diffusion
   - Human Pose Estimation
   - 3D Shape Reconstruction

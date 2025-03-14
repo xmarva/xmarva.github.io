@@ -1,13 +1,27 @@
 ---
 layout: page
 title: 3D Florplan Reconstruction 
-description: 
+description: Our mission was to transform raw architectural blueprints into realistic and accurate 3D representations that could be explored in any browser—or even with VR headsets.
 img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
 importance: 2
 category: work
 related_publications: false
 toc:
   sidebar: left
+
+role: Lead ML Engineer
+
+domains: 
+  - Computer Vision
+  - Detection
+  - Segmentation
+
+tech:
+  - SAM
+  - Mask-RCNN
+  - ResNet
+
+website: https://getfloorplan.com
 ---
 
 <div class="row">
