@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Pandemic Vision
+title: CubiCasa Object Detection
 description: 
 img: 
-importance: 7
+importance: 6
 category: personal
 related_publications: false
 toc:
@@ -14,10 +14,10 @@ domains:
 
 tech:
   - Detection
-  - Tracking
-  - Dashboard
+  - Classification
+  - Segmentation
 
-github: https://github.com/xmarva/pandemic-vision
+github: https://github.com/xmarva/floorplan-detection
 ---
 
 Coming soon.
