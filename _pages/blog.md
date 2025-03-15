@@ -15,7 +15,6 @@ pagination:
     before: 1 # The number of links before the current page
     after: 3 # The number of links after the current page
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,14 +33,14 @@ pagination:
       margin: 0 auto;
     }
 
-    /* Section headings */
+    /* Section headings - changed to black */
     .section-heading {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
       font-size: 2rem;
       font-weight: 600;
       margin: 2rem 0 1.5rem 0;
       text-align: left;
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
     }
 
     /* Common card styling for both featured and regular posts */
@@ -78,7 +77,7 @@ pagination:
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
       font-size: 1.2rem;
     }
 
@@ -98,7 +97,7 @@ pagination:
     }
 
     .featured-post-title a:hover {
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
     }
 
     .featured-post-description {
@@ -161,7 +160,7 @@ pagination:
     }
 
     .post-title a:hover {
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
     }
 
     .post-description {
@@ -191,10 +190,10 @@ pagination:
 
     .post-meta a:hover,
     .featured-post-content .post-meta a:hover {
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
     }
 
-    /* Unified tag styling for both post types */
+    /* Unified tag styling for both post types - changed to black */
     .post-tags,
     .featured-post-content .post-tags {
       display: flex;
@@ -213,8 +212,8 @@ pagination:
       font-size: 0.8rem;
       font-weight: 500;
       background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
+      color: #000000; /* Changed to black */
+      border: 1px solid #000000; /* Changed to black */
       text-decoration: none;
       transition: transform 0.2s ease;
     }
@@ -227,7 +226,7 @@ pagination:
     .post-tags i,
     .featured-post-content .post-tags i {
       margin-right: 0.25rem;
-      color: var(--global-theme-color);
+      color: #000000; /* Changed to black */
     }
 
     /* Responsive adjustments */
