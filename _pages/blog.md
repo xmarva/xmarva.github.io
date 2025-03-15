@@ -1,451 +1,408 @@
 ---
-layout: page
-title: portfolio
-permalink: /portfolio/
-description: Welcome to my project collection
+layout: default
+permalink: /blog/
+title: blog
 nav: true
-nav_order: 2
-display_categories: [work, personal]
+nav_order: 1
+pagination:
+  enabled: true
+  collection: posts
+  permalink: /page/:num/
+  per_page: 5
+  sort_field: date
+  sort_reverse: true
+  trail:
+    before: 1 # The number of links before the current page
+    after: 3 # The number of links after the current page
 ---
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
+  <title>Blog</title>
   <style>
     /* Import elegant fonts */
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
-    /* Base styling for projects page */
-    .projects-wrapper {
+    /* Base styling */
+    .blog-wrapper {
       font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
       color: var(--global-text-color);
       max-width: 100%;
       margin: 0 auto;
     }
 
-    /* Section styling */
-    .project-section {
-      margin-bottom: 4rem;
-    }
-
-    .section-title {
+    /* Section headings - changed to black */
+    .section-heading {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 600;
-      color: var(--global-theme-color);
-      margin-bottom: 2rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--global-divider-color);
+      margin: 2rem 0 1.5rem 0;
+      text-align: left;
+      color: #000000; /* Changed to black */
     }
 
-    a .section-title {
-      text-decoration: none;
-    }
-
-    /* Project card styling */
-    .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
-
-    .project-card {
+    /* Common card styling for both featured and regular posts */
+    .featured-post-card,
+    .post-card {
       background-color: var(--global-bg-color);
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.3s ease;
-      height: 320px;  /* Fixed height for uniformity */
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--global-divider-color);
+      height: 220px; /* Fixed height for all cards */
     }
 
-    .project-card:hover {
+    .featured-post-card:hover,
+    .post-card:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     }
 
-    .project-content {
-      display: flex;
-      flex-direction: row;
-      height: 100%;
+    /* Featured posts styling - keeping structure but aligning visuals with regular posts */
+    .featured-posts {
+      margin-bottom: 3rem;
     }
 
-    /* Project image */
-    .project-image {
-      flex: 0 0 280px;
-      width: 280px;
-      height: 320px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .project-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    .no-image {
-      background-color: var(--global-code-bg-color);
-      height: 100%;
-    }
-
-    /* Project details */
-    .project-details {
-      flex: 1;
+    .featured-post-content {
       padding: 1.5rem 2rem;
-      display: flex;
-      flex-direction: column;
       position: relative;
+      height: 100%;
+      box-sizing: border-box;
     }
 
-    /* Domain tags in top right corner */
-    .project-domains {
+    .featured-pin {
       position: absolute;
-      top: 1rem;
+      top: 1.5rem;
       right: 1.5rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.4rem;
-      max-width: 70%;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      color: #000000; /* Changed to black */
+      font-size: 1.2rem;
     }
 
-    .domain-tag {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      white-space: nowrap;
-    }
-
-    .project-title {
+    .featured-post-title {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 1.7rem;
+      font-size: 1.5rem;
       font-weight: 600;
-      margin: 0 0 0.4rem 0; /* Reduced top margin */
+      margin: 0 0 0.6rem 0;
       letter-spacing: -0.02em;
-      padding-right: 6rem; /* Make space for domain tags */
+      padding-right: 2rem;
     }
 
-    .project-title a {
+    .featured-post-title a {
       color: var(--global-text-color);
       text-decoration: none;
       transition: color 0.2s ease;
     }
 
-    .project-title a:hover {
-      color: var(--global-theme-color);
+    .featured-post-title a:hover {
+      color: #000000; /* Changed to black */
     }
 
-    /* Role styling - moved under title */
-    .project-role {
-      margin-bottom: 0.8rem;
-    }
-
-    .role-label {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      white-space: nowrap;
-    }
-
-    .project-description {
+    .featured-post-description {
       font-size: 1rem;
       line-height: 1.6;
       margin-bottom: 1rem;
       color: var(--global-text-color-light);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
     }
 
-    /* Read More button */
-    .read-more-btn {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      background-color: var(--global-theme-color);
-      color: var(--global-bg-color);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      margin-bottom: 1rem;
-      align-self: flex-start;
-    }
-
-    .read-more-btn:hover {
-      transform: scale(1.05);
-    }
-
-    /* Project metadata (technologies, links) */
-    .project-meta {
-      margin-top: auto;
+    /* Regular posts styling */
+    .post-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 1.5rem;
     }
 
-    .project-tech {
+    .post-content {
+      padding: 1.5rem 2rem;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .post-text {
+      flex: 1;
+      padding-right: 1rem;
+    }
+
+    .post-thumbnail {
+      flex: 0 0 220px;
+      height: 160px;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .post-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 0.6rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    .post-title a {
+      color: var(--global-text-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .post-title a:hover {
+      color: #000000; /* Changed to black */
+    }
+
+    .post-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: var(--global-text-color-light);
+    }
+
+    /* Unified meta styling for both post types */
+    .post-meta,
+    .featured-post-content .post-meta {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--global-text-color-light);
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .post-meta a,
+    .featured-post-content .post-meta a {
+      color: var(--global-text-color-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .post-meta a:hover,
+    .featured-post-content .post-meta a:hover {
+      color: #000000; /* Changed to black */
+    }
+
+    /* Unified tag styling for both post types - changed to black */
+    .post-tags,
+    .featured-post-content .post-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      margin: 1rem 0 0 0;
+      align-items: center;
     }
 
-    .tech-tag {
-      display: inline-block;
+    .post-tags a,
+    .featured-post-content .post-tags a {
+      display: inline-flex;
+      align-items: center;
       padding: 0.25rem 0.7rem;
       border-radius: 20px;
       font-size: 0.8rem;
       font-weight: 500;
       background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
+      color: #000000; /* Changed to black */
+      border: 1px solid #000000; /* Changed to black */
+      text-decoration: none;
       transition: transform 0.2s ease;
     }
 
-    .tech-tag:hover {
+    .post-tags a:hover,
+    .featured-post-content .post-tags a:hover {
       transform: translateY(-2px);
     }
 
-    /* Project links */
-    .project-links {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      display: flex;
-      gap: 1rem;
+    .post-tags i,
+    .featured-post-content .post-tags i {
+      margin-right: 0.25rem;
+      color: #000000; /* Changed to black */
     }
 
-    .project-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--global-text-color);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    .project-link:hover {
-      color: var(--global-theme-color);
-    }
-
-    .project-link i {
-      font-size: 1.1rem;
-    }
-
-    /* Media queries for responsiveness */
-    @media (max-width: 900px) {
-      .project-card {
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .featured-post-card,
+      .post-card {
         height: auto;
-        min-height: 500px;
+        min-height: 220px;
       }
       
-      .project-content {
+      .post-content {
         flex-direction: column;
       }
-      
-      .project-image {
+
+      .post-text {
+        padding-right: 0;
+        margin-bottom: 1rem;
+      }
+
+      .post-thumbnail {
         flex: none;
         width: 100%;
-        height: 220px;
-      }
-      
-      .project-details {
-        padding: 1.5rem;
-        min-height: 280px;
-      }
-      
-      .project-domains {
-        position: relative;
-        top: 0;
-        right: 0;
-        flex-direction: row;
-        justify-content: flex-start;
-        max-width: 100%;
-        margin-bottom: 0.8rem;
-      }
-      
-      .project-title {
-        padding-right: 0;
-        margin-top: 0.5rem;
-      }
-      
-      .project-links {
-        position: relative;
-        bottom: 0;
-        right: 0;
-        margin-top: 1rem;
+        height: 180px;
+        order: -1;
+        margin-bottom: 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="projects-wrapper">
-    <!-- Work projects section with updated heading -->
-    <section id="work" class="project-section">
-      <a id="work" href=".#work">
-        <h2 class="section-title">what I worked on</h2>
-      </a>
-      <div class="project-list">
-        {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
-        {% for project in work_projects %}
-        <div class="project-card">
-          <div class="project-content">
-            <div class="project-image">
-              {% if project.img %}
-              <a href="{{ project.url | relative_url }}">
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
-              </a>
-              {% else %}
-              <a href="{{ project.url | relative_url }}">
-                <div class="no-image"></div>
-              </a>
-              {% endif %}
-            </div>
-            <div class="project-details">
-              {% if project.domains %}
-              <div class="project-domains">
-                {% for domain in project.domains %}
-                <span class="domain-tag">{{ domain }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-              
-              <h3 class="project-title">
-                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
-              </h3>
-              
-              {% if project.role %}
-              <div class="project-role">
-                <span class="role-label">{{ project.role }}</span>
-              </div>
-              {% endif %}
-              
-              <div class="project-description">{{ project.description }}</div>
-              
-              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
-              
-              <div class="project-meta">
-                {% if project.tech %}
-                <div class="project-tech">
-                  {% for tech in project.tech %}
-                  <span class="tech-tag">{{ tech }}</span>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
-              
-              <div class="project-links">
-                {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i> GitHub
-                </a>
-                {% endif %}
-                
-                {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i> Kaggle
-                </a>
-                {% endif %}
-                
-                {% if project.website %}
-                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-globe"></i> Website
-                </a>
-                {% endif %}
-              </div>
-            </div>
+  <div class="blog-wrapper">
+    <!-- Featured Posts section with heading -->
+    {% assign featured_posts = site.posts | where: "featured", "true" %}
+    {% if featured_posts.size > 0 %}
+    <h2 class="section-heading">Pinned Posts</h2>
+    <div class="featured-posts">
+      {% for post in featured_posts %}
+      <div class="featured-post-card">
+        <div class="featured-post-content">
+          <div class="featured-pin">
+            <i class="fa-solid fa-thumbtack"></i>
+          </div>
+          <h3 class="featured-post-title">
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </h3>
+          <p class="featured-post-description">{{ post.description }}</p>
+          
+          {% if post.external_source == blank %}
+            {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+          {% else %}
+            {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+          {% endif %}
+          {% assign year = post.date | date: "%Y" %}
+          
+          <div class="post-meta">
+            {{ read_time }} min read &nbsp; &middot; &nbsp;
+            {{ post.date | date: '%B %d, %Y' }}
+            {% if post.external_source %}
+            &nbsp; &middot; &nbsp; {{ post.external_source }}
+            {% endif %}
+          </div>
+          
+          <div class="post-tags">
+            <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}">
+              <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
+            </a>
+            
+            {% assign tags = post.tags | join: "" %}
+            {% if tags != "" %}
+            &nbsp; &middot; &nbsp;
+              {% for tag in post.tags %}
+              {% assign clean_tag = tag | strip %}
+              <a href="{{ clean_tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-hashtag fa-sm"></i> {{ clean_tag }}</a>
+              {% endfor %}
+            {% endif %}
+            
+            {% assign categories = post.categories | join: "" %}
+            {% if categories != "" %}
+            &nbsp; &middot; &nbsp;
+              {% for category in post.categories %}
+              {% assign clean_category = category | strip %}
+              <a href="{{ clean_category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                <i class="fa-solid fa-tag fa-sm"></i> {{ clean_category }}</a>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
-        {% endfor %}
       </div>
-    </section>
+      {% endfor %}
+    </div>
+    <hr>
+    {% endif %}
 
-    <!-- Personal projects section -->
-    <section id="personal" class="project-section">
-      <a id="personal" href=".#personal">
-        <h2 class="section-title">short or personal projects</h2>
-      </a>
-      <div class="project-list">
-        {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
-        {% for project in personal_projects %}
-        <div class="project-card">
-          <div class="project-content">
-            <div class="project-image">
-              {% if project.img %}
-              <a href="{{ project.url | relative_url }}">
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
-              </a>
-              {% else %}
-              <a href="{{ project.url | relative_url }}">
-                <div class="no-image"></div>
-              </a>
-              {% endif %}
-            </div>
-            <div class="project-details">
-              {% if project.domains %}
-              <div class="project-domains">
-                {% for domain in project.domains %}
-                <span class="domain-tag">{{ domain }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-              
-              <h3 class="project-title">
-                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+    <!-- Regular Posts section with heading -->
+    <h2 class="section-heading">Latest Blogposts</h2>
+    <ul class="post-list">
+      {% if page.pagination.enabled %}
+        {% assign postlist = paginator.posts %}
+      {% else %}
+        {% assign postlist = site.posts %}
+      {% endif %}
+
+      {% for post in postlist %}
+        {% unless post.featured %}
+        
+        {% if post.external_source == blank %}
+          {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+        {% else %}
+          {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+        {% endif %}
+        {% assign year = post.date | date: "%Y" %}
+        {% assign tags = post.tags | join: "" %}
+        {% assign categories = post.categories | join: "" %}
+        
+        <li class="post-card">
+          <div class="post-content">
+            <div class="post-text">
+              <h3 class="post-title">
+                {% if post.redirect == blank %}
+                  <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                {% elsif post.redirect contains '://' %}
+                  <a href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
+                  <svg width="1rem" height="1rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                {% else %}
+                  <a href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
+                {% endif %}
               </h3>
-              
-              <div class="project-description">{{ project.description }}</div>
-              
-              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
-              
-              <div class="project-meta">
-                {% if project.tech %}
-                <div class="project-tech">
-                  {% for tech in project.tech %}
-                  <span class="tech-tag">{{ tech }}</span>
-                  {% endfor %}
-                </div>
+              <p class="post-description">{{ post.description }}</p>
+              <div class="post-meta">
+                {{ read_time }} min read &nbsp; &middot; &nbsp;
+                {{ post.date | date: '%B %d, %Y' }}
+                {% if post.external_source %}
+                &nbsp; &middot; &nbsp; {{ post.external_source }}
                 {% endif %}
               </div>
               
-              <div class="project-links">
-                {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i> GitHub
+              <div class="post-tags">
+                <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}">
+                  <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
                 </a>
+                
+                {% if tags != "" %}
+                &nbsp; &middot; &nbsp;
+                  {% for tag in post.tags %}
+                  {% assign clean_tag = tag | strip %}
+                  <a href="{{ clean_tag | slugify | prepend: '/blog/tag/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-hashtag fa-sm"></i> {{ clean_tag }}</a>
+                  {% endfor %}
                 {% endif %}
                 
-                {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i> Kaggle
-                </a>
+                {% if categories != "" %}
+                &nbsp; &middot; &nbsp;
+                  {% for category in post.categories %}
+                  {% assign clean_category = category | strip %}
+                  <a href="{{ clean_category | slugify | prepend: '/blog/category/' | prepend: site.baseurl}}">
+                    <i class="fa-solid fa-tag fa-sm"></i> {{ clean_category }}</a>
+                  {% endfor %}
                 {% endif %}
               </div>
             </div>
+            {% if post.thumbnail %}
+            <div class="post-thumbnail">
+              <img src="{{ post.thumbnail | relative_url }}" alt="{{ post.title | escape }}" />
+            </div>
+            {% endif %}
           </div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
+        </li>
+        {% endunless %}
+      {% endfor %}
+    </ul>
   </div>
+
+  <!-- Add FontAwesome for icons -->
+  <script src="https://kit.fontawesome.com/your-code-here.js" crossorigin="anonymous"></script>
 </body>
 </html>

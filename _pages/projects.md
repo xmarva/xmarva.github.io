@@ -184,13 +184,13 @@ display_categories: [work, personal]
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
       margin-bottom: 1rem;
       align-self: flex-start;
     }
 
     .read-more-btn:hover {
-      background-color: var(--global-hover-color, #0056b3);
+      transform: scale(1.05);
     }
 
     /* Project metadata (technologies, links) */
@@ -299,10 +299,10 @@ display_categories: [work, personal]
 </head>
 <body>
   <div class="projects-wrapper">
-    <!-- Example of updated project card structure -->
+    <!-- Work projects section with updated heading -->
     <section id="work" class="project-section">
       <a id="work" href=".#work">
-        <h2 class="section-title">work</h2>
+        <h2 class="section-title">what I worked on</h2>
       </a>
       <div class="project-list">
         {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
@@ -369,6 +369,74 @@ display_categories: [work, personal]
                 {% if project.website %}
                 <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
                   <i class="fas fa-globe"></i> Website
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Personal projects section -->
+    <section id="personal" class="project-section">
+      <a id="personal" href=".#personal">
+        <h2 class="section-title">short or personal projects</h2>
+      </a>
+      <div class="project-list">
+        {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
+        {% for project in personal_projects %}
+        <div class="project-card">
+          <div class="project-content">
+            <div class="project-image">
+              {% if project.img %}
+              <a href="{{ project.url | relative_url }}">
+                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+              </a>
+              {% else %}
+              <a href="{{ project.url | relative_url }}">
+                <div class="no-image"></div>
+              </a>
+              {% endif %}
+            </div>
+            <div class="project-details">
+              {% if project.domains %}
+              <div class="project-domains">
+                {% for domain in project.domains %}
+                <span class="domain-tag">{{ domain }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+              
+              <h3 class="project-title">
+                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+              </h3>
+              
+              <div class="project-description">{{ project.description }}</div>
+              
+              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
+              
+              <div class="project-meta">
+                {% if project.tech %}
+                <div class="project-tech">
+                  {% for tech in project.tech %}
+                  <span class="tech-tag">{{ tech }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              
+              <div class="project-links">
+                {% if project.github %}
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+                {% endif %}
+                
+                {% if project.kaggle %}
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-kaggle"></i> Kaggle
                 </a>
                 {% endif %}
               </div>
