@@ -11,9 +11,9 @@ nav_order: 6
   <div class="course-card">
     <h2>Transformer Architectures</h2>
     <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub Repository</a></p>
-    <p class="course-description">{{ To deeply understand transformer architectures through practice—from implementing one from scratch to adapting pre-trained models (BERT, GPT). Why? Because transformers power nearly everything in modern ML, and the best way to learn is to get your hands dirty. }}</p>
+    <p class="course-description">To deeply understand transformer architectures through practice—from implementing one from scratch to adapting pre-trained models (BERT, GPT). Why? Because transformers power nearly everything in modern ML, and the best way to learn is to get your hands dirty.</p>
 <div class="course-section">
-  <h3>Part 1: {{ Basic Components from Prototyping to Production }}</h3>
+  <h3>Part 1: Basic Components from Prototyping to Production</h3>
   <table class="table">
     <thead>
       <tr>
@@ -23,24 +23,24 @@ nav_order: 6
     </thead>
     <tbody>
       <tr>
-        <td>{{ Tokenization: BPE, HuggingFace Tokenizers—learn how text becomes numbers. }}</td>
+        <td>Tokenization: BPE, HuggingFace Tokenizers—learn how text becomes numbers.</td>
         <td class="materials-column">
-          <a href="{{ lecture_1_1_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_1_1_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
       <tr>
-        <td>{{ Transformer Architecture: A clean-code implementation (no import transformers allowed). }}</td>
+        <td>Transformer Architecture: A clean-code implementation (no import transformers allowed).</td>
         <td class="materials-column">
-          <a href="{{ lecture_1_2_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_1_2_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
       <tr>
-        <td>{{ Transformer Training: Train a model on a simple translation task }}</td>
+        <td>Transformer Training: Train a model on a simple translation task</td>
         <td class="materials-column">
-          <a href="{{ lecture_1_3_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_1_3_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
     </tbody>
@@ -48,7 +48,7 @@ nav_order: 6
 </div>
 
 <div class="course-section">
-  <h3>Part 2: {{ Architecture Enhancements and Pretrained Models }}</h3>
+  <h3>Part 2: Architecture Enhancements and Pretrained Models</h3>
   <table class="table">
     <thead>
       <tr>
@@ -58,17 +58,17 @@ nav_order: 6
     </thead>
     <tbody>
       <tr>
-        <td>{{ lecture_2_1 }}</td>
+        <td>BERT: Bidirectional Encoder Representations from Transformers</td>
         <td class="materials-column">
-          <a href="{{ lecture_2_1_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_2_1_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
       <tr>
-        <td>{{ lecture_2_2 }}</td>
+        <td>GPT: Generative Pre-trained Transformers</td>
         <td class="materials-column">
-          <a href="{{ lecture_2_2_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_2_2_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
     </tbody>
@@ -76,7 +76,7 @@ nav_order: 6
 </div>
 
 <div class="course-section">
-  <h3>Part 3: {{ Multimodality and Optimization }}</h3>
+  <h3>Part 3: Multimodality and Optimization</h3>
   <table class="table">
     <thead>
       <tr>
@@ -86,17 +86,17 @@ nav_order: 6
     </thead>
     <tbody>
       <tr>
-        <td>{{ lecture_3_1 }}</td>
+        <td>Vision Transformers and Multimodal Models</td>
         <td class="materials-column">
-          <a href="{{ lecture_3_1_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_3_1_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
       <tr>
-        <td>{{ lecture_3_2 }}</td>
+        <td>Optimization and Efficiency: PEFT, LoRA, Quantization</td>
         <td class="materials-column">
-          <a href="{{ lecture_3_2_materials }}"><i class="fas fa-book"></i> Notes</a>
-          <a href="{{ lecture_3_2_notebook }}"><i class="fas fa-code"></i> Notebook</a>
+          <a href="#"><i class="fas fa-book"></i> Notes</a>
+          <a href="#"><i class="fas fa-code"></i> Notebook</a>
         </td>
       </tr>
     </tbody>
