@@ -44,25 +44,26 @@ pagination:
       color: var(--global-theme-color);
     }
 
-    /* Featured posts styling */
-    .featured-posts {
-      margin-bottom: 3rem;
-    }
-
-    .featured-post-card {
+    /* Common card styling for both featured and regular posts */
+    .featured-post-card,
+    .post-card {
       background-color: var(--global-bg-color);
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.3s ease;
       margin-bottom: 1.5rem;
-      border: 1px solid rgba(var(--global-theme-color-rgb), 0.2);
-      position: relative;
-      background-color: rgba(var(--global-theme-color-rgb), 0.05);
+      border: 1px solid var(--global-divider-color);
     }
 
-    .featured-post-card:hover {
+    .featured-post-card:hover,
+    .post-card:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Featured posts styling - keeping structure but aligning visuals with regular posts */
+    .featured-posts {
+      margin-bottom: 3rem;
     }
 
     .featured-post-content {
@@ -80,7 +81,7 @@ pagination:
 
     .featured-post-title {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 1.7rem;
+      font-size: 1.5rem;
       font-weight: 600;
       margin: 0 0 0.6rem 0;
       letter-spacing: -0.02em;
@@ -112,19 +113,6 @@ pagination:
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-    }
-
-    .post-card {
-      background-color: var(--global-bg-color);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.3s ease;
-      border: 1px solid var(--global-divider-color);
-    }
-
-    .post-card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     }
 
     .post-content {
@@ -178,6 +166,7 @@ pagination:
       color: var(--global-text-color-light);
     }
 
+    /* Unified meta styling for both post types */
     .post-meta {
       display: flex;
       align-items: center;
@@ -197,6 +186,7 @@ pagination:
       color: var(--global-theme-color);
     }
 
+    /* Unified tag styling for both post types */
     .post-tags {
       display: flex;
       flex-wrap: wrap;
