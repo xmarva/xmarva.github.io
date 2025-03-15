@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Protein Structure Classification
-description: 
+description: Custom protein structure classification, based on PDB and CATH data. The core task is predicting protein architecture based on its amino acid sequence and 3D structure.
 img: assets/img/projects/personal/proteins.png
 importance: 5
 category: personal
