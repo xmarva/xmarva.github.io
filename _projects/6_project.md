@@ -1,8 +1,8 @@
 ---
 layout: page
-title: CubiCasa Object Detection
-description: 
-img: 
+title: CubiCasa5k Object Detection
+description: API code for detecting walls and rooms in architectural floor plans
+img: assets/img/projects/personal/cubicasa5k.png
 importance: 6
 category: personal
 related_publications: false

@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Gemma Adaptation for Russian
+title: Gemma for Russian
 description: 
-img: 
+img: assets/img/projects/personal/red-russian.webp
 importance: 8
 category: personal
 related_publications: false

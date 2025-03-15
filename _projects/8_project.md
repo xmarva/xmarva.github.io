@@ -2,7 +2,7 @@
 layout: page
 title: Protein Structure Classification
 description: 
-img: 
+img: assets/img/projects/personal/proteins.png
 importance: 5
 category: personal
 related_publications: false
