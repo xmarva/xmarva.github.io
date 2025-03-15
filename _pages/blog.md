@@ -54,6 +54,7 @@ pagination:
       transition: box-shadow 0.3s ease;
       margin-bottom: 1.5rem;
       border: 1px solid var(--global-divider-color);
+      height: 220px; /* Fixed height for all cards */
     }
 
     .featured-post-card:hover,
@@ -69,6 +70,8 @@ pagination:
     .featured-post-content {
       padding: 1.5rem 2rem;
       position: relative;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .featured-pin {
@@ -120,6 +123,8 @@ pagination:
       position: relative;
       display: flex;
       flex-direction: row;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .post-text {
@@ -167,7 +172,8 @@ pagination:
     }
 
     /* Unified meta styling for both post types */
-    .post-meta {
+    .post-meta,
+    .featured-post-content .post-meta {
       display: flex;
       align-items: center;
       font-size: 0.9rem;
@@ -176,18 +182,21 @@ pagination:
       flex-wrap: wrap;
     }
 
-    .post-meta a {
+    .post-meta a,
+    .featured-post-content .post-meta a {
       color: var(--global-text-color-light);
       text-decoration: none;
       transition: color 0.2s ease;
     }
 
-    .post-meta a:hover {
+    .post-meta a:hover,
+    .featured-post-content .post-meta a:hover {
       color: var(--global-theme-color);
     }
 
     /* Unified tag styling for both post types */
-    .post-tags {
+    .post-tags,
+    .featured-post-content .post-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -195,7 +204,8 @@ pagination:
       align-items: center;
     }
 
-    .post-tags a {
+    .post-tags a,
+    .featured-post-content .post-tags a {
       display: inline-flex;
       align-items: center;
       padding: 0.25rem 0.7rem;
@@ -209,16 +219,25 @@ pagination:
       transition: transform 0.2s ease;
     }
 
-    .post-tags a:hover {
+    .post-tags a:hover,
+    .featured-post-content .post-tags a:hover {
       transform: translateY(-2px);
     }
 
-    .post-tags i {
+    .post-tags i,
+    .featured-post-content .post-tags i {
       margin-right: 0.25rem;
+      color: var(--global-theme-color);
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
+      .featured-post-card,
+      .post-card {
+        height: auto;
+        min-height: 220px;
+      }
+      
       .post-content {
         flex-direction: column;
       }
