@@ -442,10 +442,10 @@ display_categories: [work, personal]
       </div>
     </section>
 
-    <!-- Personal projects section with updated heading -->
+    <!-- Personal projects section with updated heading and renamed -->
     <section id="personal" class="project-section">
       <a id="personal" href=".#personal">
-        <h2 class="section-title">personal / fun / experimental</h2>
+        <h2 class="section-title">fun / experimental</h2>
       </a>
       <div class="project-list">
         {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
@@ -486,10 +486,7 @@ display_categories: [work, personal]
               
               <div class="project-description">{{ project.description }}</div>
               
-              <!-- Two buttons for personal projects -->
-              {% if project.url %}
-              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
-              {% endif %}
+              <!-- "Read More" button removed from personal projects section -->
               
               {% if project.github or project.kaggle or project.website %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
