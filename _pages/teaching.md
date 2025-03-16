@@ -2,7 +2,7 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Welcome to my teaching materials collection. These courses are currently under development and will be continuously updated with new content and resources.
+description: Welcome to my teaching materials collection. These page and course are currently under development.
 nav: true
 nav_order: 6
 ---

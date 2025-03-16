@@ -22,238 +22,237 @@ pagination:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog</title>
   <style>
-    /* Import elegant fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+/* Import elegant fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
-    /* Base styling */
-    .blog-wrapper {
-      font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
-      color: var(--global-text-color);
-      max-width: 100%;
-      margin: 0 auto;
-    }
+/* Base styling */
+.blog-wrapper {
+  font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
+  color: var(--global-text-color);
+  max-width: 100%;
+  margin: 0 auto;
+}
 
-    /* Section headings - changed to black */
-    .section-heading {
-      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 2rem;
-      font-weight: 600;
-      margin: 2rem 0 1.5rem 0;
-      text-align: left;
-      color: #000000; /* Changed to black */
-    }
+/* Section headings - changed to black */
+.section-heading {
+  font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 2rem 0 1.5rem 0;
+  text-align: left;
+  color: #000000;
+}
 
-    /* Common card styling for both featured and regular posts */
-    .featured-post-card,
-    .post-card {
-      background-color: var(--global-bg-color);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.3s ease;
-      margin-bottom: 1.5rem;
-      border: 1px solid var(--global-divider-color);
-      height: 220px; /* Fixed height for all cards */
-    }
+/* Common card styling for both featured and regular posts */
+.featured-post-card,
+.post-card {
+  background-color: var(--global-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--global-divider-color);
+  height: 220px; /* Fixed height for all cards */
+}
 
-    .featured-post-card:hover,
-    .post-card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    }
+.featured-post-card:hover,
+.post-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
 
-    /* Featured posts styling - keeping structure but aligning visuals with regular posts */
-    .featured-posts {
-      margin-bottom: 3rem;
-    }
+/* Featured posts styling - keeping structure but aligning visuals with regular posts */
+.featured-posts {
+  margin-bottom: 3rem;
+}
 
-    .featured-post-content {
-      padding: 1.5rem 2rem;
-      position: relative;
-      height: 100%;
-      box-sizing: border-box;
-    }
+.featured-post-content {
+  padding: 1.5rem 2rem;
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+}
 
-    .featured-pin {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      color: #000000; /* Changed to black */
-      font-size: 1.2rem;
-    }
+.featured-pin {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: #000000;
+  font-size: 1.2rem;
+}
 
-    .featured-post-title {
-      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0 0 0.6rem 0;
-      letter-spacing: -0.02em;
-      padding-right: 2rem;
-    }
+.featured-post-title {
+  font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.02em;
+  padding-right: 2rem;
+}
 
-    .featured-post-title a {
-      color: var(--global-text-color);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
+.featured-post-title a {
+  color: var(--global-text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 
-    .featured-post-title a:hover {
-      color: #000000; /* Changed to black */
-    }
+.featured-post-title a:hover {
+  color: #000000;
+}
 
-    .featured-post-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-      color: var(--global-text-color-light);
-    }
+.featured-post-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--global-text-color-light);
+}
 
-    /* Regular posts styling */
-    .post-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+/* Regular posts styling */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
-    .post-content {
-      padding: 1.5rem 2rem;
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      height: 100%;
-      box-sizing: border-box;
-    }
+.post-content {
+  padding: 1rem 2rem 1.5rem; /* Reduced top padding */
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  box-sizing: border-box;
+}
 
-    .post-text {
-      flex: 1;
-      padding-right: 1rem;
-    }
+.post-text {
+  flex: 1;
+  padding-right: 1rem;
+}
 
-    .post-thumbnail {
-      flex: 0 0 220px;
-      height: 160px;
-      overflow: hidden;
-      border-radius: 8px;
-    }
+.post-thumbnail {
+  flex: 0 0 220px;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 8px;
+}
 
-    .post-thumbnail img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+.post-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-    .post-title {
-      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0 0 0.6rem 0;
-      letter-spacing: -0.02em;
-    }
+.post-title {
+  font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.02em;
+}
 
-    .post-title a {
-      color: var(--global-text-color);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
+.post-title a {
+  color: var(--global-text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 
-    .post-title a:hover {
-      color: #000000; /* Changed to black */
-    }
+.post-title a:hover {
+  color: #000000;
+}
 
-    .post-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-      color: var(--global-text-color-light);
-    }
+.post-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--global-text-color-light);
+}
 
-    /* Unified meta styling for both post types */
-    .post-meta,
-    .featured-post-content .post-meta {
-      display: flex;
-      align-items: center;
-      font-size: 0.9rem;
-      color: var(--global-text-color-light);
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
+/* Unified meta styling for both post types */
+.post-meta,
+.featured-post-content .post-meta {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--global-text-color-light);
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
 
-    .post-meta a,
-    .featured-post-content .post-meta a {
-      color: var(--global-text-color-light);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
+.post-meta a,
+.featured-post-content .post-meta a {
+  color: var(--global-text-color-light);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 
-    .post-meta a:hover,
-    .featured-post-content .post-meta a:hover {
-      color: #000000; /* Changed to black */
-    }
+.post-meta a:hover,
+.featured-post-content .post-meta a:hover {
+  color: #000000;
+}
 
-    /* Unified tag styling for both post types - changed to black */
-    .post-tags,
-    .featured-post-content .post-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 1rem 0 0 0;
-      align-items: center;
-    }
+/* Modified tag styling - removed borders, added hover effect */
+.post-tags,
+.featured-post-content .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0 0 0;
+  align-items: center;
+  font-size: 0.85rem;
+}
 
-    .post-tags a,
-    .featured-post-content .post-tags a {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: #000000; /* Changed to black */
-      border: 1px solid #000000; /* Changed to black */
-      text-decoration: none;
-      transition: transform 0.2s ease;
-    }
+.post-tags a,
+.featured-post-content .post-tags a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--global-text-color-light);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
 
-    .post-tags a:hover,
-    .featured-post-content .post-tags a:hover {
-      transform: translateY(-2px);
-    }
+.post-tags a:hover,
+.featured-post-content .post-tags a:hover {
+  color: #000000;
+  transform: translateY(-1px);
+}
 
-    .post-tags i,
-    .featured-post-content .post-tags i {
-      margin-right: 0.25rem;
-      color: #000000; /* Changed to black */
-    }
+.post-tags i,
+.featured-post-content .post-tags i {
+  margin-right: 0.25rem;
+  color: inherit;
+}
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .featured-post-card,
-      .post-card {
-        height: auto;
-        min-height: 220px;
-      }
-      
-      .post-content {
-        flex-direction: column;
-      }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .featured-post-card,
+  .post-card {
+    height: auto;
+    min-height: 220px;
+  }
+  
+  .post-content {
+    flex-direction: column;
+  }
 
-      .post-text {
-        padding-right: 0;
-        margin-bottom: 1rem;
-      }
+  .post-text {
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
 
-      .post-thumbnail {
-        flex: none;
-        width: 100%;
-        height: 180px;
-        order: -1;
-        margin-bottom: 1rem;
-      }
-    }
+  .post-thumbnail {
+    flex: none;
+    width: 100%;
+    height: 180px;
+    order: -1;
+    margin-bottom: 1rem;
+  }
+}
   </style>
 </head>
 <body>
