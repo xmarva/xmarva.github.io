@@ -25,37 +25,6 @@ display_categories: [work, personal]
       margin: 0 auto;
     }
 
-    /* Header with title and resume button */
-    .portfolio-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-    
-    .resume-button {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      background-color: var(--global-theme-color);
-      color: var(--global-bg-color);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .resume-button i {
-      margin-right: 0.5rem;
-    }
-    
-    .resume-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
     /* Section styling */
     .project-section {
       margin-bottom: 4rem;
@@ -345,6 +314,59 @@ display_categories: [work, personal]
       font-size: 1.1rem;
     }
 
+    /* Resume button styling - matches Read More button */
+    .resume-btn-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -3.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .resume-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      background-color: var(--global-theme-color);
+      color: var(--global-bg-color);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .resume-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+      z-index: -1;
+    }
+
+    .resume-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .resume-btn:hover:before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .resume-btn i {
+      margin-right: 0.5rem;
+    }
+
     /* Media queries for responsiveness */
     @media (max-width: 900px) {
       .project-card {
@@ -389,25 +411,22 @@ display_categories: [work, personal]
         margin-top: 1rem;
       }
       
-      .portfolio-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+      .resume-btn-container {
+        margin-top: 1rem;
+        justify-content: flex-start;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Resume button container -->
+  <div class="resume-btn-container">
+    <a href="https://xmarva.github.io/assets/pdf/eva_koroleva_cv.pdf" class="resume-btn" target="_blank">
+      <i class="fas fa-file-download"></i> Download Resume
+    </a>
+  </div>
+
   <div class="projects-wrapper">
-    <!-- Portfolio header with title and resume button -->
-    <div class="portfolio-header">
-      <h1>portfolio</h1>
-      <a href="https://xmarva.github.io/assets/pdf/eva_koroleva_cv.pdf" class="resume-button" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-download"></i> Download Resume
-      </a>
-    </div>
-    <p>Welcome to my project collection</p>
-    
     <!-- Work projects section with updated heading -->
     <section id="work" class="project-section">
       <a id="work" href=".#work">
@@ -485,94 +504,94 @@ display_categories: [work, personal]
           </div>
         </div>
         {% endfor %}
-        </div>
-   </section>
+      </div>
+    </section>
 
-   <!-- Personal projects section with updated heading and renamed -->
-   <section id="personal" class="project-section">
-     <a id="personal" href=".#personal">
-       <h2 class="section-title">fun / experimental</h2>
-     </a>
-     <div class="project-list">
-       {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
-       {% for project in personal_projects %}
-       <div class="project-card">
-         <div class="project-content">
-           <div class="project-image">
-             {% if project.img %}
-             <!-- Link image to GitHub/Kaggle for personal projects -->
-             <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-               <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
-             </a>
-             {% else %}
-             <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-               <div class="no-image"></div>
-             </a>
-             {% endif %}
-           </div>
-           <div class="project-details">
-             {% if project.domains %}
-             <div class="project-domains">
-               {% for domain in project.domains %}
-               <span class="domain-tag">{{ domain }}</span>
-               {% endfor %}
-             </div>
-             {% endif %}
-             
-             <h3 class="project-title">
-               <!-- Link title to GitHub/Kaggle for personal projects -->
-               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
-             </h3>
-             
-             {% if project.role %}
-             <div class="project-role">
-               <span class="role-label">{{ project.role }}</span>
-             </div>
-             {% endif %}
-             
-             <div class="project-description">{{ project.description }}</div>
-             
-             <!-- "Read More" button removed from personal projects section -->
-             
-             {% if project.github or project.kaggle or project.website %}
-             <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
-             {% endif %}
-             
-             <div class="project-meta">
-               {% if project.tech %}
-               <div class="project-tech">
-                 {% for tech in project.tech %}
-                 <span class="tech-tag">{{ tech }}</span>
-                 {% endfor %}
-               </div>
-               {% endif %}
-             </div>
-             
-             <div class="project-links">
-               {% if project.github %}
-               <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                 <i class="fab fa-github"></i> GitHub
-               </a>
-               {% endif %}
-               
-               {% if project.kaggle %}
-               <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                 <i class="fab fa-kaggle"></i> Kaggle
-               </a>
-               {% endif %}
-               
-               {% if project.website %}
-               <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                 <i class="fas fa-globe"></i> Website
-               </a>
-               {% endif %}
-             </div>
-           </div>
-         </div>
-       </div>
-       {% endfor %}
-     </div>
-   </section>
- </div>
+    <!-- Personal projects section with updated heading and renamed -->
+    <section id="personal" class="project-section">
+      <a id="personal" href=".#personal">
+        <h2 class="section-title">fun / experimental</h2>
+      </a>
+      <div class="project-list">
+        {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
+        {% for project in personal_projects %}
+        <div class="project-card">
+          <div class="project-content">
+            <div class="project-image">
+              {% if project.img %}
+              <!-- Link image to GitHub/Kaggle for personal projects -->
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+              </a>
+              {% else %}
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <div class="no-image"></div>
+              </a>
+              {% endif %}
+            </div>
+            <div class="project-details">
+              {% if project.domains %}
+              <div class="project-domains">
+                {% for domain in project.domains %}
+                <span class="domain-tag">{{ domain }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+              
+              <h3 class="project-title">
+                <!-- Link title to GitHub/Kaggle for personal projects -->
+                <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
+              </h3>
+              
+              {% if project.role %}
+              <div class="project-role">
+                <span class="role-label">{{ project.role }}</span>
+              </div>
+              {% endif %}
+              
+              <div class="project-description">{{ project.description }}</div>
+              
+              <!-- "Read More" button removed from personal projects section -->
+              
+              {% if project.github or project.kaggle or project.website %}
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
+              {% endif %}
+              
+              <div class="project-meta">
+                {% if project.tech %}
+                <div class="project-tech">
+                  {% for tech in project.tech %}
+                  <span class="tech-tag">{{ tech }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              
+              <div class="project-links">
+                {% if project.github %}
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+                {% endif %}
+                
+                {% if project.kaggle %}
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-kaggle"></i> Kaggle
+                </a>
+                {% endif %}
+                
+                {% if project.website %}
+                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-globe"></i> Website
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
 </body>
 </html>
