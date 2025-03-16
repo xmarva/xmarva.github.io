@@ -16,7 +16,7 @@ tech:
   - Classification
   - Graph Neural Networks
 
-github: https://github.com/xmarva/gemma-red-russian
+github: https://github.com/xmarva/protein-structure-transformer
 ---
 
 Coming soon.
