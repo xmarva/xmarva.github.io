@@ -11,19 +11,19 @@ nav_order: 6
   <div class="course-card">
     <h2>Transformer Architectures</h2>
     <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub Repository</a></p>
-    <p class="course-description">A comprehensive exploration of transformer architectures through hands-on implementation and experimentation.</p>
+    <p class="course-description">Exploration of transformer architectures through hands-on implementation and experimentation.</p>
 <div class="course-section">
   <h3>Part 1: Basic Components from Prototyping to Production</h3>
   <table class="table">
     <tbody>
       <tr>
-        <td>Tokenization: BPE, HuggingFace Tokenizers</td>
+        <td>Lecture 1. Tokenization: BPE, HuggingFace Tokenizers</td>
       </tr>
       <tr>
-        <td>Transformer Architecture: A clean-code implementation (no import transformers allowed).</td>
+        <td>Lecture 2. Transformer Architecture: A clean-code implementation (no import transformers allowed).</td>
       </tr>
       <tr>
-        <td>Transformer Training: Train a model on a simple translation task</td>
+        <td>Lecture 3. Transformer Training: Train a model on a simple translation task</td>
       </tr>
       <tr>
         <td></td>
@@ -40,10 +40,10 @@ nav_order: 6
   <table class="table">
     <tbody>
       <tr>
-        <td>BERT: Bidirectional Encoder Representations from Transformers</td>
+        <td>Lecture 1. BERT: Bidirectional Encoder Representations from Transformers</td>
       </tr>
       <tr>
-        <td>GPT: Generative Pre-trained Transformers</td>
+        <td>Lecture 2. GPT: Generative Pre-trained Transformers</td>
       </tr>
       <tr>
         <td></td>
@@ -63,10 +63,10 @@ nav_order: 6
   <table class="table">
     <tbody>
       <tr>
-        <td>Vision Transformers and Multimodal Models</td>
+        <td>Lecture 1. Vision Transformers and Multimodal Models</td>
       </tr>
       <tr>
-        <td>Optimization and Efficiency: PEFT, LoRA, Quantization</td>
+        <td>Lecture 2. Optimization and Efficiency: PEFT, LoRA, Quantization</td>
       </tr>
       <tr>
         <td></td>
