@@ -13,6 +13,7 @@ role: Data Scientist
 
 domains: 
   - NLP
+  - Biomed
   - NeuroSymbolic AI
 
 tech:
