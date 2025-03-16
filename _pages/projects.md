@@ -184,7 +184,7 @@ display_categories: [work, personal]
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 1rem;
       align-self: flex-start;
     }
@@ -413,11 +413,12 @@ display_categories: [work, personal]
           <div class="project-content">
             <div class="project-image">
               {% if project.img %}
-              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">
+              <!-- Keep image links consistent with Jekyll's structure -->
+              <a href="{% if project.url %}{{ project.url | relative_url }}{% endif %}">
                 <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
               </a>
               {% else %}
-              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">
+              <a href="{% if project.url %}{{ project.url | relative_url }}{% endif %}">
                 <div class="no-image"></div>
               </a>
               {% endif %}
@@ -432,10 +433,48 @@ display_categories: [work, personal]
               {% endif %}
               
               <h3 class="project-title">
-                <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">{{ project.title }}</a>
+                <!-- Keep original title link but add target attributes only for external links -->
+                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
               </h3>
               
               <div class="project-description">{{ project.description }}</div>
               
-              {% if project.github or project.kaggle %}
-              <a href="{% if project.github %}{{ project.github }}{% else %}{{ project.kaggle }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek
+              <!-- Replace "Read More" with "Take a peek" for personal projects -->
+              {% if project.github %}
+                <a href="{{ project.github }}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek</a>
+              {% elsif project.kaggle %}
+                <a href="{{ project.kaggle }}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek</a>
+              {% endif %}
+              
+              <div class="project-meta">
+                {% if project.tech %}
+                <div class="project-tech">
+                  {% for tech in project.tech %}
+                  <span class="tech-tag">{{ tech }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              
+              <div class="project-links">
+                  {% if project.github %}
+                  <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i> GitHub
+                  </a>
+                  {% endif %}
+                  
+                  {% if project.kaggle %}
+                  <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-kaggle"></i> Kaggle
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</body>
+</html>
