@@ -2,7 +2,7 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Materials for courses you taught. Replace this text with your description.
+description: Welcome to my teaching materials collection. These courses are currently under development and will be continuously updated with new content and resources.
 nav: true
 nav_order: 6
 ---
@@ -11,37 +11,25 @@ nav_order: 6
   <div class="course-card">
     <h2>Transformer Architectures</h2>
     <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub Repository</a></p>
-    <p class="course-description">To deeply understand transformer architectures through practice—from implementing one from scratch to adapting pre-trained models (BERT, GPT). Why? Because transformers power nearly everything in modern ML, and the best way to learn is to get your hands dirty.</p>
+    <p class="course-description">A comprehensive exploration of transformer architectures through hands-on implementation and experimentation.</p>
 <div class="course-section">
   <h3>Part 1: Basic Components from Prototyping to Production</h3>
   <table class="table">
-    <thead>
-      <tr>
-        <th>Lecture</th>
-        <th>Materials</th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
-        <td>Tokenization: BPE, HuggingFace Tokenizers—learn how text becomes numbers.</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
+        <td>Tokenization: BPE, HuggingFace Tokenizers</td>
       </tr>
       <tr>
         <td>Transformer Architecture: A clean-code implementation (no import transformers allowed).</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
       </tr>
       <tr>
         <td>Transformer Training: Train a model on a simple translation task</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -50,26 +38,21 @@ nav_order: 6
 <div class="course-section">
   <h3>Part 2: Architecture Enhancements and Pretrained Models</h3>
   <table class="table">
-    <thead>
-      <tr>
-        <th>Lecture</th>
-        <th>Materials</th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
         <td>BERT: Bidirectional Encoder Representations from Transformers</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
       </tr>
       <tr>
         <td>GPT: Generative Pre-trained Transformers</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -78,26 +61,21 @@ nav_order: 6
 <div class="course-section">
   <h3>Part 3: Multimodality and Optimization</h3>
   <table class="table">
-    <thead>
-      <tr>
-        <th>Lecture</th>
-        <th>Materials</th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
         <td>Vision Transformers and Multimodal Models</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
       </tr>
       <tr>
         <td>Optimization and Efficiency: PEFT, LoRA, Quantization</td>
-        <td class="materials-column">
-          <a href="#"><i class="fas fa-book"></i> Notes</a>
-          <a href="#"><i class="fas fa-code"></i> Notebook</a>
-        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -135,6 +113,7 @@ nav_order: 6
   color: var(--global-text-color-light);
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
 .course-section {
@@ -157,44 +136,17 @@ nav_order: 6
   margin-top: 1rem;
 }
 
-.table th, .table td {
-  padding: 0.75rem;
+.table td {
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--global-divider-color);
-}
-
-.table th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--global-text-color);
+  font-size: 1rem;
 }
 
 .table tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* Column width adjustments */
-.table th:first-child,
-.table td:first-child {
-  width: 70%;
-}
-
-.table th:last-child,
-.table td:last-child {
-  width: 30%;
-}
-
-.materials-column {
-  display: flex;
-  gap: 1.5rem;
-  white-space: nowrap;
-}
-
-.materials-column a {
-  color: var(--global-theme-color);
-  text-decoration: none;
-}
-
-.materials-column a:hover {
-  text-decoration: underline;
+.table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
 }
 </style>
