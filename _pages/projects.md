@@ -191,6 +191,28 @@ display_categories: [work, personal]
 
     .read-more-btn:hover {
       transform: scale(1.05);
+      /* Modified hover effect to not change text color */
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Take a peek button for personal projects */
+    .take-peek-btn {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      background-color: var(--global-theme-color);
+      color: var(--global-bg-color);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+
+    .take-peek-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     }
 
     /* Project metadata (technologies, links) */
@@ -379,10 +401,10 @@ display_categories: [work, personal]
       </div>
     </section>
 
-    <!-- Personal projects section -->
+    <!-- Personal projects section with updated heading -->
     <section id="personal" class="project-section">
       <a id="personal" href=".#personal">
-        <h2 class="section-title">short or personal projects</h2>
+        <h2 class="section-title">personal / fun / experimental</h2>
       </a>
       <div class="project-list">
         {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
@@ -391,11 +413,11 @@ display_categories: [work, personal]
           <div class="project-content">
             <div class="project-image">
               {% if project.img %}
-              <a href="{{ project.url | relative_url }}">
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">
                 <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
               </a>
               {% else %}
-              <a href="{{ project.url | relative_url }}">
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">
                 <div class="no-image"></div>
               </a>
               {% endif %}
@@ -410,42 +432,10 @@ display_categories: [work, personal]
               {% endif %}
               
               <h3 class="project-title">
-                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+                <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" target="_blank" rel="noopener noreferrer">{{ project.title }}</a>
               </h3>
               
               <div class="project-description">{{ project.description }}</div>
               
-              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
-              
-              <div class="project-meta">
-                {% if project.tech %}
-                <div class="project-tech">
-                  {% for tech in project.tech %}
-                  <span class="tech-tag">{{ tech }}</span>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
-              
-              <div class="project-links">
-                {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i> GitHub
-                </a>
-                {% endif %}
-                
-                {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i> Kaggle
-                </a>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-  </div>
-</body>
-</html>
+              {% if project.github or project.kaggle %}
+              <a href="{% if project.github %}{{ project.github }}{% else %}{{ project.kaggle }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek
