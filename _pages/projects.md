@@ -174,7 +174,7 @@ display_categories: [work, personal]
       -webkit-box-orient: vertical;
     }
 
-    /* Read More button */
+    /* Read More button - completely revised hover effect */
     .read-more-btn {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -184,18 +184,38 @@ display_categories: [work, personal]
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 1rem;
       align-self: flex-start;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .read-more-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+      z-index: -1;
     }
 
     .read-more-btn:hover {
-      transform: scale(1.05);
-      /* Modified hover effect to not change text color */
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
     }
 
-    /* Take a peek button for personal projects */
+    .read-more-btn:hover:before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Take a peek button - same new hover effect */
     .take-peek-btn {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -205,14 +225,35 @@ display_categories: [work, personal]
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 1rem;
       align-self: flex-start;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .take-peek-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+      z-index: -1;
     }
 
     .take-peek-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .take-peek-btn:hover:before {
+      transform: scaleX(1);
+      transform-origin: left;
     }
 
     /* Project metadata (technologies, links) */
@@ -413,12 +454,12 @@ display_categories: [work, personal]
           <div class="project-content">
             <div class="project-image">
               {% if project.img %}
-              <!-- Keep image links consistent with Jekyll's structure -->
-              <a href="{% if project.url %}{{ project.url | relative_url }}{% endif %}">
+              <!-- Link image to GitHub/Kaggle for personal projects -->
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
               </a>
               {% else %}
-              <a href="{% if project.url %}{{ project.url | relative_url }}{% endif %}">
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <div class="no-image"></div>
               </a>
               {% endif %}
@@ -433,17 +474,25 @@ display_categories: [work, personal]
               {% endif %}
               
               <h3 class="project-title">
-                <!-- Keep original title link but add target attributes only for external links -->
-                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+                <!-- Link title to GitHub/Kaggle for personal projects -->
+                <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
               </h3>
+              
+              {% if project.role %}
+              <div class="project-role">
+                <span class="role-label">{{ project.role }}</span>
+              </div>
+              {% endif %}
               
               <div class="project-description">{{ project.description }}</div>
               
-              <!-- Replace "Read More" with "Take a peek" for personal projects -->
-              {% if project.github %}
-                <a href="{{ project.github }}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek</a>
-              {% elsif project.kaggle %}
-                <a href="{{ project.kaggle }}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a peek</a>
+              <!-- Two buttons for personal projects -->
+              {% if project.url %}
+              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
+              {% endif %}
+              
+              {% if project.github or project.kaggle or project.website %}
+              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
               {% endif %}
               
               <div class="project-meta">
@@ -457,21 +506,27 @@ display_categories: [work, personal]
               </div>
               
               <div class="project-links">
-                  {% if project.github %}
-                  <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github"></i> GitHub
-                  </a>
-                  {% endif %}
-                  
-                  {% if project.kaggle %}
-                  <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-kaggle"></i> Kaggle
-                  </a>
-                  {% endif %}
-                </div>
+                {% if project.github %}
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-github"></i> GitHub
+                </a>
+                {% endif %}
+                
+                {% if project.kaggle %}
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-kaggle"></i> Kaggle
+                </a>
+                {% endif %}
+                
+                {% if project.website %}
+                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-globe"></i> Website
+                </a>
+                {% endif %}
               </div>
             </div>
           </div>
+        </div>
         {% endfor %}
       </div>
     </section>
