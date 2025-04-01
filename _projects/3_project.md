@@ -6,8 +6,6 @@ img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
 importance: 2
 category: work
 related_publications: false
-toc:
-  sidebar: left
 
 role: Computer Vision Engineer
 

@@ -6,8 +6,6 @@ description: Mathematical exploration of parameter-efficient fine-tuning through
 tags: nlp, llm, lora
 categories: 
 featured: falses
-toc:
-  sidebar: left
 ---
 
 ## The Paradox of Scale

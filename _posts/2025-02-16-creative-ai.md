@@ -6,8 +6,6 @@ description: Exploring the parallels between human creativity and neural network
 tags: ai, neuroscience, creativity
 categories: featured-posts
 featured: true
-toc:
-  sidebar: left
 ---
 
 The criticism that AI cannot create something fundamentally new often overlooks a key fact: human creativity itself is built on combining existing knowledge, concepts, and imagery. 
