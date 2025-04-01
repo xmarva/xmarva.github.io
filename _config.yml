@@ -107,12 +107,11 @@ whatsapp_number: # your WhatsApp number (full phone number in international form
 wikidata_id: # your wikidata id
 wikipedia_id: # your wikipedia id (Case sensitive)
 work_url: # work page URL
-x_username: # your X handle
+x_username: crazyruskaya
 youtube_id: # your youtube channel id (youtube.com/@<youtube_id>)
 zotero_username: # your zotero username
 
-contact_note: >
-  The easiest way to contact me is by sending a message to LinkedIn or e-mail: elizaveta.victoria.koroleva@gmail.com
+contact_note:
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
