@@ -6,6 +6,8 @@ img: assets/img/projects/1_medical_assistant/main_img.png
 importance: 5
 category: work
 related_publications: false
+toc:
+  beginning: true
 
 role: Data Scientist
 

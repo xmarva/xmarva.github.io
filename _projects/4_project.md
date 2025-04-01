@@ -6,6 +6,8 @@ img: assets/img/projects/4-ai-fashion-app/main_img.png
 importance: 1
 category: work
 related_publications: false
+toc:
+  beginning: true
 
 role: Lead ML Engineer
 

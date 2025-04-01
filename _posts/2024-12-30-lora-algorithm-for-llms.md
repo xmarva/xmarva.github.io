@@ -5,7 +5,9 @@ date: 2024-12-30 15:09:00
 description: Mathematical exploration of parameter-efficient fine-tuning through matrix rank theory
 tags: nlp, llm, lora
 categories: 
-featured: falses
+featured: false
+toc:
+  beginning: true
 ---
 
 ## The Paradox of Scale

@@ -6,6 +6,8 @@ description: Let's look at the basic rules for writing great Python code
 tags: python, coding
 categories: old-posts
 featured: false
+toc:
+  beginning: true
 ---
 
 Python is a fantastic programming language!
