@@ -10,30 +10,124 @@ nav_order: 6
 <div class="course-container" markdown="1">
   <div class="course-card">
     <h2>Transformer Architectures</h2>
-    <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub Repository</a></p>
-    <p class="course-description">Exploration of transformer architectures through hands-on implementation and experimentation.</p>
+    <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub </a></p>
+    <p class="course-description">Practical implementation of transformer components with production-ready approaches.</p>
+
 <div class="course-section">
-  <h3>Part 1: Basic Components from Prototyping to Production</h3>
+  <h3>Core Implementation Modules</h3>
   <table class="table">
+    <thead>
+      <tr>
+        <th>Notebook</th>
+        <th>Concepts</th>
+        <th>English</th>
+        <th>Russian</th>
+      </tr>
+    </thead>
     <tbody>
       <tr>
-        <td>Lecture 1. Tokenization: BPE, HuggingFace Tokenizers</td>
+        <td>1. Tokenization and Encoding</td>
+        <td>BPE, HuggingFace Tokenizers, Collator</td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
+        <td>
+          <a href="https://www.kaggle.com/code/qmarva/bpe-tokenization">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
       </tr>
       <tr>
-        <td>Lecture 2. Transformer Architecture: A clean-code implementation (no import transformers allowed).</td>
+        <td>2. Transformer Architecture</td>
+        <td>Positional Encoding, Attention(KQV, Multi-Head), Encoder-Decoder</td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
+        <td>
+          <a href="https://www.kaggle.com/code/qmarva/building-transformer">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
       </tr>
       <tr>
-        <td>Lecture 3. Transformer Training: Train a model on a simple translation task</td>
+        <td>3. Functions, Metrics, Tools</td>
+        <td>BLEU, ROGUE, METEOR, WandB</td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
       </tr>
       <tr>
-        <td></td>
+        <td>4. Transformer Training</td>
+        <td>LR Scheduler, Xavier Initialization, LabelSmoothing, Hyperparameter Tuning</td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
       </tr>
       <tr>
-        <td></td>
+        <td>5. Complete Transformer</td>
+        <td>End-to-End Implementation</td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
+        <td>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
+          </a><br>
+          <a href="#">
+            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
-</div>
+
 
 <div class="course-section">
   <h3>Part 2: Architecture Enhancements and Pretrained Models</h3>
