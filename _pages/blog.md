@@ -291,8 +291,8 @@ hr {
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  justify-content: space-between;
+  gap: 0.75rem;
+  justify-content: start;
 }
 
 .post-card-title {
@@ -300,16 +300,22 @@ hr {
   margin: 0;
   color: var(--global-theme-color);
   line-height: 1.3;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .post-card-description {
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
-  display: block;
-  overflow: hidden;
   color: var(--card-text);
-  flex-grow: 1;
+  min-height: 2.5em;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .post-card-tags {
