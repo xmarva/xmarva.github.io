@@ -10,173 +10,232 @@ nav_order: 6
 <div class="course-container" markdown="1">
   <div class="course-card">
     <h2>Transformer Architectures</h2>
-    <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub </a></p>
-    <p class="course-description">Practical implementation of transformer components with production-ready approaches.</p>
+    <p><a href="https://github.com/xmarva/transformer-architectures"><i class="fab fa-github"></i> GitHub Repository</a></p>
+    <p class="course-description">End-to-end implementation of transformer architectures with production-grade practices.</p>
 
-<div class="course-section">
-  <h3>Core Implementation Modules</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Notebook</th>
-        <th>Concepts</th>
-        <th>English</th>
-        <th>Russian</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1. Tokenization and Encoding</td>
-        <td>BPE, HuggingFace Tokenizers, Collator</td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-        <td>
-          <a href="https://www.kaggle.com/code/qmarva/bpe-tokenization">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>2. Transformer Architecture</td>
-        <td>Positional Encoding, Attention(KQV, Multi-Head), Encoder-Decoder</td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-        <td>
-          <a href="https://www.kaggle.com/code/qmarva/building-transformer">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>3. Functions, Metrics, Tools</td>
-        <td>BLEU, ROGUE, METEOR, WandB</td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>4. Transformer Training</td>
-        <td>LR Scheduler, Xavier Initialization, LabelSmoothing, Hyperparameter Tuning</td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>5. Complete Transformer</td>
-        <td>End-to-End Implementation</td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-        <td>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Kaggle-035a7d?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle">
-          </a><br>
-          <a href="#">
-            <img src="https://img.shields.io/badge/Google%20Colab-%23F9A825.svg?style=for-the-badge&logo=googlecolab&logoColor=white" alt="Colab">
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <!-- Part 1: Core Implementation -->
+    <div class="course-section">
+      <h3>Part 1: Core Implementation</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Notebook</th>
+            <th>English</th>
+            <th>Russian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Tokenization (BPE, HuggingFace Tokenizers, Collator)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="https://www.kaggle.com/code/qmarva/bpe-tokenization" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>2. Transformer Architecture (Positional Encoding, Multi-Head Attention)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="https://www.kaggle.com/code/qmarva/building-transformer" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>3. Training Pipeline (LR Scheduling, Xavier Init, Label Smoothing)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>4. Evaluation Metrics (BLEU, ROUGE, METEOR, WandB)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>5. Complete Transformer (End-to-End Production Pipeline)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+    <!-- Part 2: Architecture Enhancements -->
+    <div class="course-section">
+      <h3>Part 2: Architecture Enhancements</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Notebook</th>
+            <th>English</th>
+            <th>Russian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. BERT: Bidirectional Encoder Representations</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>2. GPT: Generative Pre-trained Transformers</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<div class="course-section">
-  <h3>Part 2: Architecture Enhancements and Pretrained Models</h3>
-  <table class="table">
-    <tbody>
-      <tr>
-        <td>Lecture 1. BERT: Bidirectional Encoder Representations from Transformers</td>
-      </tr>
-      <tr>
-        <td>Lecture 2. GPT: Generative Pre-trained Transformers</td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="course-section">
-  <h3>Part 3: Multimodality and Optimization</h3>
-  <table class="table">
-    <tbody>
-      <tr>
-        <td>Lecture 1. Vision Transformers and Multimodal Models</td>
-      </tr>
-      <tr>
-        <td>Lecture 2. Optimization and Efficiency: PEFT, LoRA, Quantization</td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <!-- Part 3: Optimization -->
+    <div class="course-section">
+      <h3>Part 3: Optimization & Multimodality</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Notebook</th>
+            <th>English</th>
+            <th>Russian</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Vision Transformers (ViT) & Multimodal Architectures</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>2. Model Optimization (PEFT, LoRA, Quantization)</td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+            <td>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
+              </a>
+              <a href="#" class="badge-link">
+                <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
+
 <!-- Add this CSS to your _sass or assets/css file -->
+
 <style>
 .course-container {
   margin-bottom: 3rem;
@@ -243,4 +302,20 @@ nav_order: 6
 .table tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
+
+.badge-link {
+  display: inline-block;
+  margin: 2px;
+  transition: transform 0.2s;
+}
+
+.badge-link:hover {
+  transform: translateY(-2px);
+}
+
+.table td.badges {
+  vertical-align: middle;
+  min-width: 160px;
+}
+
 </style>
