@@ -46,8 +46,6 @@ pagination:
 
 {% assign featured_posts = site.posts | where: "featured", "true" | limit: 1 %}
 {% if featured_posts.size > 0 %}
-<br>
-
 <div class="featured-post">
   {% for post in featured_posts %}
   <a href="{{ post.url | relative_url }}">
@@ -156,30 +154,17 @@ pagination:
 </div>
 
 <style>
+  /* Custom card colors utilizing theme variables */
   :root {
-    --global-bg-color: {{ site.style.colors.background }};
-    --global-code-bg-color: {{ site.style.code.background }};
-    --global-text-color: {{ site.style.colors.text }};
-    --global-text-color-light: {{ site.style.colors.text_light }};
-    --global-theme-color: {{ site.style.colors.theme }};
-    --global-hover-color: {{ site.style.colors.hover }};
-    --global-hover-text-color: {{ site.style.colors.hover_text }};
-    --global-footer-bg-color: {{ site.style.colors.background }};
-    --global-footer-text-color: {{ site.style.colors.footer_text }};
-    --global-footer-link-color: {{ site.style.colors.link }};
-    --global-icon-color: {{ site.style.colors.icon }};
-    --global-selection-color: {{ site.style.colors.selection }};
-    
-    /* Custom card colors */
     --card-bg: var(--global-bg-color);
-    --card-border: rgba(0, 0, 0, 0.1);
+    --card-border: var(--global-divider-color);
     --card-text: var(--global-text-color);
     --card-link: var(--global-theme-color);
-    --card-hover: var(--global-hover-color);
+    --card-hover: rgba(0, 0, 0, 0.03);
   }
   
-  [data-theme="dark"] {
-    --card-border: rgba(255, 255, 255, 0.15);
+  html[data-theme="dark"] {
+    --card-hover: rgba(255, 255, 255, 0.05);
   }
   
   .header-bar {
@@ -188,8 +173,8 @@ pagination:
   
   /* Tag category list styling */
   .tag-category-list {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
   }
   
   .tag-category-list ul {
@@ -206,7 +191,7 @@ pagination:
   }
   
   .tag-category-list a {
-    color: var(--card-link);
+    color: var(--global-theme-color);
     text-decoration: none;
   }
   
@@ -216,7 +201,7 @@ pagination:
   
   /* Featured post styling */  
   .featured-post {
-    margin: 1.5rem 0 2.5rem 0;
+    margin: 1.5rem 0 2rem 0;
     width: 100%;
   }
   
@@ -236,19 +221,19 @@ pagination:
   
   .featured-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     background-color: var(--card-hover);
   }
   
   .pin-icon {
     float: right;
-    color: var(--card-link);
+    color: var(--global-theme-color);
   }
   
   .card-title {
     margin-top: 0;
     font-size: 1.6rem;
-    color: var(--card-link);
+    color: var(--global-theme-color);
   }
   
   .card-description {
@@ -259,12 +244,19 @@ pagination:
     color: var(--card-text);
   }
   
+  hr {
+    background-color: var(--card-border);
+    height: 1px;
+    border: none;
+    margin: 2rem 0;
+  }
+  
   /* Post list styling - single column */
   .post-list {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
   
   .post-card {
@@ -278,7 +270,7 @@ pagination:
   
   .post-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     background-color: var(--card-hover);
   }
   
@@ -313,7 +305,7 @@ pagination:
     margin-top: 0;
     margin-bottom: 0.75rem;
     font-size: 1.25rem;
-    color: var(--card-link);
+    color: var(--global-theme-color);
   }
   
   .post-card-description {
@@ -338,7 +330,7 @@ pagination:
   }
   
   .post-card-tags a {
-    color: var(--card-link);
+    color: var(--global-theme-color);
     text-decoration: none;
   }
   
@@ -346,6 +338,16 @@ pagination:
     text-decoration: underline;
   }
   
+  .post-meta a {
+    color: var(--global-theme-color);
+    text-decoration: none;
+  }
+  
+  .post-meta a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
   @media (max-width: 768px) {
     .post-link {
       flex-direction: column;
@@ -354,6 +356,10 @@ pagination:
     .post-thumbnail {
       max-width: 100%;
       height: 200px;
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
     }
   }
 </style>
