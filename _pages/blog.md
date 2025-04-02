@@ -205,11 +205,8 @@ html[data-theme="dark"] {
 }
 
 .card-description {
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--card-text);
+  flex-grow: 1;
+  margin: 1rem 0;
 }
 
 .post-meta {
@@ -242,12 +239,10 @@ hr {
 }
 
 .post-card {
-  display: block;
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  border: 1px solid var(--card-border);
-  overflow: hidden;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 400px;
 }
 
 
@@ -273,9 +268,7 @@ hr {
 }
 
 .post-thumbnail {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
+  flex: 0 0 auto;
 }
 
 .post-thumbnail img {
@@ -284,24 +277,27 @@ hr {
   object-fit: cover;
 }
 
-
 .post-card-content {
-  padding: 1.2rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
 }
 
 .post-card-title {
   font-size: 1.25rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.75rem 0;
   color: var(--global-theme-color);
   line-height: 1.3;
+  flex-grow: 0;
 }
 
 .post-card-description {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0; 
   color: var(--card-text);
-  display: block;
+  flex-grow: 1;
 }
 
 .post-card-tags {
@@ -323,16 +319,15 @@ hr {
 
 @media (min-width: 768px) {
   .post-link {
-    display: flex; 
-    align-items: center;
+    display: block;
   }
   
   .post-thumbnail {
-    flex: 0 0 40%;
-    max-width: 40%;
-    height: 180px;
+    width: 100%;
+    max-width: 100%;
+    height: 200px; 
   }
-  
+}
   .post-card-content {
     flex: 1;
     padding: 1.5rem;
