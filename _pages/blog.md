@@ -155,7 +155,6 @@ pagination:
 
 <style>
 /* Custom card colors utilizing theme variables */
-/* Custom card colors utilizing theme variables */
 :root {
   --card-bg: var(--global-bg-color);
   --card-border: var(--global-divider-color);
@@ -246,7 +245,7 @@ hr {
   margin: 2rem 0;
 }
 
-/* Post list styling - карточки одинакового размера */
+/* ПОЛНОСТЬЮ ПЕРЕПИСАННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК ПОСТОВ */
 .post-list {
   display: flex;
   flex-direction: column;
@@ -254,35 +253,37 @@ hr {
   margin-top: 1.5rem;
 }
 
+/* Основная структура карточки */
 .post-card {
   background-color: var(--card-bg);
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: 1px solid var(--card-border);
   width: 100%;
-  height: 180px; /* Фиксированная высота для одинакового размера карточек */
+  height: 180px; /* Фиксированная высота */
+  position: relative;
 }
 
 .post-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   background-color: var(--card-hover);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Структура ссылки внутри карточки */
 .post-link {
   display: flex;
-  flex-direction: row;
   color: var(--card-text);
   text-decoration: none;
   height: 100%;
 }
 
+/* Миниатюра поста */
 .post-thumbnail {
   flex: 0 0 280px;
   max-width: 280px;
-  height: 180px;
-  overflow: hidden;
+  height: 100%;
 }
 
 .post-thumbnail img {
@@ -291,35 +292,35 @@ hr {
   object-fit: cover;
 }
 
+/* Контентная часть карточки */
 .post-card-content {
-  padding: 1.2rem;
   flex: 1;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Распределяет пространство равномерно */
+  overflow: hidden;
 }
 
+/* Заголовок поста */
 .post-card-title {
-  margin-top: 0;
-  margin-bottom: 0.75rem;
   font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0 0 0.75rem 0;
   color: var(--global-theme-color);
-  /* Убираем возможные проблемы с отображением */
-  display: block;
-  visibility: visible;
+  line-height: 1.3;
 }
 
+/* Описание поста */
 .post-card-description {
-  margin-bottom: 0.75rem;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--card-text);
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* Уменьшил количество строк для более компактного отображения */
-  -webkit-box-orient: vertical;
+  margin: 0 0 0.75rem 0;
   overflow: hidden;
-  /* Убираем возможные проблемы с отображением */
-  visibility: visible;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  flex-grow: 1;
+  color: var(--card-text);
 }
 
 /* Скрываем метаданные о времени чтения */
@@ -327,13 +328,11 @@ hr {
   display: none;
 }
 
+/* Теги и категории */
 .post-card-tags {
   font-size: 0.8rem;
   color: var(--global-text-color-light);
-  margin-top: auto; /* Прижимает теги к низу карточки */
-  /* Убираем возможные проблемы с отображением */
-  display: block;
-  visibility: visible;
+  margin-top: auto;
 }
 
 .post-card-tags a {
@@ -341,13 +340,17 @@ hr {
   text-decoration: none;
 }
 
-/* Убираем подчеркивание при наведении */
 .post-card-tags a:hover {
   text-decoration: none;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .post-card {
+    height: auto;
+    min-height: 300px;
+  }
+  
   .post-link {
     flex-direction: column;
   }
@@ -355,14 +358,6 @@ hr {
   .post-thumbnail {
     max-width: 100%;
     height: 200px;
-  }
-  
-  .card-title {
-    font-size: 1.4rem;
-  }
-  
-  .post-card {
-    height: auto; /* Для мобильных устройств высота адаптивная */
   }
   
   .post-card-content {
