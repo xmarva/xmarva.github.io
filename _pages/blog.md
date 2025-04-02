@@ -164,12 +164,10 @@ html[data-theme="dark"] {
   display: none;
 }
 
-/* Полностью скрываем секцию с тегами */
 .tag-category-list {
   display: none;
 }
 
-/* Featured post styling */  
 .featured-post {
   margin: 1.5rem 0 2rem 0;
   width: 100%;
@@ -214,7 +212,6 @@ html[data-theme="dark"] {
   color: var(--card-text);
 }
 
-/* Метаданные для featured post на одной строке */
 .post-meta {
   white-space: nowrap;
   overflow: hidden;
@@ -260,7 +257,6 @@ hr {
   background-color: var(--card-hover);
 }
 
-/* Структура ссылки внутри карточки */
 .post-link {
   display: flex;
   color: var(--card-text);
@@ -268,7 +264,6 @@ hr {
   height: 100%;
 }
 
-/* Миниатюра поста */
 .post-thumbnail {
   flex: 0 0 280px;
   max-width: 280px;
@@ -292,7 +287,6 @@ hr {
 
 .post-card-title {
   font-size: 1.25rem;
-  font-weight: bold;
   margin: 0 0 0.75rem 0;
   color: var(--global-theme-color);
   line-height: 1.3;
@@ -302,9 +296,7 @@ hr {
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0 0 0.75rem 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: block;
   overflow: hidden;
   color: var(--card-text);
   flex-grow: 1;
