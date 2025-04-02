@@ -264,6 +264,15 @@ hr {
   height: 100%;
 }
 
+.post-link:hover {
+  text-decoration: none;
+}
+
+.post-link:hover .post-card-title,
+.post-link:hover .post-card-description {
+  text-decoration: none !important;
+}
+
 .post-thumbnail {
   flex: 0 0 280px;
   max-width: 280px;
@@ -282,12 +291,13 @@ hr {
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   justify-content: space-between;
 }
 
 .post-card-title {
   font-size: 1.25rem;
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   color: var(--global-theme-color);
   line-height: 1.3;
 }
@@ -295,7 +305,7 @@ hr {
 .post-card-description {
   font-size: 0.9rem;
   line-height: 1.5;
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   display: block;
   overflow: hidden;
   color: var(--card-text);
