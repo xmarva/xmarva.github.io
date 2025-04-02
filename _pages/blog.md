@@ -155,6 +155,7 @@ pagination:
 
 <style>
 /* Custom card colors utilizing theme variables */
+/* Custom card colors utilizing theme variables */
 :root {
   --card-bg: var(--global-bg-color);
   --card-border: var(--global-divider-color);
@@ -171,38 +172,9 @@ html[data-theme="dark"] {
   display: none;
 }
 
-/* Tag category list styling - уменьшен отступ сверху */
+/* Полностью скрываем секцию с тегами */
 .tag-category-list {
-  margin-top: 0; /* Было 0.5rem - уменьшаем отступ от шапки */
-  margin-bottom: 1.5rem;
-}
-
-.tag-category-list ul {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  list-style: none;
-  gap: 0.5rem; 
-}
-
-.tag-category-list li {
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Исправление для точек между тегами */
-.tag-category-list ul p {
-  margin: 0;
-  padding: 0;
-}
-
-.tag-category-list a {
-  color: var(--global-theme-color);
-  text-decoration: none;
-}
-
-.tag-category-list a:hover {
-  text-decoration: underline;
+  display: none;
 }
 
 /* Featured post styling */  
@@ -221,7 +193,7 @@ html[data-theme="dark"] {
 
 .featured-post a {
   color: var(--card-text);
-  text-decoration: none; /* Убрано подчеркивание при наведении */
+  text-decoration: none;
   display: block;
 }
 
@@ -324,6 +296,7 @@ hr {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* Распределяет пространство равномерно */
 }
 
 .post-card-title {
@@ -331,21 +304,25 @@ hr {
   margin-bottom: 0.75rem;
   font-size: 1.25rem;
   color: var(--global-theme-color);
+  /* Убираем возможные проблемы с отображением */
+  display: block;
+  visibility: visible;
 }
 
 .post-card-description {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--card-text);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2; /* Уменьшил количество строк для более компактного отображения */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex-grow: 1;
+  /* Убираем возможные проблемы с отображением */
+  visibility: visible;
 }
 
-/* Спрятать метаданные о времени чтения */
+/* Скрываем метаданные о времени чтения */
 .post-card-meta {
   display: none;
 }
@@ -354,6 +331,9 @@ hr {
   font-size: 0.8rem;
   color: var(--global-text-color-light);
   margin-top: auto; /* Прижимает теги к низу карточки */
+  /* Убираем возможные проблемы с отображением */
+  display: block;
+  visibility: visible;
 }
 
 .post-card-tags a {
@@ -361,7 +341,7 @@ hr {
   text-decoration: none;
 }
 
-/* Убраем подчеркивание при наведении */
+/* Убираем подчеркивание при наведении */
 .post-card-tags a:hover {
   text-decoration: none;
 }
@@ -382,7 +362,10 @@ hr {
   }
   
   .post-card {
-    height: auto;
+    height: auto; /* Для мобильных устройств высота адаптивная */
+  }
+  
+  .post-card-content {
+    padding: 1rem;
   }
 }
-</style>
