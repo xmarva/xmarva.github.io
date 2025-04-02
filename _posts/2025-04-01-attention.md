@@ -6,8 +6,6 @@ description: Exploring attention from RNN to FlashAttention
 tags: transformers, attention, flash-attention
 categories: featured-posts
 featured: true
-toc:
-  beginning: true
 ---
 
 In recurrent neural networks, what we typically do is take our sequence and pass in a single timestep at a time and produce an output. This means when we pass in $$x_1$$ we create a hidden state $$h_1$$ that captures all the relevant information in the input, and this hidden state then is used to produce the output $$y_1$$. Now what makes it an RNN is when we pass in the second timestep $$x_2$$ to produce the hidden state $$h_2$$, the hidden state already contains information about the past $$h_1$$! Therefore our output of $$y_2$$ is informed both by information from $$x_2$$ and $$x_1$$ encoded through the hidden states. If we keep this going, when we want to make a prediction at $$y_{100}$$, we will be using a hidden state that has encoded information of all the inputs $$x_1$$ to $$x_{100}$$. Everything explained so far is a causal RNN, basically to make a prediction of sometime timestep $$t$$, we can use all the input timesteps $$<=t$$. We can easily expand this though to make a bidirectional RNN, where to make a prediction at time $$t$$, we can look at the entire sequence as well. In this case we will really have two hidden states, one that looks backwards and another that looks forward! Whether you use causal or bidirectional depends a lot on what you want to do. If you want to do Name Entity Recognition (i.e. determine if each word in a sentence is an entity), you can look at the entire sentence to do this. On the other hand if you want to forecast the future, like a stock price, then you have to use causal as you can only look at the past to predict the future.

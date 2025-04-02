@@ -6,8 +6,6 @@ description: Let's talk about large language models. Once again.
 tags: nlp, llm
 categories: old-posts
 featured: false
-toc:
-  beginning: true
 ---
 
 An LLM (large language model) consists of just two files:
