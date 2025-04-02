@@ -281,7 +281,6 @@ hr {
 }
 
 .post-card-content {
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   min-height: 120px;
@@ -330,9 +329,4 @@ hr {
   }
 }
 
-  .post-card-content {
-    flex: 1;
-    padding: 1.5rem;
-  }
-  
 </style>
