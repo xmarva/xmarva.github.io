@@ -26,7 +26,7 @@ nav_order: 6
         </thead>
         <tbody>
           <tr>
-            <td>1. Tokenization (BPE, HuggingFace Tokenizers, Collator)</td>
+            <td>1. Understanding Tokenization: Byte-Pair Encoding </td>
             <td>
               <a href="#" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
@@ -45,7 +45,7 @@ nav_order: 6
             </td>
           </tr>
           <tr>
-            <td>2. Transformer Architecture (Positional Encoding, Multi-Head Attention)</td>
+            <td>2. Implementing Transformer Architecture </td>
             <td>
               <a href="#" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
@@ -64,7 +64,7 @@ nav_order: 6
             </td>
           </tr>
           <tr>
-            <td>3. Training Pipeline (LR Scheduling, Xavier Init, Label Smoothing)</td>
+            <td>3. Improving architecture with SoTA techniques </td>
             <td>
               <a href="#" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
@@ -102,7 +102,7 @@ nav_order: 6
             </td>
           </tr>
           <tr>
-            <td>5. Complete Transformer (End-to-End Production Pipeline)</td>
+            <td>5. Complete Transformer (End-to-End Pipeline)</td>
             <td>
               <a href="#" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
