@@ -86,64 +86,57 @@ pagination:
   {% endif %}
 
   {% for post in postlist %}
-    {% if post.external_source == blank %}
-      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-    {% else %}
-      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+    {% if post.featured != true %}
+      {% if post.external_source == blank %}
+        {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+      {% else %}
+        {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+      {% endif %}
+      {% assign year = post.date | date: "%Y" %}
+      {% assign tags = post.tags | join: "" %}
+      {% assign categories = post.categories | join: "" %}
+
+      <div class="post-card">
+        <a class="post-link" href="{{ post.url | relative_url }}">
+          {% if post.thumbnail %}
+          <div class="post-thumbnail">
+            <img src="{{ post.thumbnail | relative_url }}" alt="Post thumbnail">
+          </div>
+          {% endif %}
+          <div class="post-card-content">
+            <h3 class="post-card-title">{{ post.title }}</h3>
+            <p class="post-card-description">{{ post.description }}</p>
+            <div class="post-card-tags">
+              <a href="{{ year | prepend: '/blog/' | relative_url }}">
+                <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
+              </a>
+
+              {% if tags != "" %}
+              <span>&nbsp; &middot; &nbsp;</span>
+                {% for tag in post.tags %}
+                <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
+                  <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+                  {% unless forloop.last %}
+                    &nbsp;
+                  {% endunless %}
+                  {% endfor %}
+              {% endif %}
+
+              {% if categories != "" %}
+              <span>&nbsp; &middot; &nbsp;</span>
+                {% for category in post.categories %}
+                <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
+                  <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+                  {% unless forloop.last %}
+                    &nbsp;
+                  {% endunless %}
+                  {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
     {% endif %}
-    {% assign year = post.date | date: "%Y" %}
-    {% assign tags = post.tags | join: "" %}
-    {% assign categories = post.categories | join: "" %}
-
-    <div class="post-card">
-      <a class="post-link" href="{{ post.url | relative_url }}">
-        {% if post.thumbnail %}
-        <div class="post-thumbnail">
-          <img src="{{ post.thumbnail | relative_url }}" alt="Post thumbnail">
-        </div>
-        {% endif %}
-        <div class="post-card-content">
-          <h3 class="post-card-title">{{ post.title }}</h3>
-          <p class="post-card-description">{{ post.description }}</p>
-          <div class="post-card-meta">
-            <span>{{ read_time }} min read</span>
-            <span>&nbsp; &middot; &nbsp;</span>
-            <span>{{ post.date | date: '%B %d, %Y' }}</span>
-            {% if post.external_source %}
-            <span>&nbsp; &middot; &nbsp;</span>
-            <span>{{ post.external_source }}</span>
-            {% endif %}
-          </div>
-          <div class="post-card-tags">
-            <a href="{{ year | prepend: '/blog/' | relative_url }}">
-              <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-            </a>
-
-            {% if tags != "" %}
-            <span>&nbsp; &middot; &nbsp;</span>
-              {% for tag in post.tags %}
-              <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
-                <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-                {% unless forloop.last %}
-                  &nbsp;
-                {% endunless %}
-                {% endfor %}
-            {% endif %}
-
-            {% if categories != "" %}
-            <span>&nbsp; &middot; &nbsp;</span>
-              {% for category in post.categories %}
-              <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
-                <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
-                {% unless forloop.last %}
-                  &nbsp;
-                {% endunless %}
-                {% endfor %}
-            {% endif %}
-          </div>
-        </div>
-      </a>
-    </div>
   {% endfor %}
 </div>
 
@@ -233,7 +226,6 @@ html[data-theme="dark"] {
   text-decoration: none;
 }
 
-/* Убираем подчеркивание при наведении на метаданные */
 .post-meta a:hover {
   text-decoration: none;
 }
@@ -245,7 +237,6 @@ hr {
   margin: 2rem 0;
 }
 
-/* ПОЛНОСТЬЮ ПЕРЕПИСАННЫЕ СТИЛИ ДЛЯ КАРТОЧЕК ПОСТОВ */
 .post-list {
   display: flex;
   flex-direction: column;
@@ -253,22 +244,20 @@ hr {
   margin-top: 1.5rem;
 }
 
-/* Основная структура карточки */
 .post-card {
   background-color: var(--card-bg);
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--card-border);
   width: 100%;
-  height: 180px; /* Фиксированная высота */
-  position: relative;
+  min-height: 180px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .post-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   background-color: var(--card-hover);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Структура ссылки внутри карточки */
@@ -284,6 +273,7 @@ hr {
   flex: 0 0 280px;
   max-width: 280px;
   height: 100%;
+  min-height: 180px;
 }
 
 .post-thumbnail img {
@@ -292,16 +282,14 @@ hr {
   object-fit: cover;
 }
 
-/* Контентная часть карточки */
 .post-card-content {
   flex: 1;
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  justify-content: space-between;
 }
 
-/* Заголовок поста */
 .post-card-title {
   font-size: 1.25rem;
   font-weight: bold;
@@ -310,29 +298,24 @@ hr {
   line-height: 1.3;
 }
 
-/* Описание поста */
 .post-card-description {
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0 0 0.75rem 0;
-  overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  flex-grow: 1;
+  overflow: hidden;
   color: var(--card-text);
+  flex-grow: 1;
 }
 
-/* Скрываем метаданные о времени чтения */
-.post-card-meta {
-  display: none;
-}
-
-/* Теги и категории */
 .post-card-tags {
   font-size: 0.8rem;
   color: var(--global-text-color-light);
-  margin-top: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post-card-tags a {
@@ -344,11 +327,9 @@ hr {
   text-decoration: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .post-card {
     height: auto;
-    min-height: 300px;
   }
   
   .post-link {
@@ -364,3 +345,4 @@ hr {
     padding: 1rem;
   }
 }
+</style>
