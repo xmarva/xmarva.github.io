@@ -40,7 +40,7 @@ The groundbreaking paper, [Attention is All You Need](https://arxiv.org/pdf/1706
 
 The input is a sequence of embedding vectors and the output is a sequence of context vectors. Lets quickly look at the formulation for this:
 
-$$$$\text{Attention}(Q,K,V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_e}})V$$$$
+$$\text{Attention}(Q,K,V) = \text{Softmax}(\frac{QK^T}{\sqrt{d_e}})V$$
 
 We see some new notation show up now, $$Q$$, $$K$$, $$V$$, so lets define them:
 
