@@ -242,9 +242,12 @@ hr {
   display: flex;
   flex-direction: column;
   height: auto;
-  min-height: 400px;
+  min-height: 150px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 .post-card:hover {
   transform: translateY(-3px);
@@ -281,7 +284,7 @@ hr {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 120px;
 }
 
 .post-card-title {
@@ -323,14 +326,13 @@ hr {
   }
   
   .post-thumbnail {
-    width: 100%;
-    max-width: 100%;
-    height: 200px; 
+    height: 150px; 
   }
 }
+
   .post-card-content {
     flex: 1;
     padding: 1.5rem;
   }
-}
+  
 </style>
