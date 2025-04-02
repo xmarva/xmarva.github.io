@@ -154,212 +154,235 @@ pagination:
 </div>
 
 <style>
-  /* Custom card colors utilizing theme variables */
-  :root {
-    --card-bg: var(--global-bg-color);
-    --card-border: var(--global-divider-color);
-    --card-text: var(--global-text-color);
-    --card-link: var(--global-theme-color);
-    --card-hover: rgba(0, 0, 0, 0.03);
-  }
-  
-  html[data-theme="dark"] {
-    --card-hover: rgba(255, 255, 255, 0.05);
-  }
-  
-  .header-bar {
-    display: none;
-  }
-  
-  /* Tag category list styling */
-  .tag-category-list {
-    margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .tag-category-list ul {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    list-style: none;
-    gap: 0.5rem;
-  }
-  
-  .tag-category-list li {
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .tag-category-list a {
-    color: var(--global-theme-color);
-    text-decoration: none;
-  }
-  
-  .tag-category-list a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Featured post styling */  
-  .featured-post {
-    margin: 1.5rem 0 2rem 0;
-    width: 100%;
-  }
-  
-  .featured-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid var(--card-border);
-    padding: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .featured-post a {
-    color: var(--card-text);
-    text-decoration: none;
-    display: block;
-  }
-  
-  .featured-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    background-color: var(--card-hover);
-  }
-  
-  .pin-icon {
-    float: right;
-    color: var(--global-theme-color);
-  }
-  
-  .card-title {
-    margin-top: 0;
-    font-size: 1.6rem;
-    color: var(--global-theme-color);
-  }
-  
-  .card-description {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--card-text);
-  }
-  
-  hr {
-    background-color: var(--card-border);
-    height: 1px;
-    border: none;
-    margin: 2rem 0;
-  }
-  
-  /* Post list styling - single column */
-  .post-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-  }
-  
-  .post-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--card-border);
-    width: 100%;
-  }
-  
-  .post-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    background-color: var(--card-hover);
-  }
-  
+/* Custom card colors utilizing theme variables */
+:root {
+  --card-bg: var(--global-bg-color);
+  --card-border: var(--global-divider-color);
+  --card-text: var(--global-text-color);
+  --card-link: var(--global-theme-color);
+  --card-hover: rgba(0, 0, 0, 0.03);
+}
+
+html[data-theme="dark"] {
+  --card-hover: rgba(255, 255, 255, 0.05);
+}
+
+.header-bar {
+  display: none;
+}
+
+/* Tag category list styling - уменьшен отступ сверху */
+.tag-category-list {
+  margin-top: 0; /* Было 0.5rem - уменьшаем отступ от шапки */
+  margin-bottom: 1.5rem;
+}
+
+.tag-category-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  gap: 0.5rem; 
+}
+
+.tag-category-list li {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Исправление для точек между тегами */
+.tag-category-list ul p {
+  margin: 0;
+  padding: 0;
+}
+
+.tag-category-list a {
+  color: var(--global-theme-color);
+  text-decoration: none;
+}
+
+.tag-category-list a:hover {
+  text-decoration: underline;
+}
+
+/* Featured post styling */  
+.featured-post {
+  margin: 1.5rem 0 2rem 0;
+  width: 100%;
+}
+
+.featured-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.featured-post a {
+  color: var(--card-text);
+  text-decoration: none; /* Убрано подчеркивание при наведении */
+  display: block;
+}
+
+.featured-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background-color: var(--card-hover);
+}
+
+.pin-icon {
+  float: right;
+  color: var(--global-theme-color);
+}
+
+.card-title {
+  margin-top: 0;
+  font-size: 1.6rem;
+  color: var(--global-theme-color);
+}
+
+.card-description {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--card-text);
+}
+
+/* Метаданные для featured post на одной строке */
+.post-meta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-meta a {
+  color: var(--global-theme-color);
+  text-decoration: none;
+}
+
+/* Убираем подчеркивание при наведении на метаданные */
+.post-meta a:hover {
+  text-decoration: none;
+}
+
+hr {
+  background-color: var(--card-border);
+  height: 1px;
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Post list styling - карточки одинакового размера */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.post-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--card-border);
+  width: 100%;
+  height: 180px; /* Фиксированная высота для одинакового размера карточек */
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  background-color: var(--card-hover);
+}
+
+.post-link {
+  display: flex;
+  flex-direction: row;
+  color: var(--card-text);
+  text-decoration: none;
+  height: 100%;
+}
+
+.post-thumbnail {
+  flex: 0 0 280px;
+  max-width: 280px;
+  height: 180px;
+  overflow: hidden;
+}
+
+.post-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-card-content {
+  padding: 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card-title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: var(--global-theme-color);
+}
+
+.post-card-description {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--card-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+/* Спрятать метаданные о времени чтения */
+.post-card-meta {
+  display: none;
+}
+
+.post-card-tags {
+  font-size: 0.8rem;
+  color: var(--global-text-color-light);
+  margin-top: auto; /* Прижимает теги к низу карточки */
+}
+
+.post-card-tags a {
+  color: var(--global-theme-color);
+  text-decoration: none;
+}
+
+/* Убраем подчеркивание при наведении */
+.post-card-tags a:hover {
+  text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .post-link {
-    display: flex;
-    flex-direction: row;
-    color: var(--card-text);
-    text-decoration: none;
+    flex-direction: column;
   }
   
   .post-thumbnail {
-    flex: 0 0 280px;
-    max-width: 280px;
-    height: 180px;
-    overflow: hidden;
+    max-width: 100%;
+    height: 200px;
   }
   
-  .post-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .card-title {
+    font-size: 1.4rem;
   }
   
-  .post-card-content {
-    padding: 1.2rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  .post-card {
+    height: auto;
   }
-  
-  .post-card-title {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    font-size: 1.25rem;
-    color: var(--global-theme-color);
-  }
-  
-  .post-card-description {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--card-text);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    flex-grow: 1;
-  }
-  
-  .post-card-meta, .post-card-tags {
-    font-size: 0.8rem;
-    color: var(--global-text-color-light);
-  }
-  
-  .post-card-tags {
-    margin-top: 0.5rem;
-  }
-  
-  .post-card-tags a {
-    color: var(--global-theme-color);
-    text-decoration: none;
-  }
-  
-  .post-card-tags a:hover {
-    text-decoration: underline;
-  }
-  
-  .post-meta a {
-    color: var(--global-theme-color);
-    text-decoration: none;
-  }
-  
-  .post-meta a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .post-link {
-      flex-direction: column;
-    }
-    
-    .post-thumbnail {
-      max-width: 100%;
-      height: 200px;
-    }
-    
-    .card-title {
-      font-size: 1.4rem;
-    }
-  }
+}
 </style>
