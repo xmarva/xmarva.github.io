@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 3D Florplan Reconstruction 
+title: 3D Floorplan Reconstruction 
 description: Our mission was to transform raw architectural blueprints into realistic and accurate 3D representations that could be explored in any browser—or even with VR headsets.
 img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
 importance: 2
