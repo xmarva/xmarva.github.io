@@ -201,6 +201,7 @@ html[data-theme="dark"] {
 .tag-category-list {
   display: block;
   margin: 0 0 2rem 0;
+  margin-top: -2rem;
 }
 
 .tag-category-list ul {
@@ -209,6 +210,14 @@ html[data-theme="dark"] {
   list-style: none;
   align-items: center;
   gap: 0.5rem;
+}
+
+.tag-category-list ul p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  line-height: 1;
 }
 
 .tag-category-list li {
