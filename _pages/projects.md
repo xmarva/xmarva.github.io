@@ -14,8 +14,6 @@ display_categories: [work, personal]
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio</title>
   <style>
-    /* Удалены импорты кастомных шрифтов */
-    
     /* Base styling for projects page */
     .projects-wrapper {
       font-family: var(--global-font-family), sans-serif;
@@ -37,13 +35,11 @@ display_categories: [work, personal]
       margin-bottom: 2rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--global-divider-color);
-      /* Удаляем подчеркивание */
       text-decoration: none;
-      /* Нельзя кликнуть на название категории */
       pointer-events: none;
     }
 
-    /* Project card styling - изменены размеры */
+    /* Project card styling */
     .project-list {
       display: flex;
       flex-direction: column;
@@ -56,8 +52,8 @@ display_categories: [work, personal]
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       transition: transform 0.2s ease, box-shadow 0.3s ease;
-      height: 220px;  /* Изменено на более компактный размер */
-      width: 100%;    /* Ширина будет подстраиваться под контент */
+      height: 220px;
+      width: 100%;
     }
 
     .project-card:hover {
@@ -76,11 +72,11 @@ display_categories: [work, personal]
       height: 100%;
     }
 
-    /* Project image - изменена ориентация на горизонтальную */
+    /* Project image */
     .project-image {
-      flex: 0 0 300px;  /* Горизонтальная ориентация */
+      flex: 0 0 300px;
       width: 300px;
-      height: 220px;    /* Совпадает с высотой карточки */
+      height: 220px;
       overflow: hidden;
       position: relative;
     }
@@ -101,7 +97,7 @@ display_categories: [work, personal]
     /* Project details */
     .project-details {
       flex: 1;
-      padding: 1.5rem 2rem;
+      padding: 1.2rem 1.5rem; /* Уменьшен внутренний отступ */
       display: flex;
       flex-direction: column;
       position: relative;
@@ -110,7 +106,7 @@ display_categories: [work, personal]
     /* Domain tags in top right corner */
     .project-domains {
       position: absolute;
-      top: 1rem;
+      top: 0.7rem; /* Уменьшен отступ сверху */
       right: 1.5rem;
       display: flex;
       flex-direction: row;
@@ -137,9 +133,10 @@ display_categories: [work, personal]
       font-family: var(--global-serif-font-family), serif;
       font-size: 1.7rem;
       font-weight: normal;
-      margin: 0 0 0.4rem 0; /* Reduced top margin */
+      margin: 0 0 0.6rem 0; /* Уменьшен верхний отступ */
       letter-spacing: -0.02em;
       padding-right: 6rem; /* Make space for domain tags */
+      padding-top: 0; /* Убран верхний отступ */
     }
 
     .project-title a {
@@ -152,7 +149,6 @@ display_categories: [work, personal]
       color: var(--global-theme-color);
     }
 
-    /* Remove role display as requested */
     .project-role {
       display: none;
     }
@@ -160,7 +156,7 @@ display_categories: [work, personal]
     .project-description {
       font-size: 1rem;
       line-height: 1.6;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem; /* Уменьшен нижний отступ */
       color: var(--global-text-color-light);
       overflow: hidden;
       display: -webkit-box;
@@ -168,100 +164,21 @@ display_categories: [work, personal]
       -webkit-box-orient: vertical;
     }
 
-    /* Read More button - сохраняем эффект при наведении, но шрифт не меняется */
-    .read-more-btn {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      background-color: var(--global-theme-color);
-      color: var(--global-bg-color);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: normal;
-      text-decoration: none;
-      margin-bottom: 1rem;
-      align-self: flex-start;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      transition: transform 0.3s ease;
-    }
-
-    .read-more-btn:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-      z-index: -1;
-    }
-
-    .read-more-btn:hover {
-      transform: translateY(-3px);
-    }
-
-    .read-more-btn:hover:before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    /* Take a peek button */
-    .take-peek-btn {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      background-color: var(--global-theme-color);
-      color: var(--global-bg-color);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: normal;
-      text-decoration: none;
-      margin-bottom: 1rem;
-      align-self: flex-start;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      transition: transform 0.3s ease;
-    }
-
-    .take-peek-btn:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-      z-index: -1;
-    }
-
-    .take-peek-btn:hover {
-      transform: translateY(-3px);
-    }
-
-    .take-peek-btn:hover:before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
+    /* Кнопки Read More и Take a Peek удалены */
 
     /* Project metadata (technologies, links) */
     .project-meta {
       margin-top: auto;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 0.6rem;
     }
 
     .project-tech {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
+      margin-top: 0.5rem; /* Добавлен отступ сверху */
     }
 
     .tech-tag {
@@ -292,20 +209,25 @@ display_categories: [work, personal]
     .project-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      color: var(--global-text-color);
+      color: var(--global-theme-color); /* Изменен цвет значков на цвет темы */
       text-decoration: none;
       font-weight: normal;
       font-size: 0.9rem;
-      transition: color 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
     .project-link:hover {
-      color: var(--global-theme-color);
+      transform: translateY(-2px);
+      opacity: 0.8;
     }
 
     .project-link i {
-      font-size: 1.1rem;
+      font-size: 1.3rem; /* Увеличен размер иконок */
+    }
+
+    /* Убраны подписи к иконкам (текст GitHub, Kaggle, Website) */
+    .project-link span {
+      display: none;
     }
 
     /* Resume button styling */
@@ -421,9 +343,8 @@ display_categories: [work, personal]
   </div>
 
   <div class="projects-wrapper">
-    <!-- Work projects section with updated heading -->
+    <!-- Work projects section -->
     <section id="work" class="project-section">
-      <!-- Убрана возможность клика на названии категории -->
       <h2 class="section-title">what I worked on</h2>
       <div class="project-list">
         {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
@@ -456,7 +377,7 @@ display_categories: [work, personal]
               
               <div class="project-description">{{ project.description }}</div>
               
-              <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
+              <!-- Кнопка Read More удалена -->
               
               <div class="project-meta">
                 {% if project.tech %}
@@ -471,19 +392,19 @@ display_categories: [work, personal]
               <div class="project-links">
                 {% if project.github %}
                 <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i> GitHub
+                  <i class="fab fa-github"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.kaggle %}
                 <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i> Kaggle
+                  <i class="fab fa-kaggle"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.website %}
                 <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-globe"></i> Website
+                  <i class="fas fa-globe"></i>
                 </a>
                 {% endif %}
               </div>
@@ -494,9 +415,8 @@ display_categories: [work, personal]
       </div>
     </section>
 
-    <!-- Personal projects section with updated heading and renamed -->
+    <!-- Personal projects section -->
     <section id="personal" class="project-section">
-      <!-- Убрана возможность клика на названии категории -->
       <h2 class="section-title">fun / experimental</h2>
       <div class="project-list">
         {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
@@ -505,7 +425,6 @@ display_categories: [work, personal]
           <div class="project-content">
             <div class="project-image">
               {% if project.img %}
-              <!-- Link image to GitHub/Kaggle for personal projects -->
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
                 <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
               </a>
@@ -525,15 +444,12 @@ display_categories: [work, personal]
               {% endif %}
               
               <h3 class="project-title">
-                <!-- Link title to GitHub/Kaggle for personal projects -->
                 <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
               </h3>
               
               <div class="project-description">{{ project.description }}</div>
               
-              {% if project.github or project.kaggle or project.website %}
-              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
-              {% endif %}
+              <!-- Кнопка Take a Peek удалена -->
               
               <div class="project-meta">
                 {% if project.tech %}
@@ -548,19 +464,19 @@ display_categories: [work, personal]
               <div class="project-links">
                 {% if project.github %}
                 <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i> GitHub
+                  <i class="fab fa-github"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.kaggle %}
                 <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i> Kaggle
+                  <i class="fab fa-kaggle"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.website %}
                 <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-globe"></i> Website
+                  <i class="fas fa-globe"></i>
                 </a>
                 {% endif %}
               </div>
