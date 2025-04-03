@@ -14,12 +14,11 @@ display_categories: [work, personal]
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio</title>
   <style>
-    /* Import elegant fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
-
+    /* Удалены импорты кастомных шрифтов */
+    
     /* Base styling for projects page */
     .projects-wrapper {
-      font-family: 'Source Sans Pro', var(--global-font-family), sans-serif;
+      font-family: var(--global-font-family), sans-serif;
       color: var(--global-text-color);
       max-width: 100%;
       margin: 0 auto;
@@ -31,20 +30,20 @@ display_categories: [work, personal]
     }
 
     .section-title {
-      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+      font-family: var(--global-serif-font-family), serif;
       font-size: 2.4rem;
       font-weight: normal;
       color: var(--global-theme-color);
       margin-bottom: 2rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--global-divider-color);
-    }
-
-    a .section-title {
+      /* Удаляем подчеркивание */
       text-decoration: none;
+      /* Нельзя кликнуть на название категории */
+      pointer-events: none;
     }
 
-    /* Project card styling */
+    /* Project card styling - изменены размеры */
     .project-list {
       display: flex;
       flex-direction: column;
@@ -57,7 +56,8 @@ display_categories: [work, personal]
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       transition: transform 0.2s ease, box-shadow 0.3s ease;
-      height: 320px;  /* Fixed height for uniformity */
+      height: 220px;  /* Изменено на более компактный размер */
+      width: 100%;    /* Ширина будет подстраиваться под контент */
     }
 
     .project-card:hover {
@@ -76,11 +76,11 @@ display_categories: [work, personal]
       height: 100%;
     }
 
-    /* Project image */
+    /* Project image - изменена ориентация на горизонтальную */
     .project-image {
-      flex: 0 0 220px;
-      width: 220px;
-      height: 320px;
+      flex: 0 0 300px;  /* Горизонтальная ориентация */
+      width: 300px;
+      height: 220px;    /* Совпадает с высотой карточки */
       overflow: hidden;
       position: relative;
     }
@@ -134,7 +134,7 @@ display_categories: [work, personal]
     }
 
     .project-title {
-      font-family: 'Playfair Display', var(--global-serif-font-family), serif;
+      font-family: var(--global-serif-font-family), serif;
       font-size: 1.7rem;
       font-weight: normal;
       margin: 0 0 0.4rem 0; /* Reduced top margin */
@@ -168,7 +168,7 @@ display_categories: [work, personal]
       -webkit-box-orient: vertical;
     }
 
-    /* Read More button - revised hover effect */
+    /* Read More button - сохраняем эффект при наведении, но шрифт не меняется */
     .read-more-btn {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -365,7 +365,7 @@ display_categories: [work, personal]
     @media (max-width: 900px) {
       .project-card {
         height: auto;
-        min-height: 500px;
+        min-height: 440px;
       }
       
       .project-content {
@@ -375,12 +375,12 @@ display_categories: [work, personal]
       .project-image {
         flex: none;
         width: 100%;
-        height: 220px;
+        height: 200px;
       }
       
       .project-details {
         padding: 1.5rem;
-        min-height: 280px;
+        min-height: 240px;
       }
       
       .project-domains {
@@ -423,9 +423,8 @@ display_categories: [work, personal]
   <div class="projects-wrapper">
     <!-- Work projects section with updated heading -->
     <section id="work" class="project-section">
-      <a id="work" href=".#work">
-        <h2 class="section-title">what I worked on</h2>
-      </a>
+      <!-- Убрана возможность клика на названии категории -->
+      <h2 class="section-title">what I worked on</h2>
       <div class="project-list">
         {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
         {% for project in work_projects %}
@@ -497,9 +496,8 @@ display_categories: [work, personal]
 
     <!-- Personal projects section with updated heading and renamed -->
     <section id="personal" class="project-section">
-      <a id="personal" href=".#personal">
-        <h2 class="section-title">fun / experimental</h2>
-      </a>
+      <!-- Убрана возможность клика на названии категории -->
+      <h2 class="section-title">fun / experimental</h2>
       <div class="project-list">
         {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
         {% for project in personal_projects %}
