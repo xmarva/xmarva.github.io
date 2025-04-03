@@ -26,12 +26,12 @@ nav_order: 6
         </thead>
         <tbody>
           <tr>
-            <td>1. Understanding Tokenization: Byte-Pair Encoding </td>
+            <td><a href="https://xmarva.github.io/blog/2025/tokenization/">1. Understanding Tokenization: Byte-Pair Encoding</a></td>
             <td>
-              <a href="#" class="badge-link">
+              <a href="https://www.kaggle.com/code/qmarva/1-bpe-tokenization-algorithm-eng?scriptVersionId=231677033" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
               </a>
-              <a href="#" class="badge-link">
+              <a href="https://colab.research.google.com/drive/1lmfuMdC8v-lXL_MuyC0uBewdLLCTQzCO?usp=sharing" class="badge-link">
                 <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
               </a>
             </td>
@@ -39,7 +39,7 @@ nav_order: 6
               <a href="https://www.kaggle.com/code/qmarva/bpe-tokenization" class="badge-link">
                 <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle">
               </a>
-              <a href="#" class="badge-link">
+              <a href="https://colab.research.google.com/drive/1nzhgsD2-eyrnPr28wtKZTtf7YMJGiQbe?usp=sharing" class="badge-link">
                 <img src="https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white" alt="Colab">
               </a>
             </td>

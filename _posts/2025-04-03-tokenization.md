@@ -1,8 +1,8 @@
 ---
 layout: post
-title: BPE Tokenization Algorithm
+title: Understanding Byte-Pair Encoding Algorithm
 date: 2025-04-01 15:00:00
-description: Implement one of the most popular tokenization algorithms and learn how to use ready-made solutions in the transformers library.
+description: Implement one of the most popular tokenization algorithms and learn how to use ready-made solutions.
 tags: tokenization, bpe, algorithms, nlp
 categories: featured-posts
 featured: false
@@ -10,13 +10,15 @@ featured: false
 
 # Tokenization
 
+[![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white)](https://www.kaggle.com/code/qmarva/1-bpe-tokenization-algorithm-eng?scriptVersionId=231677033) [![Colab](https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white)](https://colab.research.google.com/drive/1lmfuMdC8v-lXL_MuyC0uBewdLLCTQzCO?usp=sharing)
+
 Tokenization is a fundamental stage in natural language processing, the task of which is to split text into meaningful units (tokens).
 
 These units can be words, parts of words, or even characters. Historically, simple methods were used: splitting by spaces, regular expressions for extracting words and punctuation, manual rules for handling abbreviations. However, such approaches scaled poorly for languages with agglutinative morphology (e.g., Russian or Finnish) and complex word combinations.
 
 Traditional tokenization methods like space splitting or manual rules often prove ineffective in real-world scenarios: they struggle with typos, rare words, and multilingual texts. For example, words like "gooood" or mixed languages in a single sentence can break a classical tokenizer.
 
-In modern NLP, subword tokenization algorithms like BPE (Byte Pair Encoding) dominate, balancing the semantic integrity of tokens with efficient vocabulary usage. In this notebook, we will examine the BPE algorithm in detail and learn to work with tokenizers from the Hugging Face library.
+In modern NLP, subword tokenization algorithms like [BPE (Byte Pair Encoding)](https://arxiv.org/pdf/1508.07909) dominate, balancing the semantic integrity of tokens with efficient vocabulary usage. In this notebook, we will examine the BPE algorithm in detail and learn to work with tokenizers from the Hugging Face library.
 
 First, we will import all libraries and functions needed for this notebook.
 
