@@ -33,7 +33,7 @@ display_categories: [work, personal]
     .section-title {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
       font-size: 2.4rem;
-      font-weight: 600;
+      font-weight: normal;
       color: var(--global-theme-color);
       margin-bottom: 2rem;
       padding-bottom: 0.5rem;
@@ -56,12 +56,18 @@ display_categories: [work, personal]
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
       height: 320px;  /* Fixed height for uniformity */
     }
 
     .project-card:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(-3px);
+      background-color: var(--card-hover, rgba(0, 0, 0, 0.03));
+    }
+
+    html[data-theme="dark"] .project-card:hover {
+      background-color: var(--card-hover, rgba(255, 255, 255, 0.05));
     }
 
     .project-content {
@@ -72,8 +78,8 @@ display_categories: [work, personal]
 
     /* Project image */
     .project-image {
-      flex: 0 0 280px;
-      width: 280px;
+      flex: 0 0 220px;
+      width: 220px;
       height: 320px;
       overflow: hidden;
       position: relative;
@@ -130,7 +136,7 @@ display_categories: [work, personal]
     .project-title {
       font-family: 'Playfair Display', var(--global-serif-font-family), serif;
       font-size: 1.7rem;
-      font-weight: 600;
+      font-weight: normal;
       margin: 0 0 0.4rem 0; /* Reduced top margin */
       letter-spacing: -0.02em;
       padding-right: 6rem; /* Make space for domain tags */
@@ -146,21 +152,9 @@ display_categories: [work, personal]
       color: var(--global-theme-color);
     }
 
-    /* Role styling - moved under title */
+    /* Remove role display as requested */
     .project-role {
-      margin-bottom: 0.8rem;
-    }
-
-    .role-label {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      white-space: nowrap;
+      display: none;
     }
 
     .project-description {
@@ -174,7 +168,7 @@ display_categories: [work, personal]
       -webkit-box-orient: vertical;
     }
 
-    /* Read More button - completely revised hover effect */
+    /* Read More button - revised hover effect */
     .read-more-btn {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -182,7 +176,7 @@ display_categories: [work, personal]
       color: var(--global-bg-color);
       border-radius: 20px;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: normal;
       text-decoration: none;
       margin-bottom: 1rem;
       align-self: flex-start;
@@ -215,7 +209,7 @@ display_categories: [work, personal]
       transform-origin: left;
     }
 
-    /* Take a peek button - same new hover effect */
+    /* Take a peek button */
     .take-peek-btn {
       display: inline-block;
       padding: 0.4rem 1rem;
@@ -223,7 +217,7 @@ display_categories: [work, personal]
       color: var(--global-bg-color);
       border-radius: 20px;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: normal;
       text-decoration: none;
       margin-bottom: 1rem;
       align-self: flex-start;
@@ -275,7 +269,7 @@ display_categories: [work, personal]
       padding: 0.25rem 0.7rem;
       border-radius: 20px;
       font-size: 0.8rem;
-      font-weight: 500;
+      font-weight: normal;
       background-color: transparent;
       color: var(--global-theme-color);
       border: 1px solid var(--global-theme-color);
@@ -301,7 +295,7 @@ display_categories: [work, personal]
       gap: 0.4rem;
       color: var(--global-text-color);
       text-decoration: none;
-      font-weight: 500;
+      font-weight: normal;
       font-size: 0.9rem;
       transition: color 0.2s ease;
     }
@@ -314,7 +308,7 @@ display_categories: [work, personal]
       font-size: 1.1rem;
     }
 
-    /* Resume button styling - matches Read More button */
+    /* Resume button styling */
     .resume-btn-container {
       display: flex;
       justify-content: flex-end;
@@ -332,7 +326,7 @@ display_categories: [work, personal]
       color: var(--global-bg-color);
       border-radius: 20px;
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: normal;
       text-decoration: none;
       position: relative;
       overflow: hidden;
@@ -461,12 +455,6 @@ display_categories: [work, personal]
                 <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
               </h3>
               
-              {% if project.role %}
-              <div class="project-role">
-                <span class="role-label">{{ project.role }}</span>
-              </div>
-              {% endif %}
-              
               <div class="project-description">{{ project.description }}</div>
               
               <a href="{{ project.url | relative_url }}" class="read-more-btn">Read More</a>
@@ -543,15 +531,7 @@ display_categories: [work, personal]
                 <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
               </h3>
               
-              {% if project.role %}
-              <div class="project-role">
-                <span class="role-label">{{ project.role }}</span>
-              </div>
-              {% endif %}
-              
               <div class="project-description">{{ project.description }}</div>
-              
-              <!-- "Read More" button removed from personal projects section -->
               
               {% if project.github or project.kaggle or project.website %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.website }}{% endif %}" class="take-peek-btn" target="_blank" rel="noopener noreferrer">Take a Peek</a>
