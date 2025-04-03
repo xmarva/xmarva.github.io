@@ -181,14 +181,17 @@ pagination:
 /* Custom card colors utilizing theme variables */
 :root {
   --card-bg: var(--global-bg-color);
-  --card-border: var(--global-divider-color);
   --card-text: var(--global-text-color);
   --card-link: var(--global-theme-color);
   --card-hover: rgba(0, 0, 0, 0.03);
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 html[data-theme="dark"] {
   --card-hover: rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --card-shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .header-bar {
@@ -196,7 +199,31 @@ html[data-theme="dark"] {
 }
 
 .tag-category-list {
-  display: none;
+  display: block;
+  margin: 0 0 2rem 0;
+}
+
+.tag-category-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag-category-list li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tag-category-list a {
+  color: var(--global-theme-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.tag-category-list a:hover {
+  text-decoration: underline;
 }
 
 .featured-post {
@@ -210,7 +237,7 @@ html[data-theme="dark"] {
 }
 
 hr {
-  background-color: var(--card-border);
+  background-color: var(--global-divider-color);
   height: 1px;
   border: none;
   margin: 2rem 0;
@@ -229,14 +256,16 @@ hr {
   height: auto;
   min-height: 150px;
   border-radius: 12px;
-  border: 1px solid var(--card-border);
+  border: none;
   padding: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
 }
 
 .post-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--card-shadow-hover);
   background-color: var(--card-hover);
 }
 
@@ -257,12 +286,14 @@ hr {
 
 .post-thumbnail {
   flex: 0 0 auto;
+  margin-bottom: 1rem;
 }
 
 .post-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .post-card-content {
