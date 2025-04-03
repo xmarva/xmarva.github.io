@@ -48,31 +48,60 @@ pagination:
 {% if featured_posts.size > 0 %}
 <div class="featured-post">
   {% for post in featured_posts %}
-  <a href="{{ post.url | relative_url }}">
-    <div class="featured-card">
-      <div class="card-content">
+  {% if post.external_source == blank %}
+    {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+  {% else %}
+    {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+  {% endif %}
+  {% assign year = post.date | date: "%Y" %}
+  {% assign tags = post.tags | join: "" %}
+  {% assign categories = post.categories | join: "" %}
+  
+  <div class="post-card">
+    <a class="post-link" href="{{ post.url | relative_url }}">
+      {% if post.thumbnail %}
+      <div class="post-thumbnail">
+        <img src="{{ post.thumbnail | relative_url }}" alt="Post thumbnail">
+      </div>
+      {% endif %}
+      <div class="post-card-content">
         <div class="pin-icon">
           <i class="fa-solid fa-thumbtack fa-xs"></i>
         </div>
-        <h3 class="card-title">{{ post.title }}</h3>
-        <p class="card-description">{{ post.description }}</p>
-
-        {% if post.external_source == blank %}
-          {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-        {% else %}
-          {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-        {% endif %}
-        {% assign year = post.date | date: "%Y" %}
-
-        <p class="post-meta">
-          {{ read_time }} min read &nbsp; &middot; &nbsp;
+        <h3 class="post-card-title">{{ post.title }}</h3>
+        <p class="post-card-description">{{ post.description }}</p>
+        <div class="post-card-tags">
           <a href="{{ year | prepend: '/blog/' | relative_url }}">
             <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
           </a>
-        </p>
+          <span>&nbsp; &middot; &nbsp;</span>
+          {{ read_time }} min read
+
+          {% if tags != "" %}
+          <span>&nbsp; &middot; &nbsp;</span>
+            {% for tag in post.tags %}
+            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
+              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
+              {% unless forloop.last %}
+                &nbsp;
+              {% endunless %}
+              {% endfor %}
+          {% endif %}
+
+          {% if categories != "" %}
+          <span>&nbsp; &middot; &nbsp;</span>
+            {% for category in post.categories %}
+            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
+              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+              {% unless forloop.last %}
+                &nbsp;
+              {% endunless %}
+              {% endfor %}
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </a>
+    </a>
+  </div>
   {% endfor %}
 </div>
 <hr>
@@ -110,6 +139,8 @@ pagination:
               <a href="{{ year | prepend: '/blog/' | relative_url }}">
                 <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
               </a>
+              <span>&nbsp; &middot; &nbsp;</span>
+              {{ read_time }} min read
 
               {% if tags != "" %}
               <span>&nbsp; &middot; &nbsp;</span>
@@ -173,55 +204,9 @@ html[data-theme="dark"] {
   width: 100%;
 }
 
-.featured-card {
-  background-color: var(--card-bg);
-  border-radius: 12px;
-  border: 1px solid var(--card-border);
-  padding: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.featured-post a {
-  color: var(--card-text);
-  text-decoration: none;
-  display: block;
-}
-
-.featured-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  background-color: var(--card-hover);
-}
-
 .pin-icon {
   float: right;
   color: var(--global-theme-color);
-}
-
-.card-title {
-  margin-top: 0;
-  font-size: 1.6rem;
-  color: var(--global-theme-color);
-}
-
-.card-description {
-  flex-grow: 1;
-  margin: 1rem 0;
-}
-
-.post-meta {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.post-meta a {
-  color: var(--global-theme-color);
-  text-decoration: none;
-}
-
-.post-meta a:hover {
-  text-decoration: none;
 }
 
 hr {
@@ -328,5 +313,4 @@ hr {
     height: 150px; 
   }
 }
-
 </style>
