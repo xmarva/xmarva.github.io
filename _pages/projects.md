@@ -29,7 +29,7 @@ display_categories: [work, personal]
 
     .section-title {
       font-family: var(--global-serif-font-family), serif;
-      font-size: 2.4rem;
+      font-size: 1.5rem; /* Уменьшено до 1.5rem как запрошено */
       font-weight: normal;
       color: var(--global-theme-color);
       margin-bottom: 2rem;
@@ -74,9 +74,9 @@ display_categories: [work, personal]
 
     /* Project image */
     .project-image {
-      flex: 0 0 300px;
-      width: 300px;
-      height: 220px;
+      flex: 0 0 320px; /* Увеличено с 300px (примерно на 6.7%) для расширения по горизонтали */
+      width: 320px; /* Увеличено с 300px */
+      height: 220px; /* Оставлено без изменений по высоте */
       overflow: hidden;
       position: relative;
     }
@@ -97,7 +97,7 @@ display_categories: [work, personal]
     /* Project details */
     .project-details {
       flex: 1;
-      padding: 1.2rem 1.5rem; /* Уменьшен внутренний отступ */
+      padding: 1.2rem 1.5rem;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -106,7 +106,7 @@ display_categories: [work, personal]
     /* Domain tags in top right corner */
     .project-domains {
       position: absolute;
-      top: 0.7rem; /* Уменьшен отступ сверху */
+      top: 0.7rem;
       right: 1.5rem;
       display: flex;
       flex-direction: row;
@@ -131,12 +131,13 @@ display_categories: [work, personal]
 
     .project-title {
       font-family: var(--global-serif-font-family), serif;
-      font-size: 1.7rem;
+      font-size: 1.2rem; /* Уменьшено до 1.2rem как запрошено */
       font-weight: normal;
-      margin: 0 0 0.6rem 0; /* Уменьшен верхний отступ */
+      margin: 0 0 0.6rem 0;
       letter-spacing: -0.02em;
       padding-right: 6rem; /* Make space for domain tags */
-      padding-top: 0; /* Убран верхний отступ */
+      padding-top: 0;
+      margin-top: -0.5rem; /* Сдвиг вверх к верхней границе карточки */
     }
 
     .project-title a {
@@ -156,15 +157,13 @@ display_categories: [work, personal]
     .project-description {
       font-size: 1rem;
       line-height: 1.6;
-      margin-bottom: 0.5rem; /* Уменьшен нижний отступ */
+      margin-bottom: 0.5rem;
       color: var(--global-text-color-light);
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
-
-    /* Кнопки Read More и Take a Peek удалены */
 
     /* Project metadata (technologies, links) */
     .project-meta {
@@ -178,7 +177,7 @@ display_categories: [work, personal]
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 0.5rem; /* Добавлен отступ сверху */
+      margin-top: 0.5rem;
     }
 
     .tech-tag {
@@ -209,7 +208,7 @@ display_categories: [work, personal]
     .project-link {
       display: inline-flex;
       align-items: center;
-      color: var(--global-theme-color); /* Изменен цвет значков на цвет темы */
+      color: var(--global-theme-color);
       text-decoration: none;
       font-weight: normal;
       font-size: 0.9rem;
@@ -222,10 +221,9 @@ display_categories: [work, personal]
     }
 
     .project-link i {
-      font-size: 1.3rem; /* Увеличен размер иконок */
+      font-size: 1.3rem;
     }
 
-    /* Убраны подписи к иконкам (текст GitHub, Kaggle, Website) */
     .project-link span {
       display: none;
     }
@@ -272,6 +270,7 @@ display_categories: [work, personal]
 
     .resume-btn:hover {
       transform: translateY(-3px);
+      color: var(--global-bg-color); /* Сохранение цвета текста при наведении */
     }
 
     .resume-btn:hover:before {
@@ -334,6 +333,7 @@ display_categories: [work, personal]
     }
   </style>
 </head>
+
 <body>
   <!-- Resume button container -->
   <div class="resume-btn-container">
