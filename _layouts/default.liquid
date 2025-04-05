@@ -12,6 +12,7 @@
     gtag('config', '{{ site.google_analytics }}');
   </script>
   {% endif %}
+  <script src="{{ '/assets/js/h2-cards.js' | relative_url }}"></script>
     {% if page.redirect %}
       {% if page.redirect == true %}
         {% assign redirect = site.baseurl | append: '/' %}

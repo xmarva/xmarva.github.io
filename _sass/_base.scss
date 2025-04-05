@@ -35,6 +35,23 @@ table {
   }
 }
 
+.h2-card {
+  background-color: var(--global-card-bg-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.h2-card-body {
+  padding-top: 0.5rem;
+}
+
 a,
 table.table a {
   color: var(--global-theme-color);
