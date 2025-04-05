@@ -39,6 +39,8 @@ from typing import List, Dict, Tuple
 from collections import Counter, defaultdict
 ```
 
+---
+
 ## Loading Data
 
 For demonstration, we will load the parallel English-Russian [Tatoeba](https://arxiv.org/abs/1812.10464) corpus from Artetxe et al. (2019) via the [Hugging Face Datasets](http://huggingface.co/docs/datasets/loading) library.
@@ -75,6 +77,8 @@ def load_translation_dataset():
 ```python
 dataset = load_translation_dataset()
 ```
+
+---
 
 ## Data Analysis
 
@@ -123,6 +127,8 @@ def analyze_dataset(dataset, n_samples: int = 1000):
 ```python
 max_sentence_length = analyze_dataset(dataset)
 ```
+
+---
 
 ## Simple Tokenizer
 
@@ -241,6 +247,8 @@ Interestingly, the `"` token appears more frequently in English (146 times) — 
 
 Critically, this approach does not split words into subword units, leaving rare words intact and inflating vocabulary size. For comparison, we will explore the BPE tokenizer in subsequent experiments.
 
+---
+
 ## BPE Tokenization Algorithm
 
 Now let's examine how the **BPE (Byte Pair Encoding)** tokenizer works. The core idea is to iteratively merge the most frequent character or token pairs, gradually forming a subword vocabulary. This efficiently handles rare and complex words by splitting them into known components.
@@ -279,11 +287,11 @@ def get_pairs(self, word: List[str]) -> List[Tuple[str, str]]:
 
 ---
 
-### Training the Tokenizer
+## Training the Tokenizer
 
 The `train` method is the core of BPE. It has several stages:
 
-**1. Collect Initial Statistics:**
+**Collect Initial Statistics:**
 - Split each token into characters and count character sequence frequencies. For example, token `"hello"` becomes `['h', 'e', 'l', 'l', 'o']`, and its frequency increments the counter for `'h e l l o'`.
 - Collect all unique characters from the text.
 
@@ -299,7 +307,7 @@ for text in texts:
         all_chars.update(chars)
 ```
 
-**2. Adding Characters to Vocabulary:**
+**Adding Characters to Vocabulary:**
 - Each unique character (e.g., `'h'`, `'e'`) is added to `token2id` and `vocab` if not already present. This ensures even individual characters have IDs.
 
 ```python
@@ -311,7 +319,7 @@ for char in sorted(all_chars):
         self.vocab.add(char)
 ```
 
-**3. Main Merge Loop:**
+**Main Merge Loop:**
 - Each iteration counts the frequency of all possible character pairs in the current word representations. For example, the word `'h e l l o'` has pairs `('h', 'e')`, `('e', 'l')`, etc.
 - Select the most frequent pair (e.g., `('l', 'l')` for `hello`) and create a new token `'ll'`.
 - Update `merges`, `vocab`, `token2id`, and `id2token`.
@@ -416,8 +424,6 @@ def tokenize(self, text: str) -> List[int]:
     result.append(self.token2id['<EOS>'])
     return result
 ```
-
----
 
 During tokenization, merges are applied left-to-right, and the **first** available pair from `merges` is chosen. This can yield different results depending on the merge order. For example, if `merges` contains `('h', 'e')` and `('e', 'l')`, the first encountered pair is merged.
 
@@ -593,6 +599,8 @@ However, even after training, artifacts remain. For example, "useless" splits in
 
 In production tokenizers (e.g., Hugging Face's), such issues are mitigated by pretraining on massive corpora and tens of thousands of merges.
 
+---
+
 ## Batch Preparation
 
 The `prepare_batch` function converts tokenized sequences into tensors suitable for training. Each sentence is padded to a fixed length (`max_length=64`) with the `<PAD>` token, and attention masks tell the model to ignore these "empty" positions.
@@ -644,6 +652,10 @@ def prepare_batch(batch: List[Dict],
     }
 ```
 
+---
+
+## Tokenizer verification
+
 ```python
 test_samples = dataset['train'].select(range(5))
 prepared_data = prepare_batch(test_samples, en_bpe, ru_bpe, max_length=64)
@@ -685,6 +697,8 @@ def verify_bpe_tokenization(tokenizer: BPETokenizer, text: str):
 print("Testing English tokenizer:")
 verify_bpe_tokenization(en_bpe, dataset['train'][0]['translation']['en'])
 ```
+
+---
 
 ## Hugging Face Tokenizers
 
@@ -744,6 +758,8 @@ def prepare_data_with_hf(
 ```python
 processed_data, hf_tokenizer = prepare_data_with_hf(dataset)
 ```
+
+---
 
 ## Comparing Tokenizers
 
