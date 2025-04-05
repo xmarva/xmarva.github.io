@@ -201,7 +201,7 @@ html[data-theme="dark"] {
 .tag-category-list {
   display: block;
   margin: 0 0 2rem 0;
-  margin-top: -3rem;
+  margin-top: -3.5rem;
 }
 
 .tag-category-list ul {
