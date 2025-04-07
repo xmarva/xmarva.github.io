@@ -60,7 +60,7 @@ Unlike traditional approaches, our implementation used a dual-stream encoder tha
         path="assets/img/projects/4-ai-fashion-app/virtual_try_on_app.gif" 
         title="Virtual Try On App" 
         class="img-fluid rounded z-depth-1"
-        style="max-height: 400px; width: auto; object-fit: scale-down;" %}
+        style="max-height: 300px; width: auto; object-fit: scale-down;" %}
     </div>
 </div>
 <div class="caption">
