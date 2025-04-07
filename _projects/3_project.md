@@ -61,13 +61,11 @@ Final annotations included pixel-level masks for structural elements and furnitu
     3D FloorPlan Reconstruction
 </div>
 
-### Segmentation Pipeline
-
 Our core segmentation stack used a [U-Net](https://arxiv.org/abs/1505.04597) architecture with a [ResNet-50](https://arxiv.org/abs/1512.03385) backbone, optimized for architectural drawings through domain-specific augmentations like line thickness variations and simulated scan artifacts. 
 
 The model achieved 94.2% mIoU on our test set by leveraging multi-scale feature fusion and a hybrid loss combining Dice and boundary-aware losses. For challenging elements like curved walls, we integrated [Mask R-CNN](https://arxiv.org/abs/1703.06870) as a refinement stage to capture fine geometric details.
 
-### Object Detection
+## Object Detection
 
 Element localization used [EfficientDet-D2](https://arxiv.org/abs/1911.09070) trained with focal loss to handle class imbalance between large structural components and small decorative elements. 
 
