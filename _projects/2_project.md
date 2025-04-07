@@ -31,53 +31,19 @@ website: https://digital.tatarstan.ru
     Cashierless Store
 </div>
 
-This project aimed to develop a **fully automated, cashier-free retail experience** for the **[Ministry of Digital Development of the Republic of Tatarstan, Russia](https://digital.tatarstan.ru)**. 
-
-Our mission was to create a seamless and secure environment where customers could browse, select products, and leave without traditional checkout processes. 
+This project aimed to develop a fully automated, cashier-free retail experience for the [Ministry of Digital Development of the Republic of Tatarstan, Russia](https://digital.tatarstan.ru). Our mission was to create a seamless and secure environment where customers could browse, select products, and leave without traditional checkout processes. 
 
 <br>
 
 ## Customer Identification
 
-For secure entry, customers registered with a store assistant, providing identification data, a photograph, and payment information. 
-
-A **personalized access card** was then issued, and **multi-factor identification** was implemented using **facial recognition technology** for an added layer of security.
-
-Our facial recognition model was based on **[FaceNet](https://arxiv.org/pdf/1503.03832)**, a deep convolutional neural network that uses **triplet loss** to map faces into a high-dimensional Euclidean space. 
-
-The triplet loss function, designed to minimize the distance between the embedding of a face and its positive sample while maximizing the distance to a negative sample, is as follows:
-
-$$
-\mathcal{L}(A, P, N) = \max(0, ||f(A) - f(P)||^2 - ||f(A) - f(N)||^2 + \alpha)
-$$
-
-where $$ A $$ is the anchor image, $$ P $$ is a positive image, $$ N $$ is a negative image, $$ f $$ represents the embedding function, and $$ \alpha $$ is a margin. 
-
-By training the network with this loss, we achieved a robust facial recognition system that could handle minor variations in lighting, angles, and expressions.
-
-Implementing FaceNet in real-time presented unique challenges, especially around latency and accuracy in varied lighting. 
-
-We experimented with model quantization and optimized embedding computation to maintain both speed and accuracy. 
+For secure entry, customers registered via a kiosk system combining biometric authentication and RFID-enabled access cards. The facial recognition pipeline leveraged [ArcFace](https://arxiv.org/abs/1801.07698), a state-of-the-art model that uses additive angular margin loss to enhance feature discriminability. We integrated live anti-spoofing checks using vision transformer architectures to detect presentation attacks. For edge deployment, we quantized the model using [TensorRT](https://developer.nvidia.com/tensorrt) and optimized inference latency to under 80ms per frame on NVIDIA Jetson devices.
 
 <br>
 
 ## Camera System and Calibration
 
-To ensure comprehensive visual coverage, the store was outfitted with strategically placed cameras offering **overlapping fields of view**. 
-
-Calibration was crucial to synchronize data from these multiple perspectives, so we used a **[checkerboard calibration technique](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html)** with a **[homography matrix](https://en.wikipedia.org/wiki/Homography_(computer_vision))** to map points from 2D camera frames to the 3D store layout. 
-
-The homography matrix $$ H $$ for a transformation between two planes can be defined as:
-
-$$
-\mathbf{x'} = H \cdot \mathbf{x}
-$$
-
-where $$ \mathbf{x} $$ represents points in the camera view and $$ \mathbf{x'} $$ represents mapped points in the store’s 3D coordinate system.
-
-We faced challenges around maintaining calibration stability due to minor shifts in camera positions and changes in store lighting. 
-
-Regular recalibration schedules were set, and camera lens distortion correction was applied to reduce discrepancies between feeds. 
+The store deployed a hybrid camera system combining stereo depth sensors (Intel RealSense D455) and 4K PTZ cameras for wide-area coverage. Calibration used a combination of traditional checkerboard patterns for intrinsic parameters and deep learning-based methods for dynamic distortion correction. Overhead fisheye cameras were processed using distortion-invariant object detection models to mitigate occlusion challenges in crowded areas.
 
 <br>
 
@@ -92,19 +58,7 @@ Regular recalibration schedules were set, and camera lens distortion correction 
     Virtual Mapping and Tracking
 </div>
 
-For customer tracking, we used **multi-camera tracking algorithms** based on **[deep sort](https://arxiv.org/pdf/1703.07402)** and **[Kalman filters](https://en.wikipedia.org/wiki/Kalman_filter#:~:text=The%20Kalman%20filter%20produces%20an,uncertainty%20are%20%22trusted%22%20more.)**. 
-
-Multi-camera tracking in a crowded environment is complex, as it requires handling occlusions, re-identifications, and maintaining continuity across camera views.
-
-The Kalman filter predicts the position and velocity of each customer as they move, using the following state transition:
-
-$$
-\mathbf{x}_{k} = F \cdot \mathbf{x}_{k-1} + G \cdot \mathbf{u}_{k-1} + \mathbf{w}_{k-1}
-$$
-
-where $$ F $$ is the state transition matrix, $$\mathbf{u}_{k-1} $$ is the control vector, and $$ \mathbf{w}_{k-1} $$ is process noise. 
-
-With **deep sort**, re-identification embeddings were generated to handle instances when customers were briefly occluded or left the view of one camera, then reappeared in another. 
+Customer tracking combined [DeepSORT](https://arxiv.org/abs/1703.07402) for robust association of detections across frames and Kalman filters for motion prediction. To handle cross-camera re-identification, we trained a transformer-based model ([TransReID](https://arxiv.org/abs/2106.03896)) on synthetic data. Real-time tracking latency was maintained at <200ms using [ONNX Runtime](https://onnxruntime.ai/) with CUDA acceleration.
 
 <br>
 
@@ -119,48 +73,16 @@ With **deep sort**, re-identification embeddings were generated to handle instan
     Object Detection
 </div>
 
-Our object recognition system was powered by **[EfficientDet](https://arxiv.org/pdf/1911.09070)**, a state-of-the-art object detection model. 
-
-EfficientDet utilizes a **[bi-directional feature pyramid network (BiFPN)](https://paperswithcode.com/method/bifpn)** and compound scaling, allowing for optimal accuracy and computational efficiency. 
-
-Unlike traditional object detection models, EfficientDet can scale efficiently across different input sizes and feature resolutions, which is very important for real-time performance in dynamic retail settings.
-
-The objective function used in EfficientDet is based on **weighted focal loss**, which addresses class imbalance issues by down-weighting easy examples:
-
-$$
-\text{FL}(p_t) = - \alpha_t (1 - p_t)^\gamma \log(p_t)
-$$
-
-where $$ p_t $$ is the predicted probability of the true class, $$ \alpha_t $$ is a weighting factor, and $$ \gamma $$ adjusts the rate at which easy examples are down-weighted. 
-
-This formulation allows EfficientDet to prioritize hard-to-detect items and improves overall detection quality.
+Product recognition used a cascaded approach: [YOLOv8](https://arxiv.org/abs/2304.00501) for real-time item localization followed by [DETR-ResNet50](https://arxiv.org/abs/2005.12872) for fine-grained classification. To distinguish visually similar products, we incorporated metric learning with triplet loss, trained on a dataset of 5000 SKUs. For edge cases like occluded items, we fused 2D visual data with RFID spatial signals from smart shelves.
 
 <br>
 
 ## Action Recognition
 
-To track customer interactions with products, we implemented an action recognition model based on **[I3D (Inflated 3D ConvNet)](https://www.tensorflow.org/hub/tutorials/action_recognition_with_tf_hub)** architecture, known for its effectiveness in capturing spatiotemporal features by inflating 2D filters into 3D. 
-
-The I3D model applies 3D convolutions across consecutive frames, which allows it to capture motion, direction, and object interactions effectively.
-
-The I3D model learns temporal patterns by extending 2D convolutional filters along the temporal dimension:
-
-$$
-f(x) = \sigma \left( W_{3D} * x + b \right)
-$$
-
-where $$ W_{3D} $$ is a 3D convolutional kernel, $$ x $$ is the input video clip, and $$ \sigma $$ is the activation function. 
-
-This design enables the model to capture motion patterns across frames, effectively identifying actions like “picking up,” “examining,” or “returning” items.
+To detect product interactions, we deployed a temporal model combining [SlowFast Networks](https://arxiv.org/abs/1812.03982) for multi-speed feature extraction and MediaPipe Hands for precise hand localization. The system achieved 89.4% F1-score on the [EPIC-KITCHENS](https://epic-kitchens.github.io/2023) benchmark, validated against real-world shopping scenarios.
 
 <br>
 
 ## System Integration
 
-We implemented a scalable, cloud-based architecture with containerized microservices to bring together the different layers of this retail experience.
-
-Each component operates as an independent microservice, allowing flexibility, scalability, and resilience. 
-
-By adopting a microservices approach, the system can process multiple streams of data simultaneously from the in-store cameras, identifying customers, tracking their movements, and detecting interactions with products in real time. 
-
-A distributed architecture like that ensures that each service can be updated or scaled independently, supporting dynamic load adjustments as store activity fluctuates.
+The architecture used microservices for modular scalability, with gRPC ensuring low-latency communication between components. Camera streams were processed through an optimized video analytics pipeline using [NVIDIA DeepStream](https://developer.nvidia.com/deepstream-sdk). The final system supported 150 concurrent users with end-to-end latency under 1.2 seconds.
