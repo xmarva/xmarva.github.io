@@ -54,12 +54,13 @@ The 2D clothing synthesis system revolved around a custom control network archit
 Unlike traditional approaches, our implementation used a dual-stream encoder that processed both body pose estimates from OpenPose and semantic segmentation masks from SCHP simultaneously. This allowed precise spatial control over garment placement while maintaining texture consistency.
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0" style="max-height: 400px; overflow: hidden;">
-        {% include figure.liquid loading="eager" 
+    <div class="col-sm mt-3 mt-md-0" style="display: flex; justify-content: center; align-items: center;">
+        {% include figure.liquid 
+        loading="eager" 
         path="assets/img/projects/4-ai-fashion-app/virtual_try_on_app.gif" 
         title="Virtual Try On App" 
         class="img-fluid rounded z-depth-1"
-        style="object-fit: contain; width: 100%; height: 100%;" %}
+        style="max-height: 400px; width: auto; object-fit: scale-down;" %}
     </div>
 </div>
 <div class="caption">
