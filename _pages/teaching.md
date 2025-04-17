@@ -11,8 +11,7 @@ nav_order: 6
   <div class="course-card">
     <div class="course-header">
       <div class="header-left">
-        <span class="toggle-icon" onclick="toggleCourse(this)">▼</span>
-        <h2>Transformer Architectures</h2>
+        <h3>Transformer Architectures</h3>
       </div>
     </div>
     <div class="course-content">
@@ -22,7 +21,6 @@ nav_order: 6
       <div class="course-section">
         <div class="section-header">
           <div class="header-left">
-            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
             <h3>Part 1: Core Implementation</h3>
           </div>
           <a href="https://github.com/xmarva/transformer-architectures" class="github-link"><i class="fab fa-github"></i> GitHub</a>
@@ -160,7 +158,6 @@ nav_order: 6
       <div class="course-section">
         <div class="section-header">
           <div class="header-left">
-            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
             <h3>Part 2: Transformer-Based Architectures</h3>
           </div>
           <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
@@ -219,7 +216,6 @@ nav_order: 6
       <div class="course-section">
         <div class="section-header">
           <div class="header-left">
-            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
             <h3>Part 3: Optimization and SoTA Techniques</h3>
           </div>
           <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
@@ -320,23 +316,9 @@ nav_order: 6
   align-items: center;
 }
 
-.course-header h2 {
+.course-header h3 {
   margin: 0;
   color: var(--global-theme-color);
-}
-
-.toggle-icon {
-  display: inline-block;
-  margin-right: 10px;
-  font-size: 12px;
-  color: var(--global-theme-color);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  user-select: none;
-}
-
-.toggle-icon.collapsed {
-  transform: rotate(-90deg);
 }
 
 .course-description {
@@ -388,6 +370,7 @@ nav_order: 6
   padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--global-divider-color);
   font-size: 1rem;
+  text-align: left;
 }
 
 .table thead th {
@@ -412,48 +395,4 @@ nav_order: 6
 .badge-link:hover {
   transform: translateY(-2px);
 }
-
-.hidden {
-  display: none;
-}
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize toggle functionality
-  const toggleIcons = document.querySelectorAll('.toggle-icon');
-  toggleIcons.forEach(icon => {
-    icon.addEventListener('click', function() {
-      toggleElement(this);
-    });
-  });
-});
-
-function toggleElement(icon) {
-  // Toggle the icon
-  icon.classList.toggle('collapsed');
-  
-  // Find the content to toggle
-  let section;
-  if (icon.parentElement.parentElement.classList.contains('course-header')) {
-    // This is the main course toggle
-    section = icon.closest('.course-header').nextElementSibling;
-  } else {
-    // This is a section toggle
-    section = icon.closest('.section-header').nextElementSibling;
-  }
-  
-  // Toggle visibility
-  if (section) {
-    section.classList.toggle('hidden');
-  }
-}
-
-function toggleSection(icon) {
-  toggleElement(icon);
-}
-
-function toggleCourse(icon) {
-  toggleElement(icon);
-}
-</script>
