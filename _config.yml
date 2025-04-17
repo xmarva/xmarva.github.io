@@ -304,8 +304,10 @@ jekyll-archives:
     tag: "/blog/tag/:name/"
     category: "/blog/category/:name/"
 
-display_tags: ["coding", "nlp", "computer-vision", " neuroscience", "career", "lifestyle"] # these tags will be displayed on the front page of your blog
-display_categories: # these categories will be displayed on the front page of your blog
+---
+---
+display_tags: ["coding", "machine-learning", "nlp", "computer-vision", "cognitive-science", "career", "lifestyle"] # these tags will be displayed on the front page of your blog
+display_categories: ["coding", "machine-learning", "nlp", "computer-vision", "cognitive-science", "career", "lifestyle"] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
