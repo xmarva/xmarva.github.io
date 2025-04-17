@@ -174,37 +174,65 @@ nav_order: 6
             <tbody>
               <tr>
                 <td>1. BERT: Bidirectional Encoder Representations</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/01-BERT.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>2. GPT: Generative Pre-trained Transformers</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/02-GPT.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>3. T5: Text-to-Text Transfer Framework</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/03-T5.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>4. Mixture of Experts: Switch Transformers</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/04-MoE.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>5. Vision Transformers: ViT, DeiT</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/06-ViT.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>6. Longformers: Efficient Long-Context Attention</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/05-Longformer.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
               <tr>
                 <td>7. Multimodal Architectures: CLIP, Flamingo</td>
-                <td></td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/07-CLIP.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=flat-square&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
             </tbody>
