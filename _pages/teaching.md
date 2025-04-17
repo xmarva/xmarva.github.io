@@ -10,8 +10,10 @@ nav_order: 6
 <div class="course-container" markdown="1">
   <div class="course-card">
     <div class="course-header">
-      <h2>Transformer Architectures</h2>
-      <button class="toggle-btn" onclick="toggleCourse(this)">Hide</button>
+      <div class="header-left">
+        <span class="toggle-icon" onclick="toggleCourse(this)">▼</span>
+        <h2>Transformer Architectures</h2>
+      </div>
     </div>
     <div class="course-content">
       <p class="course-description">End-to-end implementation of transformer architectures with production-grade practices.</p>
@@ -19,9 +21,11 @@ nav_order: 6
       <!-- Part 1: Core Implementation -->
       <div class="course-section">
         <div class="section-header">
-          <h3>Part 1: Core Implementation</h3>
+          <div class="header-left">
+            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
+            <h3>Part 1: Core Implementation</h3>
+          </div>
           <a href="https://github.com/xmarva/transformer-architectures" class="github-link"><i class="fab fa-github"></i> GitHub</a>
-          <button class="toggle-btn" onclick="toggleSection(this)">Hide</button>
         </div>
         <div class="section-content">
           <table class="table">
@@ -155,9 +159,11 @@ nav_order: 6
       <!-- Part 2: Transformer-Based Architectures -->
       <div class="course-section">
         <div class="section-header">
-          <h3>Part 2: Transformer-Based Architectures</h3>
+          <div class="header-left">
+            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
+            <h3>Part 2: Transformer-Based Architectures</h3>
+          </div>
           <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
-          <button class="toggle-btn" onclick="toggleSection(this)">Hide</button>
         </div>
         <div class="section-content">
           <table class="table">
@@ -212,9 +218,11 @@ nav_order: 6
       <!-- Part 3: Optimization and SoTA Techniques -->
       <div class="course-section">
         <div class="section-header">
-          <h3>Part 3: Optimization and SoTA Techniques</h3>
+          <div class="header-left">
+            <span class="toggle-icon" onclick="toggleSection(this)">▼</span>
+            <h3>Part 3: Optimization and SoTA Techniques</h3>
+          </div>
           <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
-          <button class="toggle-btn" onclick="toggleSection(this)">Hide</button>
         </div>
         <div class="section-content">
           <table class="table">
@@ -307,24 +315,28 @@ nav_order: 6
   padding-bottom: 0.75rem;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
 .course-header h2 {
   margin: 0;
   color: var(--global-theme-color);
 }
 
-.toggle-btn {
-  background-color: var(--global-theme-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
+.toggle-icon {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 12px;
+  color: var(--global-theme-color);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.3s ease;
+  user-select: none;
 }
 
-.toggle-btn:hover {
-  background-color: var(--global-hover-color, #0056b3);
+.toggle-icon.collapsed {
+  transform: rotate(-90deg);
 }
 
 .course-description {
@@ -347,20 +359,17 @@ nav_order: 6
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  position: relative;
 }
 
 .section-header h3 {
   margin: 0;
   font-size: 1.3rem;
   color: var(--global-theme-color);
-  flex-grow: 1;
 }
 
 .github-link {
   text-decoration: none;
   color: var(--global-theme-color);
-  margin-right: 1rem;
   transition: color 0.2s;
   white-space: nowrap;
 }
@@ -379,6 +388,11 @@ nav_order: 6
   padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--global-divider-color);
   font-size: 1rem;
+}
+
+.table thead th {
+  text-align: left;
+  border-bottom: 2px solid var(--global-divider-color);
 }
 
 .table tbody tr:last-child td {
@@ -402,29 +416,44 @@ nav_order: 6
 .hidden {
   display: none;
 }
+</style>
 
-/* JavaScript for toggle functionality */
 <script>
-function toggleSection(button) {
-  const section = button.closest('.section-header').nextElementSibling;
-  if (section.classList.contains('hidden')) {
-    section.classList.remove('hidden');
-    button.textContent = 'Hide';
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize toggle functionality
+  const toggleIcons = document.querySelectorAll('.toggle-icon');
+  toggleIcons.forEach(icon => {
+    icon.addEventListener('click', function() {
+      toggleElement(this);
+    });
+  });
+});
+
+function toggleElement(icon) {
+  // Toggle the icon
+  icon.classList.toggle('collapsed');
+  
+  // Find the content to toggle
+  let section;
+  if (icon.parentElement.parentElement.classList.contains('course-header')) {
+    // This is the main course toggle
+    section = icon.closest('.course-header').nextElementSibling;
   } else {
-    section.classList.add('hidden');
-    button.textContent = 'Show';
+    // This is a section toggle
+    section = icon.closest('.section-header').nextElementSibling;
+  }
+  
+  // Toggle visibility
+  if (section) {
+    section.classList.toggle('hidden');
   }
 }
 
-function toggleCourse(button) {
-  const content = button.closest('.course-header').nextElementSibling;
-  if (content.classList.contains('hidden')) {
-    content.classList.remove('hidden');
-    button.textContent = 'Hide';
-  } else {
-    content.classList.add('hidden');
-    button.textContent = 'Show';
-  }
+function toggleSection(icon) {
+  toggleElement(icon);
+}
+
+function toggleCourse(icon) {
+  toggleElement(icon);
 }
 </script>
-</style>
