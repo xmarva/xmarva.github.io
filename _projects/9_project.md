@@ -2,7 +2,7 @@
 layout: page
 title: Curved Surface Segmentation
 description: Just a set of Computer Vision problems solved using classical methods and the SAM model 
-img: assets/img/projects/6-gesture-recognition/atlas.png
+img: assets/img/projects/personal/atlas.png
 importance: 7
 category: personal
 related_publications: false
