@@ -18,7 +18,7 @@ tech:
   - Detection
   - Classification
 
-kaggle: https://www.kaggle.com/code/qmarva/computer-vision-tasks
+github: https://github.com/xmarva/gesture-gaussian-effects
 ---
 
 Coming soon.
