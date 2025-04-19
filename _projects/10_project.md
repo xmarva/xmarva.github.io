@@ -2,7 +2,7 @@
 layout: page
 title: Gesture Recognition System
 description: Real-time / recorded video gesture recognition system with system control and magical visual effects.
-img: assets/img/projects/personal/atlas.png
+img: assets/img/projects/personal/gestures.gif
 importance: 6
 category: personal
 related_publications: false
