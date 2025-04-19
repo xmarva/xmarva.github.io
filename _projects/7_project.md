@@ -3,7 +3,7 @@ layout: page
 title: Gemma for Russian
 description: This project fine-tunes a Gemma language model using PEFT and LoRA on a dataset of texts by communist authors of the Soviet era.
 img: assets/img/projects/personal/red-russian.png
-importance: 8
+importance: 10
 category: personal
 related_publications: false
 toc:
@@ -14,7 +14,7 @@ domains:
 
 tech:
   - LLM
-  - LoRA Adaptation
+  - LoRA
 
 kaggle: https://www.kaggle.com/code/qmarva/red-russian-gemma-lora-hf
 ---

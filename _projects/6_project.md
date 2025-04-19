@@ -3,7 +3,7 @@ layout: page
 title: CubiCasa5k Object Detection
 description: API code for detecting walls and rooms in architectural floor plans. I’ve converted CubiCasa5k dataset to COCO format for smoother integration with detection framework.
 img: assets/img/projects/personal/cubicasa5k.png
-importance: 6
+importance: 8
 category: personal
 related_publications: false
 toc:

@@ -1,9 +1,9 @@
 ---
 layout: page
 title: Curved Surface Segmentation
-description: This is a test assignment I did for a startup. I really liked these tasks and it looks spectacular - so I recommend taking a look
-img: assets/img/projects/personal/atlas.png
-importance: 5
+description: Just a set of Computer Vision problems solved using classical methods and the SAM model
+img: assets/img/projects/6-gesture-recognition/gestures.gif
+importance: 7
 category: personal
 related_publications: false
 toc:
