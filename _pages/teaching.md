@@ -187,8 +187,11 @@ nav_order: 6
               <tr>
                 <td>2. GPT: Generative Pre-trained Transformers</td>
                 <td>
-                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/02-GPT.ipynb" class="badge-link">
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/02-gpt-explained-and-fine-tuned-for-reasoning.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                  <a href="https://www.kaggle.com/code/qmarva/gpt-explained-and-fine-tuned-for-reasoning?scriptVersionId=235487807" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
                   </a>
                 </td>
                 <td></td>
