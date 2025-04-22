@@ -175,8 +175,11 @@ nav_order: 6
               <tr>
                 <td>1. BERT: Bidirectional Encoder Representations</td>
                 <td>
-                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/01-BERT.ipynb" class="badge-link">
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/01-bert-explained-and-fine-tuned-for-ner.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                  <a href="https://www.kaggle.com/code/qmarva/bert-explained-and-fine-tuned-for-ner?scriptVersionId=235335954" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
                   </a>
                 </td>
                 <td></td>
