@@ -211,8 +211,11 @@ nav_order: 6
               <tr>
                 <td>4. Mixture of Experts: Switch Transformers</td>
                 <td>
-                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/04-MoE.ipynb" class="badge-link">
+                  <a href="hhttps://github.com/xmarva/transformer-based-architectures/blob/main/notebooks/04-moe-explained-and-fine-tuned.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                  <a href="https://www.kaggle.com/code/qmarva/moe-explained-and-fine-tuned" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
                   </a>
                 </td>
                 <td></td>
