@@ -242,7 +242,7 @@ nav_order: 6
                 <td></td>
               </tr>
               <tr>
-                <td>7. Multimodal Architectures: CLIP, Flamingo</td>
+                <td>7. Multimodal Architectures: CLIP, Llava</td>
                 <td>
                   <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/07-CLIP.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
@@ -250,72 +250,13 @@ nav_order: 6
                 </td>
                 <td></td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Part 3: Optimization and SoTA Techniques -->
-      <div class="course-section">
-        <div class="section-header">
-          <div class="header-left">
-            <h3>Part 3: Optimization and SoTA Techniques</h3>
-          </div>
-          <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
-        </div>
-        <div class="section-content">
-          <table class="table">
-            <thead>
               <tr>
-                <th>Notebook</th>
-                <th>English</th>
-                <th>Russian</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1. Quantization: 8-bit, QLoRA, Quantization-Aware Training</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>2. Pruning: Structured vs. Unstructured Methods</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>3. PEFT: LoRA, Adapters, Prompt Tuning</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>4. Knowledge Distillation: TinyBERT, DistilGPT-2</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>5. Mixed-Precision Training: FP16, NVIDIA AMP</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>6. Distributed Training: DeepSpeed, ZeRO, Tensor Parallelism</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>7. Efficient Attention: Flash Attention, Sparse Patterns</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>8. Dynamic Computation: Early Exit, Adaptive Strategies</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>9. Hardware Optimizations: ONNX, TensorRT, TPU/XLA</td>
-                <td></td>
+                <td>8. LLM Architectures: Gemma2, LLaMA, Mistral</td>
+                <td>
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/07-CLIP.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
+                  </a>
+                </td>
                 <td></td>
               </tr>
             </tbody>
