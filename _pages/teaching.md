@@ -112,7 +112,7 @@ nav_order: 6
                 </td>
               </tr>
               <tr>
-                <td>5. Complete Transformer: End-to-End Pipeline</td>
+                <td>5. Hyperparameter tuning with Wandb Sweeps</td>
                 <td>
                   <a href="#" class="badge-link">
                     <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
@@ -131,7 +131,45 @@ nav_order: 6
                 </td>
               </tr>
               <tr>
-                <td>6. Model Deployment and Monitoring</td>
+                <td>6. Complete Transformer: End-to-End Python Pipeline</td>
+                <td>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+                <td>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>7. Create API and use Gradio and Streamlit</td>
+                <td>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+                <td>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="#" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>8. Model Deployment and Monitoring</td>
                 <td>
                   <a href="#" class="badge-link">
                     <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
