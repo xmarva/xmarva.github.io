@@ -235,7 +235,6 @@ exclude:
   - package.json
   - package-lock.json
   - _pages/about_einstein.md
-  - _pages/publications.md
   - _pages/repositories.md
   - _pages/profiles.md
   - _pages/dropdown.md
