@@ -2,9 +2,32 @@
 ---
 
 @article{koroleva2023bio,
+  title={LLM Fine-Tuning with Distributional Feedback},
+  author={Koroleva, E and Mikhailova, S},
+  journal={preprint},
+  abstract={Fine-tuning large language models (LLMs) to align with human preferences is a critical challenge in
+AI alignment. Current approaches predominantly rely on Reinforcement Learning from Human Feed-
+back (RLHF), which typically converts complex human judgments into point estimates for rewards.
+In this paper, we propose Distributional Feedback Learning (DFL), a novel fine-tuning approach that
+captures the inherent uncertainty and distribution of human preferences rather than reducing them to
+singular values. Our method represents human feedback as probability distributions over preference
+scores, allowing models to better capture preference ambiguity and variation across evaluators. We
+develop a distributional loss function that encourages models to predict the full distribution of human
+preferences rather than just their mean. Experiments across diverse tasks show that DFL outperforms
+standard RLHF in alignment quality, reducing catastrophic response rate by 27.3% and achieving a
+18.6% improvement in preference matching on ambiguous queries. Furthermore, we demonstrate
+that DFL models exhibit improved calibration regarding their uncertainty, producing more nuanced
+outputs in scenarios where human preferences are genuinely divided. Our approach represents a
+significant advancement in LLM alignment techniques that better reflects the multifaceted nature of
+human value judgments.},
+  pdf={https://xmarva.github.io/assets/pdf/LLM Fine-Tuning with Distributional Feedback.pdf},
+  year={2024}
+}
+
+@article{koroleva2023bio,
   title={DnyRNA Transformer for RNA Structure and Ractivity Profile Prediction},
   author={Koroleva, E and Mikhailova, S},
-  journal={arxiv preprint},
+  journal={preprint},
   abstract={RNA structure prediction is a fundamental challenge in molecular biology with significant impli-
 cations for medicine, biotechnology, and our understanding of life. In this paper, we present an
 enhanced transformer-based architecture for predicting RNA structure and chemical reactivity pro-
