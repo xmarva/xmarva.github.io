@@ -68,7 +68,7 @@ Positional Encoding adds special signals (positional encodings) to the token emb
 
 $$PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right), \quad PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
 
-where $pos$ is the position, $d_{\text{model}}$ is the embedding dimensionality, and $i$ is the index of the vector dimension.
+where $$pos$$ is the position, $$d_{\text{model}}$$ is the embedding dimensionality, and $$i$$ is the index of the vector dimension.
 
 The core idea is that these sinusoidal functions allow the model to pay attention to **relative positions**.
 
@@ -76,23 +76,23 @@ The core idea is that these sinusoidal functions allow the model to pay attentio
 
 #### First, the model can generalize to sequences longer than those seen during training.
 
-Imagine that each position in a sequence is a point on a number line. If we generate signals for position $pos$ using sine and cosine, then the signals for position $pos + k$ can be expressed as a combination of the original values. For example, using the angle addition formula:
+Imagine that each position in a sequence is a point on a number line. If we generate signals for position $$pos$$ using sine and cosine, then the signals for position $$pos + k$$ can be expressed as a combination of the original values. For example, using the angle addition formula:
 
 $$\sin(pos + k) = \sin(pos)\cos(k) + \cos(pos)\sin(k)$$
 
-A shift of $k$ positions can be expressed as a weighted sum of the original sine and cosine values. This allows the model to infer that a word "three positions later" is related to the original word, even if it never saw such a long sequence during training.
+A shift of $$k$$ positions can be expressed as a weighted sum of the original sine and cosine values. This allows the model to infer that a word "three positions later" is related to the original word, even if it never saw such a long sequence during training.
 
 #### Second, the distance between any two time steps is consistent across the sequence.
 
-The logarithmic decay of frequencies in the term $10000^{2i/d_{\text{model}}}$ ensures that different dimensions of the positional vector capture different levels of positional detail. For small $i$ (early vector components), the denominator becomes large, causing the sine and cosine arguments to grow slowly with $pos$. This creates low-frequency oscillations that help distinguish between distant positions — for example, the beginning of the text (positions 1–100) versus the middle (positions 101–200). For larger $i$, the denominator shrinks, the argument grows faster, and high-frequency oscillations emerge, encoding fine-grained differences between neighboring positions (e.g., 101 and 102).
+The logarithmic decay of frequencies in the term $$10000^{2i/d_{\text{model}}}$$ ensures that different dimensions of the positional vector capture different levels of positional detail. For small $$i$$ (early vector components), the denominator becomes large, causing the sine and cosine arguments to grow slowly with $$pos$$. This creates low-frequency oscillations that help distinguish between distant positions — for example, the beginning of the text (positions 1–100) versus the middle (positions 101–200). For larger $$i$$, the denominator shrinks, the argument grows faster, and high-frequency oscillations emerge, encoding fine-grained differences between neighboring positions (e.g., 101 and 102).
 
 #### Third, this formula yields unique encodings for each position.
 
-Alternating sine and cosine for even and odd indices solves the uniqueness issue. If we used only sine, different positions might accidentally match due to the periodicity of the function (e.g., $\sin(pos)$ and $\sin(pos + 2\pi)$). Adding cosine for neighboring vector components eliminates this symmetry: the combination of $\sin(f(pos))$ and $\cos(f(pos))$ across different frequencies $f$ ensures that each position $pos$ has a unique vector. The orthogonality of sine and cosine (their dot product is close to zero) minimizes overlap with word embeddings, allowing the model to separately process semantics and position.
+Alternating sine and cosine for even and odd indices solves the uniqueness issue. If we used only sine, different positions might accidentally match due to the periodicity of the function (e.g., $$\sin(pos)$$ and $$\sin(pos + 2\pi)$$). Adding cosine for neighboring vector components eliminates this symmetry: the combination of $$\sin(f(pos))$$ and $$\cos(f(pos))$$ across different frequencies $$f$$ ensures that each position $$pos$$ has a unique vector. The orthogonality of sine and cosine (their dot product is close to zero) minimizes overlap with word embeddings, allowing the model to separately process semantics and position.
 
 ---
 
-The sum $\text{Embedding} + PE$ is possible because word embeddings and positional encodings have the same dimensionality $d_{\text{model}}$. This addition requires no trainable parameters: the model receives a combined signal where the word's semantics are modulated by its position. Gradients flow through this operation without distortion, as the derivative of a sum is the sum of the derivatives. As a result, during training, the model automatically learns to adjust both the semantic embeddings and the use of positional information (via attention), without conflicting signals.
+The sum $$\text{Embedding} + PE$$ is possible because word embeddings and positional encodings have the same dimensionality $$d_{\text{model}}$$. This addition requires no trainable parameters: the model receives a combined signal where the word's semantics are modulated by its position. Gradients flow through this operation without distortion, as the derivative of a sum is the sum of the derivatives. As a result, during training, the model automatically learns to adjust both the semantic embeddings and the use of positional information (via attention), without conflicting signals.
 
 While it's also possible to use **learned positional embeddings**, the sinusoidal version was chosen in the original paper because it enables the model to extrapolate to sequence lengths not seen during training. Experiments have shown that both versions yield nearly identical results.
 
@@ -126,11 +126,11 @@ It can be described as a function that takes a **query** and a set of **key-valu
 
 Imagine you're at a table with 50 experts. At the start, none of them knows anything about themselves or each other, but their goal during the meeting is to figure out:
 
-* $V$: what they themselves know (their **Value** — knowledge/opinion),
-* $K$: the best way to describe what they're good at (their **Key**),
-* $Q$: the best way to express what information they're looking for (their **Query**).
+* $$V$$: what they themselves know (their **Value** — knowledge/opinion),
+* $$K$$: the best way to describe what they're good at (their **Key**),
+* $$Q$$: the best way to express what information they're looking for (their **Query**).
 
-If we used only $Q$ and $K$, the model wouldn't be able to transform the discovered dependencies into new features. The matrix $V$ adds flexibility, allowing the model to reweight values according to context.
+If we used only $$Q$$ and $$K$$, the model wouldn't be able to transform the discovered dependencies into new features. The matrix $$V$$ adds flexibility, allowing the model to reweight values according to context.
 
 Let's say you're one of those experts. You have a question (query), such as:
 
@@ -154,17 +154,17 @@ So, you update the attention weights accordingly and learn to listen to the righ
 
 **Self-attention** is a type of attention mechanism used in Transformers where the queries, keys, and values come from the same sequence. The original Transformer uses **Scaled Dot-Product Attention**, which works as follows:
 
-1. **Create query, key, and value vectors**. For each input vector $x$ (e.g., a word embedding), three vectors are computed:
+1. **Create query, key, and value vectors**. For each input vector $$x$$ (e.g., a word embedding), three vectors are computed:
 
 $$Q = xW_q,\quad K = xW_k,\quad V = xW_v$$
 
-Here, $W_q$, $W_k$, and $W_v$ are trainable weight matrices. The dimensions of $Q$ and $K$ must match: $d_k$.
+Here, $$W_q$$, $$W_k$$, and $$W_v$$ are trainable weight matrices. The dimensions of $$Q$$ and $$K$$ must match: $$d_k$$.
 
-2. **Compute scores.** For each query vector $Q_i$ (corresponding to position $i$), scores are computed with all keys $K_j$ using the dot product:
+2. **Compute scores.** For each query vector $$Q_i$$ (corresponding to position $$i$$), scores are computed with all keys $$K_j$$ using the dot product:
 
 $$\text{score}(i, j) = Q_i \cdot K_j^T$$
 
-3. **Scale the scores.** To prevent large dot product values with high dimensions, the scores are divided by $\sqrt{d_k}$:
+3. **Scale the scores.** To prevent large dot product values with high dimensions, the scores are divided by $$\sqrt{d_k}$$:
 
 $$\text{scaled\_score}(i, j) = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
 
@@ -172,13 +172,13 @@ $$\text{scaled\_score}(i, j) = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}$$
 
 $$\alpha_{ij} = \text{softmax}\left( \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} \right)$$
 
-The resulting $\alpha_{ij}$ are the attention weights.
+The resulting $$\alpha_{ij}$$ are the attention weights.
 
-5. **Compute the weighted sum of values.** Each value vector $V_j$ is multiplied by the attention weight $\alpha_{ij}$ and aggregated:
+5. **Compute the weighted sum of values.** Each value vector $$V_j$$ is multiplied by the attention weight $$\alpha_{ij}$$ and aggregated:
 
 $$\text{Attention}(Q_i, K, V) = \sum_j \alpha_{ij} V_j$$
 
-6. **Form the output vector.** The result is a vector containing contextual information relevant to position $i$. For the entire sequence:
+6. **Form the output vector.** The result is a vector containing contextual information relevant to position $$i$$. For the entire sequence:
 
 $$\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right)V$$
 
@@ -190,27 +190,27 @@ In practice, all computations are done in parallel using matrix operations, maki
 
 **Multi-Head Attention** is an extension of self-attention. While single-head attention focuses on one type of dependency (e.g., syntax or semantics), multi-head attention enables the model to capture multiple aspects of context simultaneously: grammatical relationships, anaphora, semantic parallels, etc.
 
-Let the input be an embedding matrix $X \in \mathbb{R}^{n \times d_{\text{model}}}$, where $n$ is the sequence length and $d_{\text{model}}$ is the embedding dimension.
+Let the input be an embedding matrix $$X \in \mathbb{R}^{n \times d_{\text{model}}}$$, where $$n$$ is the sequence length and $$d_{\text{model}}$$ is the embedding dimension.
 
-The idea remains the same: for each attention head $h \in {1, \dots, H}$, the input $X$ is projected into queries, keys, and values via trainable matrices:
+The idea remains the same: for each attention head $$h \in {1, \dots, H}$$, the input $$X$$ is projected into queries, keys, and values via trainable matrices:
 
 $$Q_h = X W_h^Q,\quad K_h = X W_h^K,\quad V_h = X W_h^V$$
 
-Typically, $d_k = d_v = \frac{d_{\text{model}}}{H}$ so that concatenating all heads results in the original dimension $d_{\text{model}}$.
+Typically, $$d_k = d_v = \frac{d_{\text{model}}}{H}$$ so that concatenating all heads results in the original dimension $$d_{\text{model}}$$.
 
 Each head performs standard attention:
 
 $$\text{Attention}_h(Q_h, K_h, V_h) = \text{softmax}\left( \frac{Q_h K_h^T}{\sqrt{d_k}} \right) V_h$$
 
-The outputs from all $H$ heads are concatenated along the last dimension:
+The outputs from all $$H$$ heads are concatenated along the last dimension:
 
 $$\text{Concat}( \text{head}_1, \dots, \text{head}_H ) \in \mathbb{R}^{n \times (H \cdot d_v)}$$
 
-This combined output is projected back into $d_{\text{model}}$ using a final linear layer:
+This combined output is projected back into $$d_{\text{model}}$$ using a final linear layer:
 
 $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_H) W^O$$
 
-where $W^O \in \mathbb{R}^{(H \cdot d_v) \times d_{\text{model}}}$ is a trainable weight matrix of the final output projection layer.
+where $$W^O \in \mathbb{R}^{(H \cdot d_v) \times d_{\text{model}}}$$ is a trainable weight matrix of the final output projection layer.
 
 ```python
 class MultiHeadAttention(nn.Module):
@@ -263,7 +263,7 @@ An FFN consists of two linear transformations. Between these two linear layers, 
 
 One of the key features of the FFN in the Transformer is that it is **applied position-wise**. This means the *same* feedforward network is applied **independently** to the representation of **each token** in the sequence.
 
-The dimension of the inner layer in the FFN is typically **larger** than the model dimension ($d_{\text{model}}$). In the original *"Attention Is All You Need"* paper, this inner dimension ($d_{\text{ff}}$) was **four times larger** than $d_{\text{model}}$ — that is, 2048 vs. 512 for the base model. However, other ratios may be used, such as doubling the size.
+The dimension of the inner layer in the FFN is typically **larger** than the model dimension ($$d_{\text{model}}$$). In the original *"Attention Is All You Need"* paper, this inner dimension ($$d_{\text{ff}}$$) was **four times larger** than $$d_{\text{model}}$$ — that is, 2048 vs. 512 for the base model. However, other ratios may be used, such as doubling the size.
 
 
 ```python
@@ -324,7 +324,7 @@ Like the encoder, the decoder is composed of a **stack of identical layers**, ty
 
 In addition to the two sub-layers found in the encoder (Multi-Head Self-Attention and Feed-Forward Network), each decoder layer includes a **third sub-layer**: **Encoder-Decoder Attention**. This allows the decoder to focus on relevant parts of the input sequence — that is, the encoder's output.
 
-The self-attention sub-layer in the decoder is **modified** to prevent attending to **future positions**. This is implemented by **masking** — setting the scores corresponding to illegal connections in the Softmax input to $-\infty$. This ensures that predictions for position $i$ depend only on known outputs at positions less than $i$.
+The self-attention sub-layer in the decoder is **modified** to prevent attending to **future positions**. This is implemented by **masking** — setting the scores corresponding to illegal connections in the Softmax input to $$-\infty$$. This ensures that predictions for position $$i$$ depend only on known outputs at positions less than $$i$$.
 
 As in the encoder, **residual connections** and **layer normalization** are applied around each sub-layer.
 
@@ -363,7 +363,7 @@ The **encoder** and **decoder** are each constructed as a **stack of `num_layers
 
 Similarly, each `DecoderLayer` applies masked self-attention, cross-attention to the encoder output, and a feed-forward network. Repeating these layers multiple times allows the model to iteratively refine representations — as if it is "re-reading" the data at different levels of abstraction.
 
-The **final output layer** `fc_out` projects from the model dimension $d_{\text{model}}$ to the size of the target language vocabulary. This projection interprets the decoder's output vectors as **logits** — unnormalized scores for each token in the vocabulary:
+The **final output layer** `fc_out` projects from the model dimension $$d_{\text{model}}$$ to the size of the target language vocabulary. This projection interprets the decoder's output vectors as **logits** — unnormalized scores for each token in the vocabulary:
 
 $$\text{output} = W_{\text{out}} \cdot \text{dec\_output} + b_{\text{out}}$$
 
