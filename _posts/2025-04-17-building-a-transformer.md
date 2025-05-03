@@ -8,13 +8,15 @@ categories: featured-posts
 featured: false
 ---
 
+[![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white)](https://www.kaggle.com/code/qmarva/implementing-transformer-en) [![Colab](https://img.shields.io/badge/Colab-F9AB00?style=flat-square&logo=google-colab&logoColor=white)](https://colab.research.google.com/drive/1m34XYFZZTt-jbHo2OXlUfxR33zvFbXJZ?usp=sharing)
+
 ## Building a Transformer
 
-The Transformer architecture was a groundbreaking development in the field of sequence processing. Unlike traditional models like RNNs and LSTMs, which process data sequentially, the Transformer uses an attention mechanism that allows it to process the entire sequence in parallel. This dramatically speeds up training and improves performance.
+The Transformer architecture marked a revolutionary step in sequence processing. Unlike traditional models such as RNNs and LSTMs, which handle data sequentially, the Transformer uses an attention mechanism that enables parallel processing of the entire sequence. This significantly accelerates training and improves performance.
 
-The key innovation of the Transformer is the use of self-attention, which enables the model to effectively take into account the context of each word or token, regardless of its position in the sequence. This architecture has become the foundation for many modern models, including BERT, GPT, and others, significantly improving the performance of natural language processing tasks.
+The key innovation of the Transformer is the use of **self-attention**, which allows the model to effectively take into account the context of each word or token, regardless of its position in the sequence. This architecture has become the foundation of many modern models, including BERT, GPT, and others, and has greatly improved the quality of solutions in the field of natural language processing.
 
-We'll need to install a few libraries (and import even more), and as we go, the list will only grow. You can safely ignore these setup cells and just run them. Focus on the main code instead.
+We'll need to install several libraries (and import even more), and the number of dependencies will only grow as we move forward. You can ignore these setup cells and just run them — the main focus should be on the core code.
 
 ```python
 %%capture
@@ -52,41 +54,52 @@ alt.data_transformers.disable_max_rows()
 
 ## Positional Encoding
 
-Before the Transformer architecture came along, sequence models like RNNs and LSTMs processed data step by step, inherently taking element order into account. But their inefficiency (due to sequential computation and difficulty with parallelization) drove the search for alternatives.
+Transformer models work with numbers. To process text, it must be converted into a numerical format that the model can understand and work with. The first step is to convert text into tokens — for more details, see the notebook on tokenization. Tokens represented as vectors are called **embeddings**.
 
-The Transformer eliminated these limitations by introducing a fully parallel approach. But that parallelism introduced a new problem: if all tokens are processed simultaneously, how can the model know their order?
+**Embeddings** are numerical vectors that capture the semantic meaning of words or subwords.
 
-To address this, researchers proposed **Positional Encoding** — a mechanism that encodes positional information into each element.
+Before the Transformer architecture, sequence-processing models like RNNs and LSTMs handled data sequentially, inherently preserving the order of elements. However, their computational inefficiency due to step-by-step processing and poor parallelization led researchers to seek alternatives.
 
-Positional Encoding adds special signals to the token embeddings that depend on their position in the sequence. This helps the model distinguish between, say, the word "cat" at position 1 and "cat" at position 5 — even if their semantic embeddings are identical. The encoding formula uses a mix of sine and cosine functions with different frequencies:
+The Transformer overcame these limitations with a fully parallel approach. However, without positional information, the model wouldn’t be able to distinguish between sentences with the same words in different orders. In Russian, word relationships are often expressed via case endings, but in English and many other languages, word order is crucial.
+
+**Positional Encoding** is the mechanism in the Transformer architecture that enables the model to account for the order of words in a sequence.
+
+Positional Encoding adds special signals (positional encodings) to the token embeddings based on their position in the sequence. These encodings have the same dimensionality as the embeddings so that they can be summed together. This additional information allows the model to distinguish, for instance, between the word "cat" at position 1 and "cat" at position 5, even if their semantic embeddings are identical. The encoding uses a formula that combines sine and cosine functions at different frequencies:
 
 $$
-PE_{(pos,\, 2i)} = \sin\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}\right), \quad
-PE_{(pos,\, 2i+1)} = \cos\left(\frac{pos}{10000^{\frac{2i}{d_{\text{model}}}}}\right)
+PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right), \quad  
+PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right),  
 $$
 
-
-where $$pos$$ is the position in the sequence, $$d_{\text{model}}$$ is the embedding dimension, and $$i$$ is the index of the vector component.
+where \$$pos\$$ is the position, \$$d\_{\text{model}}\$$ is the embedding dimensionality, and \$$i\$$ is the index of the vector dimension.
 
 The core idea is that these sinusoidal functions allow the model to pay attention to **relative positions**.
 
-### Why does this formula encode relative positions?
+### Why does this strange formula encode relative positions?
 
-Imagine every position in the sequence as a point on a number line. If we generate sine and cosine signals for position $$pos$$, then for position $$pos + k$$ those signals can be expressed using combinations of the originals. For example, using the angle addition formula:
+#### First, the model can generalize to sequences longer than those seen during training.
 
-$$  
+Imagine that each position in a sequence is a point on a number line. If we generate signals for position \$$pos\$$ using sine and cosine, then the signals for position \$$pos + k\$$ can be expressed as a combination of the original values. For example, using the angle addition formula:
+
+$$
 \sin(pos + k) = \sin(pos)\cos(k) + \cos(pos)\sin(k),  
-$$  
+$$
 
-This means a shift by $$k$$ positions becomes a weighted sum of the original sine and cosine values. That lets the model naturally pick up on things like "a word three positions away" being related to the current one — even if it’s never seen sequences that long during training.
+A shift of \$$k\$$ positions can be expressed as a weighted sum of the original sine and cosine values. This allows the model to infer that a word "three positions later" is related to the original word, even if it never saw such a long sequence during training.
 
-The logarithmic frequency decay in the denominator, $$10000^{2i/d_{\text{model}}}$$, ensures that different components of the position vector focus on different scales. For small $$i$$ (i.e., early dimensions of the vector), the denominator is large, so the sine and cosine functions grow slowly with $$pos$$. These low-frequency oscillations help distinguish broad regions of the sequence — like the beginning (positions 1–100) from the middle (positions 101–200). For large $$i$$, the denominator shrinks, so the functions grow faster and produce high-frequency oscillations that capture fine-grained position differences — like 101 vs. 102.
+#### Second, the distance between any two time steps is consistent across the sequence.
 
-Alternating between sine and cosine for even and odd indices ensures unique positional encodings. If we used only sine, some positions could accidentally overlap because of its periodic nature (e.g., $$\sin(pos)$$ and $$\sin(pos + 2\pi)$$). Including cosine for neighboring vector components breaks that symmetry: the combination of $$\sin(f(pos))$$ and $$\cos(f(pos))$$ across various frequencies $$f$$ guarantees that every $$pos$$ has a unique vector. Since sine and cosine are nearly orthogonal (their dot product is close to zero), their signals don’t interfere with the word embeddings, letting the model process semantics and position independently.
+The logarithmic decay of frequencies in the term \$$10000^{2i/d\_{\text{model}}}\$$ ensures that different dimensions of the positional vector capture different levels of positional detail. For small \$$i\$$ (early vector components), the denominator becomes large, causing the sine and cosine arguments to grow slowly with \$$pos\$$. This creates low-frequency oscillations that help distinguish between distant positions — for example, the beginning of the text (positions 1–100) versus the middle (positions 101–200). For larger \$$i\$$, the denominator shrinks, the argument grows faster, and high-frequency oscillations emerge, encoding fine-grained differences between neighboring positions (e.g., 101 and 102).
 
-The sum $$\text{Embedding} + PE$$ works because both word embeddings and positional encodings have the same dimensionality, $$d_{\text{model}}$$. This addition requires no learnable parameters — the model receives a unified signal where the meaning of a word is adjusted based on its position. Gradients flow cleanly through this operation since the derivative of a sum is just the sum of derivatives. As a result, during training, the model naturally learns to refine both the semantic embeddings and the use of positional signals (via the attention mechanism), without signal conflict.
+#### Third, this formula yields unique encodings for each position.
 
-Researchers explored other options too, like learnable positional embeddings. But the sinusoidal approach proved more effective at generalizing to sequences longer than those seen during training. So, Positional Encoding became a well-balanced solution — expressive, efficient, and free of extra learnable parameters — making it a perfect fit for the Transformer’s parallel architecture.
+Alternating sine and cosine for even and odd indices solves the uniqueness issue. If we used only sine, different positions might accidentally match due to the periodicity of the function (e.g., \$$\sin(pos)\$$ and \$$\sin(pos + 2\pi)\$$). Adding cosine for neighboring vector components eliminates this symmetry: the combination of \$$\sin(f(pos))\$$ and \$$\cos(f(pos))\$$ across different frequencies \$$f\$$ ensures that each position \$$pos\$$ has a unique vector. The orthogonality of sine and cosine (their dot product is close to zero) minimizes overlap with word embeddings, allowing the model to separately process semantics and position.
+
+---
+
+The sum \$$\text{Embedding} + PE\$$ is possible because word embeddings and positional encodings have the same dimensionality \$$d\_{\text{model}}\$$. This addition requires no trainable parameters: the model receives a combined signal where the word’s semantics are modulated by its position. Gradients flow through this operation without distortion, as the derivative of a sum is the sum of the derivatives. As a result, during training, the model automatically learns to adjust both the semantic embeddings and the use of positional information (via attention), without conflicting signals.
+
+While it's also possible to use **learned positional embeddings**, the sinusoidal version was chosen in the original paper because it enables the model to extrapolate to sequence lengths not seen during training. Experiments have shown that both versions yield nearly identical results.
 
 ```python
 class PositionalEncoding(nn.Module):
@@ -108,62 +121,121 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 ```
 
-## MultiHeadAttention
+## Attention, Self-Attention, Multi-Head Attention
 
-**MultiHeadAttention** is the core of the Transformer architecture. Attention in Transformers emerged as a response to the limitations of earlier attention mechanisms used in seq2seq models. Initially, self-attention allowed each element in a sequence to interact with others by computing weighted sums of their features. But there was a problem: a single-head attention mechanism could only focus on **one type of dependency** — like syntactic relationships or semantic similarity. For complex tasks like translation, we need to capture **multiple types of interactions** at once: subject-verb agreement, anaphora, contextual synonyms, and more.
+### Attention
 
-**The solution**: instead of one attention mechanism, use several parallel “heads,” each learning to capture its own type of dependency. Formally, for input vectors (embeddings) $$X \in \mathbb{R}^{n \times d_{\text{model}}}$$ — where $$n$$ is the sequence length and $$d_{\text{model}}$$ is the embedding size — each head $$h$$ projects $$X$$ into three separate spaces: queries ($$Q_h$$), keys ($$K_h$$), and values ($$V_h$$), using learned weight matrices:
+**Attention** is a mechanism that allows a model to weigh the importance of different elements in the input sequence.
 
-$$  
-Q_h = X W_h^Q, \quad K_h = X W_h^K, \quad V_h = X W_h^V,  
-$$  
+It can be described as a function that takes a **query** and a set of **key-value** pairs, and produces an output — a weighted sum of the values. The weight assigned to each value is computed based on a compatibility function between the query and the corresponding key.
 
-where $$W_h^Q, W_h^K \in \mathbb{R}^{d_{\text{model}} \times d_k}$$, $$W_h^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$$, and $$d_k$$, $$d_v$$ are the dimensionalities of the key/query and value subspaces, respectively. This triplet ($$Q, K, V$$) mirrors concepts from information retrieval:
+Imagine you're at a table with 50 experts. At the start, none of them knows anything about themselves or each other, but their goal during the meeting is to figure out:
 
-- **Queries** ($$Q$$) — what we're looking for,  
-- **Keys** ($$K$$) — where we’re looking,  
-- **Values** ($$V$$) — what we retrieve.
+* \$$V\$$: what they themselves know (their **Value** — knowledge/opinion),
+* \$$K\$$: the best way to describe what they’re good at (their **Key**),
+* \$$Q\$$: the best way to express what information they're looking for (their **Query**).
 
-If we only had $$Q$$ and $$K$$, the model could measure similarity, but not transform or reweight information based on context. The $$V$$ matrix introduces that flexibility — it allows the model to adapt the retrieved features.
+If we used only \$$Q\$$ and \$$K\$$, the model wouldn’t be able to transform the discovered dependencies into new features. The matrix \$$V\$$ adds flexibility, allowing the model to reweight values according to context.
 
-For each head, we compute **scaled dot-product attention**:
+Let’s say you’re one of those experts. You have a question (query), such as:
 
-$$  
-\text{Attention}(Q_h, K_h, V_h) = \text{softmax}\left(\frac{Q_h K_h^T}{\sqrt{d_k}}\right) V_h.  
-$$  
+> “I need an opinion on Japanese cars.”
 
-**Why softmax?** Softmax turns unbounded similarity scores (logits) into a probability distribution where the attention weights sum to 1. This keeps outputs within a stable range and ensures the model focuses on the most relevant tokens.
+You look around. Each expert has published a short description (key), for example:
 
-**Why scale by $$\sqrt{d_k}$$?** Without scaling, when $$d_k$$ is large, the dot product $$Q_h K_h^T$$ can have high variance. This leads to extremely sharp softmax distributions, causing gradients to vanish and slowing training. Scaling by $$\sqrt{d_k}$$ keeps gradients in a healthy range.
+* “I'm a mechanic specializing in Japanese cars”
+* “I'm a chef who knows Italian cuisine”
+* “I'm a driver who owned a Subaru”
 
-**Combining heads**: the outputs of all heads are concatenated and projected back to $$d_{\text{model}}$$:
+You compare your query against the keys of the others. If someone’s key matches well, you pay more attention to their value (opinion). You’ll likely give the most weight to the mechanic and less to the driver.
 
-$$  
-\text{MultiHead}(X) = \text{Concat}(\text{head}_1, \ldots, \text{head}_H) W^O,  
-$$  
+As training progresses, you refine your query. Maybe next time, you realize you’re not interested in Japanese cars, but in **Italian sewing machines**. And it turns out the chef, initially thinking they specialize in Italian food, actually knows sewing machines well.
 
-where $$W^O \in \mathbb{R}^{H d_v \times d_{\text{model}}}$$ is a learned projection matrix. Typically, we set $$d_k = d_v = d_{\text{model}} / H$$ to keep the total computation manageable. For example, with $$d_{\text{model}} = 512$$ and $$H = 8$$, we get $$d_k = d_v = 64$$.
+So, you update the attention weights accordingly and learn to listen to the right expert.
 
-**Why this choice of dimensions?**  
-- If $$d_k$$ and $$d_v$$ stayed constant as $$H$$ increased, the computation cost would grow quadratically: $$O(H n^2 d_k)$$.  
-- By reducing them to $$d_{\text{model}} / H$$, we keep the overall complexity at $$O(n^2 d_{\text{model}})$$ — the same as single-head attention.  
-- The output projection $$W^O$$ restores the dimensionality to $$d_{\text{model}}$$, keeping it compatible with the rest of the Transformer stack.
+---
 
-**Why this structure works:**  
-1. **Subspace separation**: Each head operates in its own $$d_k$$-dimensional subspace, letting the model learn **independent types of interactions**. One head might track noun-adjective agreement, another might attend to pronoun references. The projection matrices $$W_h^Q, W_h^K, W_h^V$$ effectively decompose the original embeddings into interpretable components.
-2. **Parallelism**: Independent heads allow for efficient parallel computation on GPUs.  
-3. **Interpretability**: After training, analyzing attention weights per head reveals the kinds of patterns each one has learned.
+### **Self-Attention**
 
-**Example computation for a single head:**  
-Let $$X$$ be an embedding matrix of shape $$n \times d_{\text{model}}$$. For head $$h$$:
+**Self-attention** is a type of attention mechanism used in Transformers where the queries, keys, and values come from the same sequence. The original Transformer uses **Scaled Dot-Product Attention**, which works as follows:
 
-- $$Q_h = X W_h^Q$$ → shape $$n \times d_k$$
-- $$K_h = X W_h^K$$ → shape $$n \times d_k$$  
-- $$V_h = X W_h^V$$ → shape $$n \times d_v$$  
+1. **Create query, key, and value vectors**. For each input vector $$x$$ (e.g., a word embedding), three vectors are computed:
 
-Then the attention matrix $$A_h = \text{softmax}\left(\frac{Q_h K_h^T}{\sqrt{d_k}}\right)$$ (shape $$n \times n$$) is multiplied by $$V_h$$, giving an output of shape $$n \times d_v$$. Concatenating the outputs from all heads gives a $$n \times (H d_v)$$ matrix, which is projected back to $$n \times d_{\text{model}}$$ via $$W^O$$.
+$$
+Q = xW_q,\quad K = xW_k,\quad V = xW_v  
+$$
 
-Preserving the **dimensionality** is critical: MultiHeadAttention outputs have the same shape $$d_{\text{model}}$$ as the input, allowing seamless integration with other Transformer components (like normalization and feed-forward layers) without extra transformation. This consistency also helps stabilize gradients in deep models.
+Here, \$$W\_q\$$, \$$W\_k\$$, and \$$W\_v\$$ are trainable weight matrices. The dimensions of \$$Q\$$ and \$$K\$$ must match: \$$d\_k\$$.
+
+2. **Compute scores.** For each query vector \$$Q\_i\$$ (corresponding to position \$$i\$$), scores are computed with all keys \$$K\_j\$$ using the dot product:
+
+$$
+\text{score}(i, j) = Q_i \cdot K_j^T  
+$$
+
+3. **Scale the scores.** To prevent large dot product values with high dimensions, the scores are divided by \$$\sqrt{d\_k}\$$:
+
+$$
+\text{scaled\_score}(i, j) = \frac{Q_i \cdot K_j^T}{\sqrt{d_k}}  
+$$
+
+4. **Apply Softmax.** Each row of scores is passed through Softmax for normalization:
+
+$$
+\alpha_{ij} = \text{softmax}\left( \frac{Q_i \cdot K_j^T}{\sqrt{d_k}} \right)  
+$$
+
+The resulting \$$\alpha\_{ij}\$$ are the attention weights.
+
+5. **Compute the weighted sum of values.** Each value vector $$V_j$$ is multiplied by the attention weight \$$\alpha\_{ij}\$$ and aggregated:
+
+$$
+\text{Attention}(Q_i, K, V) = \sum_j \alpha_{ij} V_j  
+$$
+
+6. **Form the output vector.** The result is a vector containing contextual information relevant to position \$$i\$$. For the entire sequence:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right)V  
+$$
+
+In practice, all computations are done in parallel using matrix operations, making the mechanism efficient and scalable.
+
+---
+
+### **Multi-Head Attention**
+
+**Multi-Head Attention** is an extension of self-attention. While single-head attention focuses on one type of dependency (e.g., syntax or semantics), multi-head attention enables the model to capture multiple aspects of context simultaneously: grammatical relationships, anaphora, semantic parallels, etc.
+
+Let the input be an embedding matrix \$$X \in \mathbb{R}^{n \times d\_{\text{model}}}\$$, where \$$n\$$ is the sequence length and \$$d\_{\text{model}}\$$ is the embedding dimension.
+
+The idea remains the same: for each attention head \$$ h \in {1, \dots, H} \$$, the input \$$X\$$ is projected into queries, keys, and values via trainable matrices:
+
+$$
+Q_h = X W_h^Q,\quad K_h = X W_h^K,\quad V_h = X W_h^V  
+$$
+
+Typically, \$$d\_k = d\_v = \frac{d\_{\text{model}}}{H}\$$ so that concatenating all heads results in the original dimension \$$d\_{\text{model}}\$$.
+
+Each head performs standard attention:
+
+$$
+\text{Attention}_h(Q_h, K_h, V_h) = \text{softmax}\left( \frac{Q_h K_h^T}{\sqrt{d_k}} \right) V_h  
+$$
+
+The outputs from all \$$H\$$ heads are concatenated along the last dimension:
+
+$$
+\text{Concat}( \text{head}_1, \dots, \text{head}_H ) \in \mathbb{R}^{n \times (H \cdot d_v)}  
+$$
+
+This combined output is projected back into \$$d\_{\text{model}}\$$ using a final linear layer:
+
+$$
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_H) W^O  
+$$
+
+where \$$ W^O \in \mathbb{R}^{(H \cdot d\_v) \times d\_{\text{model}}} \$$ is a trainable weight matrix of the final output projection layer.
 
 ```python
 class MultiHeadAttention(nn.Module):
@@ -208,31 +280,15 @@ class MultiHeadAttention(nn.Module):
 
 ## FeedForward
 
-We need the position-wise Feed Forward layer in the Transformer to provide **non-linear feature transformation** after the attention step. While MultiHeadAttention effectively captures global dependencies between tokens, that alone isn’t enough for complex tasks like translation — the model also needs to combine the extracted patterns and transform them into new semantic representations.
+Imagine that after passing through the Multi-Head Attention mechanism, the information for each word or token has become richer and more contextualized. Attention has blended information from different tokens to better understand each one in the context of the sentence. But now, this enriched information needs to be **processed and refined individually** for each token.
 
-Each token in the sequence is processed **independently** through two linear layers. The first layer expands the dimensionality from $$d_{\text{model}}$$ (e.g., 512) to $$d_{\text{ff}}$$ (typically 2048), followed by a ReLU activation function:
+That’s the role of the **FeedForward Network (FFN)**, which comes after the attention layer in each encoder and decoder block.
 
-$$  
-\text{hidden} = \text{ReLU}(x W_1 + b_1),  
-$$
+An FFN consists of two linear transformations. Between these two linear layers, there’s a non-linear activation function — usually **ReLU**. Simply put, it's a small two-layer neural network.
 
-where $$W_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ff}}}$$.
+One of the key features of the FFN in the Transformer is that it is **applied position-wise**. This means the *same* feedforward network is applied **independently** to the representation of **each token** in the sequence.
 
-Expanding the dimensionality by a factor of 4 ($$d_{\text{ff}} = 4d_{\text{model}}$$) gives the model enough capacity to learn non-obvious combinations of features. The second linear layer projects the representation back down to the original dimensionality:
-
-$$  
-\text{output} = \text{hidden} W_2 + b_2,  
-$$
-
-where $$W_2 \in \mathbb{R}^{d_{\text{ff}} \times d_{\text{model}}}$$. Dropout (typically with a rate like 0.1) is applied between the layers for regularization.
-
-**Why this design?**
-
-- **Non-linearity**: ReLU breaks linearity, enabling the model to approximate complex functions. Without it, the two linear layers would collapse into a single matrix multiplication.
-- **Expansion and compression**: Increasing the dimensionality creates a kind of "bottleneck" that forces the model to filter out noise and extract more abstract features. This is similar to how an autoencoder works — but without information loss, since the output returns to the original size.
-- **Position-wise independence**: Processing each token separately helps compensate for any local information that might be diluted by the global attention mechanism. For example, in the phrase "blue ball", attention may link the adjective to the noun, but the FFN refines their joint representation into a vector encoding both color and shape.
-
-The input and output of the FeedForward layer both have the same dimensionality, $$d_{\text{model}}$$, which allows for stacking multiple Encoder/Decoder blocks. Dropout and residual connections (implemented outside this layer) help stabilize training in deep networks.
+The dimension of the inner layer in the FFN is typically **larger** than the model dimension (\$$d\_{\text{model}}\$$). In the original *"Attention Is All You Need"* paper, this inner dimension (\$$d\_{\text{ff}}\$$) was **four times larger** than \$$d\_{\text{model}}\$$ — that is, 2048 vs. 512 for the base model. However, other ratios may be used, such as doubling the size.
 
 
 ```python
@@ -251,35 +307,18 @@ class FeedForward(nn.Module):
 
 ## EncoderLayer
 
-Before the introduction of the **EncoderLayer** in the Transformer, researchers faced a dilemma: how to combine global contextual understanding with local feature transformation, while maintaining stable training in deep networks. Earlier approaches like RNNs suffered from vanishing gradients, and convolutional networks required many layers to capture long-range dependencies. Self-attention solved the problem of modeling global context — but on its own, it couldn’t provide deep, hierarchical feature transformation. This raised the question: how can we structure sequential transformations so the model first identifies relationships between tokens, then "rethinks" them, all while staying robust as the network grows deeper?
+Most competitive sequence transformation models follow an **encoder-decoder** structure.
 
-The **EncoderLayer** was the answer — a module that combines two essential stages. First, the input embeddings $$x$$, already enriched with positional information (via Positional Encoding), are passed through **MultiHeadAttention**. Here, each token “asks” the rest of the sequence:
+The **encoder** receives the input and builds its representation (i.e., its features).
 
-$$  
-\text{attn\_output} = \text{MultiHeadAttention}(x, x, x, mask),  
-$$  
+The encoder is composed of a stack of **identical layers**. The original paper uses a stack of **6 such layers**, though the number can vary. Each encoder layer consists of **two sub-layers**:
 
-where `mask` is used to ignore future tokens (in the decoder) or padding tokens. This lets the model, for instance, link the pronoun “he” to the correct noun, even if they’re separated by dozens of words. But attention is a **linear** operation in feature space. To introduce **non-linearity and depth**, we follow up with a **Feed Forward Network (FFN)** — two linear layers with an intermediate dimensionality expansion:
+1. A **Multi-Head Self-Attention** mechanism
+2. A **Feed-Forward Network (FFN)** — which we discussed earlier
 
-$$  
-\text{ffn\_output} = \text{FFN}(x) = \text{ReLU}(x W_1 + b_1) W_2 + b_2.  
-$$  
+Each of these sub-layers is wrapped in a **residual connection**, followed by a **layer normalization** step.
 
-The FFN acts like the model’s “thought process”: it transforms the global dependencies identified by attention into new semantic representations. For example, if attention links “apple” and “green,” the FFN can encode that as a combined vector representing both fruit and color.
-
-But simply chaining these operations wasn’t enough. Deep networks often “forgot” the original inputs — gradients vanished, and features got distorted. This is where **residual connections** and **layer normalization** came in. After each sub-step (attention or FFN), the layer adds the original input $$x$$ to the output and applies normalization:
-
-$$  
-x = \text{LayerNorm}(x + \text{Dropout}(\text{sublayer}(x))).  
-$$  
-
-Residuals act like bridges, allowing gradients and raw input information to flow freely through even dozens of layers. LayerNorm stabilizes activation distributions by computing the mean and variance across the $$d_{\text{model}}$$ dimensions — preventing exploding or vanishing values.
-
-**Why this order?** If the FFN came before attention, the ReLU non-linearity could "break" the positional information that's critical for self-attention. And the use of **post-layer normalization** (after the residual connection) instead of pre-normalization (before the sub-step) wasn’t arbitrary: in the original Transformer, this design helped gradients flow through both the transformed path and the original input path, balancing parameter updates.
-
-**Example**: An embedding for the word “bank” may, after attention, be linked to “river” (bank as a shore) or “money” (bank as a financial institution). The FFN then transforms these associations into a context-specific representation. Residuals and normalization ensure that the signal remains stable. As this process repeats across multiple EncoderLayers, the model refines the meaning iteratively — like rereading a sentence and noticing new details each time.
-
-Historically, the EncoderLayer became the blueprint for scalability. It could be stacked N times (e.g., 6 or 12 layers), enabling deep models without collapsing gradients. The combination of self-attention and FFN turned out to be so effective that even today’s large language models — like GPT-4 — retain this core structure, merely enhancing it with new mechanisms.
+Residual connections help ensure smooth gradient flow when training very deep models and preserve information from the original input sequence.
 
 ```python
 class EncoderLayer(nn.Module):
@@ -304,47 +343,15 @@ class EncoderLayer(nn.Module):
 
 ## DecoderLayer
 
-If the EncoderLayer in a Transformer learns to **understand** the input text by compressing its context into dense vectors, then the **DecoderLayer** was designed to **generate output** — word by word — while taking into account both previous predictions and the encoder’s information. Early approaches like seq2seq with attention already connected encoder and decoder, but their recurrent nature limited parallelism and made it harder to model complex dependencies. In the Transformer, the decoder had to be **autoregressive**, yet still **parallelizable** — and this is where **masked self-attention** combined with **cross-attention** became crucial.
+The **decoder** uses the encoder’s embeddings along with other inputs to generate the **target sequence**.
 
-A **DecoderLayer** starts with a partially generated output sequence (e.g., the translation generated up to the current word). To ensure that the model doesn’t “peek” at future tokens, it uses **masked self-attention**:
+Like the encoder, the decoder is composed of a **stack of identical layers**, typically matching the encoder in depth.
 
-$$  
-\text{attn\_output} = \text{MultiHeadAttention}(x, x, x, tgt\_mask),  
-$$  
+In addition to the two sub-layers found in the encoder (Multi-Head Self-Attention and Feed-Forward Network), each decoder layer includes a **third sub-layer**: **Encoder-Decoder Attention**. This allows the decoder to focus on relevant parts of the input sequence — that is, the encoder’s output.
 
-where $$tgt\_mask$$ is an upper-triangular matrix with $$-\infty$$ in positions corresponding to future tokens. When passed through softmax, these become zeros — effectively blocking attention to future positions. For instance, while generating the third word, the mask hides all tokens beyond the third, forcing the model to rely only on previously generated context.
+The self-attention sub-layer in the decoder is **modified** to prevent attending to **future positions**. This is implemented by **masking** — setting the scores corresponding to illegal connections in the Softmax input to \$$-\infty\$$. This ensures that predictions for position \$$i\$$ depend only on known outputs at positions less than \$$i\$$.
 
-But self-attention isn’t enough — the decoder also needs to **relate the output to the input**. This is where **cross-attention** comes in: queries ($$Q$$) come from the decoder, while keys ($$K$$) and values ($$V$$) are taken from the encoder output:
-
-$$  
-\text{cross\_attn\_output} = \text{MultiHeadAttention}(x, enc\_output, enc\_output, src\_mask).  
-$$  
-
-Here, $$src\_mask$$ hides padding tokens from the source sequence. This step acts like an “interrogation” of the encoder: the decoder asks which parts of the input are relevant at this step in the output. For example, when translating the word “apple,” the decoder can use cross-attention to link it to either “яблоко” or “компания,” depending on context.
-
-After cross-attention, as in the encoder, comes a **Feed Forward Network** to inject non-linearity:
-
-$$  
-\text{ffn\_output} = \text{FFN}(x).  
-$$  
-
-Each sublayer is wrapped with **residual connections** and **layer normalization**:
-
-$$  
-x = \text{LayerNorm}(x + \text{Dropout}(\text{sublayer}(x))),  
-$$  
-
-ensuring gradient stability even in very deep networks.
-
-**Why three stages?**  
-1. **Masked self-attention** isolates the already-generated portion of the sequence, simulating RNN-like autoregression.  
-2. **Cross-attention** synchronizes encoder and decoder, letting the decoder “look into” the input — akin to alignment in statistical machine translation.  
-3. **FFN** transforms the combined context into a decision — a final refinement before predicting the next token.
-
-**Example**: When translating “I hit the bank” into Russian:  
-1. Masked self-attention links “I hit” to “the,” while blocking future tokens.  
-2. Cross-attention identifies whether “bank” aligns to “берег” (if the context is a river) or “банк” (if financial).  
-3. The FFN processes this and outputs either “по берегу” or “в банк,” preserving grammar and meaning.
+As in the encoder, **residual connections** and **layer normalization** are applied around each sub-layer.
 
 ```python
 class DecoderLayer(nn.Module):
@@ -375,34 +382,19 @@ class DecoderLayer(nn.Module):
 
 ## Transformer
 
-Once all the components of the Transformer — encoder, decoder, attention mechanisms, and positional encodings — were developed, the final task was to **assemble them into a complete model** capable of learning from sequence pairs (e.g., source text and translation). Early approaches like Seq2Seq already used an encoder-decoder separation, but their recurrent nature limited both parallelism and depth. The Transformer architecture, as implemented in code, emerged as a balance between expressiveness and computational efficiency.
+Once all the components of the Transformer — the encoder, decoder, attention mechanisms, and positional encodings — are implemented, the final step is to combine them into a single model that can be trained on sequence pairs (e.g., source text and its translation).
 
-**Model assembly** starts with turning tokens into vectors. The embeddings (`encoder_embedding` and `decoder_embedding`) map words into a $$d_{\text{model}}$$-dimensional space, while `positional_encoding` injects positional information:
+The **encoder** and **decoder** are each constructed as a **stack of `num_layers` layers**. Each `EncoderLayer` in the encoder sequentially refines the input representations: self-attention captures global dependencies, the feed-forward network introduces non-linearity, and residual connections with layer normalization ensure stability.
 
-$$  
-X_{\text{enc}} = \text{Embedding}(src) + \text{PositionalEncoding}(src),  
-$$  
-$$  
-X_{\text{dec}} = \text{Embedding}(tgt) + \text{PositionalEncoding}(tgt).  
+Similarly, each `DecoderLayer` applies masked self-attention, cross-attention to the encoder output, and a feed-forward network. Repeating these layers multiple times allows the model to iteratively refine representations — as if it is "re-reading" the data at different levels of abstraction.
+
+The **final output layer** `fc_out` projects from the model dimension \$$d\_{\text{model}}\$$ to the size of the target language vocabulary. This projection interprets the decoder’s output vectors as **logits** — unnormalized scores for each token in the vocabulary:
+
 $$
-
-Without positional encoding, the model wouldn’t be able to distinguish between permutations of words, since self-attention alone is order-invariant.
-
-Next, the encoder and decoder are built as **stacks of layers** (`num_layers`). Each layer in the encoder (`EncoderLayer`) progressively refines the input representations: self-attention extracts global dependencies, the FFN adds non-linearity, and residual connections with layer normalization ensure stability. Similarly, the decoder (`DecoderLayer`) applies masked self-attention, cross-attention to the encoder output, and the FFN — in that order. Repeating these layers allows the model to iteratively refine its understanding, as if "rereading" the data at different levels of abstraction.
-
-The **final layer** (`fc_out`) projects from $$d_{\text{model}}$$ to the size of the target vocabulary. This projection interprets decoder vectors as logits — scores for each token in the vocabulary:
-
-$$  
 \text{output} = W_{\text{out}} \cdot \text{dec\_output} + b_{\text{out}}.  
 $$
 
-A softmax (not explicitly shown in code but implied in the loss function) converts these logits into a probability distribution, from which the next word is sampled or selected.
-
-**Why this particular structure?**  
-- **Depth (`num_layers`)**: Each layer captures different facets of the data. Early encoder layers may pick up syntax, while later ones capture semantics. In the decoder, lower layers focus on alignment with the encoder, while upper ones refine output grammar and fluency.  
-- **Separate embeddings**: Using different embedding matrices for source and target languages allows the model to work effectively in multilingual settings.  
-- **Dimensional consistency**: All components maintain the same dimensionality $$d_{\text{model}}$$, which simplifies training — gradients flow freely through residual paths, and parameters update coherently.
-- 
+A Softmax (not explicitly shown in code, but implied in the loss function) is applied to these logits to produce a probability distribution over the vocabulary, from which the next word is selected.
 
 ```python
 class Transformer(nn.Module):
@@ -432,7 +424,7 @@ class Transformer(nn.Module):
         return output
 ```
 
-## Testing
+## Testing Transformer (just run it)
 
 ```python
 def test_transformer():
