@@ -8,7 +8,7 @@ categories: featured-posts
 featured: false
 ---
 
-# Tokenization
+## Tokenization
 
 [![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white)](https://www.kaggle.com/code/qmarva/1-bpe-tokenization-algorithm-eng?scriptVersionId=231677033) [![Colab](https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white)](https://colab.research.google.com/drive/1lmfuMdC8v-lXL_MuyC0uBewdLLCTQzCO?usp=sharing)
 
