@@ -4,7 +4,7 @@ title: LLM Inference Optimization
 date: 2025-06-19 10:00:00
 description: Production-Ready Techniques for Real-World Deployment
 tags: machine-learning, transformers, production, optimization, high-load
-categories: featured-posts
+categories: system-design
 featured: false
 ---
 

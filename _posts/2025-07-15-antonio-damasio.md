@@ -4,8 +4,8 @@ title: "Somatic Marker Hypothesis by Antonio Damasio"
 date: 2025-07-15 10:00:00
 description: Why your gut feelings aren't just superstition — they're sophisticated neural machinery that's been running your life all along
 tags: neuroscience, decision-making, emotions, cognition, psychology
-categories: featured-posts
-featured: true
+categories: cognitive-science
+featured: false
 ---
 
 *Why your gut feelings aren't just superstition — they're sophisticated neural machinery that's been running your life all along*

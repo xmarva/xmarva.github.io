@@ -4,7 +4,7 @@ title: Building a Transformer (Cross-Attention and MHA Explained)
 date: 2025-04-16 15:00:00
 description: Learn and implement the most iconic architecture in modern deep learning.
 tags: machine-learning, transformers, multihead-attention, positional-encoding, nlp
-categories: featured-posts
+categories: machine-learning
 featured: false
 ---
 

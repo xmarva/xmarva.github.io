@@ -4,7 +4,7 @@ title: Can AI Achieve True Creativity?
 date: 2025-02-13 15:00:00
 description: Exploring the parallels between human creativity and neural networks
 tags: ai, neuroscience, creativity
-categories: featured-posts
+categories: cognitive-science
 featured: true
 ---
 

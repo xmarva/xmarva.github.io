@@ -4,7 +4,7 @@ title: How to Write Good Python Code
 date: 2023-02-07 15:09:00
 description: Let's look at the basic rules for writing great Python code
 tags: python, coding
-categories: old-posts
+categories: code
 featured: false
 ---
 
