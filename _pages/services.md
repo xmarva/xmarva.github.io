@@ -9,19 +9,16 @@ nav_order: 3
 <div class="post">
 
 <div class="services-intro">
-  <h1>Services</h1>
-  <p class="lead-text">Strategic AI consulting and mentoring to help organizations and professionals thrive in the age of artificial intelligence.</p>
+  <h1>services</h1>
+  <p class="lead-text">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of AI</p>
 </div>
 
 <div class="services-grid">
 
   <!-- AI/ML Consulting -->
   <div class="service-card">
-    <div class="service-icon">
-      <i class="fa-solid fa-brain"></i>
-    </div>
+    <h2><i class="fa-solid fa-brain"></i> AI/ML Consulting</h2>
     <div class="service-content">
-      <h2>AI/ML Consulting</h2>
       <p class="service-description">
         Strategic support for companies looking to integrate AI effectively. From feasibility assessments to designing robust ML roadmaps, I help you align AI initiatives with your business goals and market realities.
       </p>
@@ -39,7 +36,7 @@ nav_order: 3
       </div>
 
       <div class="pricing-info">
-        <p><strong>Investment:</strong> Free initial consultation call • $100/hour thereafter</p>
+        <p><strong>Free initial consultation call • $100/hour thereafter</strong></p>
       </div>
 
       <div class="cta-section">
@@ -51,51 +48,10 @@ nav_order: 3
     </div>
   </div>
 
-  <!-- Career Mentoring -->
+  <!-- ML Software Development -->
   <div class="service-card">
-    <div class="service-icon">
-      <i class="fa-solid fa-user-graduate"></i>
-    </div>
+    <h2><i class="fa-solid fa-rocket"></i> ML Software Development</h2>
     <div class="service-content">
-      <h2>Career Mentoring</h2>
-      <p class="service-description">
-        Helping technical professionals break into AI or level up within the field through strategic, no-fluff guidance. Skip the endless theory rabbit holes and focus on what actually matters for career advancement.
-      </p>
-      
-      <div class="service-details">
-        <h3>My Approach:</h3>
-        <ul>
-          <li><strong>Strategic Learning Plans</strong> — Skip the math deep-dives, focus on practical skills that employers value</li>
-          <li><strong>Professional Positioning</strong> — Craft compelling narratives that showcase your unique AI potential</li>
-          <li><strong>Resume & Portfolio Optimization</strong> — Make your experience stand out in competitive AI job markets</li>
-          <li><strong>Interview Preparation</strong> — Navigate technical assessments and behavioral rounds with confidence</li>
-          <li><strong>Industry Navigation</strong> — Understand the AI landscape, compensation benchmarks, and career trajectories</li>
-          <li><strong>Network Building</strong> — Connect with the right people and communities in AI</li>
-        </ul>
-        
-        <p><strong>Format:</strong> Bi-weekly 1-hour video sessions with ongoing support via messaging between calls.</p>
-      </div>
-
-      <div class="pricing-info">
-        <p><strong>Investment:</strong> Free initial consultation call • $100/hour for ongoing mentoring</p>
-      </div>
-
-      <div class="cta-section">
-        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Career Mentoring Inquiry" class="cta-button">Start Your Journey</a>
-        <a href="https://www.linkedin.com/in/marva-s" class="cta-button secondary" target="_blank">
-          <i class="fa-brands fa-linkedin"></i> Connect on LinkedIn
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ML Project Execution -->
-  <div class="service-card featured-service">
-    <div class="service-icon">
-      <i class="fa-solid fa-rocket"></i>
-    </div>
-    <div class="service-content">
-      <h2>ML Project Execution</h2>
       <p class="service-description">
         Working with a network of trusted developers and ML experts, I lead and deliver custom AI projects — from early POCs to production-ready systems. Human-centered design meets cutting-edge technology.
       </p>
@@ -114,8 +70,8 @@ nav_order: 3
         </div>
         
         <div class="sub-service">
-          <h4><i class="fa-solid fa-users"></i> Team Assembly</h4>
-          <p>Connecting you with vetted ML professionals who understand human-centered AI principles and deliver results.</p>
+          <h4><i class="fa-solid fa-wrench"></i> Project Optimization</h4>
+          <p>Audit and enhancement of existing ML projects. Performance optimization, code refactoring, and system improvements.</p>
         </div>
         
         <div class="sub-service">
@@ -125,11 +81,11 @@ nav_order: 3
       </div>
 
       <div class="pricing-info">
-        <p><strong>Investment:</strong> Custom pricing based on project scope and requirements</p>
+        <p><strong>Custom pricing based on project scope and requirements</strong></p>
       </div>
 
       <div class="cta-section">
-        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Project Execution Inquiry" class="cta-button primary">Discuss Your Project</a>
+        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Project Execution Inquiry" class="cta-button">Discuss Your Project</a>
         <a href="https://www.linkedin.com/in/marva-s" class="cta-button secondary" target="_blank">
           <i class="fa-brands fa-linkedin"></i> Connect on LinkedIn
         </a>
@@ -137,28 +93,40 @@ nav_order: 3
     </div>
   </div>
 
-</div>
+  <!-- Career Mentoring -->
+  <div class="service-card">
+    <h2><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h2>
+    <div class="service-content">
+      <p class="service-description">
+        Helping technical professionals break into AI or level up within the field through strategic, no-fluff guidance. Skip the endless theory rabbit holes and focus on what actually matters for career advancement.
+      </p>
+      <div class="service-details">
+        <h3>My Approach:</h3>
+        <ul>
+          <li><strong>Strategic Learning Plans</strong> — Skip the math deep-dives, focus on practical skills that employers value</li>
+          <li><strong>Professional Positioning</strong> — Craft compelling narratives that showcase your unique AI potential</li>
+          <li><strong>Resume & Portfolio Optimization</strong> — Make your experience stand out in competitive AI job markets</li>
+          <li><strong>Interview Preparation</strong> — Navigate technical assessments and behavioral rounds with confidence</li>
+          <li><strong>Industry Navigation</strong> — Understand the AI landscape, compensation benchmarks, and career trajectories</li>
+          <li><strong>Network Building</strong> — Connect with the right people and communities in AI</li>
+        </ul>
+        
+        <p><strong>Format:</strong> Bi-weekly 1-hour video sessions with ongoing support via messaging between calls.</p>
+      </div>
 
-<!-- Contact Section -->
-<div class="contact-section">
-  <h2>Ready to Get Started?</h2>
-  <p>Let's discuss how AI can transform your business or accelerate your career. Reach out via email or connect with me on LinkedIn.</p>
-  
-  <div class="contact-buttons">
-    <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Services Inquiry" class="contact-button email">
-      <i class="fa-solid fa-envelope"></i>
-      <span>Send Email</span>
-    </a>
-    <a href="https://www.linkedin.com/in/marva-s" class="contact-button linkedin" target="_blank">
-      <i class="fa-brands fa-linkedin"></i>
-      <span>LinkedIn</span>
-    </a>
+      <div class="pricing-info">
+        <p><strong>Free initial consultation call • $100/hour for ongoing mentoring</strong></p>
+      </div>
+
+      <div class="cta-section">
+        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Career Mentoring Inquiry" class="cta-button">Start Your Journey</a>
+        <a href="https://www.linkedin.com/in/marva-s" class="cta-button secondary" target="_blank">
+          <i class="fa-brands fa-linkedin"></i> Connect on LinkedIn
+        </a>
+      </div>
+    </div>
   </div>
-  
-  <p class="contact-note">
-    <i class="fa-solid fa-gift"></i>
-    Remember: Your first consultation call is always free!
-  </p>
+
 </div>
 
 </div>
@@ -178,9 +146,7 @@ html[data-theme="dark"] {
 }
 
 .services-intro {
-  text-align: center;
   margin: 2rem 0 3rem 0;
-  padding: 2rem 0;
 }
 
 .services-intro h1 {
@@ -190,11 +156,10 @@ html[data-theme="dark"] {
 }
 
 .lead-text {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--global-text-color-light);
-  max-width: 600px;
-  margin: 0 auto;
   line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
 .services-grid {
@@ -219,48 +184,23 @@ html[data-theme="dark"] {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.featured-service {
-  border: 2px solid var(--global-theme-color);
-  position: relative;
-}
-
-.featured-service::before {
-  content: "Most Popular";
-  position: absolute;
-  top: -12px;
-  left: 2rem;
-  background: var(--global-theme-color);
-  color: var(--global-bg-color);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.service-icon {
+.service-card h2 {
+  font-size: 1.8rem;
+  margin: 0 0 1rem 0;
+  color: var(--global-theme-color);
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
-.service-icon i {
+.service-card h2 i {
   font-size: 1.5rem;
-  color: var(--global-theme-color);
   margin-right: 0.75rem;
-}
-
-.service-content h2 {
-  display: inline;
-  font-size: 1.8rem;
-  margin: 0;
-  color: var(--global-theme-color);
-  vertical-align: middle;
 }
 
 .service-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  margin: 1rem 0 1.5rem 0;
+  margin: 0 0 1.5rem 0;
   color: var(--global-text-color-light);
 }
 
@@ -385,99 +325,7 @@ html[data-theme="dark"] .pricing-info {
   margin-right: 0.5rem;
 }
 
-.contact-section {
-  margin: 4rem 0 2rem 0;
-  padding: 3rem 2rem;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 8px;
-  border: 1px solid var(--global-divider-color);
-}
-
-html[data-theme="dark"] .contact-section {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.contact-section h2 {
-  font-size: 2rem;
-  color: var(--global-theme-color);
-  margin-bottom: 1rem;
-}
-
-.contact-section > p {
-  font-size: 1.1rem;
-  color: var(--global-text-color-light);
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.contact-buttons {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 2rem 0;
-}
-
-.contact-button {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  min-width: 180px;
-  justify-content: center;
-}
-
-.contact-button.email {
-  background: var(--global-theme-color);
-  color: var(--global-bg-color);
-  border: 2px solid var(--global-theme-color);
-}
-
-.contact-button.email:hover {
-  background: transparent;
-  color: var(--global-theme-color);
-  text-decoration: none;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.contact-button.linkedin {
-  background: var(--global-theme-color);
-  color: var(--global-bg-color);
-  border: 2px solid var(--global-theme-color);
-}
-
-.contact-button.linkedin:hover {
-  background: transparent;
-  color: var(--global-theme-color);
-  text-decoration: none;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.contact-button i {
-  font-size: 1.2rem;
-}
-
-.contact-note {
-  font-style: italic;
-  color: var(--global-theme-color);
-  font-weight: 500;
-  margin-top: 2rem;
-  font-size: 1rem;
-}
-
-.contact-note i {
-  margin-right: 0.5rem;
-}
+/* Remove unused styles */
 
 /* Responsive Design */
 @media (min-width: 768px) {
