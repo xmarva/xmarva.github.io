@@ -10,7 +10,7 @@ nav_order: 3
 
 <div class="services-intro">
   <h1>services</h1>
-  <p class="course-description">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of artificial intelligence.</p>
+  <p class="service-description">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of artificial intelligence.</p>
 </div>
 
 <div class="services-grid">
@@ -163,7 +163,7 @@ html[data-theme="dark"] {
   color: var(--global-theme-color);
 }
 
-.course-description {
+.service-description {
   color: var(--global-text-color-light);
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
@@ -347,7 +347,7 @@ html[data-theme="dark"] {
     font-size: 3rem;
   }
   
-  .course-description {
+  .service-description {
     font-size: 1.3rem;
   }
 }
