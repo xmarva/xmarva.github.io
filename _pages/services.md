@@ -9,7 +9,8 @@ nav_order: 3
 <div class="post">
 
 <div class="services-intro">
-  <p class="lead-text">Strategic AI consulting and mentoring to help organizations and professionals thrive in the age of AI.</p>
+  <h1>Services</h1>
+  <p class="lead-text">Strategic AI consulting and mentoring to help organizations and professionals thrive in the age of artificial intelligence.</p>
 </div>
 
 <div class="services-grid">
@@ -156,7 +157,7 @@ nav_order: 3
   
   <p class="contact-note">
     <i class="fa-solid fa-gift"></i>
-    Remember: Your first consultation call is always free
+    Remember: Your first consultation call is always free!
   </p>
 </div>
 
@@ -165,19 +166,15 @@ nav_order: 3
 <style>
 /* Inherit theme variables from your existing style */
 :root {
-  --service-card-bg: var(--global-bg-color);
-  --service-card-text: var(--global-text-color);
-  --service-card-accent: var(--global-theme-color);
-  --service-card-hover: rgba(0, 0, 0, 0.03);
-  --service-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  --service-card-shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.1);
-  --service-border: var(--global-divider-color);
+  --services-hover: rgba(0, 0, 0, 0.02);
+  --services-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --services-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 html[data-theme="dark"] {
-  --service-card-hover: rgba(255, 255, 255, 0.05);
-  --service-card-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  --service-card-shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --services-hover: rgba(255, 255, 255, 0.05);
+  --services-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --services-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .services-intro {
@@ -189,7 +186,7 @@ html[data-theme="dark"] {
 .services-intro h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
 }
 
 .lead-text {
@@ -207,21 +204,23 @@ html[data-theme="dark"] {
 }
 
 .service-card {
-  background: var(--service-card-bg);
-  border-radius: 12px;
+  background: var(--global-bg-color);
+  border-radius: 8px;
   padding: 2rem;
-  box-shadow: var(--service-card-shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--service-border);
+  border: 1px solid var(--global-divider-color);
+  margin-bottom: 2rem;
+  color: var(--global-text-color);
 }
 
 .service-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--service-card-shadow-hover);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .featured-service {
-  border: 2px solid var(--service-card-accent);
+  border: 2px solid var(--global-theme-color);
   position: relative;
 }
 
@@ -230,8 +229,8 @@ html[data-theme="dark"] {
   position: absolute;
   top: -12px;
   left: 2rem;
-  background: var(--service-card-accent);
-  color: white;
+  background: var(--global-theme-color);
+  color: var(--global-bg-color);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -239,28 +238,36 @@ html[data-theme="dark"] {
 }
 
 .service-icon {
-  font-size: 2.5rem;
-  color: var(--service-card-accent);
-  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.service-icon i {
+  font-size: 1.5rem;
+  color: var(--global-theme-color);
+  margin-right: 0.75rem;
 }
 
 .service-content h2 {
+  display: inline;
   font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: var(--service-card-accent);
+  margin: 0;
+  color: var(--global-theme-color);
+  vertical-align: middle;
 }
 
 .service-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
-  color: var(--service-card-text);
+  margin: 1rem 0 1.5rem 0;
+  color: var(--global-text-color-light);
 }
 
 .service-details h3 {
   font-size: 1.2rem;
   margin: 1.5rem 0 1rem 0;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
 }
 
 .service-details ul {
@@ -278,21 +285,25 @@ html[data-theme="dark"] {
   content: "▸";
   position: absolute;
   left: 0;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   font-weight: bold;
 }
 
 .sub-service {
   margin: 1.5rem 0;
   padding: 1rem;
-  border-left: 3px solid var(--service-card-accent);
-  background: var(--service-card-hover);
-  border-radius: 0 8px 8px 0;
+  border-left: 3px solid var(--global-theme-color);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 0 6px 6px 0;
+}
+
+html[data-theme="dark"] .sub-service {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .sub-service h4 {
   margin: 0 0 0.5rem 0;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   font-size: 1.1rem;
 }
 
@@ -304,19 +315,25 @@ html[data-theme="dark"] {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.5;
+  color: var(--global-text-color);
 }
 
 .pricing-info {
-  background: var(--service-card-hover);
+  background: rgba(0, 0, 0, 0.02);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 6px;
   margin: 1.5rem 0;
-  border-left: 4px solid var(--service-card-accent);
+  border-left: 4px solid var(--global-theme-color);
+}
+
+html[data-theme="dark"] .pricing-info {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .pricing-info p {
   margin: 0;
   font-weight: 500;
+  color: var(--global-text-color);
 }
 
 .cta-section {
@@ -330,38 +347,38 @@ html[data-theme="dark"] {
 
 .cta-button {
   display: inline-block;
-  background: var(--service-card-accent);
-  color: white;
+  background: var(--global-theme-color);
+  color: var(--global-bg-color);
   padding: 0.75rem 2rem;
   border-radius: 25px;
   text-decoration: none;
   font-weight: bold;
   transition: all 0.3s ease;
-  border: 2px solid var(--service-card-accent);
+  border: 2px solid var(--global-theme-color);
   flex: 0 0 auto;
 }
 
 .cta-button:hover {
   background: transparent;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   text-decoration: none;
   transform: translateY(-2px);
 }
 
 .cta-button.primary {
-  background: var(--service-card-accent);
+  background: var(--global-theme-color);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button.secondary {
   background: transparent;
-  color: var(--service-card-accent);
-  border: 2px solid var(--service-card-accent);
+  color: var(--global-theme-color);
+  border: 2px solid var(--global-theme-color);
 }
 
 .cta-button.secondary:hover {
-  background: var(--service-card-accent);
-  color: white;
+  background: var(--global-theme-color);
+  color: var(--global-bg-color);
 }
 
 .cta-button i {
@@ -372,14 +389,18 @@ html[data-theme="dark"] {
   margin: 4rem 0 2rem 0;
   padding: 3rem 2rem;
   text-align: center;
-  background: var(--service-card-hover);
-  border-radius: 12px;
-  border: 1px solid var(--service-border);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px solid var(--global-divider-color);
+}
+
+html[data-theme="dark"] .contact-section {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .contact-section h2 {
   font-size: 2rem;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   margin-bottom: 1rem;
 }
 
@@ -415,31 +436,31 @@ html[data-theme="dark"] {
 }
 
 .contact-button.email {
-  background: var(--service-card-accent);
-  color: white;
-  border: 2px solid var(--service-card-accent);
+  background: var(--global-theme-color);
+  color: var(--global-bg-color);
+  border: 2px solid var(--global-theme-color);
 }
 
 .contact-button.email:hover {
   background: transparent;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   text-decoration: none;
   transform: translateY(-3px);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .contact-button.linkedin {
-  background: #0077b5;
-  color: white;
-  border: 2px solid #0077b5;
+  background: var(--global-theme-color);
+  color: var(--global-bg-color);
+  border: 2px solid var(--global-theme-color);
 }
 
 .contact-button.linkedin:hover {
   background: transparent;
-  color: #0077b5;
+  color: var(--global-theme-color);
   text-decoration: none;
   transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(0, 119, 181, 0.2);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .contact-button i {
@@ -448,7 +469,7 @@ html[data-theme="dark"] {
 
 .contact-note {
   font-style: italic;
-  color: var(--service-card-accent);
+  color: var(--global-theme-color);
   font-weight: 500;
   margin-top: 2rem;
   font-size: 1rem;
