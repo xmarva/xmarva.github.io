@@ -217,22 +217,31 @@ html[data-theme="dark"] {
   margin-right: 0.75rem;
 }
 
-.service-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
+.service-content .service-description {
   color: var(--global-text-color-light);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.service-details p {
+  font-size: 1rem;
+  color: var(--global-text-color);
+  margin: 1rem 0;
 }
 
 .service-details ul {
   list-style: none;
   padding: 0;
+  margin-top: 1rem;
 }
 
 .service-details li {
   margin-bottom: 0.75rem;
   padding-left: 1.5rem;
   position: relative;
+  font-size: 1rem;
+  color: var(--global-text-color);
 }
 
 .service-details li::before {
@@ -263,7 +272,7 @@ html[data-theme="dark"] {
 
 .sub-service p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--global-text-color);
 }
