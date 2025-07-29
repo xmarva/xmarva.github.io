@@ -10,21 +10,24 @@ nav_order: 3
 
 <div class="services-intro">
   <h1>services</h1>
-  <p class="lead-text">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of AI</p>
+  <p class="course-description">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of artificial intelligence.</p>
 </div>
 
 <div class="services-grid">
 
   <!-- AI/ML Consulting -->
   <div class="service-card">
-    <h2><i class="fa-solid fa-brain"></i> AI/ML Consulting</h2>
+    <div class="service-header">
+      <div class="header-left">
+        <h3><i class="fa-solid fa-brain"></i> AI/ML Consulting</h3>
+      </div>
+    </div>
     <div class="service-content">
       <p class="service-description">
         Strategic support for companies looking to integrate AI effectively. From feasibility assessments to designing robust ML roadmaps, I help you align AI initiatives with your business goals and market realities.
       </p>
       
       <div class="service-details">
-        <h3>What I Do:</h3>
         <ul>
           <li><strong>Computer Vision Solutions</strong> — Custom visual AI systems for industry-specific challenges</li>
           <li><strong>Large Language Models</strong> — Implementation and fine-tuning for your unique use cases</li>
@@ -50,15 +53,17 @@ nav_order: 3
 
   <!-- ML Software Development -->
   <div class="service-card">
-    <h2><i class="fa-solid fa-rocket"></i> ML Software Development</h2>
+    <div class="service-header">
+      <div class="header-left">
+        <h3><i class="fa-solid fa-rocket"></i> ML Software Development</h3>
+      </div>
+    </div>
     <div class="service-content">
       <p class="service-description">
         Working with a network of trusted developers and ML experts, I lead and deliver custom AI projects — from early POCs to production-ready systems. Human-centered design meets cutting-edge technology.
       </p>
       
       <div class="service-details">
-        <h3>Full-Stack AI Delivery:</h3>
-        
         <div class="sub-service">
           <h4><i class="fa-solid fa-lightbulb"></i> Proof of Concepts</h4>
           <p>Rapid prototyping with human factors consideration from day one. Validate your AI ideas quickly and cost-effectively.</p>
@@ -95,13 +100,16 @@ nav_order: 3
 
   <!-- Career Mentoring -->
   <div class="service-card">
-    <h2><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h2>
+    <div class="service-header">
+      <div class="header-left">
+        <h3><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h3>
+      </div>
+    </div>
     <div class="service-content">
       <p class="service-description">
         Helping technical professionals break into AI or level up within the field through strategic, no-fluff guidance. Skip the endless theory rabbit holes and focus on what actually matters for career advancement.
       </p>
       <div class="service-details">
-        <h3>My Approach:</h3>
         <ul>
           <li><strong>Strategic Learning Plans</strong> — Skip the math deep-dives, focus on practical skills that employers value</li>
           <li><strong>Professional Positioning</strong> — Craft compelling narratives that showcase your unique AI potential</li>
@@ -155,11 +163,11 @@ html[data-theme="dark"] {
   color: var(--global-theme-color);
 }
 
-.lead-text {
-  font-size: 1.1rem;
+.course-description {
   color: var(--global-text-color-light);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
   line-height: 1.6;
-  margin-bottom: 2rem;
 }
 
 .services-grid {
@@ -169,31 +177,43 @@ html[data-theme="dark"] {
 }
 
 .service-card {
-  background: var(--global-bg-color);
+  background-color: var(--global-bg-color);
   border-radius: 8px;
-  padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid var(--global-divider-color);
+  padding: 2rem;
   margin-bottom: 2rem;
+  transition: box-shadow 0.3s ease;
   color: var(--global-text-color);
 }
 
 .service-card:hover {
-  transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.service-card h2 {
-  font-size: 1.8rem;
-  margin: 0 0 1rem 0;
-  color: var(--global-theme-color);
+.service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--global-divider-color);
+  padding-bottom: 0.75rem;
+}
+
+.header-left {
   display: flex;
   align-items: center;
 }
 
-.service-card h2 i {
-  font-size: 1.5rem;
+.service-header h3 {
+  margin: 0;
+  color: var(--global-theme-color);
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.service-header h3 i {
+  font-size: 1.2rem;
   margin-right: 0.75rem;
 }
 
@@ -202,12 +222,6 @@ html[data-theme="dark"] {
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
   color: var(--global-text-color-light);
-}
-
-.service-details h3 {
-  font-size: 1.2rem;
-  margin: 1.5rem 0 1rem 0;
-  color: var(--global-theme-color);
 }
 
 .service-details ul {
@@ -233,12 +247,8 @@ html[data-theme="dark"] {
   margin: 1.5rem 0;
   padding: 1rem;
   border-left: 3px solid var(--global-theme-color);
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--global-code-bg-color);
   border-radius: 0 6px 6px 0;
-}
-
-html[data-theme="dark"] .sub-service {
-  background: rgba(255, 255, 255, 0.05);
 }
 
 .sub-service h4 {
@@ -259,15 +269,11 @@ html[data-theme="dark"] .sub-service {
 }
 
 .pricing-info {
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--global-code-bg-color);
   padding: 1rem;
   border-radius: 6px;
   margin: 1.5rem 0;
   border-left: 4px solid var(--global-theme-color);
-}
-
-html[data-theme="dark"] .pricing-info {
-  background: rgba(255, 255, 255, 0.05);
 }
 
 .pricing-info p {
@@ -325,16 +331,10 @@ html[data-theme="dark"] .pricing-info {
   margin-right: 0.5rem;
 }
 
-/* Remove unused styles */
-
 /* Responsive Design */
 @media (min-width: 768px) {
   .services-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .contact-buttons {
-    flex-direction: row;
   }
   
   .cta-section {
@@ -347,7 +347,7 @@ html[data-theme="dark"] .pricing-info {
     font-size: 3rem;
   }
   
-  .lead-text {
+  .course-description {
     font-size: 1.3rem;
   }
 }
