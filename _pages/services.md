@@ -158,9 +158,9 @@ html[data-theme="dark"] {
 }
 
 .services-intro h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
-  color: var(--global-theme-color);
+  color: var(--global-text-color);
 }
 
 .service-description {
@@ -353,7 +353,7 @@ html[data-theme="dark"] {
 
 @media (min-width: 1024px) {
   .services-intro h1 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   
   .service-description {
