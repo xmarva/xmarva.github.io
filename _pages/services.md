@@ -26,20 +26,7 @@ children:
         </div>
         <p class="service-preview-description">Strategic support for companies looking to integrate AI effectively. From feasibility assessments to designing robust ML roadmaps, I help you align AI initiatives with your business goals and market realities.</p>
         
-        <div class="service-preview-highlights">
-          <div class="highlight-item">
-            <strong>Computer Vision Systems:</strong> Real-time object detection, image segmentation, 3D vision
-          </div>
-          <div class="highlight-item">
-            <strong>LLM and Voice AI:</strong> Model fine-tuning, RAG systems, speech processing
-          </div>
-          <div class="highlight-item">
-            <strong>Custom Model Development:</strong> Time series analysis, anomaly detection, multi-modal models
-          </div>
-          <div class="highlight-item">
-            <strong>Mobile & Edge Optimization:</strong> Model quantization, real-time inference
-          </div>
-        </div>
+
         
         <div class="service-preview-footer">
           <div class="pricing-preview">
@@ -55,20 +42,7 @@ children:
         </div>
         <p class="service-preview-description">Working with a network of trusted developers and ML experts, I lead and deliver custom AI projects — from early POCs to production-ready systems. Human-centered design meets cutting-edge technology.</p>
         
-        <div class="service-preview-highlights">
-          <div class="highlight-item">
-            <strong>Rapid Prototyping:</strong> MVP development, technical validation, performance benchmarking
-          </div>
-          <div class="highlight-item">
-            <strong>Production Systems:</strong> System architecture, API development, monitoring & logging
-          </div>
-          <div class="highlight-item">
-            <strong>Mobile & Edge Deployment:</strong> Model compression, cross-platform deployment
-          </div>
-          <div class="highlight-item">
-            <strong>System Optimization:</strong> Performance profiling, latency reduction, code refactoring
-          </div>
-        </div>
+
         
         <div class="service-preview-footer">
           <div class="pricing-preview">
@@ -84,20 +58,7 @@ children:
         </div>
         <p class="service-preview-description">Helping technical professionals break into AI or level up within the field through strategic, no-fluff guidance. Skip the endless theory rabbit holes and focus on what actually matters for career advancement.</p>
         
-        <div class="service-preview-highlights">
-          <div class="highlight-item">
-            <strong>Strategic Learning Plans:</strong> Skill assessment, learning roadmaps, project planning
-          </div>
-          <div class="highlight-item">
-            <strong>Professional Positioning:</strong> Personal branding, story development, market positioning
-          </div>
-          <div class="highlight-item">
-            <strong>Resume & Portfolio:</strong> ATS optimization, GitHub strategy, LinkedIn optimization
-          </div>
-          <div class="highlight-item">
-            <strong>Psychological Preparation:</strong> Confidence building, imposter syndrome, career resilience
-          </div>
-        </div>
+
         
         <div class="service-preview-footer">
           <div class="pricing-preview">
@@ -169,30 +130,9 @@ children:
 
 .service-preview-description {
   color: var(--global-text-color);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   font-size: 1rem;
   line-height: 1.6;
-}
-
-.service-preview-highlights {
-  margin-bottom: 1.5rem;
-}
-
-.highlight-item {
-  color: var(--global-text-color-light);
-  margin-bottom: 0.75rem;
-  padding-left: 1rem;
-  border-left: 2px solid var(--global-theme-color);
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-
-.highlight-item:last-child {
-  margin-bottom: 0;
-}
-
-.highlight-item strong {
-  color: var(--global-text-color);
 }
 
 .service-preview-footer {
