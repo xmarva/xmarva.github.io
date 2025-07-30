@@ -217,6 +217,13 @@ kramdown:
       line_numbers: false
       start_line: 1
 
+# Navigation
+navbar_fixed_top: true
+footer_fixed_bottom: false
+
+# Dropdown menu support
+dropdown_menu: true
+
 # Includes & excludes
 include: ["_pages"]
 exclude:
