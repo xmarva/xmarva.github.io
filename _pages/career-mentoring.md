@@ -15,11 +15,12 @@ nav: false
   </div>
 
   <div class="service-card">
-    <div class="service-header">
-      <div class="header-left">
-        <h2><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h2>
-      </div>
+  <h2 class="visually-hidden">Career Mentoring</h2>
+  <div class="service-header">
+    <div class="header-left">
+      <h3><i class="fa-solid fa-brain"></i>Career Mentoring</h3>
     </div>
+  </div>
     <div class="service-content">
       <p class="service-description">
         Helping technical professionals break into AI or level up within the field through strategic, no-fluff guidance. Skip the endless theory rabbit holes and focus on what actually matters for career advancement.

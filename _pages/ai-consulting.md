@@ -14,12 +14,13 @@ nav: false
     <h1 class="visually-hidden">AI/ML Consulting</h1>
   </div>
 
-  <div class="service-card">
-    <div class="service-header">
-      <div class="header-left">
-        <h2><i class="fa-solid fa-brain"></i> AI/ML Consulting</h2>
-      </div>
+<div class="service-card">
+  <h2 class="visually-hidden">AI/ML Consulting</h2>
+  <div class="service-header">
+    <div class="header-left">
+      <h3><i class="fa-solid fa-brain"></i> AI/ML Consulting</h3>
     </div>
+  </div>
     <div class="service-content">
       <p class="service-description">
         Strategic support for companies looking to integrate AI effectively. From feasibility assessments to designing robust ML roadmaps, I help you align AI initiatives with your business goals and market realities.

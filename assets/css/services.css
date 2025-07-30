@@ -79,7 +79,7 @@
     align-items: center;
   }
   
-  .service-header h2 {
+  .service-header h3 {
     margin: 0;
     color: var(--global-theme-color);
     font-size: 1.5rem;
@@ -87,7 +87,7 @@
     align-items: center;
   }
   
-  .service-header h2 i {
+  .service-header h3 i {
     font-size: 1.3rem;
     margin-right: 0.75rem;
   }

@@ -15,9 +15,10 @@ nav: false
   </div>
 
   <div class="service-card">
+    <h2 class="visually-hidden">AI/ML Software Design</h2>
     <div class="service-header">
       <div class="header-left">
-        <h2><i class="fa-solid fa-rocket"></i> AI/ML Software Design</h2>
+        <h3><i class="fa-solid fa-rocket"></i> AI/ML Software Design</h3>
       </div>
     </div>
     <div class="service-content">
