@@ -6,7 +6,7 @@ title: blank # the website title (if blank, full name will be used instead)
 first_name: Eva
 middle_name:
 last_name: Koroleva
-email: elizaveta.victoria.koroleva@gmail.com
+email: eva.v.koroleva@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   A space for exploring the depths of natural and artificial intelligence.
 footer_text: >
@@ -86,7 +86,7 @@ kaggle_id: qmarva # your kaggle id
 keybase_username: # your keybase user name
 lastfm_id: # your lastfm id
 lattes_id: # your ID on Lattes (Brazilian Lattes CV)
-linkedin_username: marva-s # your LinkedIn user name
+linkedin_username: e-koroleva # your LinkedIn user name
 mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 medium_username: # your Medium username
 orcid_id: # your ORCID ID
