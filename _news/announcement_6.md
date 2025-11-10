@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Glad to have joined the <a href="https://autotrading.sa/en" target="_blank" rel="noopener noreferrer">Automatic Trading</a> team as a Senior ML & MLOps Engineer
+Glad to have joined the <a href="https://autotrading.sa/en" target="_blank" rel="noopener noreferrer">Automatic Trading</a> team as a ML & MLOps Architect
