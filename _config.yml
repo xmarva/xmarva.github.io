@@ -319,8 +319,8 @@ display_categories: ["code", "machine-learning", "system-design", "cognitive-sci
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Einstein]
-  first_name: [Albert, A.]
+  last_name: [Koroleva]
+  first_name: [Eva, E., E, Elizaveta]
 
   style: apa
   locale: en
