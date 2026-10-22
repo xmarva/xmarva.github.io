@@ -7,7 +7,7 @@ first_name: Eva
 middle_name:
 last_name: Koroleva
 email: eva.v.koroleva@gmail.com
-description: > # the ">" symbol means to ignore newlines until "footer_text:"
+description: >- # ">-" folds the lines below into one and drops the trailing newline (which broke the Schema.org JSON)
   A space for exploring the depths of natural and artificial intelligence.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
@@ -62,9 +62,9 @@ max_width: 930px
 # -----------------------------------------------------------------------------
 # Display links to the page with a preview object on social media.
 # see https://schema.org/docs/faq.html for more information
-serve_og_meta: false # Include Open Graph meta tags in the HTML head
-serve_schema_org: false # Include Schema.org in the HTML head
-og_image: # The site-wide (default for all links) Open Graph preview image
+serve_og_meta: true # Include Open Graph meta tags in the HTML head
+serve_schema_org: true # Include Schema.org in the HTML head
+og_image: https://xmarva.github.io/assets/img/eva_koroleva.jpg # The site-wide (default for all links) Open Graph preview image (absolute URL)
 
 # -----------------------------------------------------------------------------
 # Social integration
