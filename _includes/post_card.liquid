@@ -46,7 +46,9 @@
       {% if categories != '' %}
         <span>&nbsp; &middot; &nbsp;</span>
         {% for category in post.categories %}
-          <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}"> <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
+          <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">
+            <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}
+          </a>
           {% unless forloop.last %}
             &nbsp;
           {% endunless %}
