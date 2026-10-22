@@ -2,7 +2,7 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Welcome to my teaching materials collection. ⚠️ These page and course are currently under development.
+description: Welcome to my teaching materials collection. ⚠️ This page and course are currently under development.
 nav: true
 nav_order: 6
 ---
@@ -36,7 +36,7 @@ nav_order: 6
             </thead>
             <tbody>
               <tr>
-                <td><a href="https://xmarva.github.io/blog/2025/tokenization/">1. Understanding Tokenization: Byte-Pair Encoding</a></td>
+                <td><a href="{{ '/blog/2025/tokenization/' | relative_url }}">1. Understanding Tokenization: Byte-Pair Encoding</a></td>
                 <td>
                   <a href="https://www.kaggle.com/code/qmarva/1-bpe-tokenization-algorithm-eng?scriptVersionId=231677033" class="badge-link">
                     <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
@@ -55,12 +55,12 @@ nav_order: 6
                 </td>
               </tr>
               <tr>
-                <td>2. Implementing Transformer Architecture </td>
+                <td><a href="{{ '/blog/2025/building-a-transformer/' | relative_url }}">2. Implementing Transformer Architecture</a></td>
                 <td>
-                  <a href="#" class="badge-link">
+                  <a href="https://www.kaggle.com/code/qmarva/implementing-transformer-en" class="badge-link">
                     <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
                   </a>
-                  <a href="#" class="badge-link">
+                  <a href="https://colab.research.google.com/drive/1m34XYFZZTt-jbHo2OXlUfxR33zvFbXJZ?usp=sharing" class="badge-link">
                     <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
                   </a>
                 </td>
@@ -198,7 +198,7 @@ nav_order: 6
           <div class="header-left">
             <h3>Part 2: Transformer-Based Architectures</h3>
           </div>
-          <a href="#" class="github-link"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://github.com/xmarva/transformer-based-architectures" class="github-link"><i class="fab fa-github"></i> GitHub</a>
         </div>
         <div class="section-content">
           <table class="table">
@@ -249,7 +249,7 @@ nav_order: 6
               <tr>
                 <td>4. Mixture of Experts: Switch Transformers</td>
                 <td>
-                  <a href="hhttps://github.com/xmarva/transformer-based-architectures/blob/main/notebooks/04-moe-explained-and-fine-tuned.ipynb" class="badge-link">
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/notebooks/04-moe-explained-and-fine-tuned.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
                   </a>
                   <a href="https://www.kaggle.com/code/qmarva/moe-explained-and-fine-tuned" class="badge-link">
@@ -273,7 +273,7 @@ nav_order: 6
               <tr>
                 <td>6. Longformers: Efficient Long-Context Attention</td>
                 <td>
-                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/05-Longformer.ipynb" class="badge-link">
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/notebooks/06-Longformer.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
                   </a>
                 </td>
@@ -282,7 +282,7 @@ nav_order: 6
               <tr>
                 <td>7. Multimodal Architectures: CLIP, Llava</td>
                 <td>
-                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/07-CLIP.ipynb" class="badge-link">
+                  <a href="https://github.com/xmarva/transformer-based-architectures/blob/main/notebooks/07-CLIP.ipynb" class="badge-link">
                     <img src="https://img.shields.io/badge/GitHub-0F0F0F?style=plastic&logo=github&logoColor=white" alt="GitHub">
                   </a>
                 </td>
