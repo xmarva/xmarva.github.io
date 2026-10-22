@@ -3,7 +3,7 @@ layout: post
 title: Algebraic Foundations of Low-Rank Adaptation
 date: 2024-12-30 15:09:00
 description: Mathematical exploration of parameter-efficient fine-tuning through matrix rank theory
-tags: nlp, llm, lora
+tags: [nlp, llm, lora]
 categories: machine-learning
 featured: false
 ---
