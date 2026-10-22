@@ -6,6 +6,9 @@ nav: true
 nav_order: 3
 dropdown: true
 children:
+  - title: All services
+    permalink: /services/
+  - title: divider
   - title: AI/ML Consulting
     permalink: /services/ai-consulting/
   - title: Software Design
