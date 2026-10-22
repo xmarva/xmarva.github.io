@@ -74,7 +74,7 @@
       {% elsif site.lazy_loading_images %}
         loading="lazy"
       {% endif %}
-      onerror="this.onerror=null; $('.responsive-img-srcset').remove();"
+      onerror="this.onerror=null; var p=this.parentNode; p.querySelectorAll('source').forEach(function(s){p.removeChild(s)});"
     >
   </picture>
 
