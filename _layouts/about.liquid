@@ -58,8 +58,13 @@ layout: default
 
     <!-- Selected papers -->
     {% if page.selected_papers %}
+      {% assign publications_page = site.pages | where: 'permalink', '/publications/' | first %}
       <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
+        {% if publications_page %}
+          <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
+        {% else %}
+          selected publications
+        {% endif %}
       </h2>
       {% include selected_papers.liquid %}
     {% endif %}

@@ -18,10 +18,20 @@ pagination:
 
 <div class="post">
 
-{% if site.display_tags.size > 0 or site.display_categories.size > 0 %}
+{% comment %} only link tags/categories that have posts, otherwise their archive page doesn't exist {% endcomment %}
+{% assign shown_tags = '' | split: '' %}
+{% for tag in site.display_tags %}
+  {% if site.tags[tag] %}{% assign shown_tags = shown_tags | push: tag %}{% endif %}
+{% endfor %}
+{% assign shown_categories = '' | split: '' %}
+{% for category in site.display_categories %}
+  {% if site.categories[category] %}{% assign shown_categories = shown_categories | push: category %}{% endif %}
+{% endfor %}
+
+{% if shown_tags.size > 0 or shown_categories.size > 0 %}
   <div class="tag-category-list">
     <ul class="p-0 m-0">
-      {% for tag in site.display_tags %}
+      {% for tag in shown_tags %}
         <li>
           <i class="fa-solid fa-hashtag fa-sm"></i> <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a>
         </li>
@@ -29,10 +39,10 @@ pagination:
           <p>&bull;</p>
         {% endunless %}
       {% endfor %}
-      {% if site.display_categories.size > 0 and site.display_tags.size > 0 %}
+      {% if shown_categories.size > 0 and shown_tags.size > 0 %}
         <p>&bull;</p>
       {% endif %}
-      {% for category in site.display_categories %}
+      {% for category in shown_categories %}
         <li>
           <i class="fa-solid fa-tag fa-sm"></i> <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a>
         </li>
