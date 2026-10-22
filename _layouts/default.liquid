@@ -12,7 +12,6 @@
     gtag('config', '{{ site.google_analytics }}');
   </script>
   {% endif %}
-  <script src="{{ '/assets/js/h2-cards.js' | relative_url }}"></script>
     {% if page.redirect %}
       {% if page.redirect == true %}
         {% assign redirect = site.baseurl | append: '/' %}
@@ -84,5 +83,6 @@
     {% include scripts/jekyll_tabs.liquid %}
     {% include scripts/back_to_top.liquid %}
     {% include scripts/search.liquid %}
+    <script defer src="{{ '/assets/js/h2-cards.js' | relative_url | bust_file_cache }}"></script>
   </body>
 </html>
