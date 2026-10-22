@@ -66,6 +66,12 @@ table.table a {
   }
 }
 
+// theme.js only adds .table-dark once the DOM is loaded; until then the tables would
+// keep Bootstrap's dark text on the dark background
+html[data-theme="dark"] .table {
+  color: $white-color;
+}
+
 .table-dark {
   background-color: transparent;
   &.table-bordered {
@@ -274,6 +280,11 @@ ul.task-list input[type="checkbox"] {
 
   a:not(.active) {
     color: var(--global-text-color);
+  }
+
+  a.active {
+    color: var(--global-theme-color);
+    background-color: transparent;
   }
 
   a:hover {
@@ -884,6 +895,11 @@ html.transition *:before,
 html.transition *:after {
   transition: all 750ms !important;
   transition-delay: 0 !important;
+}
+
+// Space out the h2 sections of pages using the page layout (project pages)
+.post > article > h2 {
+  margin-top: 2.5rem;
 }
 
 // Extra Markdown style (post Customization)

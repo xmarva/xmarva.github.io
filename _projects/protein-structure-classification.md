@@ -6,8 +6,6 @@ img: assets/img/projects/personal/proteins.png
 importance: 5
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Biomed

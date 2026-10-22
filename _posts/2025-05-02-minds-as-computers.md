@@ -3,7 +3,7 @@ layout: post
 title: Physical Symbol Systems and the Language of Thought
 date: 2025-05-01 15:00:00
 description: Exploration of the physical hypothesis of symbolic systems, the language of thought hypothesis, and philosophical challenges
-tags: cognitive-science, philosophy-of-mind, symbolic-systems, language-of-thought
+tags: [cognitive-science, philosophy-of-mind, symbolic-systems, language-of-thought]
 categories: cognitive-science
 featured: false
 ---

@@ -6,8 +6,6 @@ img: assets/img/projects/3-vr-floorplan-reconstruction/main_img.png
 importance: 2
 category: work
 related_publications: false
-toc:
-  beginning: true
 
 role: Computer Vision Engineer
 
@@ -48,8 +46,6 @@ To accelerate annotation, we leveraged [Segment Anything Model (SAM)](https://ar
 
 Final annotations included pixel-level masks for structural elements and furniture placement zones, validated through a hybrid pipeline combining [Labelbox](https://labelbox.com) tools and custom quality checks.
 
-<br>
-
 ## Floorplan Recognition
 
 <div class="row">
@@ -71,8 +67,6 @@ Element localization used [EfficientDet-D2](https://arxiv.org/abs/1911.09070) tr
 
 We introduced rotational bounding boxes to better represent angled architectural features, improving window/door detection accuracy by 18% compared to standard axis-aligned approaches.
 
-<br>
-
 ## Spatial Coordinate Transformation
 
 Converting 2D layouts to 3D required solving perspective distortions and inconsistent scaling. 
@@ -80,8 +74,6 @@ Converting 2D layouts to 3D required solving perspective distortions and inconsi
 We developed a hybrid approach using [homography estimation](https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html) for planar alignment and [RANSAC](https://www.cs.ubc.ca/~lowe/papers/ijcv05.pdf)-based outlier rejection to handle drawing artifacts. 
 
 Scale inference combined explicit dimension markers with learned priors about standard room sizes, achieving ±3% dimensional accuracy compared to ground-truth LIDAR scans.
-
-<br>
 
 ## Automatic Furnishing
 
@@ -94,8 +86,6 @@ Scale inference combined explicit dimension markers with learned priors about st
 The furnishing system combined rule-based layout principles with learned style preferences. Using [Graph Neural Networks](https://arxiv.org/abs/1812.08434), we modeled spatial relationships between furniture items and room dimensions.
 
 The system generated 3D renders in [Unreal Engine 5](https://www.unrealengine.com) using procedural material generation for realistic textures.
-
-<br>
 
 ## System Integration
 

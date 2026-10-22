@@ -3,7 +3,7 @@ layout: post
 title: Can AI Achieve True Creativity?
 date: 2025-02-13 15:00:00
 description: Exploring the parallels between human creativity and neural networks
-tags: ai, neuroscience, creativity
+tags: [ai, neuroscience, creativity]
 categories: cognitive-science
 featured: true
 ---
@@ -65,5 +65,5 @@ The distinction lies in complexity and emotional embodiment. While AI manipulate
 **References**  
 [1] Beaty, R. E., Benedek, M., Silvia, P. J., & Schacter, D. L. (2016). Creative Cognition and Brain Network Dynamics. *Trends in Cognitive Sciences*  
 [2] De Borst, A. W., & de Gelder, B. (2018). Mental Imagery Follows Similar Cortical Reorganization as Perception: Intra-Modal and Cross-Modal Plasticity in Congenitally Blind. *Cerebral Cortex*  
-[3] Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., & Dea, J. (2013). Distributed Representations of Words and Phrases and their Compositionality  
+[3] Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality  
 [4] Limb, C. J., & Braun, A. R. (2008). Neural Substrates of Spontaneous Musical Performance: An fMRI Study of Jazz Improvisation

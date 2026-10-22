@@ -6,8 +6,6 @@ img: assets/img/projects/personal/red-russian.png
 importance: 11
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - NLP

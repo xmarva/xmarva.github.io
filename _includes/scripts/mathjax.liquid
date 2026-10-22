@@ -1,25 +1,23 @@
+{% comment %} only load MathJax where there is math (kramdown renders $$...$$ as \(...\) and \[...\]) {% endcomment %}
 {% if site.enable_math %}
-  {% unless page.pseudocode %}
-    <!-- MathJax -->
-    <script type="text/javascript">
-      window.MathJax = {
-        tex: {
-          tags: 'ams',
-        },
-      };
-    </script>
-    <script
-      defer
-      type="text/javascript"
-      id="MathJax-script"
-      src="{{ site.third_party_libraries.mathjax.url.js }}"
-      integrity="{{ site.third_party_libraries.mathjax.integrity.js }}"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      defer
-      src="{{ site.third_party_libraries.polyfill.url.js }}"
-      crossorigin="anonymous"
-    ></script>
-  {% endunless %}
+  {% if content contains '\(' or content contains '\[' or content contains '$$' %}
+    {% unless page.pseudocode %}
+      <!-- MathJax -->
+      <script type="text/javascript">
+        window.MathJax = {
+          tex: {
+            tags: 'ams',
+          },
+        };
+      </script>
+      <script
+        defer
+        type="text/javascript"
+        id="MathJax-script"
+        src="{{ site.third_party_libraries.mathjax.url.js }}"
+        integrity="{{ site.third_party_libraries.mathjax.integrity.js }}"
+        crossorigin="anonymous"
+      ></script>
+    {% endunless %}
+  {% endif %}
 {% endif %}

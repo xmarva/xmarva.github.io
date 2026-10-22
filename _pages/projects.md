@@ -8,11 +8,6 @@ nav_order: 2
 display_categories: [work, personal]
 ---
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
   <style>
     /* Base styling for projects page */
     .projects-wrapper {
@@ -47,7 +42,7 @@ display_categories: [work, personal]
     }
 
     .project-card {
-      background-color: var(--global-bg-color);
+      background-color: var(--global-card-bg-color);
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -79,6 +74,14 @@ display_categories: [work, personal]
       height: 220px; /* Оставлено без изменений по высоте */
       overflow: hidden;
       position: relative;
+    }
+
+    /* figure.liquid wraps the image in <figure><picture> to serve the responsive webp versions */
+    .project-image figure,
+    .project-image picture {
+      display: block;
+      height: 100%;
+      margin: 0;
     }
 
     .project-image img {
@@ -332,12 +335,10 @@ display_categories: [work, personal]
       }
     }
   </style>
-</head>
 
-<body>
-  <!-- Resume button container -->
+<!-- Resume button container -->
   <div class="resume-btn-container">
-    <a href="https://xmarva.github.io/assets/pdf/eva_koroleva_cv.pdf" class="resume-btn" target="_blank">
+    <a href="{{ '/assets/pdf/eva_koroleva_cv.pdf' | relative_url }}" class="resume-btn" target="_blank">
       <i class="fas fa-file-download"></i> Download Resume
     </a>
   </div>
@@ -354,7 +355,7 @@ display_categories: [work, personal]
             <div class="project-image">
               {% if project.img %}
               <a href="{{ project.url | relative_url }}">
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
               </a>
               {% else %}
               <a href="{{ project.url | relative_url }}">
@@ -426,7 +427,7 @@ display_categories: [work, personal]
             <div class="project-image">
               {% if project.img %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" />
+                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
               </a>
               {% else %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
@@ -487,5 +488,3 @@ display_categories: [work, personal]
       </div>
     </section>
   </div>
-</body>
-</html>

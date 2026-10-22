@@ -6,22 +6,6 @@ img: assets/img/projects/4-ai-fashion-app/main_img.png
 importance: 1
 category: work
 related_publications: false
-toc:
-  beginning: true
-
-role: Lead ML Engineer
-
-domains: 
-  - Computer Vision---
-layout: page
-title: AI Fashion App
-description: We explored two fundamentally different approaches to digital clothing try-on. Our mission was to investigate both image manipulation and 3D mesh-based solutions, each serving distinct use cases in the virtual fashion industry.
-img: assets/img/projects/4-ai-fashion-app/main_img.png
-importance: 1
-category: work
-related_ublications: false
-toc:
-  beginning: true
 
 role: Lead ML Engineer
 
@@ -35,7 +19,6 @@ tech:
   - Human Pose Estimation
   - 3D Shape Reconstruction
 
-website: https://texelmoda.com
 ---
 
 <div class="row">
@@ -60,7 +43,8 @@ Unlike traditional approaches, our implementation used a dual-stream encoder tha
         path="assets/img/projects/4-ai-fashion-app/virtual_try_on_app.gif" 
         title="Virtual Try On App" 
         class="img-fluid rounded z-depth-1"
-        style="max-height: 300px; width: auto; object-fit: scale-down;" %}
+        width="auto"
+        max-height="300px" %}
     </div>
 </div>
 <div class="caption">

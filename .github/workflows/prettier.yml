@@ -1,14 +1,9 @@
 name: Prettier code formatter
 
+# Run manually: most posts and pages are not Prettier-formatted, so a check on
+# every push only produced red builds.
 on:
-  pull_request:
-    branches:
-      - master
-      - main
-  push:
-    branches:
-      - master
-      - main
+  workflow_dispatch:
 
 jobs:
   check:

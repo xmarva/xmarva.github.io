@@ -4,21 +4,22 @@ permalink: /services/career-mentoring/
 title: Career Mentoring
 parent: services
 nav: false
+stylesheets: [/assets/css/services.css]
 ---
 
 <div class="post">
   <div class="service-page-header">
     <nav class="breadcrumb">
-      <a href="/services/">Services</a> / Career Mentoring
+      <a href="{{ '/services/' | relative_url }}">Services</a> / Career Mentoring
     </nav>
-    <h1 class="visually-hidden">Career Mentoring</h1>
+    <h1 class="sr-only">Career Mentoring</h1>
   </div>
 
   <div class="service-card">
-  <h2 class="visually-hidden">Career Mentoring</h2>
+  <h2 class="sr-only">Career Mentoring</h2>
   <div class="service-header">
     <div class="header-left">
-      <h3><i class="fa-solid fa-brain"></i>Career Mentoring</h3>
+      <h3><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h3>
     </div>
   </div>
     <div class="service-content">
@@ -82,8 +83,8 @@ nav: false
       </div>
 
       <div class="cta-section">
-        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Career Mentoring Inquiry" class="cta-button">Contact via Email</a>
-        <a href="https://www.linkedin.com/in/marva-s" class="cta-button secondary" target="_blank">
+        <a href="mailto:{{ site.email | encode_email }}?subject=Career%20Mentoring%20Inquiry" class="cta-button">Contact via Email</a>
+        <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" class="cta-button secondary" target="_blank">
           <i class="fa-brands fa-linkedin"></i> Connect on LinkedIn
         </a>
         <a href="https://t.me/qmarva" class="cta-button secondary" target="_blank">
@@ -93,5 +94,3 @@ nav: false
     </div>
   </div>
 </div>
-
-<link rel="stylesheet" href="/assets/css/services.css">

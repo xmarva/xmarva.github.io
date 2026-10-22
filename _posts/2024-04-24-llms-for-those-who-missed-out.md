@@ -3,7 +3,7 @@ layout: post
 title: LLMs for Those Who Missed Out
 date: 2024-04-24 15:09:00
 description: Let's talk about large language models. Once again.
-tags: nlp, llm
+tags: [nlp, llm]
 categories: machine-learning
 featured: false
 ---

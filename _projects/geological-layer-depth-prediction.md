@@ -6,8 +6,6 @@ img: assets/img/projects/07-geology-forecast/geology.png
 importance: 8
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Sequence Prediction

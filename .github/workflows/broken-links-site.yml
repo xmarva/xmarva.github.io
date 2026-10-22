@@ -29,6 +29,11 @@ jobs:
               "giscus.repo": "${{ github.repository }}",
               "baseurl": ""
             }
+      - name: Install ImageMagick 🖼️
+        # needed to generate the responsive *.webp images the pages link to
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
       - name: Install and Build 🔧
         run: |
           pip3 install --upgrade jupyter
@@ -39,8 +44,8 @@ jobs:
           npm install -g purgecss
           purgecss -c purgecss.config.js
       - name: Link Checker 🔗
-        uses: lycheeverse/lychee-action@v1.9.0
+        uses: lycheeverse/lychee-action@v2
         with:
           fail: true
-          # only check local links
-          args: --offline --remap '_site(/?.*)/assets/(.*) _site/assets/$2' --verbose --no-progress '_site/**/*.html'
+          # only check local links; root-relative links (/blog/...) resolve against _site
+          args: --offline --root-dir ${{ github.workspace }}/_site --verbose --no-progress '_site/**/*.html'

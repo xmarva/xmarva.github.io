@@ -5,7 +5,7 @@ inline: true
 related_posts: false
 ---
 
-Excited to share that <a href="https://xmarva.github.io/services/">I’m now offering</a>:
+Excited to share that <a href="{{ '/services/' | relative_url }}">I’m now offering</a>:
 <ul>
     <li>Consulting for businesses building AI/ML products</li>
     <li>Mentoring for engineers in the AI/ML space</li>

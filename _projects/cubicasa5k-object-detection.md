@@ -6,8 +6,6 @@ img: assets/img/projects/personal/cubicasa5k.png
 importance: 7
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Computer Vision

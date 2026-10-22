@@ -3,7 +3,7 @@ layout: post
 title: Understanding Byte-Pair Encoding Algorithm
 date: 2025-04-01 15:00:00
 description: Implement one of the most popular tokenization algorithms and learn how to use ready-made solutions.
-tags: tokenization, bpe, algorithms, nlp
+tags: [tokenization, bpe, algorithms, nlp]
 categories: machine-learning
 featured: false
 ---
