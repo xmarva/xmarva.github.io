@@ -84,6 +84,13 @@ jobs:
           valueFile: "_config.yml"
           propertyPath: "giscus.repo"
           value: ${{ github.repository }}
+      - name: Install ImageMagick 🖼️
+        # ubuntu-24.04 runners no longer ship ImageMagick; without it jekyll-imagemagick
+        # silently skips generating the responsive *.webp images referenced by <picture>.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          convert -version
       - name: Install and Build 🔧
         run: |
           pip3 install --upgrade nbconvert
