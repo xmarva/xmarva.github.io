@@ -6,8 +6,6 @@ img: assets/img/projects/6-gesture-recognition/gestures.gif
 importance: 6
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Computer Vision

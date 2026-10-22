@@ -6,8 +6,6 @@ img: assets/img/projects/personal/pandemic-vision.png
 importance: 10
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Computer Vision

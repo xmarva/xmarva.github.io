@@ -6,8 +6,6 @@ img: assets/img/projects/personal/atlas.png
 importance: 9
 category: personal
 related_publications: false
-toc:
-  sidebar: left
 
 domains: 
   - Computer Vision
