@@ -66,6 +66,12 @@ table.table a {
   }
 }
 
+// theme.js only adds .table-dark once the DOM is loaded; until then the tables would
+// keep Bootstrap's dark text on the dark background
+html[data-theme="dark"] .table {
+  color: $white-color;
+}
+
 .table-dark {
   background-color: transparent;
   &.table-bordered {
