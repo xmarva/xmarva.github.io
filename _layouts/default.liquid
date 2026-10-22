@@ -32,7 +32,8 @@
 
     <!-- Content -->
     <div class="container mt-5" role="main">
-      {% if page.toc and page.toc.sidebar %}
+      {% comment %} a sidebar TOC without any h2 would only list the page title {% endcomment %}
+      {% if page.toc and page.toc.sidebar and content contains '<h2' %}
         {% if page.toc.sidebar == 'right' %}
           <div class="row">
             <!-- main content area -->
