@@ -19,7 +19,7 @@ children:
 
 <div class="post">
   <div class="services-overview">
-    <h1 class="visually-hidden">Services</h1>
+    <h1 class="sr-only">Services</h1>
     <p class="service-description">Strategic AI consulting and custom development to help organizations and professionals thrive in the age of artificial intelligence.</p>
     
     <div class="services-grid">
@@ -35,7 +35,7 @@ children:
           <div class="pricing-preview">
             <strong>Consulting rate: $100/hour</strong>
           </div>
-          <a href="/services/ai-consulting/" class="preview-link">Learn more →</a>
+          <a href="{{ '/services/ai-consulting/' | relative_url }}" class="preview-link">Learn more →</a>
         </div>
       </div>
       
@@ -51,7 +51,7 @@ children:
           <div class="pricing-preview">
             <strong>Custom pricing based on project scope</strong>
           </div>
-          <a href="/services/software-design/" class="preview-link">Learn more →</a>
+          <a href="{{ '/services/software-design/' | relative_url }}" class="preview-link">Learn more →</a>
         </div>
       </div>
       
@@ -67,7 +67,7 @@ children:
           <div class="pricing-preview">
             <strong>Mentoring rate: $100/hour</strong>
           </div>
-          <a href="/services/career-mentoring/" class="preview-link">Learn more →</a>
+          <a href="{{ '/services/career-mentoring/' | relative_url }}" class="preview-link">Learn more →</a>
         </div>
       </div>
     </div>
@@ -75,18 +75,6 @@ children:
 </div>
 
 <style>
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
 .services-overview {
   margin: 2rem 0;
 }

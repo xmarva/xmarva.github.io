@@ -4,21 +4,22 @@ permalink: /services/career-mentoring/
 title: Career Mentoring
 parent: services
 nav: false
+stylesheets: [/assets/css/services.css]
 ---
 
 <div class="post">
   <div class="service-page-header">
     <nav class="breadcrumb">
-      <a href="/services/">Services</a> / Career Mentoring
+      <a href="{{ '/services/' | relative_url }}">Services</a> / Career Mentoring
     </nav>
-    <h1 class="visually-hidden">Career Mentoring</h1>
+    <h1 class="sr-only">Career Mentoring</h1>
   </div>
 
   <div class="service-card">
-  <h2 class="visually-hidden">Career Mentoring</h2>
+  <h2 class="sr-only">Career Mentoring</h2>
   <div class="service-header">
     <div class="header-left">
-      <h3><i class="fa-solid fa-brain"></i>Career Mentoring</h3>
+      <h3><i class="fa-solid fa-user-graduate"></i> Career Mentoring</h3>
     </div>
   </div>
     <div class="service-content">
@@ -93,5 +94,3 @@ nav: false
     </div>
   </div>
 </div>
-
-<link rel="stylesheet" href="/assets/css/services.css">

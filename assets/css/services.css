@@ -1,22 +1,13 @@
-/* Скрытый заголовок для SEO */
-.visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-  }
-  
   /* Хлебные крошки */
   .service-page-header {
     margin-bottom: 2rem;
   }
   
   .breadcrumb {
+    /* reset Bootstrap's .breadcrumb box (light grey background, flex layout) */
+    display: block;
+    padding: 0;
+    background-color: transparent;
     font-size: 0.9rem;
     color: var(--global-text-color-light);
     margin-bottom: 1rem;
@@ -52,7 +43,7 @@
   }
   
   .service-card {
-    background-color: var(--global-bg-color);
+    background-color: var(--global-card-bg-color);
     border-radius: 8px;
     box-shadow: var(--services-shadow);
     padding: 2rem;

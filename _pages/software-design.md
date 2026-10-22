@@ -4,18 +4,19 @@ permalink: /services/software-design/
 title: AI/ML Software Design
 parent: services
 nav: false
+stylesheets: [/assets/css/services.css]
 ---
 
 <div class="post">
   <div class="service-page-header">
     <nav class="breadcrumb">
-      <a href="/services/">Services</a> / Software Design
+      <a href="{{ '/services/' | relative_url }}">Services</a> / Software Design
     </nav>
-    <h1 class="visually-hidden">AI/ML Software Design</h1>
+    <h1 class="sr-only">AI/ML Software Design</h1>
   </div>
 
   <div class="service-card">
-    <h2 class="visually-hidden">AI/ML Software Design</h2>
+    <h2 class="sr-only">AI/ML Software Design</h2>
     <div class="service-header">
       <div class="header-left">
         <h3><i class="fa-solid fa-rocket"></i> AI/ML Software Design</h3>
@@ -92,5 +93,3 @@ nav: false
     </div>
   </div>
 </div>
-
-<link rel="stylesheet" href="/assets/css/services.css">
