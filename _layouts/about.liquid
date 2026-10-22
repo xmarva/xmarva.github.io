@@ -40,34 +40,37 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
-    <!-- News -->
-    {% if page.news and site.announcements.enabled %}
-      <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-      </h2>
-      {% include news.liquid limit=true %}
-    {% endif %}
+    <!-- News, latest posts and selected papers, each section in a card (see h2-cards.js) -->
+    <div class="h2-cards">
+      <!-- News -->
+      {% if page.news and site.announcements.enabled %}
+        <h2>
+          <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
+        </h2>
+        {% include news.liquid limit=true %}
+      {% endif %}
 
-    <!-- Latest posts -->
-    {% if site.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-      </h2>
-      {% include latest_posts.liquid %}
-    {% endif %}
+      <!-- Latest posts -->
+      {% if site.latest_posts.enabled %}
+        <h2>
+          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
+        </h2>
+        {% include latest_posts.liquid %}
+      {% endif %}
 
-    <!-- Selected papers -->
-    {% if page.selected_papers %}
-      {% assign publications_page = site.pages | where: 'permalink', '/publications/' | first %}
-      <h2>
-        {% if publications_page %}
-          <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-        {% else %}
-          selected publications
-        {% endif %}
-      </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
+      <!-- Selected papers -->
+      {% if page.selected_papers %}
+        {% assign publications_page = site.pages | where: 'permalink', '/publications/' | first %}
+        <h2>
+          {% if publications_page %}
+            <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
+          {% else %}
+            selected publications
+          {% endif %}
+        </h2>
+        {% include selected_papers.liquid %}
+      {% endif %}
+    </div>
 
     <!-- Social -->
     {% if page.social %}
