@@ -82,8 +82,8 @@ nav: false
       </div>
 
       <div class="cta-section">
-        <a href="mailto:elizaveta.victoria.koroleva@gmail.com?subject=Career Mentoring Inquiry" class="cta-button">Contact via Email</a>
-        <a href="https://www.linkedin.com/in/marva-s" class="cta-button secondary" target="_blank">
+        <a href="mailto:{{ site.email | encode_email }}?subject=Career%20Mentoring%20Inquiry" class="cta-button">Contact via Email</a>
+        <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" class="cta-button secondary" target="_blank">
           <i class="fa-brands fa-linkedin"></i> Connect on LinkedIn
         </a>
         <a href="https://t.me/qmarva" class="cta-button secondary" target="_blank">
