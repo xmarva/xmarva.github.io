@@ -76,6 +76,14 @@ display_categories: [work, personal]
       position: relative;
     }
 
+    /* figure.liquid wraps the image in <figure><picture> to serve the responsive webp versions */
+    .project-image figure,
+    .project-image picture {
+      display: block;
+      height: 100%;
+      margin: 0;
+    }
+
     .project-image img {
       width: 100%;
       height: 100%;
@@ -347,7 +355,7 @@ display_categories: [work, personal]
             <div class="project-image">
               {% if project.img %}
               <a href="{{ project.url | relative_url }}">
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" loading="lazy" />
+                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
               </a>
               {% else %}
               <a href="{{ project.url | relative_url }}">
@@ -419,7 +427,7 @@ display_categories: [work, personal]
             <div class="project-image">
               {% if project.img %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" loading="lazy" />
+                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
               </a>
               {% else %}
               <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
