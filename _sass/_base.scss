@@ -897,6 +897,11 @@ html.transition *:after {
   transition-delay: 0 !important;
 }
 
+// Space out the h2 sections of pages using the page layout (project pages)
+.post > article > h2 {
+  margin-top: 2.5rem;
+}
+
 // Extra Markdown style (post Customization)
 .post {
   .post-meta {
