@@ -160,7 +160,7 @@ giscus:
   lang: en
 
 # Disqus comments (DEPRECATED)
-disqus_shortname: al-folio # put your disqus shortname
+disqus_shortname: # put your disqus shortname
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # External sources.
@@ -216,10 +216,6 @@ kramdown:
     block:
       line_numbers: false
       start_line: 1
-
-# Navigation
-navbar_fixed_top: true
-footer_fixed_bottom: false
 
 # Dropdown menu support
 dropdown_menu: true
