@@ -200,6 +200,11 @@ $cover-ratio: 1200 / 630;
     time {
       color: inherit;
     }
+
+    // a project page has no tags or contents after it, so the text starts here
+    &:last-child {
+      margin-bottom: 2rem;
+    }
   }
 
   #markdown-content h2 {
