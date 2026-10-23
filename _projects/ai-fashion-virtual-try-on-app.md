@@ -42,9 +42,9 @@ The product had three uses, shown on a slide from the project:
 
 <p class="tfs-caption">A slide from the project. Middle: the photo as taken. Left: an outfit that exists only as a 3D model. Right: real clothes, fitted virtually.</p>
 
-- **Digital outfits.** Clothes that exist only as 3D models and are worn only in photos and videos. DressX, launched in August 2020, sold "virtual looks that can be exclusively worn on photos and videos" ([DressX](https://dressx.com/pages/about)).
-- **Virtual fitting.** Real clothes from a shop, shown on the buyer before the order.
-- **Personalized ads.** A shop's garment shown on the customer's own photo instead of on a model.
+The first use was digital outfits: clothes that exist only as 3D models and are worn only in photos and videos. DressX, launched in August 2020, sold exactly that, "virtual looks that can be exclusively worn on photos and videos" ([DressX](https://dressx.com/pages/about)).
+
+The second was virtual fitting, where real clothes from a shop are shown on the buyer before the order. The third turned the second around: a shop's ad shows its garment on the customer's own photo instead of on a model.
 
 In a shop's app the first case looked like this: the user opens a digital outfit, taps Try now, picks a photo and gets it back with the outfit on.
 
@@ -78,11 +78,11 @@ Both approaches start from the same step: reading the person in the photo.
 
 ### Keypoints, parsing and DensePose
 
-Image-based try-on in 2021 relied on three separate networks run on each photo:
+Image-based try-on in 2021 ran three separate networks on each photo. The first finds the skeleton: OpenPose gives 25 body points in its BODY_25 model, feet included ([Cao et al., 2019](https://arxiv.org/abs/1812.08008); [code](https://github.com/CMU-Perceptual-Computing-Lab/openpose)), and BlazePose, made to run on phones, gives 33 ([Bazarevsky et al., 2020](https://arxiv.org/abs/2006.10204)).
 
-- **Keypoints.** OpenPose finds the skeleton: 25 body points in its BODY_25 model, feet included ([Cao et al., 2019](https://arxiv.org/abs/1812.08008); [code](https://github.com/CMU-Perceptual-Computing-Lab/openpose)). BlazePose, made to run on phones, gives 33 points ([Bazarevsky et al., 2020](https://arxiv.org/abs/2006.10204)).
-- **Parsing.** A human parser labels every pixel: hair, face, upper clothes, dress, left arm and so on. SCHP, trained on the LIP dataset with its 20 labels, was a common choice ([Li et al., 2019](https://arxiv.org/abs/1910.09777); [code](https://github.com/GoGoDuck912/Self-Correction-Human-Parsing)).
-- **Surface.** DensePose assigns each pixel of a person to one of 24 patches of the body's surface and gives its position on that patch as two coordinates, U and V ([Güler et al., 2018](https://arxiv.org/abs/1802.00434); [code](https://github.com/facebookresearch/detectron2/tree/main/projects/DensePose)).
+The second, a human parser, labels every pixel as hair, face, upper clothes, dress, left arm and so on. SCHP, trained on the LIP dataset with its 20 labels, was a common choice ([Li et al., 2019](https://arxiv.org/abs/1910.09777); [code](https://github.com/GoGoDuck912/Self-Correction-Human-Parsing)).
+
+The third, DensePose, goes further. It assigns each pixel of a person to one of 24 patches of the body's surface and gives its position on that patch as two coordinates, U and V ([Güler et al., 2018](https://arxiv.org/abs/1802.00434); [code](https://github.com/facebookresearch/detectron2/tree/main/projects/DensePose)).
 
 <img class="img-fluid rounded d-block mx-auto my-4" src="/assets/img/projects/4-ai-fashion-app/densepose.png" width="800" height="512" alt="Left: a young woman in a pink tracksuit and white sneakers crouching by a window. Right: the same silhouette on black, split into coloured patches: the head yellow, the torso and arms in blues and greens, the legs and feet in teal and blue" loading="lazy">
 
@@ -106,20 +106,15 @@ $$
 M(\beta, \theta) = W\big(\bar{T} + B_S(\beta) + B_P(\theta),\; J(\beta),\; \theta,\; \mathcal{W}\big).
 $$
 
-- $$\bar{T}$$ is an average body standing with its arms out.
-- $$B_S(\beta)$$ moves every vertex according to the shape: taller, wider, heavier.
-- $$B_P(\theta)$$ adds the corrections a pose needs, such as the bulge of a bent elbow.
-- $$J(\beta)$$ places the joints inside this body.
-- $$W$$, the skinning function, rotates each vertex with the bones near it, in proportions given by the weights $$\mathcal{W}$$.
+The formula reads from the inside out. $$\bar{T}$$ is an average body standing with its arms out. $$B_S(\beta)$$ moves its vertices according to the shape, making the body taller, wider or heavier, and $$B_P(\theta)$$ adds the corrections a pose needs, such as the bulge of a bent elbow.
+
+$$J(\beta)$$ places the joints inside this particular body. The skinning function $$W$$ then rotates each vertex with the bones near it, in proportions given by the weights $$\mathcal{W}$$.
 
 SMPL-X (2019) adds hands and a face: 10,475 vertices and 54 joints ([Pavlakos et al., 2019](https://arxiv.org/abs/1904.05866); [code](https://github.com/vchoutas/smplx)).
 
-There were two ways to get these parameters from a photo:
+There were two ways to get these numbers from a photo. SMPLify fits the model: it detects 2D joints and searches for the body whose projected joints land on them, "minimizing an objective function that penalizes the error between the projected 3D model joints and detected 2D joints" ([Bogo et al., 2016](https://arxiv.org/abs/1607.08128)). It is accurate but slow, and where it ends up depends on where it starts.
 
-- **Fitting.** SMPLify detects 2D joints and fits SMPL to them "by minimizing an objective function that penalizes the error between the projected 3D model joints and detected 2D joints" ([Bogo et al., 2016](https://arxiv.org/abs/1607.08128)). It is accurate but slow, and the result depends on where the fitting starts.
-- **Regression.** A network predicts the parameters from the pixels in one pass. HMR did this for SMPL ([Kanazawa et al., 2018](https://arxiv.org/abs/1712.06584)), and ExPose for SMPL-X with hands and face ([Choutas et al., 2020](https://arxiv.org/abs/2008.09062)).
-
-SPIN combined the two: the network's estimate is where the fitting starts, and the fitted result is used to train the network ([Kolotouros et al., 2019](https://arxiv.org/abs/1909.12828)).
+HMR and ExPose regress instead. A network looks at the pixels and outputs the parameters in one pass, for SMPL ([Kanazawa et al., 2018](https://arxiv.org/abs/1712.06584)) and for SMPL-X with hands and face ([Choutas et al., 2020](https://arxiv.org/abs/2008.09062)). SPIN made the two work together: the network's guess is where the fitting starts, and the fitted result becomes training data for the network ([Kolotouros et al., 2019](https://arxiv.org/abs/1909.12828)).
 
 The hard part is depth. A photo shows each bone as a 2D segment. Even when its 3D length is known, the bone can point towards the camera or away from it and project onto the same two points ([Taylor, 2000](https://doi.org/10.1006/cviu.2000.0878)).
 
@@ -139,13 +134,13 @@ Many failures in practice came from the photos rather than from the models. The 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/crops-light.png" width="760" alt="Four crops of the standing example with its keypoints, those outside the frame drawn hollow: full length, 33 of 33 keypoints in frame; cut at the thighs, 25 of 33 keypoints in frame; waist up, 15 of 33 keypoints in frame; a selfie, 13 of 33 keypoints in frame" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/crops-dark.png" width="760" alt="Four crops of the standing example with its keypoints, those outside the frame drawn hollow: full length, 33 of 33 keypoints in frame; cut at the thighs, 25 of 33 keypoints in frame; waist up, 15 of 33 keypoints in frame; a selfie, 13 of 33 keypoints in frame" loading="lazy">
 
-- **The whole body has to be in the frame.** A dress or trousers need the legs. When the knees are out of the frame, the model has to invent where the hem goes and what the legs look like. In the figure, a crop at the thighs leaves 25 of 33 keypoints, and a crop at the waist leaves 15.
-- **Selfies do not work.** A photo at arm's length shows the head and shoulders, 13 of 33 keypoints. A wide-angle lens close to the body distorts the proportions, and in a mirror selfie the phone and the arm cover the torso.
-- **Occlusion.** Hands in pockets, crossed arms, bags, long hair over the shoulders, a second person in the frame. The new garment has to go behind these, and the parsing and pose models make more mistakes around them. HR-VITON's authors write that results are "significantly impaired when the body parts occlude the garment" ([Lee et al., 2022](https://arxiv.org/abs/2206.14180)). In the crouch above, the pose model itself marks the right elbow and the left wrist as likely hidden.
-- **Pose and viewpoint.** Sitting, crouching, and side and back views were rare in the training data.
-- **Loose clothes.** A loose sweater or a coat hides the body shape that 3D try-on needs; more on that below.
+The most common problem was the frame. A dress or trousers need the legs, and when the knees are cut off, the model has to invent both the legs and the place where the hem ends. In the figure a crop at the thighs leaves 25 of the 33 keypoints, and a crop at the waist leaves 15.
 
-This is why the photo was checked on the phone before upload; see the system design section.
+Selfies were worse. A photo at arm's length shows the head and shoulders, 13 keypoints out of 33, through a wide-angle lens that enlarges whatever is closest to it. In a mirror selfie the phone and the arm holding it cover the torso, exactly where the new garment has to go.
+
+Then there is occlusion: hands in pockets, crossed arms, bags, long hair over the shoulders, a friend in the frame. The garment has to go behind all of it, and the parsing and pose models make more mistakes around it. HR-VITON's authors write that results are "significantly impaired when the body parts occlude the garment" ([Lee et al., 2022](https://arxiv.org/abs/2206.14180)). In the crouch above, the pose model itself marks the right elbow and the left wrist as likely hidden.
+
+Sitting, crouching, and side and back views were rare in the training data. A loose sweater or a coat hides the body shape that 3D try-on needs. All of this is why the photo was checked on the phone before upload, as the section on system design describes.
 
 ## Image-based try-on
 
@@ -168,12 +163,9 @@ CP-VTON made the spline learnable. A network looks at the person and the product
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/warp-light.png" width="760" alt="Four panels. The product photo of a floral dress with 14 points marked on its sleeves, neckline, waist and hem; the person in a white dress with the same points marked on her body; the floral dress bent onto her by a thin-plate spline, with the old white sleeves and skirt still showing around it and the fabric as flat as on the product photo; and the project&#x27;s trained model, which replaces the old dress, shapes the puffed sleeves to the arms and matches the light of the scene" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/warp-dark.png" width="760" alt="Four panels. The product photo of a floral dress with 14 points marked on its sleeves, neckline, waist and hem; the person in a white dress with the same points marked on her body; the floral dress bent onto her by a thin-plate spline, with the old white sleeves and skirt still showing around it and the fabric as flat as on the product photo; and the project&#x27;s trained model, which replaces the old dress, shapes the puffed sleeves to the arms and matches the light of the scene" loading="lazy">
 
-The warp alone leaves several problems, visible in the third panel:
+The third panel shows what a warp alone cannot do. The fabric is bent in the plane of the picture, not in space, so there is no shading where it turns away from the camera. The old white dress still shows around the new one.
 
-- The fabric is bent in the image plane only, so there is no shading where it turns away from the camera.
-- The old garment shows around the new one.
-- Volume is lost: the puffed sleeves are squeezed instead of gathered.
-- Anything in front of the garment, such as a hand or hair, is painted over.
+The puffed sleeves are squeezed flat instead of gathered. Anything in front of the garment, a hand or a strand of hair, would simply be painted over.
 
 The papers of the time name the same limits. TPS has "limited degrees of freedom" for "highly non-rigid deformation" ([Ge et al., 2021](https://arxiv.org/abs/2103.04559)), and where the body hides part of the garment, warping causes "pixel-squeezing artifacts" ([Lee et al., 2022](https://arxiv.org/abs/2206.14180)).
 
@@ -196,17 +188,22 @@ Stable Diffusion went public on 22 August 2022 with open weights, trained "on 51
 
 An inpainting version followed in October. It takes a photo, a mask and a text prompt, and its UNet "has 5 additional input channels (4 for the encoded masked-image and 1 for the mask itself)" ([model card](https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting)).
 
-A model trained on that much data already knows how fabrics, skin and light look, which a GAN trained on twelve thousand pairs did not. Using it for try-on still took several decisions.
+A model trained on that much data already knows how fabrics, skin and light look, which a GAN trained on twelve thousand pairs did not. Turning it into try-on still took several decisions.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/masks-light.png" width="760" alt="Four panels. The person with her white dress masked tightly, so the mask keeps the dress&#x27;s outline; a larger clothing-agnostic mask that also covers both arms; the photo with that region grey and the skeleton on top, which is what the generator keeps; and a close-up of the generated floral dress under a grid of 8 by 8 pixel cells, in which a flower of the print spans one or two cells" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/masks-dark.png" width="760" alt="Four panels. The person with her white dress masked tightly, so the mask keeps the dress&#x27;s outline; a larger clothing-agnostic mask that also covers both arms; the photo with that region grey and the skeleton on top, which is what the generator keeps; and a close-up of the generated floral dress under a grid of 8 by 8 pixel cells, in which a flower of the print spans one or two cells" loading="lazy">
 
-- **The mask.** It has to cover where the new garment will be, not where the old one was. A dress replacing shorts needs the legs masked; a T-shirt replacing a long-sleeved top needs the arms masked, because the model has to paint skin there. A tight mask also passes the old garment's outline to the model, so the mask is a generous clothing-agnostic region, as in the second panel.
-- **What stays.** The face, hair, hands and background stay outside the mask. After generation the original pixels are pasted back outside it, because the autoencoder slightly changes even the pixels it was not asked to change.
-- **The garment.** A prompt like "a floral dress with puffed sleeves" gives a floral dress, not the one in the shop. The garment has to enter as an image: warped onto the body as a starting point, through an image encoder as in Paint by Example ([Yang et al., 2022](https://arxiv.org/abs/2211.13227); [code](https://github.com/Fantasy-Studio/Paint-by-Example)), or by fine-tuning on the product's photos as in DreamBooth ([Ruiz et al., 2022](https://arxiv.org/abs/2208.12242)) and Textual Inversion ([Gal et al., 2022](https://arxiv.org/abs/2208.01618)).
-- **The pose.** With a large mask the model may change the position of the arms. ControlNet, released in February 2023, conditions the generator on a skeleton, edges or a segmentation; its OpenPose model "was trained on 200k pose-image, caption pairs" ([Zhang and Agrawala, 2023](https://arxiv.org/abs/2302.05543); [code](https://github.com/lllyasviel/ControlNet); [model](https://huggingface.co/lllyasviel/sd-controlnet-openpose)).
-- **Resolution.** The autoencoder of Stable Diffusion 1.x turns each 8×8 block of pixels into one latent. On a full-length photo 512 pixels tall, a flower of the print is one or two latents wide, as the last panel shows, and fine prints, logos and text come out blurred. LaDI-VTON's authors write that "high-frequency details may not be accurately represented" ([Morelli et al., 2023](https://arxiv.org/abs/2305.13501); [code](https://github.com/miccunifi/ladi-vton)). The usual fix is to generate on a crop around the garment and paste the result back into the full photo.
-- **Randomness.** Each random seed gives a different result. The same photo and garment should give the same picture every time, so the seed is fixed, or several candidates are generated and the best one is kept, which multiplies the cost.
+The first decision is the mask. It has to cover where the new garment will be, not where the old one was. A dress replacing shorts needs the legs masked, and a T-shirt replacing a long-sleeved top needs the arms masked, because the model has to paint skin there. A tight mask would also hand the old outline to the model, so the mask is a generous clothing-agnostic region, as in the second panel.
+
+What stays outside the mask, the face, hair, hands and background, should stay untouched. The autoencoder slightly changes even the pixels it was not asked to change, so after generation the original pixels are pasted back outside the mask.
+
+The garment itself is the hardest thing to get in. A prompt like "a floral dress with puffed sleeves" gives a floral dress, not the one in the shop, so the garment has to enter as an image. It can be warped onto the body as a starting point, passed through an image encoder as in Paint by Example ([Yang et al., 2022](https://arxiv.org/abs/2211.13227); [code](https://github.com/Fantasy-Studio/Paint-by-Example)), or taught to the model by fine-tuning on the product's photos, as in DreamBooth ([Ruiz et al., 2022](https://arxiv.org/abs/2208.12242)) and Textual Inversion ([Gal et al., 2022](https://arxiv.org/abs/2208.01618)).
+
+With a large mask the model may also move the arms. ControlNet, released in February 2023, holds the generator to a skeleton, edges or a segmentation; its OpenPose model "was trained on 200k pose-image, caption pairs" ([Zhang and Agrawala, 2023](https://arxiv.org/abs/2302.05543); [code](https://github.com/lllyasviel/ControlNet); [model](https://huggingface.co/lllyasviel/sd-controlnet-openpose)).
+
+Resolution limits the detail. The autoencoder of Stable Diffusion 1.x turns each 8×8 block of pixels into one latent, so on a full-length photo 512 pixels tall a flower of the print is one or two latents wide, as the last panel shows. Fine prints, logos and text come out blurred; LaDI-VTON's authors write that "high-frequency details may not be accurately represented" ([Morelli et al., 2023](https://arxiv.org/abs/2305.13501); [code](https://github.com/miccunifi/ladi-vton)). The usual fix is to generate on a crop around the garment and paste the result back into the photo.
+
+Finally, every random seed gives a different result, while the same photo and garment should give the same picture every time. Either the seed is fixed, or several candidates are generated and the best one is kept, at several times the cost.
 
 Over the project I fine-tuned both kinds of generator, GANs first and then Stable Diffusion. With GANs most of the work went into getting a result that looks like a photo at all. With diffusion the result looked like a photo from the start, and the work moved to keeping the garment, the face and the body the same as in the inputs.
 
@@ -239,13 +236,7 @@ The mesh is cut with a horizontal plane. Each triangle the plane crosses gives a
 
 A tape measure does not follow the hollow between the breasts or the small of the back; it stretches across them. So the girth is the perimeter of the convex hull of the cross-section, the shortest closed curve around it.
 
-The height of the cut depends on the measurement:
-
-- **Waist:** the narrowest level of the torso.
-- **Hips:** the widest level below it.
-- **Bust:** the level where the chest comes furthest forward.
-
-Each rule is a search over heights, here in steps of half a centimetre.
+Where to cut depends on the measurement. The waist is the narrowest level of the torso, the hips the widest level below it, and the bust the level where the chest comes furthest forward. Each is a small search over heights, here in steps of half a centimetre.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/bodies-light.png" width="760" alt="Three versions of the same open 3D body, thin, average and full, with tape-measure loops drawn around the bust, waist and hips: thin: bust 81 cm, waist 59 cm, hips 87 cm; average: bust 84 cm, waist 65 cm, hips 95 cm; full: bust 90 cm, waist 71 cm, hips 103 cm" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/bodies-dark.png" width="760" alt="Three versions of the same open 3D body, thin, average and full, with tape-measure loops drawn around the bust, waist and hips: thin: bust 81 cm, waist 59 cm, hips 87 cm; average: bust 84 cm, waist 65 cm, hips 95 cm; full: bust 90 cm, waist 71 cm, hips 103 cm" loading="lazy">
@@ -290,12 +281,9 @@ Silk falls in narrow folds along the legs, and wool keeps its A-line shape. On t
 
 For digital clothing the simulation does not have to stop at real fabrics. Compliances, masses and materials are parameters, so a designer's garment can hold a shape no fabric would, or be rendered as metal, glass or light, and it still follows the body's pose and size. The image-based approach has no such parameters.
 
-The practical problems of this approach were elsewhere:
+The practical problems of this approach lay elsewhere. Every garment needs a 3D model, which is natural for a digital outfit but not for a shop that adds thousands of products a season and has only photos of them. Every real fabric needs its stretch and bending measured or guessed.
 
-- **Every garment needs a 3D model.** This is natural for a digital outfit, which is designed as one. A shop that adds thousands of products a season has only photos of them.
-- **Every real fabric needs measuring.** Its stretch and bending have to be measured or guessed.
-- **Simulation is slow.** It does not fit into an interactive request, so drapes are computed in advance or predicted by a network. TailorNet (2020) predicts them "more than 1000 times faster" than simulation ([Patel et al., 2020](https://arxiv.org/abs/2003.04583); [code](https://github.com/chaitanya100100/TailorNet)).
-- **Renders look rendered.** A body from a game engine next to a real face looks like a game character.
+Simulation is also too slow for an interactive request, so drapes are computed in advance or predicted by a network; TailorNet (2020) predicts them "more than 1000 times faster" than simulating ([Patel et al., 2020](https://arxiv.org/abs/2003.04583); [code](https://github.com/chaitanya100100/TailorNet)). And a body from a game engine next to a real face looks like a game character.
 
 ## Combining the two
 
@@ -306,10 +294,9 @@ We experimented with combining them: the 3D part decides where the garment goes 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/hybrid-light.png" width="760" alt="An experimental pipeline that combines the two routes. In the 3D part, a body model, SMPL-X, is fitted to the person&#x27;s photo, the 3D garment is draped on it by a cloth simulation, and the result is rendered as a garment mask, a depth map and a normal map. In the 2D part, the clothes in the photo are masked, keeping the face and hands, and a diffusion model inpaints the region conditioned on those maps, giving the new photo" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/hybrid-dark.png" width="760" alt="An experimental pipeline that combines the two routes. In the 3D part, a body model, SMPL-X, is fitted to the person&#x27;s photo, the 3D garment is draped on it by a cloth simulation, and the result is rendered as a garment mask, a depth map and a normal map. In the 2D part, the clothes in the photo are masked, keeping the face and hands, and a diffusion model inpaints the region conditioned on those maps, giving the new photo" loading="lazy">
 
-1. Fit SMPL-X to the person's photo, as in the section on pose and shape.
-2. Drape the 3D garment on that body with the cloth simulation.
-3. Render the result as maps rather than as a finished image: the garment's mask, depth and surface normals.
-4. Inpaint the masked region of the photo with a diffusion model conditioned on those maps. ControlNet's first release included models for depth maps and normal maps ([ControlNet](https://github.com/lllyasviel/ControlNet)).
+The pipeline starts with the SMPL-X fit from the section on pose and shape. The 3D garment is draped on that body by the cloth simulation, and the result is rendered not as a finished picture but as maps: the garment's mask, its depth and its surface normals.
+
+A diffusion model then inpaints the masked region of the photo, conditioned on those maps. ControlNet's first release already included models for depth maps and normal maps ([ControlNet](https://github.com/lllyasviel/ControlNet)).
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/maps-light.png" width="760" alt="The silk skirt on the full body drawn four ways: shaded, as a white garment mask on black, as a normal map in which colour encodes the direction of the surface, and as a depth map in which nearer is lighter" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/maps-dark.png" width="760" alt="The silk skirt on the full body drawn four ways: shaded, as a white garment mask on black, as a normal map in which colour encodes the direction of the surface, and as a depth map in which nearer is lighter" loading="lazy">
@@ -322,34 +309,22 @@ The difficulty is consistency. The generator can still move a fold or change a c
 
 ## System design
 
-The models were one part of the product. Around them were mobile apps, a server and a pool of GPU workers.
+The models were one part of the product. Around them were mobile apps, a server and a pool of GPU workers, and the clearest way to describe them is to follow one photo through the system.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/4-ai-fashion-app/figures/system-light.png" width="760" alt="The system around the models, in three lanes. On the phone: take or pick a photo, check it with a small pose model, upload it resized and compressed, and later show the result by push notification or polling. On the server: an API with accounts and limits, a job queue with one job per pair of photo and garment, and results in storage behind a CDN. On GPU workers: body analysis once per photo, garment preparation once per product, and generation once per pair, which uses both and writes to the results" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/4-ai-fashion-app/figures/system-dark.png" width="760" alt="The system around the models, in three lanes. On the phone: take or pick a photo, check it with a small pose model, upload it resized and compressed, and later show the result by push notification or polling. On the server: an API with accounts and limits, a job queue with one job per pair of photo and garment, and results in storage behind a CDN. On GPU workers: body analysis once per photo, garment preparation once per product, and generation once per pair, which uses both and writes to the results" loading="lazy">
 
-### On the phone
+It starts on the phone. The app asks for a full-length photo, facing the camera, arms slightly away from the body, and a small pose model checks the result before anything leaves the device: is there one person, and is the whole body in the frame. BlazePose was built for this kind of job and "runs at over 30 frames per second on a Pixel 2 phone" ([Bazarevsky et al., 2020](https://arxiv.org/abs/2006.10204)). A selfie is turned back on the phone, with a hint about what to fix, before it costs any GPU time.
 
-- **Capture.** The user takes a photo or picks one from the gallery, with instructions on framing: full length, facing the camera, arms slightly away from the body.
-- **Check before upload.** A small pose model on the phone checks that there is one person and that the whole body is in the frame. BlazePose was designed for this kind of use and "runs at over 30 frames per second on a Pixel 2 phone" ([Bazarevsky et al., 2020](https://arxiv.org/abs/2006.10204)). A selfie is rejected on the phone, with a hint, before it costs GPU time.
-- **Upload.** The photo is resized and compressed first.
-- **Waiting.** Generation is asynchronous. The app gets the result by a push notification or by polling, and the user can keep browsing.
+A photo that passes is resized, compressed and uploaded. From there the work is split by what it depends on. Whatever depends only on the photo, the keypoints, parsing, DensePose and the 3D body fit, runs once, right after upload, often before the user has picked a garment.
 
-### On the server
+Whatever depends only on the garment, the segmented product photo, the 3D model and its drapes, was computed when the product was added to the catalogue. Only generation needs both, so trying one more garment on a known photo costs one generation and nothing else.
 
-- **API and queue.** Each request becomes a job for one pair of photo and garment. GPU workers take jobs from a queue, so a burst of requests waits instead of failing.
-- **Caching by dependency.** Body analysis (keypoints, parsing, DensePose, the 3D body fit) depends only on the photo, so it runs once, right after upload, before the user picks a garment. Garment preparation (segmenting the product photo, preparing the 3D model and its drapes) depends only on the product and runs once when the product is added. Only generation depends on both.
-- **Results.** Finished images go to storage behind a CDN, and a repeated request for the same pair is served from there.
+That generation is a job in a queue, one per pair of photo and garment. A burst of requests makes the queue longer instead of making requests fail, and the app does not hold a connection open while it waits: the result arrives by a push notification or by polling, and the user keeps browsing. Finished images go to storage behind a CDN, so asking for the same pair again costs nothing.
 
-### Optimization
+Most of the cost was in the diffusion model, and the ways to cut it changed quickly over 2022 and 2023. DDIM had already made sampling "10× to 50× faster" than the original diffusion models ([Song et al., 2020](https://arxiv.org/abs/2010.02502)), and DPM-Solver++ "can generate high-quality samples within only 15 to 20 steps" ([Lu et al., 2022](https://arxiv.org/abs/2211.01095)).
 
-Most of the cost was in the diffusion model. The main ways to reduce it in 2022 and 2023 were:
-
-- **Fewer denoising steps.** DDIM sampled "10× to 50× faster" than the original diffusion models ([Song et al., 2020](https://arxiv.org/abs/2010.02502)), and DPM-Solver++ "can generate high-quality samples within only 15 to 20 steps" ([Lu et al., 2022](https://arxiv.org/abs/2211.01095)).
-- **Half precision and memory-efficient attention.** 16-bit weights and activations halve the memory. FlashAttention computes exact attention with fewer reads and writes to GPU memory ([Dao et al., 2022](https://arxiv.org/abs/2205.14135)).
-- **Compiled inference.** Exporting the networks to an inference runtime such as [ONNX Runtime](https://onnxruntime.ai/) or [TensorRT](https://developer.nvidia.com/tensorrt).
-- **Smaller inputs.** Generating on a crop around the garment, at the model's native resolution, instead of on the full photo.
-- **Precomputation.** Everything that does not depend on the user's photo, such as garment segmentation and 3D drapes for a grid of body shapes, is computed when a product is added.
-- **Batching.** Several jobs processed together on one GPU.
+Half precision halves the memory. FlashAttention computes exact attention with fewer reads and writes to GPU memory ([Dao et al., 2022](https://arxiv.org/abs/2205.14135)), and runtimes such as [ONNX Runtime](https://onnxruntime.ai/) and [TensorRT](https://developer.nvidia.com/tensorrt) compile the networks for inference. A crop around the garment at the model's native resolution is cheaper to generate than the whole photo, and several jobs batched on one GPU use it better than one at a time.
 
 ## References
 
