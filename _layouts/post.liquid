@@ -19,10 +19,12 @@ layout: default
 <div class="post post-page">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
-    {% if page.description %}
-      <p class="post-dek">{{ page.description }}</p>
+    {% if page.thumbnail %}
+      <figure class="post-cover">
+        <img src="{{ page.thumbnail | relative_url }}" alt="" width="1200" height="630" fetchpriority="high" decoding="async">
+      </figure>
     {% endif %}
-    <p class="post-byline">
+    <p class="post-meta post-byline">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
       {% if page.author -%}
         <span aria-hidden="true">&middot;</span> {{ page.author -}}
@@ -75,18 +77,14 @@ layout: default
     </p>
   </header>
 
-  {% if page.thumbnail %}
-    <figure class="post-cover">
-      <img src="{{ page.thumbnail | relative_url }}" alt="" width="1200" height="630" fetchpriority="high" decoding="async">
-    </figure>
-  {% endif %}
-
   <article class="post-content">
     {% if page.toc and page.toc.beginning %}
-      <nav id="table-of-contents" class="post-toc" aria-label="Contents">
-        <p class="post-toc-title">Contents</p>
-        {% toc %}
-      </nav>
+      <details id="table-of-contents" class="post-toc">
+        <summary>Contents</summary>
+        <nav aria-label="Contents">
+          {% toc %}
+        </nav>
+      </details>
     {% endif %}
     <div id="markdown-content">
       {{ content }}

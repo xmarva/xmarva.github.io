@@ -4,7 +4,6 @@
  ******************************************************************************/
 
 $cover-ratio: 1200 / 630;
-$reading-width: 47.5rem; // 760px, the width the post figures are drawn at
 
 // ---------------------------------------------------------------- the list of posts
 
@@ -51,8 +50,8 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
 .post-row {
   position: relative; // the containing block of the title's stretched link
   display: grid;
-  grid-template-columns: 15rem minmax(0, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: 22.5rem minmax(0, 1fr);
+  gap: 2rem;
   align-items: center;
   padding: 1.6rem 0;
   border-top: 1px solid var(--global-divider-color);
@@ -130,8 +129,7 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
 
 .post-row-title {
   margin: 0 0 0.4rem;
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: 1.4rem;
   line-height: 1.3;
 
   a {
@@ -160,9 +158,16 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
   line-height: 1.55;
   color: var(--global-text-color-light);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@media (max-width: 991.98px) {
+  .post-row {
+    grid-template-columns: 17rem minmax(0, 1fr);
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -170,56 +175,15 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
     grid-template-columns: minmax(0, 1fr);
     gap: 0.9rem;
   }
-
-  .post-row-desc {
-    -webkit-line-clamp: 3;
-  }
 }
 
 // ---------------------------------------------------------------- the post page
+// The theme's own width and type stay; this only places the cover, folds the contents and the references, and
+// spaces the sections out now that they are no longer cards.
 
 .post-page {
-  max-width: $reading-width;
-  margin: 0 auto;
-
-  .post-header {
-    margin-top: 1rem;
-  }
-
-  .post-title {
-    font-size: 2.5rem;
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.015em;
-    margin-bottom: 0.9rem;
-  }
-
-  .post-dek {
-    font-size: 1.15rem;
-    line-height: 1.55;
-    color: var(--global-text-color-light);
-    margin-bottom: 1rem;
-  }
-
-  .post-byline {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--global-text-color-light);
-
-    span,
-    time {
-      color: inherit;
-    }
-  }
-
-  .post-tags {
-    font-size: 0.8rem;
-    padding-top: 0.15rem;
-    padding-bottom: 0;
-  }
-
   .post-cover {
-    margin: 1.75rem 0 2.25rem;
+    margin: 1.25rem 0 1rem;
 
     img {
       display: block;
@@ -231,154 +195,105 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
     }
   }
 
-  // the contents: a quiet list, not a second article
-  .post-toc {
-    margin: 0 0 2.5rem;
-    padding: 1rem 0 0.25rem 1.25rem;
-    border-left: 2px solid var(--global-divider-color);
-    font-size: 0.95rem;
-
-    .post-toc-title {
-      margin: 0 0 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--global-text-color-light);
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding-left: 0;
-    }
-
-    ul ul {
-      padding-left: 1rem;
-      font-size: 0.9rem;
-    }
-
-    li {
-      margin: 0.2rem 0;
-    }
-
-    a {
-      color: var(--global-text-color-light);
-      text-decoration: none;
-
-      &:hover {
-        color: var(--global-theme-color);
-      }
+  .post-byline {
+    span,
+    time {
+      color: inherit;
     }
   }
 
-  #markdown-content {
-    font-size: 1.075rem;
-    line-height: 1.75;
+  #markdown-content h2 {
+    margin-top: 2.75rem;
+  }
 
-    > p,
-    > ul,
-    > ol {
-      margin-bottom: 1.15rem;
+  #markdown-content h3 {
+    margin-top: 2rem;
+  }
+}
+
+// the table of contents and the references fold the same way: a row with a + that opens a list
+.post-toc,
+.post-references {
+  border-top: 1px solid var(--global-divider-color);
+  border-bottom: 1px solid var(--global-divider-color);
+
+  summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
     }
 
-    li {
-      margin-bottom: 0.35rem;
-    }
-
-    h2 {
-      font-size: 1.75rem;
-      font-weight: 500;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      margin: 3.25rem 0 1rem;
-    }
-
-    h3 {
+    &::after {
+      content: "+";
+      margin-left: auto;
       font-size: 1.3rem;
-      font-weight: 500;
-      line-height: 1.3;
-      margin: 2.25rem 0 0.75rem;
-    }
-
-    a {
-      text-underline-offset: 0.18em;
-    }
-
-    blockquote {
-      margin: 1.5rem 0;
-      padding: 0.1rem 0 0.1rem 1.1rem;
-      border-left: 3px solid var(--global-theme-color);
+      line-height: 1;
       color: var(--global-text-color-light);
-      font-size: 1rem;
-    }
-
-    pre {
-      border-radius: 8px;
-      font-size: 0.85rem;
-    }
-
-    table {
-      font-size: 0.95rem;
     }
   }
 
-  // References, folded by post-references.js
-  .post-references {
-    margin: 3.25rem 0 1rem;
-    border-top: 1px solid var(--global-divider-color);
-    border-bottom: 1px solid var(--global-divider-color);
+  &[open] summary::after {
+    content: "\2212";
+  }
+}
 
-    summary {
-      display: flex;
-      align-items: baseline;
-      gap: 0.75rem;
-      padding: 0.9rem 0;
-      cursor: pointer;
-      list-style: none;
+.post-toc {
+  margin: 0.5rem 0 2rem;
 
-      &::-webkit-details-marker {
-        display: none;
-      }
+  summary {
+    font-size: 0.95rem;
+    color: var(--global-text-color-light);
+  }
 
-      &::after {
-        content: "+";
-        margin-left: auto;
-        font-size: 1.3rem;
-        line-height: 1;
-        color: var(--global-text-color-light);
-      }
-    }
+  nav {
+    padding: 0 0 1rem;
+  }
 
-    &[open] summary::after {
-      content: "\2212";
-    }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+  }
 
-    summary h2 {
-      margin: 0 !important;
-      font-size: 1.25rem !important;
-    }
+  ul ul {
+    padding-left: 1.25rem;
+  }
 
-    .post-references-count {
-      font-size: 0.85rem;
-      color: var(--global-text-color-light);
-    }
+  li {
+    margin: 0.2rem 0;
+  }
 
-    .post-references-body {
-      padding-bottom: 1rem;
-      font-size: 0.9rem;
-      line-height: 1.6;
+  a {
+    color: var(--global-text-color);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--global-theme-color);
     }
   }
 }
 
-@media (max-width: 575.98px) {
-  .post-page .post-title {
-    font-size: 1.9rem;
+.post-references {
+  margin: 3rem 0 1rem;
+
+  summary h2 {
+    margin: 0 !important;
+    font-size: 1.5rem;
   }
 
-  .post-page #markdown-content {
-    font-size: 1.025rem;
+  .post-references-count {
+    font-size: 0.875rem;
+    color: var(--global-text-color-light);
+  }
+
+  .post-references-body {
+    padding-bottom: 1rem;
   }
 }
 
@@ -427,8 +342,7 @@ $reading-width: 47.5rem; // 760px, the width the post figures are drawn at
 }
 
 .read-next-name {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.05rem;
   line-height: 1.35;
   color: var(--global-text-color);
   transition: color 0.2s ease;
