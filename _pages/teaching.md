@@ -11,6 +11,92 @@ nav_order: 6
   <div class="course-card">
     <div class="course-header">
       <div class="header-left">
+        <h3>Transformers: from scratch to production</h3>
+      </div>
+      <a href="https://github.com/xmarva/transformers-from-scratch" class="github-link"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+    <div class="course-content">
+      <p class="course-description">Build an English→Russian translator with a Transformer written from scratch, measure it honestly, improve it, and ship it as a monitored service. Every lesson is a notebook that runs on a free Kaggle or Colab GPU, and a post you can read here.</p>
+
+      <div class="course-section">
+        <div class="section-content">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Lesson</th>
+                <th>Run the notebook</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="{{ '/blog/2026/transformers-from-scratch-01-tokenization/' | relative_url }}">1. How language models read: tokenization and BPE</a></td>
+                <td>
+                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="{{ '/blog/2026/transformers-from-scratch-02-transformer/' | relative_url }}">2. The Transformer, built by hand</a></td>
+                <td>
+                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="{{ '/blog/2026/transformers-from-scratch-03-training/' | relative_url }}">3. From parrot to translator: training and decoding</a></td>
+                <td>
+                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>4. Evaluating translations: BLEU, chrF, COMET and error analysis</td>
+                <td>in progress</td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>5. Modern Transformer improvements, measured</td>
+                <td>in progress</td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>6. Hyperparameter search on a GPU budget</td>
+                <td>in progress</td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>7. From notebook to package</td>
+                <td>in progress</td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>8. Serving: an API and a demo</td>
+                <td>in progress</td>
+              </tr>
+              <tr class="lesson-planned">
+                <td>9. Deploy, then watch it</td>
+                <td>in progress</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="course-container" markdown="1">
+  <div class="course-card">
+    <div class="course-header">
+      <div class="header-left">
         <h3>Transformer Architectures</h3>
       </div>
     </div>
@@ -412,6 +498,10 @@ nav_order: 6
   display: inline-block;
   margin: 2px;
   transition: transform 0.2s;
+}
+
+.lesson-planned td {
+  color: var(--global-text-color-light);
 }
 
 .badge-link:hover {
