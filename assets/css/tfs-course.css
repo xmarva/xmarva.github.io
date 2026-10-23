@@ -84,3 +84,11 @@ pre.tfs-printed code {
 .tfs-neighbours a:only-child {
   margin-left: auto;
 }
+
+/* a source line under a borrowed figure */
+.tfs-caption {
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+  text-align: center;
+  margin-top: -0.5rem;
+}
