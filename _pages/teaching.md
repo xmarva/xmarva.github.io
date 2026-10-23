@@ -90,8 +90,15 @@ nav_order: 6
         </div>
       </div>
     </div>
+
   </div>
 </div>
+
+{% comment %}
+Archived course, hidden from the page. Its posts stay published in the blog; to show it again, remove this
+comment.
+{% endcomment %}
+{% comment %}
 
 <div class="course-container" markdown="1">
   <div class="course-card">
@@ -388,8 +395,10 @@ nav_order: 6
         </div>
       </div>
     </div>
+
   </div>
 </div>
+{% endcomment %}
 
 <style>
 .course-container {

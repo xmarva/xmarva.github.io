@@ -302,6 +302,104 @@ $cover-ratio: 1200 / 630;
   }
 }
 
+// ---------------------------------------------------------------- code in posts
+// Code blocks sit on a quiet neutral panel instead of the theme's tinted one, and long blocks fold (code-fold.js):
+// the first lines show, the rest fades out under a button.
+
+#markdown-content {
+  --code-panel: #f6f7f9;
+  --code-fold-line: 1.5em;
+
+  div.highlighter-rouge,
+  figure.highlight {
+    margin: 1.25rem 0;
+  }
+
+  pre.highlight,
+  div.highlight > pre,
+  figure.highlight > pre {
+    background-color: var(--code-panel);
+    border: 1px solid var(--global-divider-color);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    line-height: var(--code-fold-line);
+  }
+
+  .code-fold.is-folded {
+    pre {
+      max-height: calc(var(--fold-lines) * var(--code-fold-line) + 1.7rem);
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    }
+
+    pre.tfs-printed {
+      max-height: calc(var(--fold-lines) * 1.45em + 0.7rem);
+    }
+  }
+
+  .code-fold {
+    margin-bottom: 0.6rem;
+
+    pre {
+      margin-bottom: 0;
+    }
+  }
+
+  .code-fold-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 1.25rem;
+    padding: 0.2rem 0.75rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 999px;
+    background: var(--global-bg-color);
+    color: var(--global-text-color-light);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+
+    &::before {
+      content: "+";
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    &[aria-expanded="true"]::before {
+      content: "\2212";
+    }
+
+    &:hover {
+      color: var(--global-theme-color);
+      border-color: var(--global-theme-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--global-theme-color);
+      outline-offset: 2px;
+    }
+  }
+}
+
+html[data-theme="dark"] #markdown-content {
+  --code-panel: #1d2026;
+}
+
+@media print {
+  #markdown-content .code-fold.is-folded pre {
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  #markdown-content .code-fold-toggle {
+    display: none;
+  }
+}
+
 // ---------------------------------------------------------------- read next
 
 .read-next {
