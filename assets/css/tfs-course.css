@@ -1,0 +1,86 @@
+/* Lessons of "Transformers: from scratch to production" on xmarva.github.io, exported by tools/export_post.py.
+   Copied to the site as assets/css/tfs-course.css; edit it here. */
+
+/* figures from the course repository come in a light and a dark version; show the one of the site's theme */
+.tfs-figure,
+.tfs-output {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+}
+
+html[data-theme="dark"] .tfs-light,
+html:not([data-theme="dark"]) .tfs-dark {
+  display: none;
+}
+
+/* plots and token chips the notebook drew: light images, framed so they sit well on a dark page too */
+.tfs-output {
+  border-radius: 8px;
+}
+
+html[data-theme="dark"] .tfs-output {
+  box-shadow: 0 0 0 6px #fff;
+}
+
+/* the line of links under the title */
+.tfs-links {
+  font-size: 0.95rem;
+  color: var(--global-text-color-light);
+  border-left: 3px solid var(--global-theme-color);
+  padding-left: 0.75rem;
+}
+
+/* what a cell printed, set apart from the code that printed it */
+pre.tfs-printed {
+  background: transparent;
+  border: none;
+  border-left: 3px solid var(--global-divider-color);
+  border-radius: 0;
+  margin: -0.25rem 0 1.25rem;
+  padding: 0.35rem 0 0.35rem 1rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+pre.tfs-printed code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* tables the notebook printed take the site's colours */
+.tfs-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.tfs-table-wrap .tfs-table {
+  color: var(--global-text-color);
+  background: transparent;
+}
+
+.tfs-table-wrap .tfs-table th {
+  color: var(--global-text-color-light) !important;
+  border-bottom-color: var(--global-divider-color) !important;
+}
+
+.tfs-table-wrap .tfs-table td {
+  border-bottom-color: var(--global-divider-color) !important;
+}
+
+/* previous and next lesson */
+.tfs-neighbours {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  font-weight: 500;
+}
+
+.tfs-neighbours a:only-child {
+  margin-left: auto;
+}
