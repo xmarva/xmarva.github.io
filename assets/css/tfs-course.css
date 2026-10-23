@@ -92,3 +92,12 @@ pre.tfs-printed code {
   text-align: center;
   margin-top: -0.5rem;
 }
+
+/* Markdown tables in posts: some air between columns and before the next paragraph */
+article table:not(.tfs-table) {
+  margin-bottom: 1.25rem;
+}
+article table:not(.tfs-table) th,
+article table:not(.tfs-table) td {
+  padding: 0.2rem 1rem 0.2rem 0;
+}
