@@ -388,6 +388,167 @@ html[data-theme="dark"] #markdown-content {
   --code-panel: #1d2026;
 }
 
+// The colours of the code itself: four muted hues taken from the palette of the figures (rose keywords, teal strings,
+// amber numbers and constants, violet functions), everything else in the text colour, comments grey and italic.
+// One typeface, IBM Plex Mono, the same as in the figures.
+#markdown-content {
+  --code-font: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --code-ink: #2b3240;
+  --code-punct: #5b6575;
+  --code-comment: #7b8494;
+  --code-keyword: #a82d42;
+  --code-string: #0b6b60;
+  --code-number: #8a5508;
+  --code-function: #4b39b5;
+
+  pre,
+  code {
+    font-family: var(--code-font);
+    font-variant-ligatures: none;
+  }
+
+  pre.highlight,
+  div.highlight > pre,
+  figure.highlight > pre {
+    color: var(--code-ink);
+    font-size: 0.84rem;
+    tab-size: 4;
+  }
+
+  // inline code in the text: the keyword colour on the code panel, a little smaller than the text around it
+  :not(pre) > code {
+    color: var(--code-keyword);
+    background-color: var(--code-panel);
+    border: 1px solid var(--global-divider-color);
+    border-radius: 4px;
+    padding: 0.05em 0.35em;
+    font-size: 0.86em;
+  }
+
+  .highlight {
+    background: transparent;
+
+    span {
+      text-decoration: none;
+    }
+
+    .n,
+    .nn,
+    .nx,
+    .nv,
+    .vi,
+    .vc,
+    .vg,
+    .na,
+    .nt,
+    .no,
+    .nl,
+    .w,
+    .si {
+      color: var(--code-ink);
+      font-weight: 400;
+    }
+
+    .o,
+    .p {
+      color: var(--code-punct);
+      font-weight: 400;
+    }
+
+    .k,
+    .kd,
+    .kn,
+    .kp,
+    .kr,
+    .kt,
+    .kv,
+    .ow {
+      color: var(--code-keyword);
+      font-weight: 500;
+    }
+
+    .kc,
+    .bp,
+    .m,
+    .mi,
+    .mf,
+    .mh,
+    .mo,
+    .mb,
+    .mx,
+    .il {
+      color: var(--code-number);
+      font-weight: 400;
+    }
+
+    .s,
+    .s1,
+    .s2,
+    .sa,
+    .sb,
+    .sc,
+    .sh,
+    .sx,
+    .sr,
+    .ss,
+    .se,
+    .dl {
+      color: var(--code-string);
+      font-weight: 400;
+    }
+
+    .nf,
+    .fm,
+    .nb,
+    .nd,
+    .ne {
+      color: var(--code-function);
+      font-weight: 400;
+    }
+
+    .nc {
+      color: var(--code-function);
+      font-weight: 500;
+    }
+
+    .c,
+    .c1,
+    .cm,
+    .ch,
+    .cs,
+    .cp,
+    .cpf,
+    .sd {
+      color: var(--code-comment);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .gp {
+      color: var(--code-comment);
+    }
+
+    .go {
+      color: var(--code-punct);
+    }
+
+    .err {
+      color: inherit;
+      background: none;
+    }
+  }
+}
+
+html[data-theme="dark"] #markdown-content {
+  --code-ink: #d7dbe2;
+  --code-punct: #9aa3b2;
+  --code-comment: #7d8595;
+  --code-keyword: #f2899a;
+  --code-string: #7fdccf;
+  --code-number: #f0b04a;
+  --code-function: #b3a7ff;
+}
+
 @media print {
   #markdown-content .code-fold.is-folded pre {
     max-height: none;
