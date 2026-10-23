@@ -1,21 +1,72 @@
-{% assign have_related_posts = false %}
-{% for post in site.related_posts | limit: site.related_blog_posts.max_related %}
-  {% unless have_related_posts %}
-    {% assign have_related_posts = true %}
-    <br>
-    <hr>
-    <br>
-    <ul class="list-disc pl-8"></ul>
+{% comment %}
+  "Read next" at the end of a post: up to three posts, chosen in order from those that share a tag with this one,
+  then those in the same category, then the newest. Each is a card with its cover.
+{% endcomment %}
+{% assign limit = site.related_blog_posts.max_related | default: 3 %}
+{% if limit > 3 %}{% assign limit = 3 %}{% endif %}
+{% assign picked = '' | split: '' %}
+{% assign picked_urls = '' %}
 
-    <!-- Adds related posts to the end of an article -->
-    <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2>
-    <p class="mb-2">Here are some more articles you might like to read next:</p>
-  {% endunless %}
-
-  <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-  </li>
+{% for candidate in site.posts %}
+  {% if picked.size >= limit %}{% break %}{% endif %}
+  {% if candidate.url == page.url %}{% continue %}{% endif %}
+  {% assign shares = false %}
+  {% for tag in page.tags %}
+    {% if candidate.tags contains tag -%}
+      {%- assign shares = true -%}
+      {%- break -%}
+    {%- endif %}
+  {% endfor %}
+  {% if shares %}
+    {% assign picked = picked | push: candidate %}
+    {% assign picked_urls = picked_urls | append: candidate.url | append: '|' %}
+  {% endif %}
 {% endfor %}
+
+{% assign category = page.categories | first %}
+{% if category %}
+  {% for candidate in site.categories[category] %}
+    {% if picked.size >= limit %}{% break %}{% endif %}
+    {% assign key = candidate.url | append: '|' %}
+    {% if candidate.url == page.url or picked_urls contains key %}{% continue %}{% endif %}
+    {% assign picked = picked | push: candidate %}
+    {% assign picked_urls = picked_urls | append: key %}
+  {% endfor %}
+{% endif %}
+
+{% for candidate in site.posts %}
+  {% if picked.size >= limit %}{% break %}{% endif %}
+  {% assign key = candidate.url | append: '|' %}
+  {% if candidate.url == page.url or picked_urls contains key %}{% continue %}{% endif %}
+  {% assign picked = picked | push: candidate %}
+  {% assign picked_urls = picked_urls | append: key %}
+{% endfor %}
+
+{% if picked.size > 0 %}
+  <section class="read-next" aria-labelledby="read-next-title">
+    <p class="read-next-title" id="read-next-title">Read next</p>
+    <div class="read-next-grid">
+      {% for post in picked %}
+        {% assign post_category = post.categories | first %}
+        <a class="read-next-card" href="{{ post.url | relative_url }}">
+          <span class="read-next-thumb{% unless post.thumbnail %} post-row-thumb-empty{% endunless %}">
+            {% if post.thumbnail %}
+              <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+            {% else %}
+              <span>{{ post_category | default: 'blog' }}</span>
+            {% endif %}
+          </span>
+          <span class="read-next-meta">
+            {{- post.date | date: '%b %Y' -}}
+            {%- if post_category %} &middot; {{ post_category }}{% endif -%}
+          </span>
+          <span class="read-next-name">{{ post.title }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
 {% if site.newsletter.enabled and site.footer_fixed %}
   <p class="mb-2" style="margin-top: 1.5rem !important">Subscribe to be notified of future articles:</p>
   {% include scripts/newsletter.liquid left=true %}
