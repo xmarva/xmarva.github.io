@@ -2,248 +2,352 @@
 layout: post
 title: LLM Inference Optimization
 date: 2025-06-19 10:00:00
-description: Production-Ready Techniques for Real-World Deployment
+description: "Where the time and the memory go when a language model serves users, measured on a real GPU, and what serving engines do about it"
 tags: [machine-learning, transformers, production, optimization, high-load]
 categories: system-design
 featured: false
+thumbnail: /assets/posts/inference-optimization/cover.png
+og_image: https://xmarva.github.io/assets/posts/inference-optimization/cover.png
+stylesheets: [/assets/css/tfs-course.css]
+toc:
+  beginning: true
 ---
+{% raw %}
 
-You're not an ML Engineer if you can't deploy and optimize inference. This statement might sound harsh, but it reflects a fundamental shift in what the industry expects from machine learning practitioners today. Building impressive models in research environments is one thing; keeping them running efficiently in production under real-world constraints is an entirely different challenge.
+Open the price list of a large model API and compare two columns. On [Anthropic's](https://platform.claude.com/docs/en/about-claude/pricing), an output token costs five times as much as an input token, for every model on the list. An input token the provider has already seen, a cache hit, costs a tenth of a fresh one or less. These ratios are not a marketing decision. They are the physics of a GPU running a transformer, handed down to you: reading a prompt is cheap, writing an answer is expensive, and remembering a conversation takes memory that someone has to pay for.
 
-Large transformer models have become the backbone of modern AI applications, delivering state-of-the-art results across numerous tasks. However, their power comes at a significant cost. The computational and memory requirements for inference can be prohibitive, with some models requiring multiple high-end GPUs and generating response times measured in seconds rather than milliseconds. 
+You can watch the same physics from the other side. I took a model with one and a half billion parameters, [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct), put it on the free T4 GPU that Kaggle gives everyone, and let it generate text for one user. `nvidia-smi` reported the GPU 100% busy. The GPU did 0.3% of the arithmetic it is built for. Then I gave it 1,024 users at once. `nvidia-smi` still said 100%, and this time the GPU did a hundred times more work.
 
-When your model hits production and users start complaining about 7-second latencies while your GPU utilization sits at 99% and costs spiral out of control, the gap between research and production becomes painfully clear.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/utilization-light.png" width="760" alt="nvidia-smi reports the T4 100% busy both when decoding one sequence and 1,024 at once; the arithmetic actually done is 0.3% of the T4&#x27;s 65 TFLOPS for one sequence and 32% for 1,024" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/utilization-dark.png" width="760" alt="nvidia-smi reports the T4 100% busy both when decoding one sequence and 1,024 at once; the arithmetic actually done is 0.3% of the T4&#x27;s 65 TFLOPS for one sequence and 32% for 1,024" loading="lazy">
 
-The challenge isn't just about making models work; it's about making them work efficiently at scale. Modern production environments demand systems that can handle thousands of concurrent requests, maintain sub-second response times, and operate within reasonable cost budgets. This requires a deep understanding of inference optimization techniques that go far beyond basic model compression or quantization.
+Inference optimization lives in the gap between these two runs. Below, in order: what a request does on the GPU, why generating text is limited by memory rather than by arithmetic, where the memory goes, and what serving engines such as [vLLM](https://github.com/vllm-project/vllm), [SGLang](https://github.com/sgl-project/sglang) and [TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM) do about each part. Then the system around the engine: streaming, queues, scaling and the numbers to watch. Every measurement comes from [one script](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/inference_optimization/experiment.py) that runs on the same free GPU, and every figure is drawn from its output by [code](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/inference_optimization/figures.py) you can rerun.
 
-## Key-Value Caching with Paged Attention
+## Two phases of one request
 
-The transformer architecture's self-attention mechanism creates a fundamental computational bottleneck during inference. By default, when generating each new token, the model recomputes attention weights over the entire sequence history. For a sequence of length $$n$$, this results in $$O(n^2)$$ computational complexity that grows quadratically with context length. This becomes particularly problematic for applications requiring long context windows, such as document analysis or extended conversations.
+A request starts with a prompt. The engine turns it into tokens and runs the model over all of them in a single forward pass. This is the **prefill**: every layer computes keys and values for every prompt token, in parallel, and the last position yields the probabilities of the first new token. Then comes the **decode**: the model takes the token it has just produced, runs one more forward pass and gets the next one. One token per pass, each pass waiting for the one before it, until an end-of-sequence token or the length limit.
 
-In practice, this bottleneck manifests differently depending on your hardware setup. On a single A100 with 80GB memory, you might handle 32K context length with batch size 1, but try to increase the batch size to 4 and you'll immediately hit out-of-memory errors. The memory consumption follows the pattern:
+In code the two phases are the same `model(...)` call. On the hardware they behave nothing alike. Here is one request on the T4, drawn to scale: a 1,024-token prompt and a 64-token answer.
 
-$$\text{Memory} = \text{batch\_size} \times \text{seq\_length} \times \text{hidden\_size} \times \text{num\_layers} \times 2 \times \text{precision\_bytes}$$
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/phases-light.png" width="760" alt="A request on a T4, drawn to scale: reading the 1024-token prompt takes 275 ms and yields the first token; each of the other 63 tokens takes one decoding step of 37 ms, 2.6 s in all" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/phases-dark.png" width="760" alt="A request on a T4, drawn to scale: reading the 1024-token prompt takes 275 ms and yields the first token; each of the other 63 tokens takes one decoding step of 37 ms, 2.6 s in all" loading="lazy">
 
-where the factor of 2 accounts for both keys and values.
+Reading the prompt took 275 ms, about 3,700 tokens per second. Each token of the answer took 37 ms, 27 tokens per second. The answer is sixteen times shorter than the prompt and took eight times longer.
 
-Key-Value (KV) caching addresses this inefficiency by storing the computed key and value matrices from previous tokens, allowing the model to only compute attention for the new token against the cached states. The attention computation becomes:
+Two numbers describe how fast a request feels, one per phase:
 
-$$\text{Attention}(Q_{\text{new}}, K_{\text{cached}}, V_{\text{cached}}) = \text{softmax}\left(\frac{Q_{\text{new}} K_{\text{cached}}^T}{\sqrt{d_k}}\right) V_{\text{cached}}$$
+- **Time to first token (TTFT)**: the wait before anything appears. It is the time in the queue plus the prefill, so it grows with the prompt.
+- **Time per output token (TPOT)**, also called inter-token latency: the pace of the stream after that. It is one decoding step.
 
-However, naive KV caching implementations create their own problems. A typical production scenario involves serving hundreds of concurrent users with varying conversation lengths. Without proper memory management, you'll see memory fragmentation where 40GB of your 80GB GPU memory shows as "allocated" but only 20GB is actually being used for active computations. The remaining 20GB is trapped in unusable fragments between completed conversations.
+A third number describes the service rather than one user: **throughput**, tokens per second over all requests together. The [DistServe](https://www.usenix.org/system/files/osdi24-zhong-yinmin.pdf) paper adds a fourth, closer to what a business wants: **goodput**, the request rate a GPU can serve while keeping, say, 90% of requests within their TTFT and TPOT targets. A server can raise its throughput by making everyone wait. Goodput doesn't let it.
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-06-19-inference-optimization/0.png" title="Paged Attention in vLLM system overview" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Paged Attention in vLLM system overview
-</div>
+The price list now reads differently. An input token goes through the prefill together with thousands of others. An output token gets a forward pass of its own. The next section is about why that pass costs so much.
 
-This fragmentation issue becomes particularly acute during peak usage periods. You might start the day serving 200 concurrent users smoothly, but by afternoon, after thousands of conversations have started and completed, you can only handle 100 concurrent users due to fragmented memory. The only solution is often a complete service restart, which is unacceptable in production environments.
+## Why decoding is slow: the memory wall
 
-Paged attention, implemented in systems like vLLM, revolutionizes KV cache management by treating memory like an operating system manages virtual memory. Instead of allocating contiguous memory blocks for each sequence, paged attention divides the KV cache into fixed-size pages that can be dynamically allocated and deallocated. In practice, this means using page sizes of 16 or 32 tokens, creating a balance between memory efficiency and computational overhead.
+A GPU has two resources that matter here. It does arithmetic, measured in floating-point operations per second, and it moves data between its memory and its compute units, measured in bytes per second. From the datasheets:
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-06-19-inference-optimization/1.png" title="Storing the KV cache of two requests at the same time in vLLM" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Storing the KV cache of two requests at the same time in vLLM
-</div>
+| GPU | 16-bit tensor math | memory bandwidth | FLOPs per byte to stay busy |
+|---|---|---|---|
+| [T4](https://www.nvidia.com/en-us/data-center/tesla-t4/) | 65 TFLOPS | 320 GB/s | 203 |
+| [A100 80GB SXM](https://www.nvidia.com/en-us/data-center/a100/) | 312 TFLOPS | 2,039 GB/s | 153 |
+| [H100 SXM](https://www.nvidia.com/en-us/data-center/h100/) | 989 TFLOPS | 3,350 GB/s | 295 |
 
-The real-world impact is dramatic. In production deployments, paged attention can improve memory utilization from 60-70% to 90-95%, allowing you to serve 2-3x more concurrent users on the same hardware. The page table overhead is minimal, typically consuming less than 1% of total memory, while the flexibility gains are substantial. When a user ends their conversation, their memory pages are immediately available for new conversations, eliminating the gradual memory fragmentation that plagues traditional implementations.
+The A100 and H100 pages print 624 and 1,979 TFLOPS. Those figures assume structured sparsity, which a dense model doesn't use; without it the throughput is half.
 
-## Continuous Batching for Dynamic Workloads
+The last column is the ratio of the other two, the **ridge point**. A kernel that does fewer operations per byte it reads than the ridge point waits for memory, however many TFLOPS the GPU has. A kernel that does more waits for arithmetic.
 
-Traditional batching approaches assume that requests arrive in synchronized groups, but production workloads are inherently streaming and asynchronous. Users don't coordinate their requests, leading to irregular arrival patterns that can severely underutilize available compute resources if handled naively.
+Now count for one decoding step. A weight matrix $$W$$ of shape $$d_{\text{out}} \times d_{\text{in}}$$ is applied to $$B$$ token vectors, one for each sequence in the batch. Each output number takes $$d_{\text{in}}$$ multiplications and as many additions, so the step does $$2 B d_{\text{in}} d_{\text{out}}$$ operations. To do them, the GPU reads the matrix from memory once: $$2 d_{\text{in}} d_{\text{out}}$$ bytes in 16-bit precision. The inputs and outputs are $$B$$ short vectors and small next to the matrix. The **arithmetic intensity**, operations per byte, is
 
-The reality of production traffic is far messier than research benchmarks suggest. During typical business hours, you might see 50 requests per minute with response lengths varying from 10 tokens to 2000 tokens. Traditional static batching with a batch size of 8 would either waste GPU cycles waiting for enough requests to fill a batch, or force you to use smaller batch sizes that underutilize the hardware. The utilization often drops to 30-40% during off-peak hours when requests are sparse.
+$$
+I = \frac{2 B \, d_{\text{in}} d_{\text{out}}}{2 \, d_{\text{in}} d_{\text{out}}} = B .
+$$
 
-Continuous batching solves this problem by dynamically combining requests as they arrive, creating batches on-the-fly rather than waiting for predetermined batch sizes. The system maintains a queue of pending requests and continuously forms new batches based on available computational capacity and memory constraints.
+One sequence, one operation per byte. The H100 needs 295 to keep its tensor cores busy, so decoding a single sequence can use at most a third of a percent of its arithmetic.
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-06-19-inference-optimization/3.png" title="Static batching" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Completing four sequences using static batching. On the first iteration (left), each sequence generates one token (blue) from the prompt tokens (yellow). After several iterations (right), the completed sequences each have different sizes because each emits their end-of-sequence-token (red) at different iterations. Even though sequence 3 finished after two iterations, static batching means that the GPU will be underutilized until the last sequence in the batch finishes generation (in this example, sequence 2 after six iterations).
-</div>
+The **roofline model** puts both limits into one bound. A step that reads $$M$$ bytes and does $$F$$ operations takes at least
 
-The implementation complexity is significant. You need to track not just the current batch composition, but also predict memory requirements for each request addition. A naive approach might add requests to a batch until GPU memory is exhausted, but this leads to out-of-memory crashes when the prediction is wrong. A more robust approach maintains a safety margin of 10-15% and uses conservative estimates for memory consumption.
+$$
+t \;\ge\; \max\left(\frac{M}{\text{bandwidth}},\; \frac{F}{\text{peak}}\right).
+$$
 
-The key insight is that different requests within a batch can be at different stages of generation. While one request might be generating its 50th token, another could be starting its first. The system tracks the state of each request independently while still benefiting from the computational efficiency of batched operations. This requires sophisticated tensor manipulation where each row in the batch might have different sequence lengths and different remaining generation requirements.
+The first term is the time to read the data, the second the time to compute on it. The larger one is the bottleneck, and speeding up the other changes nothing. Drawn as attainable FLOP/s against intensity, the bound is a slope that turns flat at the ridge point:
 
-In practice, continuous batching introduces latency tradeoffs that must be carefully managed. A request that arrives when the GPU is processing a large batch might wait 200-500ms before being included in the next batch. For interactive applications, this delay can be noticeable. Advanced implementations use preemption strategies where long-running requests can be temporarily paused to accommodate new, potentially shorter requests.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/roofline-light.png" width="760" alt="Roofline of the T4, A100 and H100: attainable TFLOP/s rise with FLOPs per byte up to the ridge points of 203, 153 and 295, then stay flat. Decoding one sequence sits at 1 FLOP per byte. The T4 measurements follow the slope below the datasheet line and level off near 22 TFLOP/s" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/roofline-dark.png" width="760" alt="Roofline of the T4, A100 and H100: attainable TFLOP/s rise with FLOPs per byte up to the ridge points of 203, 153 and 295, then stay flat. Decoding one sequence sits at 1 FLOP per byte. The T4 measurements follow the slope below the datasheet line and level off near 22 TFLOP/s" loading="lazy">
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/posts/2025-06-19-inference-optimization/4.png" title="Continuous batching" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Completing seven sequences using continuous batching. Left shows the batch after a single iteration, right shows the batch after several iterations. Once a sequence emits an end-of-sequence token, we insert a new sequence in its place (i.e. sequences S5, S6, and S7). This achieves higher GPU utilization since the GPU does not wait for all sequences to complete before starting a new one.
-</div>
+The dots are the T4, measured: every weight matrix of Qwen2.5-1.5B applied to a batch of 1 to 2,048 new tokens, recorded as a CUDA graph so that the timing holds GPU work only (more on that below). They climb the slope and bend where the roofline says they should, below it. Measured memory bandwidth peaked at 224 GB/s, 70% of the datasheet's 320, and the arithmetic at 22 TFLOP/s, a third of 65. During the run the T4 sat at its 70 W power limit, and `nvidia-smi` showed its clock at 600 to 800 MHz. Datasheet numbers are ceilings; plan with measured ones.
 
-The scheduling algorithm becomes the critical component. A simple first-come-first-served approach can lead to head-of-line blocking where a single long request delays many shorter ones. Production systems typically implement weighted fair queuing or shortest-job-first strategies, but these require accurate prediction of request completion times, which is challenging for generative models where output length isn't known in advance.
+In time per step the same measurement looks like this:
 
-Real-world measurements show that continuous batching can achieve throughput improvements of 3-5x compared to traditional static batching in production environments with variable request patterns. However, the improvement depends heavily on request size distribution and arrival patterns. Workloads with many short requests see larger benefits than those dominated by long document processing tasks.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/decode-batch-light.png" width="760" alt="Time of one decoding step of Qwen2.5-1.5B on a T4: 15 ms for one sequence, 20 ms for 64, then growing in proportion to the batch up to 285 ms for 2,048; tokens per second rise from 67 to 7,189. The same step run eagerly by transformers takes 37 ms" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/decode-batch-dark.png" width="760" alt="Time of one decoding step of Qwen2.5-1.5B on a T4: 15 ms for one sequence, 20 ms for 64, then growing in proportion to the batch up to 285 ms for 2,048; tokens per second rise from 67 to 7,189. The same step run eagerly by transformers takes 37 ms" loading="lazy">
 
-## Multi-GPU Orchestration and Model Sharding
+One step for one sequence took 15 ms. For 64 sequences it took 20 ms. Sixty-three more users cost 30% more time, because the expensive part, reading 3.1 GB of weights, happens once per step whatever the batch. From about 256 sequences on the step is compute-bound, its time grows in proportion to the batch, and the throughput levels off at about 7,000 tokens per second.
 
-As models grow beyond the memory capacity of single GPUs, sophisticated distribution strategies become essential. Modern large language models often require multiple GPUs working in coordination, either through model parallelism (splitting the model across devices) or through replica serving (running multiple copies for higher throughput).
+This is the central fact of serving language models. A single sequence leaves almost all of a GPU's arithmetic unused, and the way to use it is to decode many sequences in the same step. Most of what follows is about making large batches possible: fitting their memory, keeping them full, and not letting one request hold up the rest.
 
-The transition from single-GPU to multi-GPU serving introduces a host of practical challenges that aren't immediately obvious. A 70B parameter model like Llama-2-70B requires approximately 140GB of memory in FP16 precision, necessitating distribution across at least two A100 GPUs. However, simply splitting the model layers across GPUs introduces significant communication overhead that can reduce effective throughput by 40-60% compared to theoretical maximum.
+The same fact gives a ceiling you can compute before renting anything. One sequence can't decode faster than the GPU reads all the weights:
 
-Model parallelism involves partitioning the model's layers or parameters across multiple GPUs. For transformer models, this typically means distributing attention heads across devices or splitting the feed-forward network components. The challenge lies in minimizing communication overhead between GPUs while maintaining computational efficiency.
+```python
+def decode_ceiling(params, bytes_per_param, bandwidth):
+    # every decoding step reads every weight once
+    return bandwidth / (params * bytes_per_param)
 
-In practice, tensor parallelism often works better than pipeline parallelism for transformer models. With tensor parallelism, each attention head computation $$\text{head}_i = \text{Attention}(Q_i, K_i, V_i)$$ is distributed across GPUs, where each GPU handles a subset of heads. This requires all-gather operations after each layer, but the communication pattern is more predictable and the memory usage is more balanced.
+print(f"{decode_ceiling(8.03e9, 2, 3.35e12):.0f} tokens/s")  # Llama 3.1 8B, bf16, one H100
+```
 
-Pipeline parallelism, where different layers run on different GPUs, seems attractive but introduces bubble time where GPUs wait for data from previous stages. In production, pipeline parallelism works well only with large batch sizes (32 or higher) that can keep all pipeline stages busy. For interactive workloads with small batch sizes, the pipeline bubbles can waste 50-70% of GPU cycles.
+<pre class="tfs-printed" markdown="0"><code>209 tokens/s</code></pre>
 
-The networking infrastructure becomes critical for multi-GPU deployments. NVLink connections between GPUs on the same node provide 50-100 GB/s bandwidth, but inter-node communication over InfiniBand typically provides only 25-50 GB/s. This bandwidth difference means that placing communicating model components on the same node is crucial for performance.
+Real engines land below it: attention adds the reads of the KV cache, and no kernel reaches the datasheet's bandwidth.
 
-Effective multi-GPU serving also requires intelligent request routing that considers the current load on each device, the memory requirements of incoming requests, and the communication costs of different placement strategies. Advanced systems can dynamically migrate requests between GPUs or adjust the parallelization strategy based on real-time performance metrics.
+**What `nvidia-smi` measures.** Its GPU-Util is, in [NVIDIA's words](https://docs.nvidia.com/deploy/nvidia-smi/index.html), the "percent of time over the past sample period during which one or more kernels was executing on the GPU". It counts time, not work. A kernel that streams weights at full bandwidth while the tensor cores stand idle counts as 100%. In the same runs another column of `nvidia-smi`, memory utilization, the share of time memory was being read or written, was closer to the truth: 100% for one sequence, 36% for 1,024. To see how much of the chip is working, use the profiling metrics of [DCGM](https://docs.nvidia.com/datacenter/dcgm/latest/user-guide/feature-overview.html): `DCGM_FI_PROF_SM_ACTIVE`, `DCGM_FI_PROF_PIPE_TENSOR_ACTIVE`, "the fraction of cycles the tensor (HMMA / IMMA) pipe was active", and `DCGM_FI_PROF_DRAM_ACTIVE`.
 
-In production environments, GPU failures are not uncommon. A single GPU failure in a tensor-parallel setup brings down the entire model instance. Robust systems implement health monitoring that can detect GPU degradation before complete failure and gracefully migrate workloads to healthy replicas. The mean time to recovery (MTTR) for GPU failures can be 5-15 minutes, during which alternative serving capacity must handle the load.
+**What Python costs.** The same decoding step run by `transformers` the usual way, eagerly, took 37 ms instead of 15: the red dot on the right. The model and the kernels are the same. The difference is that Python launches hundreds of small kernels one after another, and with one sequence the GPU finishes each before the next one arrives. Serving engines record the decoding step once as a [CUDA graph](https://developer.nvidia.com/blog/cuda-graphs/) and replay the whole step with a single launch; vLLM does it by default, for a range of batch sizes. On a small model the launches can cost more than the math.
 
-Load balancing across GPU replicas requires more sophistication than traditional web service load balancing. GPU warmup time after a cold start can be 30-120 seconds depending on model size, and the memory state of each replica affects its capacity to accept new requests. Simple round-robin load balancing often leads to uneven utilization where some GPUs are overwhelmed while others are underutilized.
+## The KV cache: what the model has to remember
 
-## Token Streaming and Progressive Response Generation
+Attention lets a new token look at every token before it, and for that it needs their keys and values in every layer. Those don't change once computed, since a causal model never lets an early token see a later one, so the engine keeps them. This store is the **KV cache**. Without it, every decoding step would process the whole text from the beginning. Here is the same 1,024-token answer generated both ways:
 
-User experience in interactive applications depends heavily on perceived responsiveness rather than just raw throughput. Even if generating a complete response takes several seconds, users often prefer to see partial results immediately rather than waiting for the entire output.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/cache-light.png" width="760" alt="Time per token while generating 1,024 tokens on a T4: flat with the KV cache, 38 s in total; growing steadily without it, 160 s" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/cache-dark.png" width="760" alt="Time per token while generating 1,024 tokens on a T4: flat with the KV cache, 38 s in total; growing steadily without it, 160 s" loading="lazy">
 
-The psychological impact of streaming is significant and measurable. User studies show that perceived response time for a 3-second generation with immediate streaming feels similar to a 1.5-second generation without streaming. However, implementing streaming correctly is more complex than simply sending tokens as they arrive.
+With the cache, every step costs the same 37 ms. Without it, step $$t$$ processes all $$t$$ tokens again, and the answer takes 160 seconds instead of 38. The cache trades that compute for memory, and memory is what runs out.
 
-Token streaming addresses this by sending generated tokens to the client as soon as they're produced, creating a typewriter effect that provides immediate feedback. This approach requires careful implementation to handle network buffering, error conditions, and client-side rendering efficiently.
+How much memory? Every layer stores one key and one value vector per KV head, for every token:
 
-The implementation typically uses Server-Sent Events (SSE) or WebSocket connections to maintain a persistent communication channel between the server and client. Each generated token is immediately serialized and transmitted, along with metadata indicating the current generation state and any confidence scores or alternative candidates.
+$$
+\text{bytes per token} = 2 \cdot L \cdot H_{kv} \cdot d_{\text{head}} \cdot b ,
+$$
 
-Network buffering can sabotage streaming implementations. TCP's Nagle algorithm and various proxy servers often buffer small packets, introducing 40-200ms delays that defeat the purpose of streaming. Production systems must explicitly disable Nagle's algorithm and use HTTP/2 or HTTP/3 where possible to minimize buffering delays. Additionally, reverse proxies like nginx require specific configuration (proxy_buffering off) to avoid accumulating streamed responses.
+where the 2 counts keys and values, $$L$$ is the number of layers, $$H_{kv}$$ the number of key-value heads, $$d_{\text{head}}$$ the size of a head, and $$b$$ the bytes per number, 2 in bf16. For Llama 3.1 70B that is $$2 \cdot 80 \cdot 8 \cdot 128 \cdot 2 = 327{,}680$$ bytes, 320 KiB for every token of every conversation. One conversation at the model's full 128K context takes 40 GiB, half of an H100.
 
-Browser compatibility introduces another layer of complexity. While modern browsers handle SSE well, older versions or certain corporate firewalls can interfere with streaming connections. Production systems typically implement fallback mechanisms that detect when streaming fails and switch to traditional request-response patterns.
+The formula needs nothing but the model's `config.json`:
 
-Streaming becomes more complex when dealing with constrained generation scenarios, such as JSON output or structured data formats. The system must buffer tokens until it can verify that the partial output remains valid according to the specified constraints. This might require implementing streaming parsers that can validate partial structures and provide early termination if the generation goes off-track.
+```python
+import json
+from huggingface_hub import hf_hub_download
 
-For JSON generation, you can't stream individual characters because partial JSON is invalid. Instead, the system must buffer until complete JSON objects or arrays are formed. This reduces the streaming benefit but still provides better user experience than waiting for complete responses. The buffering strategy might hold tokens until reaching closing braces or brackets that complete valid JSON fragments.
+def kv_bytes_per_token(config, bytes_per_value=2):
+    layers = config["num_hidden_layers"]
+    if "kv_lora_rank" in config:  # MLA: one compressed vector plus the key's positional part
+        per_layer = config["kv_lora_rank"] + config["qk_rope_head_dim"]
+    else:
+        heads = config["num_attention_heads"]
+        kv_heads = config.get("num_key_value_heads", heads)
+        head_dim = config.get("head_dim") or config["hidden_size"] // heads
+        per_layer = 2 * kv_heads * head_dim
+    return layers * per_layer * bytes_per_value
 
-Error handling in streaming scenarios requires special consideration. If generation fails midway through a response, the client needs to be notified appropriately, and any partial results must be clearly marked as incomplete. Recovery strategies might include automatic retry with different sampling parameters or fallback to alternative models.
+config = json.load(open(hf_hub_download("unsloth/Meta-Llama-3.1-70B", "config.json")))
+print(kv_bytes_per_token(config) // 1024, "KiB")
+```
 
-The infrastructure costs of streaming are also significant. Each streaming connection maintains server resources for the entire generation duration, typically 2-10 seconds per request. For high-volume applications, this can require 5-10x more connection handling capacity compared to traditional request-response patterns. Load balancers must be configured to handle long-lived connections, and connection pooling strategies need adjustment.
+<pre class="tfs-printed" markdown="0"><code>320 KiB</code></pre>
 
-## Asynchronous Queue Management and Backpressure Control
+The same function over a few well-known models:
 
-Production inference systems must handle highly variable request loads without degrading performance or dropping requests. A robust queueing system serves as the buffer between unpredictable user demand and the fixed computational capacity of the inference hardware.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/kv-per-token-light.png" width="760" alt="KV cache per token in bfloat16, from each model&#x27;s config: Llama 2 7B 512 KiB; Mistral 7B v0.3 128 KiB; Llama 3.1 8B 128 KiB; Qwen2.5 7B 56 KiB; Llama 3.1 70B 320 KiB; DeepSeek-V3 69 KiB; without MLA 4,880 KiB" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/kv-per-token-dark.png" width="760" alt="KV cache per token in bfloat16, from each model&#x27;s config: Llama 2 7B 512 KiB; Mistral 7B v0.3 128 KiB; Llama 3.1 8B 128 KiB; Qwen2.5 7B 56 KiB; Llama 3.1 70B 320 KiB; DeepSeek-V3 69 KiB; without MLA 4,880 KiB" loading="lazy">
 
-The challenge becomes apparent during traffic spikes. A typical production system might handle 100 requests per minute during normal operation, but see spikes to 1000 requests per minute during peak usage or viral events. Without proper queueing, these spikes either crash the system or force you to overprovision hardware by 10x to handle rare peaks.
+Llama 2 7B and Llama 3.1 8B have the same hidden size and differ fourfold. A formula you will often see, $$2 \cdot L \cdot d_{\text{model}} \cdot b$$ bytes per token, is right for the first and four times too large for the second. Newer models don't give every attention head its own keys and values:
 
-Asynchronous queues decouple request reception from processing, allowing the system to accept requests even when all compute resources are busy. The queue management system must implement multiple priority levels, timeout handling, and fair scheduling policies to ensure good user experience across different usage patterns.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/attention-variants-light.png" width="760" alt="Four ways to give attention heads their keys and values. Multi-head attention: every query head has its own key and value head. Grouped-query attention: a group of query heads shares one. Multi-query attention: all heads share a single one. Multi-head latent attention: the cache holds one small latent vector per token, and every head&#x27;s keys and values are computed from it" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/attention-variants-dark.png" width="760" alt="Four ways to give attention heads their keys and values. Multi-head attention: every query head has its own key and value head. Grouped-query attention: a group of query heads shares one. Multi-query attention: all heads share a single one. Multi-head latent attention: the cache holds one small latent vector per token, and every head&#x27;s keys and values are computed from it" loading="lazy">
 
-The queue depth becomes a critical operational metric. In practice, queue depths of 50-100 requests are manageable, but beyond 200-300 requests, user experience degrades significantly. Users expect responses within 10-15 seconds for interactive applications, so queue depths translate directly to response time guarantees. A queue processing 10 requests per minute with 200 pending requests means 20-minute response times, which is unacceptable.
+- **Multi-head attention (MHA)**, the original design: every query head has its own key and value head.
+- **Multi-query attention (MQA)**, [Shazeer, 2019](https://arxiv.org/abs/1911.02150): all heads share one key and one value. The cache shrinks by the number of heads, and quality suffers somewhat.
+- **Grouped-query attention (GQA)**, [Ainslie et al., 2023](https://arxiv.org/abs/2305.13245), the middle ground: each group of query heads shares a key-value head. Llama 3 has 8 of them for 32 or 64 query heads. The authors also show that an existing MHA model can be converted with further training on 5% of its original pre-training compute.
+- **Multi-head latent attention (MLA)**, from [DeepSeek-V2](https://arxiv.org/abs/2405.04434): the cache holds one compressed vector per token and layer, 512 numbers in DeepSeek-V3, plus 64 for the part of the key that carries the position. Each head's keys and values are computed from that vector when attention needs them. DeepSeek-V3 caches 69 KiB per token; with ordinary attention over its 128 heads it would need 4,880 KiB, seventy times more.
 
-Backpressure mechanisms prevent the system from accepting more work than it can handle, which could lead to cascading failures or excessive latency. When queue depth exceeds predetermined thresholds, the system can implement various strategies: rejecting new requests with appropriate error codes, upgrading to faster but less accurate models, or redirecting traffic to alternative endpoints.
+About a number that travels with MLA: DeepSeek-V2 "reduces the KV cache by 93.3%", but that compares the whole deployed model with DeepSeek 67B, and the deployed cache is also quantized to about 6 bits per number. Counting numbers alone, MLA gives 82%: 60 layers of 576 against 95 layers of $$2 \cdot 8 \cdot 128$$.
 
-The implementation often involves multiple queue tiers with different service level agreements. Premium users might have access to a high-priority queue with guaranteed sub-5-second response times, while free tier users accept longer delays. The scheduler must balance these priorities while avoiding starvation of lower-priority requests.
+The size of the cache matters twice. It decides how many conversations fit next to the weights, and so how large a batch can be. And every decoding step reads every sequence's whole cache, which batching can't share: the weights are read once for the batch, the cache once per sequence. With 16 sequences on the T4:
 
-Redis Streams or Apache Kafka provide robust foundations for distributed queueing, but the integration with GPU inference workers requires careful consideration. GPU workers can't efficiently handle traditional message acknowledgment patterns because they need to commit to processing requests for several seconds. Dead letter queues become essential for handling requests that fail processing or exceed timeout limits.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/context-light.png" width="760" alt="One decoding step for 16 sequences on a T4: reading the weights takes 16 ms at every context length, reading the KV cache from 1.2 ms at 512 tokens to 37 ms at 16K" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/context-dark.png" width="760" alt="One decoding step for 16 sequences on a T4: reading the weights takes 16 ms at every context length, reading the KV cache from 1.2 ms at 512 tokens to 37 ms at 16K" loading="lazy">
 
-The queue management system should implement sophisticated timeout handling that considers both user expectations and resource utilization. Short requests might have tight timeout requirements, while complex analytical tasks might warrant longer processing windows. The system must track per-request timeouts and proactively cancel work that can no longer meet its deadline.
+At 512 tokens of context the cache adds less than a tenth to the step. Past about 7,000 tokens it costs more than the whole model, and at 16K it takes more than two thirds of the step. This is why long contexts are slow and expensive per token, and some price lists say so: [Claude Haiku 5.5](https://platform.claude.com/docs/en/about-claude/pricing) charges five times more per input token for prompts over 100,000 tokens.
 
-Circuit breaker patterns add another layer of protection. If the inference service starts returning errors at rates above 5-10%, the circuit breaker can redirect traffic to fallback responses or cached results rather than continuing to queue requests that will likely fail. The circuit breaker must distinguish between temporary GPU memory pressure and permanent model failures to avoid unnecessary service degradation.
+## Paging the cache
 
-Priority-based scheduling allows the system to differentiate between different types of requests. Interactive user queries might receive higher priority than batch processing tasks, or premium users might get preferential treatment during high-load periods. However, implementing fairness across priority levels requires careful tuning to prevent lower-priority requests from being starved indefinitely.
+How much cache do you reserve for an answer whose length you don't know? Early serving systems reserved the maximum, as one contiguous region per request, and most of it sat empty. The [vLLM paper](https://arxiv.org/abs/2309.06180) measured that in those systems "only 20.4% - 38.2% of the KV cache memory is used to store the actual token states". The rest was reserved for tokens never generated, or lost in the gaps between regions.
 
-## Hardware-Aware Runtime Optimization
+vLLM's answer, **PagedAttention**, borrows virtual memory from operating systems. The cache is cut into fixed-size blocks, 16 tokens by default. A sequence gets a new block when it fills the last one, anywhere in memory, and a block table maps its logical blocks to physical ones. The attention kernel reads the cache through the table.
 
-Modern inference acceleration relies heavily on specialized hardware features and optimized software stacks that can take advantage of these capabilities. Graphics processors offer tensor cores designed specifically for mixed-precision arithmetic, while newer architectures provide dedicated units for sparse computations and quantized operations.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/paged-light.png" width="760" alt="Two requests, A with 10 tokens and B with 7. Reserving the maximum length of 16 for each leaves 15 slots unused. With blocks of 4 tokens, each request&#x27;s block table points to blocks anywhere in memory, and only 3 slots are unused, in the last block of each request" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/paged-dark.png" width="760" alt="Two requests, A with 10 tokens and B with 7. Reserving the maximum length of 16 for each leaves 15 slots unused. With blocks of 4 tokens, each request&#x27;s block table points to blocks anywhere in memory, and only 3 slots are unused, in the last block of each request" loading="lazy">
 
-The gap between theoretical performance and actual throughput can be startling. An A100 GPU advertises 312 TFLOPS of mixed-precision performance, but naive PyTorch implementations often achieve only 20-40 TFLOPS in practice. The difference lies in memory bandwidth utilization, kernel fusion, and precision management that specialized runtimes handle automatically.
+A sequence now wastes at most the empty part of its last block, under 4% of the memory in vLLM's [measurements](https://vllm.ai/blog/2023-06-20-vllm). The freed memory becomes batch size, and batch size, as the previous sections showed, is throughput: the paper reports 2 to 4 times the throughput of FasterTransformer and Orca at the same latency.
 
-TensorRT, NVIDIA's inference optimization library, provides automatic kernel fusion, precision calibration, and memory layout optimization specifically tuned for inference workloads. The system analyzes the computational graph and applies various optimizations: fusing consecutive operations to reduce memory bandwidth requirements, selecting optimal precision levels for different operations, and choosing memory layouts that maximize cache efficiency.
+Blocks can also be shared. Several samples from one prompt point at the same prompt blocks and copy a block only when one of them writes to it, copy-on-write, the way `fork()` shares memory between processes. The paper measured 6 to 10% less memory for parallel sampling and 38 to 55% less for beam search.
 
-In production deployments, TensorRT can improve inference speed by 2-5x compared to standard PyTorch implementations, but the optimization process itself can take 10-30 minutes depending on model size. This optimization time must be factored into deployment pipelines, and the optimized models are hardware-specific and can't be easily moved between different GPU architectures.
+The same sharing across requests is **prefix caching**. When a new request starts with tokens the engine has already processed (the same system prompt, the same tool definitions, the same document), it reuses their blocks and skips their prefill. vLLM finds such blocks by hashing each one together with the blocks before it, and does it by default; [SGLang's RadixAttention](https://arxiv.org/abs/2312.07104) keeps the prefixes in a tree. Prefix caching only shortens the prefill and does nothing for decoding ([vLLM docs](https://docs.vllm.ai/en/latest/features/automatic_prefix_caching.html)). This is the cache hit on the price list. When you build on an API, put what doesn't change at the start of the prompt and what changes at the end: a single changed token invalidates the cache for everything after it.
 
-The precision calibration process requires representative data samples to determine optimal quantization scales. Using inappropriate calibration data can result in accuracy degradation that might not be immediately apparent in automated tests but becomes obvious in production usage. The calibration dataset should represent real user inputs, not just validation sets from model training.
+## Batching that never waits
 
-ONNX Runtime offers cross-platform optimization capabilities that can target different hardware backends while providing a unified interface. The runtime includes optimization passes that eliminate redundant operations, fold constants, and apply algebraic simplifications that reduce computational requirements without affecting model accuracy.
+Large batches need requests to batch together, and requests don't arrive together. **Static batching** gathers a batch, runs it to the end, and only then takes the next. The batch is done when its longest answer is done, so the slots of short answers stand empty while new requests wait outside.
 
-However, ONNX conversion introduces its own challenges. Complex PyTorch operations might not have direct ONNX equivalents, requiring manual implementation of custom operators. The conversion process can also introduce subtle numerical differences that accumulate over long generation sequences, leading to different outputs compared to the original PyTorch model.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/batching-light.png" width="760" alt="Eight requests of different lengths on four slots. Static batching takes 17 steps, because each group waits for its longest request; continuous batching refills a slot as soon as a request finishes and takes 14 steps for the same 44 tokens" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/batching-dark.png" width="760" alt="Eight requests of different lengths on four slots. Static batching takes 17 steps, because each group waits for its longest request; continuous batching refills a slot as soon as a request finishes and takes 14 steps for the same 44 tokens" loading="lazy">
 
-For CPU-based deployment, specialized runtimes like llama.cpp implement highly optimized kernels that take advantage of specific instruction sets such as AVX-512 or ARM NEON. These implementations often outperform general-purpose frameworks by significant margins, especially for quantized models running on consumer hardware.
+[Orca](https://www.usenix.org/conference/osdi22/presentation/yu) (OSDI 2022) moved scheduling from the request to the iteration. After every decoding step the scheduler can drop finished sequences and add waiting ones, so no slot stays idle while requests wait. What makes it possible is that sequences of different lengths don't need to be padded into one tensor: the matrix multiplications run over all tokens of all sequences at once, and only attention runs per sequence, each against its own cache. Orca reported 36.9 times the throughput of FasterTransformer on GPT-3 175B at the same latency. Under the name **continuous batching** it is now standard in serving engines.
 
-The performance characteristics vary dramatically across hardware. A quantized INT8 model might run 3x faster on modern Intel CPUs with VNNI instructions, but show minimal improvement on older architectures lacking these specialized units. Apple's M-series processors with their unified memory architecture demonstrate different optimization patterns entirely, often favoring larger batch sizes than traditional GPU deployments.
+In the toy above the gain is 17 steps against 14. With real traffic it is larger: answers range from one word to thousands of tokens, and a static batch always waits for the longest.
 
-The choice of runtime significantly impacts performance, and the optimal selection depends on the specific model architecture, target hardware, and precision requirements. A quantized INT8 model running on a runtime optimized for full-precision operations might perform worse than the original FP32 model on a properly optimized stack.
+Continuous batching brought its own problem. A request joins the batch with its prefill, and the prefill of a long prompt is a long step. Every sequence in the batch waits for it, and their users watch the stream freeze. [Sarathi-Serve](https://www.usenix.org/system/files/osdi24-agrawal.pdf) (OSDI 2024) calls these generation stalls and removes them with **chunked prefill**: the prompt is cut into chunks, and each step carries one token for every running sequence plus one chunk, up to a budget of tokens per step.
 
-Framework overhead becomes particularly visible in high-throughput scenarios. Python's Global Interpreter Lock (GIL) can become a bottleneck when handling many concurrent requests, even if the actual model inference happens in optimized C++ or CUDA code. Production systems often use multiple worker processes or specialized serving frameworks like Triton Inference Server to bypass these limitations.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/chunked-prefill-light.png" width="760" alt="Three requests are decoding when a long prompt arrives. Run whole, its prefill is one long step, and the three wait for it without producing a token. Split into chunks, each step carries one token of each running request and a chunk of the prompt, and they keep producing tokens" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/chunked-prefill-dark.png" width="760" alt="Three requests are decoding when a long prompt arrives. Run whole, its prefill is one long step, and the three wait for it without producing a token. Split into chunks, each step carries one token of each running request and a chunk of the prompt, and they keep producing tokens" loading="lazy">
 
-## Fault Isolation and System Resilience
+Decoding steps get a little slower and stop freezing. The paper reports 2.6 times the serving capacity of vLLM for Mistral-7B under the same latency targets, and up to 5.6 times for Falcon-180B. In vLLM the budget is `max_num_batched_tokens`, and it is the knob between the two phases: a larger budget gives faster prefills and slower decoding steps.
 
-Large language models are complex systems that can fail in numerous ways: memory leaks that gradually degrade performance, infinite loops in generation that consume resources indefinitely, or edge cases in input processing that cause crashes. Production systems must be designed to contain these failures and maintain overall service availability.
+The other way out is to separate the phases. **Disaggregated serving** runs prefills on one set of GPUs and decoding on another, and moves each request's cache between them. Each pool is sized and tuned for one kind of work; [DistServe](https://www.usenix.org/system/files/osdi24-zhong-yinmin.pdf) reports up to 7.4 times more requests within the same latency targets. The price is moving the cache, which for a long conversation on a large model is gigabytes.
 
-The failure modes are often subtle and difficult to detect in development environments. Memory leaks might only become apparent after processing thousands of requests over several hours. A model might work perfectly for 99% of inputs but crash on specific Unicode characters or extremely long input sequences. These edge cases are particularly problematic because they can bring down entire model instances, affecting many concurrent users.
+**When the cache runs out.** A batch grows until the cache is full. Then sequences that are still generating need new blocks, and there are none. vLLM **preempts**: it evicts a request, frees its blocks, and later rebuilds the request's cache from its text, which costs another prefill. (The vLLM paper also describes swapping blocks to CPU memory; the current scheduler only recomputes.) A few preemptions at peak load are normal. Many mean the batch is larger than the memory: lower `max_num_seqs`, shorten the maximum context, quantize, or add GPUs.
 
-Process isolation provides the fundamental building block for fault tolerance by running each model instance in a separate process or container. When a model process crashes or becomes unresponsive, only that specific instance is affected, and the orchestration system can restart it without impacting other running models or user sessions.
+How many sequences will the engine hold at once? **Little's law** answers it for any stable queue:
 
-In practice, containerization with Docker or similar technologies provides the necessary isolation, but the configuration details matter significantly. Memory limits must be set appropriately to prevent one model from consuming all available system memory, but too-restrictive limits can cause legitimate requests to fail. GPU memory isolation is particularly challenging because CUDA contexts are typically shared across processes on the same device.
+$$
+L = \lambda \, W ,
+$$
 
-Kubernetes provides excellent orchestration capabilities for containerized model serving, but the default restart policies aren't always appropriate for GPU workloads. A crashed model container might restart on a different node that doesn't have the required GPU resources, leading to extended downtime while the scheduler finds appropriate placement.
+the average number of requests in the system, $$L$$, equals their arrival rate $$\lambda$$ times the average time each spends inside, $$W$$. At 10 requests per second and 12 seconds per request, 120 requests are in flight. If each brings a 4,096-token context to Llama 3.1 8B, their cache takes $$120 \cdot 4096 \cdot 128\ \text{KiB} = 60\ \text{GiB}$$. One H100 has room for about 57 GiB next to the weights (see the next section). Such a service hits preemptions at its average load, before any peak.
 
-Health monitoring systems continuously probe model instances to detect degraded performance or unresponsive behavior. These checks might include periodic test queries with known expected outputs, memory usage monitoring, and response time tracking. When an instance fails health checks, it can be automatically removed from the serving pool and restarted.
+## Fewer bytes per weight: quantization
 
-The health check implementation requires careful consideration of what constitutes a failure. A model that takes 30 seconds to respond to a complex query might be functioning normally, but a model that takes 30 seconds for a simple "hello world" request is clearly degraded. The health checks must distinguish between temporary load-induced slowdowns and permanent failures.
+Decoding reads every weight at every step, so a weight stored in fewer bytes is read sooner. In the memory-bound regime the gain is direct: half the bytes, up to twice the tokens per second. Quantization also frees memory for the cache, and on large models that is often the bigger win:
 
-Memory leak detection becomes crucial for long-running model services. GPU memory leaks are particularly insidious because they might not be immediately apparent and can gradually degrade performance over hours or days. Monitoring GPU memory usage patterns and implementing automatic restarts when memory usage exceeds expected thresholds helps maintain system stability.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/memory-budget-light.png" width="760" alt="Memory of H100 GPUs given to the engine: Llama 3.1 8B, 16-bit weights on 1 GPU: weights 15 GiB, room for 467 thousand tokens of KV cache, at most 209 tokens/s for one sequence; Llama 3.1 70B, 16-bit weights on 2 GPUs: weights 131 GiB, room for 41 thousand tokens of KV cache, at most 47 tokens/s for one sequence; Llama 3.1 70B, 8-bit weights on 2 GPUs: weights 66 GiB, room for 257 thousand tokens of KV cache, at most 95 tokens/s for one sequence; Llama 3.1 70B, 4-bit weights on 1 GPU: weights 33 GiB, room for 128 thousand tokens of KV cache, at most 95 tokens/s for one sequence" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/memory-budget-dark.png" width="760" alt="Memory of H100 GPUs given to the engine: Llama 3.1 8B, 16-bit weights on 1 GPU: weights 15 GiB, room for 467 thousand tokens of KV cache, at most 209 tokens/s for one sequence; Llama 3.1 70B, 16-bit weights on 2 GPUs: weights 131 GiB, room for 41 thousand tokens of KV cache, at most 47 tokens/s for one sequence; Llama 3.1 70B, 8-bit weights on 2 GPUs: weights 66 GiB, room for 257 thousand tokens of KV cache, at most 95 tokens/s for one sequence; Llama 3.1 70B, 4-bit weights on 1 GPU: weights 33 GiB, room for 128 thousand tokens of KV cache, at most 95 tokens/s for one sequence" loading="lazy">
 
-Hot restart capabilities allow the system to replace failed model instances without service interruption. This requires maintaining warm standby processes that are ready to accept traffic immediately when a primary instance fails. The standby processes must have the model already loaded in memory and be prepared to handle the specific configuration and routing requirements of the failed instance.
+Llama 3.1 70B in 16 bits barely fits on two H100s. With 90% of their memory given to the engine, vLLM's default, there is room for 41,000 tokens of cache: five conversations of 8K. In 8 bits, the same two GPUs hold six times more cache and double the ceiling for one sequence. In 4 bits the model fits on one GPU with room for 128,000 tokens. The bars leave out the engine's memory for activations and the scales that quantized formats store, so real numbers are somewhat lower.
 
-The cost of maintaining hot standbys is significant, potentially doubling infrastructure costs. More economical approaches might maintain cold standbys that can be activated within 30-60 seconds, accepting brief service degradation in exchange for lower operational costs.
+The methods differ in what they quantize:
 
-Circuit breaker patterns protect the overall system from cascading failures when individual components become unreliable. If a particular model endpoint starts returning errors at a high rate, the circuit breaker can temporarily stop routing requests to that endpoint, allowing it time to recover while protecting users from experiencing failures.
+- **Weights only.** Weights are stored in 4 or 8 bits and multiplied in 16. [GPTQ](https://arxiv.org/abs/2210.17323) chooses how to round each weight using second-order information and quantizes a 175B model in about four GPU hours. [AWQ](https://arxiv.org/abs/2306.00978) observes that "protecting only 1% salient weights can greatly reduce quantization error", finds those weights from activation statistics, and protects them by scaling rather than by keeping them in higher precision. Weight-only formats speed up memory-bound decoding. At large batches, where the step is compute-bound, unpacking the weights is extra work, and they can be slower than 16 bits.
+- **Weights and activations.** With both in 8 bits, the GPU's 8-bit arithmetic does the multiplication too. [LLM.int8()](https://arxiv.org/abs/2208.07339) showed why this is hard: from about 6.7B parameters, a few hidden dimensions carry values far larger than all the others, in every layer. The method keeps those dimensions in 16 bits and multiplies the rest, more than 99.9% of the values, in 8. On H100s, FP8 doubles the dense tensor throughput, from 989 to 1,979 TFLOPS, so the prefill gets faster as well.
+- **The KV cache.** Stored in 8 bits, it takes half the memory, and twice the context or twice the batch fits.
 
-The circuit breaker configuration requires tuning based on expected failure patterns. A threshold of 10% error rate might be appropriate for experimental models, while production-critical services might use 1-2% thresholds. The recovery time must balance system stability with service availability, typically using exponential backoff to gradually reintroduce traffic to recovered endpoints.
+How much quality a format costs depends on the model, the method and the task. Measure it on your own task, before and after: an average over general text, such as perplexity, can hide losses in exactly the cases you care about, such as arithmetic, code or a less common language.
 
-## GPU-Aware Autoscaling Strategies
+## Guessing ahead: speculative decoding
 
-Traditional autoscaling approaches based on CPU metrics are inadequate for GPU-accelerated inference workloads where the primary constraint is specialized compute resources rather than general processing capacity. Effective autoscaling for language model inference requires metrics that reflect GPU utilization, memory pressure, and queue dynamics.
+The roofline has a strange gift. A decoding step reads all the weights to produce one token, and reading them to check five tokens costs about the same, because the step is memory-bound either way. **Speculative decoding** ([Leviathan et al., 2023](https://arxiv.org/abs/2211.17192); [Chen et al., 2023](https://arxiv.org/abs/2302.01318)) makes use of it. A small **draft** model, cheap to run, proposes $$\gamma$$ tokens one by one. The large **target** model reads all of them in a single forward pass, which gives its own prediction at every position. The proposals are accepted up to the first one the target disagrees with, and there the target's own token is taken instead. Every round yields at least one token and at most $$\gamma + 1$$.
 
-The challenge is that GPU metrics are fundamentally different from CPU metrics. While CPU utilization is relatively uniform and predictable, GPU utilization can spike from 0% to 100% within milliseconds as batch processing begins and ends. A GPU showing 30% average utilization might actually be alternating between 0% idle and 100% busy states, making traditional threshold-based autoscaling ineffective.
+Here is a real round. Qwen2.5-0.5B drafts for Qwen2.5-1.5B, and both take their most likely token:
 
-GPU memory utilization provides a critical signal for scaling decisions, but it must be interpreted carefully. Unlike CPU memory, GPU memory is typically allocated in large chunks and managed differently by various frameworks. The autoscaler must distinguish between memory that's allocated but idle and memory that's actively being used for computation.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/speculative-light.png" width="760" alt="One round of speculative decoding with real models: the draft proposes 5 tokens, the target agrees with the first 2 and replaces the next one with its own choice, &#x27;have&#x27;; the rest are discarded. 3 tokens from one pass of the target" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/speculative-dark.png" width="760" alt="One round of speculative decoding with real models: the draft proposes 5 tokens, the target agrees with the first 2 and replaces the next one with its own choice, &#x27;have&#x27;; the rest are discarded. 3 tokens from one pass of the target" loading="lazy">
 
-In practice, monitoring GPU memory fragmentation becomes as important as monitoring total usage. A GPU showing 60% memory utilization might actually be unable to accept new requests due to fragmentation, necessitating scale-out decisions based on memory fragmentation metrics rather than just total usage.
+With greedy decoding, acceptance means that both models choose the same token, and the text is exactly what the target would write alone. I checked: the 200 tokens produced this way are identical to plain greedy decoding with the target. With sampling, the papers accept each proposal with probability $$\min\left(1, p(x)/q(x)\right)$$, where $$p$$ and $$q$$ are the target's and the draft's probabilities of the proposed token, and on rejection they sample from what is left of $$p$$. The output then follows the target's distribution exactly, "within hardware numerics", as Chen et al. put it.
 
-Request queue length and processing latency offer additional signals that reflect user-visible performance degradation. When average response times start increasing or queue depths grow beyond acceptable thresholds, the system should proactively scale out additional capacity rather than waiting for resource exhaustion.
+How many tokens does a round give? If each proposal is accepted with probability $$\alpha$$, independently of the others, the expected number of tokens per pass of the target is ([Leviathan et al.](https://arxiv.org/abs/2211.17192), equation 1)
 
-Cold start considerations become particularly important for GPU workloads where model loading can take 30-60 seconds or more. The autoscaler must anticipate demand increases and begin warming new instances before they're critically needed. This might involve maintaining a small pool of pre-warmed instances or implementing predictive scaling based on historical usage patterns.
+$$
+\mathbb{E}[\text{tokens}] = \frac{1 - \alpha^{\gamma + 1}}{1 - \alpha} .
+$$
 
-The autoscaling system must also consider the heterogeneous nature of GPU resources. Different instance types offer different capabilities, and the system might need to choose between adding high-memory instances for long-context workloads versus high-throughput instances for many short requests.
+Read it as a sum. One token is certain. A second comes if the first proposal is accepted, with probability $$\alpha$$; a third if the first two are, $$\alpha^2$$; and so on up to $$\alpha^\gamma$$. The formula is this geometric series added up. Even a perfect draft gives no more than $$\gamma + 1$$ tokens, and a weak one no more than $$1/(1-\alpha)$$, however far ahead it guesses.
 
-## Token Budget Management and Output Control
+On a 200-token answer the 0.5B draft and the 1.5B target agreed often enough for $$\alpha = 0.75$$, estimated from how many proposals each round accepted. The formula then predicts 3.29 tokens per pass, and the measured 3.23 is close:
 
-Inference costs scale directly with the number of tokens processed, including both input context and generated output. Production systems require sophisticated controls to manage these costs while maintaining good user experience across different usage tiers and application requirements.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/speculative-gain-light.png" width="760" alt="Expected tokens per pass of the target model against the number of drafted tokens, for acceptance rates 0.6, 0.75 and 0.9; the measured point, 3.23 tokens per pass at five drafted tokens, lies near the curve for 0.75" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/speculative-gain-dark.png" width="760" alt="Expected tokens per pass of the target model against the number of drafted tokens, for acceptance rates 0.6, 0.75 and 0.9; the measured point, 3.23 tokens per pass at five drafted tokens, lies near the curve for 0.75" loading="lazy">
 
-Token budgeting operates at multiple levels: per-request limits that prevent individual queries from consuming excessive resources, per-user quotas that enforce fair usage policies, and system-wide controls that protect against resource exhaustion during traffic spikes.
+Tokens per pass are not yet speed. The draft runs $$\gamma$$ times per round, and if a draft pass costs a fraction $$c$$ of a target pass, the expected speedup is (Leviathan et al., theorem 3.8)
 
-The implementation must distinguish between different types of token usage. Input tokens consumed by long documents or conversation history might be treated differently from output tokens generated in response to user queries. Some applications might allow unlimited input processing but strictly control output generation, while others might implement combined budgets.
+$$
+\text{speedup} = \frac{1 - \alpha^{\gamma + 1}}{(1 - \alpha)(\gamma c + 1)} .
+$$
 
-Early stopping mechanisms provide additional cost control by terminating generation when certain conditions are met. This might include stopping at natural sentence boundaries, detecting repetitive outputs, or identifying when the model's confidence in subsequent tokens drops below acceptable thresholds.
+Our pair is badly matched for it. Decoding is memory-bound, so a pass costs about in proportion to the parameters it reads: $$c \approx 0.49 / 1.54 = 0.32$$, and with $$\gamma = 5$$ the speedup is $$3.29 / 2.6 \approx 1.26$$. A draft a hundredth of the target's size would give 3.1 with the same $$\alpha$$; in Leviathan et al.'s experiments, drafts about two orders of magnitude smaller than the target usually did best. In practice the draft often isn't a separate model at all. [Medusa](https://arxiv.org/abs/2401.10774) and [EAGLE](https://arxiv.org/abs/2401.15077) attach small extra heads to the target itself that predict further ahead; n-gram lookup drafts by copying from the prompt, which works when the answer quotes it, as in code editing. DeepSeek-V3 trains a module that predicts one more token alongside the model, and [its report](https://arxiv.org/abs/2412.19437) gives an acceptance rate of 85 to 90% for that token and 1.8 times the tokens per second.
 
-Rate limiting complements token budgeting by controlling the temporal distribution of resource usage. A user might have a large token budget but be limited in how quickly they can consume it, preventing burst usage patterns that could impact other users or destabilize the system.
+The gift has a condition. Checking $$\gamma$$ tokens is nearly free only while the step is memory-bound. At large batches the GPU is already busy computing, the extra positions cost real time, and the speedup shrinks or turns into a slowdown. Speculative decoding buys latency when the load is light; measure it under the load you actually have.
 
-## Comprehensive Observability and Performance Monitoring
+## Attention kernels
 
-Effective optimization requires detailed visibility into system behavior at multiple levels: individual request performance, model-level metrics, hardware utilization, and overall system health. The monitoring system must capture both real-time operational data and longer-term trends that inform capacity planning and optimization priorities.
+The prefill computes attention between every pair of prompt tokens. Written plainly, attention puts the score matrix, $$T \times T$$ for every head, into GPU memory, and reads it back for the softmax and again for the weighted sum of values. [FlashAttention](https://arxiv.org/abs/2205.14135) computes the same result in tiles that fit in the on-chip SRAM and never writes the full matrix out. It is exact, not an approximation, and its authors measured attention 7.6 times faster on GPT-2. The quadratic part is visible on the T4: an 8,192-token prompt took 9.9 s to read, 4.2 times as long as 4,096 tokens, so at that length attention, not the weights, sets the time.
 
-Request-level telemetry tracks the complete lifecycle of each inference request: queuing time, model loading time, actual inference duration, and response transmission time. This granular data enables identification of bottlenecks and optimization opportunities that might not be visible in aggregate metrics.
+Decoding has one query per sequence and no large matrix to avoid; its cost is reading the cache, as the measurement above showed. What matters is how many of the GPU's cores share that reading. A kernel that gives each sequence and head to one block of threads leaves most of the GPU idle when the batch is small and the context is long. [Flash-Decoding](https://crfm.stanford.edu/2023/10/12/flashdecoding.html) also splits the cache along its length, computes attention over the pieces in parallel and combines them using each piece's log-sum-exp, for "up to 8x faster generation for very long sequences". The kernel matters even for this simple job: on the T4, a fused attention kernel read the cache at about 200 GB/s, and the same attention written as two matrix products and a softmax at 91 GB/s.
 
-GPU profiling provides insights into hardware utilization patterns, memory access efficiency, and kernel performance. Tools like NVIDIA Nsight or PyTorch Profiler can reveal whether computational kernels are memory-bound or compute-bound, informing decisions about model architecture changes or runtime optimizations.
+## More than one GPU
 
-Cache performance metrics become particularly important for systems using KV caching or other memory optimization techniques. Cache hit rates, memory fragmentation levels, and eviction patterns provide insights into how well the caching strategy matches actual usage patterns.
+When the weights don't fit on one GPU, or one GPU decodes too slowly, the model is split. Inside one server the usual way is **tensor parallelism**, as in [Megatron-LM](https://arxiv.org/abs/1909.08053): every GPU holds a slice of every weight matrix.
 
-Distributed tracing becomes essential for complex multi-GPU or multi-model deployments where a single user request might involve multiple service components. The tracing system must correlate activities across different processes and devices to provide a complete picture of request processing.
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/tensor-parallel-light.png" width="760" alt="A transformer layer on two GPUs, as Megatron-LM splits it: each GPU holds half of the attention heads and half of the MLP&#x27;s hidden units, computes a partial result, and the two partial results are summed by an all-reduce, twice per layer. Llama 3.1 70B has 80 layers: 160 all-reduces per generated token" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/tensor-parallel-dark.png" width="760" alt="A transformer layer on two GPUs, as Megatron-LM splits it: each GPU holds half of the attention heads and half of the MLP&#x27;s hidden units, computes a partial result, and the two partial results are summed by an all-reduce, twice per layer. Llama 3.1 70B has 80 layers: 160 all-reduces per generated token" loading="lazy">
 
-The monitoring system should implement automated alerting that can detect both immediate failures and gradual performance degradation. This includes not just binary up/down checks, but also trend analysis that can identify slowly developing problems before they impact users.
+The attention heads are divided among the GPUs, and so is the MLP: its first matrix by columns, its second by rows. Each GPU then holds a partial sum of the block's output, and an all-reduce adds the parts up, twice per layer in the forward pass. Each GPU reads only its share of the weights, so their bandwidths add up, and two H100s decode Llama 3.1 70B about twice as fast as one would if the model fit.
+
+The all-reduces are the price. Llama 3.1 70B makes 160 of them for every generated token, and at each one all GPUs wait for the slowest. The messages are small, 8,192 numbers per sequence, so the link's latency matters as much as its bandwidth:
+
+| link | bandwidth per direction |
+|---|---|
+| NVLink, H100 | 450 GB/s |
+| NVLink, A100 | 300 GB/s |
+| PCIe 5.0 x16 | 64 GB/s |
+| PCIe 4.0 x16 | 32 GB/s |
+| InfiniBand NDR, one port | 50 GB/s (400 Gb/s) |
+
+NVIDIA quotes NVLink as the sum of both directions: [900 GB/s](https://www.nvidia.com/en-us/data-center/h100/) for H100 and [600](https://www.nvidia.com/en-us/data-center/a100/) for A100. Tensor parallelism stays inside a server, on NVLink. Across servers the model is split by layers instead, **pipeline parallelism**: each group of GPUs runs a range of layers and passes the activations on once per step. It needs far less communication, but a stage stands idle unless several batches are in flight at once. Mixture-of-experts models add **expert parallelism**: DeepSeek-V3 sends every token to 8 of its 256 routed experts in each MoE layer, and the experts live on different GPUs.
+
+## The system around the engine
+
+The engine is one box on a longer path, and every box on it can undo the engine's work.
+
+<img class="tfs-figure tfs-light" src="/assets/posts/inference-optimization/serving-light.png" width="760" alt="The path of a request: the client, a reverse proxy that must not buffer the stream, the API server that authenticates, rate-limits and tokenizes, a queue with admission control, and the engine whose scheduler runs the GPU step by step over a pool of KV cache blocks. Tokens flow back as server-sent events. Under each stage, the numbers to watch" loading="lazy">
+<img class="tfs-figure tfs-dark" src="/assets/posts/inference-optimization/serving-dark.png" width="760" alt="The path of a request: the client, a reverse proxy that must not buffer the stream, the API server that authenticates, rate-limits and tokenizes, a queue with admission control, and the engine whose scheduler runs the GPU step by step over a pool of KV cache blocks. Tokens flow back as server-sent events. Under each stage, the numbers to watch" loading="lazy">
+
+**Streaming.** Tokens go back to the client as they are generated, usually as [server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html) on one long HTTP response. Any hop that buffers the response turns the stream into a few bursts. The classic one is nginx, which buffers proxied responses by default. Turn buffering off for the streaming location, or send `X-Accel-Buffering: no` from the application ([nginx docs](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffering)):
+
+```nginx
+location /v1/ {
+    proxy_pass http://engine:8000;
+    proxy_http_version 1.1;
+    proxy_buffering off;
+    proxy_read_timeout 300s;  # the default 60 s can run out before the first token
+}
+```
+
+If tokens still arrive in clumps, look lower. [Nagle's algorithm](https://www.rfc-editor.org/rfc/rfc1122) holds a small write until the previous one is acknowledged, and Linux delays acknowledgements by 40 to 200 ms; a server turns Nagle off on the socket with [`TCP_NODELAY`](https://man7.org/linux/man-pages/man7/tcp.7.html).
+
+**Queues and backpressure.** Little's law tells how many requests are inside at a given rate. When requests arrive faster than the GPUs serve them, the queue grows without limit, and everyone in it eventually times out after the longest possible wait. A bounded queue with fast rejection is kinder: answer `429` with a `Retry-After` header when the expected wait exceeds what the client will tolerate, and let the client retry or fall back. Count tokens as well as requests, since a request with a 100,000-token prompt takes as much of the engine's time as a hundred requests of a thousand tokens, or more. And when a client disconnects, abort its request in the engine, or the GPU keeps generating tokens that nobody reads.
+
+**Scaling.** GPU utilization is the wrong signal for autoscaling: as the first chart showed, it says 100% for a single sequence. Scale on what users feel and on what limits the batch: requests waiting, KV cache usage, TTFT. A new replica is slow to start. Llama 3.1 70B in bf16 is 141 GB; at 1 GB/s from network storage, reading it takes more than two minutes, before the engine has captured its CUDA graphs and warmed up. Keep the weights close to the GPUs, keep a warm replica in reserve, and scale out when the queue starts to grow, not when it is already long.
+
+**What to watch.** vLLM exports the essentials as Prometheus metrics ([docs](https://docs.vllm.ai/en/latest/usage/metrics.html)): `vllm:num_requests_waiting` and `vllm:num_requests_running`, `vllm:kv_cache_usage_perc`, `vllm:num_preemptions`, `vllm:time_to_first_token_seconds`, `vllm:inter_token_latency_seconds`, and `vllm:prefix_cache_hits` against `vllm:prefix_cache_queries`. Watch TTFT and time per token separately, and at the 99th percentile as well as the median: a chunked-prefill budget that is too large shows up as a long tail in time per token while the median looks fine. For every request, log the time in the queue, in prefill and in decoding, and the number of input and output tokens.
+
+## References
+
+Papers:
+
+- Kwon et al. [Efficient Memory Management for Large Language Model Serving with PagedAttention](https://arxiv.org/abs/2309.06180). SOSP 2023.
+- Yu et al. [Orca: A Distributed Serving System for Transformer-Based Generative Models](https://www.usenix.org/conference/osdi22/presentation/yu). OSDI 2022.
+- Agrawal et al. [Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve](https://www.usenix.org/system/files/osdi24-agrawal.pdf). OSDI 2024.
+- Zhong et al. [DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving](https://www.usenix.org/system/files/osdi24-zhong-yinmin.pdf). OSDI 2024.
+- Zheng et al. [SGLang: Efficient Execution of Structured Language Model Programs](https://arxiv.org/abs/2312.07104). 2023.
+- Shazeer. [Fast Transformer Decoding: One Write-Head is All You Need](https://arxiv.org/abs/1911.02150). 2019.
+- Ainslie et al. [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245). EMNLP 2023.
+- DeepSeek-AI. [DeepSeek-V2](https://arxiv.org/abs/2405.04434), 2024, and [DeepSeek-V3 Technical Report](https://arxiv.org/abs/2412.19437), 2024.
+- Frantar et al. [GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers](https://arxiv.org/abs/2210.17323). ICLR 2023.
+- Lin et al. [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://arxiv.org/abs/2306.00978). MLSys 2024.
+- Dettmers et al. [LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale](https://arxiv.org/abs/2208.07339). NeurIPS 2022.
+- Leviathan et al. [Fast Inference from Transformers via Speculative Decoding](https://arxiv.org/abs/2211.17192). ICML 2023.
+- Chen et al. [Accelerating Large Language Model Decoding with Speculative Sampling](https://arxiv.org/abs/2302.01318). 2023.
+- Cai et al. [Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads](https://arxiv.org/abs/2401.10774). 2024.
+- Li et al. [EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty](https://arxiv.org/abs/2401.15077). 2024.
+- Dao et al. [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135). NeurIPS 2022.
+- Dao et al. [Flash-Decoding for long-context inference](https://crfm.stanford.edu/2023/10/12/flashdecoding.html). 2023.
+- Shoeybi et al. [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/abs/1909.08053). 2019.
+
+Documentation and datasheets:
+
+- vLLM: [automatic prefix caching](https://docs.vllm.ai/en/latest/features/automatic_prefix_caching.html), [preemption](https://docs.vllm.ai/en/latest/configuration/optimization.html#preemption), [metrics](https://docs.vllm.ai/en/latest/usage/metrics.html).
+- NVIDIA: [nvidia-smi](https://docs.nvidia.com/deploy/nvidia-smi/index.html), [DCGM profiling metrics](https://docs.nvidia.com/datacenter/dcgm/latest/user-guide/feature-overview.html), datasheets of the [T4](https://www.nvidia.com/en-us/data-center/tesla-t4/), [A100](https://www.nvidia.com/en-us/data-center/a100/) and [H100](https://www.nvidia.com/en-us/data-center/h100/).
+- nginx: [proxy_buffering](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_buffering).
+- Anthropic: [API pricing](https://platform.claude.com/docs/en/about-claude/pricing).
+
+The measurements: [experiment.py](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/inference_optimization/experiment.py) (Kaggle T4), [speculative.py](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/inference_optimization/speculative.py) (CPU), and the figures, [figures.py](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/inference_optimization/figures.py), with the data they were drawn from.
+
+{% endraw %}
