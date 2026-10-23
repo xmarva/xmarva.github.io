@@ -8,14 +8,35 @@ layout: default
   </style>
 {% endif %}
 
-<div class="post">
+<div class="post{% if page.cover %} post-page{% endif %}">
   <header class="post-header">
     <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-description">{{ page.description }}</p>
+    {% if page.cover %}
+      <figure class="post-cover">
+        <img src="{{ page.cover | relative_url }}" alt="" width="1200" height="630" fetchpriority="high" decoding="async">
+      </figure>
+      <p class="post-meta post-byline">
+        {{- page.role -}}
+        {%- if page.period %}
+          <span aria-hidden="true">&middot;</span> {{ page.period -}}
+        {%- endif -%}
+        {%- if page.domains %}
+          <span aria-hidden="true">&middot;</span> {{ page.domains | join: ', ' -}}
+        {%- endif -%}
+      </p>
+    {% else %}
+      <p class="post-description">{{ page.description }}</p>
+    {% endif %}
   </header>
 
   <article>
-    {{ content }}
+    {% if page.cover %}
+      <div id="markdown-content">
+        {{ content }}
+      </div>
+    {% else %}
+      {{ content }}
+    {% endif %}
   </article>
 
   {% if page.related_publications %}
@@ -29,3 +50,6 @@ layout: default
     {% include giscus.liquid %}
   {% endif %}
 </div>
+{% if page.cover %}
+  <script defer src="{{ '/assets/js/post-references.js' | relative_url | bust_file_cache }}"></script>
+{% endif %}
