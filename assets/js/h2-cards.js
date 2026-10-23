@@ -13,11 +13,12 @@
       const content = document.createElement("div");
       content.className = "h2-card-body";
 
-      let sibling = heading.nextElementSibling;
-      while (sibling && sibling.tagName !== "H2") {
-        const next = sibling.nextElementSibling;
-        content.appendChild(sibling);
-        sibling = next;
+      // every node, not only elements: kramdown renders display math as a bare text node, \[ ... \]
+      let node = heading.nextSibling;
+      while (node && !(node.nodeType === Node.ELEMENT_NODE && node.tagName === "H2")) {
+        const next = node.nextSibling;
+        content.appendChild(node);
+        node = next;
       }
 
       heading.parentNode.insertBefore(card, heading);
