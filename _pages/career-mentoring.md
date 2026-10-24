@@ -2,6 +2,7 @@
 layout: default
 permalink: /services/career-mentoring/
 title: Career Mentoring
+description: "Career mentoring for engineers moving into AI/ML or growing in it: learning roadmaps, portfolio projects and professional positioning."
 parent: services
 nav: false
 stylesheets: [/assets/css/services.css]

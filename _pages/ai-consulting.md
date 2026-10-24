@@ -2,6 +2,7 @@
 layout: default
 permalink: /services/ai-consulting/
 title: AI/ML Consulting
+description: "AI/ML consulting for companies: feasibility assessments, ML roadmaps, computer vision systems, and LLM and voice AI aligned with your business goals."
 parent: services
 nav: false
 stylesheets: [/assets/css/services.css]

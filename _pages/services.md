@@ -2,6 +2,7 @@
 layout: default
 permalink: /services/
 title: services
+description: "Consulting, custom AI/ML development and career mentoring from Eva Koroleva, an ML engineer working with computer vision, NLP and generative models."
 nav: true
 nav_order: 3
 dropdown: true
