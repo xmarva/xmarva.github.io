@@ -3,7 +3,7 @@ layout: default
 permalink: /services/
 title: services
 seo_title: Machine learning consulting and development
-seo_description: "Machine learning consulting and development by Eva Koroleva: AI for finance, biomedicine and cybersecurity, and production ML systems, built with computer vision, generative AI and LLMs."
+seo_description: "Machine learning consulting and development by Eva Koroleva: computer vision, AI for finance, biomedicine and cybersecurity, and production ML systems, with generative AI and LLMs."
 description: Machine learning consulting and development
 # the hero's pictures, the top one first; drawn as HTML in _art/services/
 pictures:
@@ -125,38 +125,37 @@ nav_order: 3
   }
   .sv-head h2 { margin: 0; font-size: 1.45rem; font-weight: 500; color: var(--global-text-color); }
 
-  /* what I do: four areas, an icon each */
-  .sv-areas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+  /* what I do: a row per area, an icon each, as the lessons on /teaching/ */
+  .sv-areas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sv-border); }
   .sv-area {
     --c: var(--sv-muted);
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0 1rem;
-    padding: 1.35rem 1.4rem;
-    border: 1px solid var(--sv-border);
-    border-radius: 14px;
-    background: var(--global-card-bg-color);
-    transition: border-color 0.2s ease;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+    padding: 1.2rem 0.25rem;
+    border-bottom: 1px solid var(--sv-border);
+    scroll-margin-top: 5rem;
   }
-  .sv-area:hover { border-color: color-mix(in srgb, var(--c) 50%, var(--sv-border)); }
   .sv-icon {
     display: grid;
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 12px;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: var(--c);
     background: color-mix(in srgb, var(--c) var(--sv-chip-alpha), transparent);
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent);
   }
-  .sv-area h3 { margin: 0.15rem 0 0.35rem; font-size: 1.12rem; font-weight: 500; color: var(--global-text-color); }
-  .sv-area p { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--global-text-color); }
-  .sv-area .sv-tags { margin-top: 0.55rem; font-size: 0.85rem; color: var(--sv-muted); }
-  .sv-finance { --c: var(--sv-cv); }
+  .sv-area h3 { margin: 0.1rem 0 0.3rem; font-size: 1.12rem; font-weight: 500; color: var(--global-text-color); }
+  .sv-area p { margin: 0; font-size: 0.98rem; line-height: 1.55; color: var(--global-text-color); }
+  .sv-area .sv-tags { margin-top: 0.4rem; font-size: 0.88rem; color: var(--sv-muted); }
+  .sv-cv-area { --c: var(--sv-cv); }
+  .sv-finance { --c: var(--sv-3d); }
   .sv-bio { --c: var(--sv-bio); }
   .sv-security { --c: var(--sv-nlp); }
-  .sv-production { --c: var(--sv-3d); }
+  .sv-production { --c: var(--sv-genai); }
+  .sv-credit { margin: 0.6rem 0.2rem 0; font-size: 0.78rem; line-height: 1.5; color: var(--sv-muted); }
 
   /* how it goes */
   .sv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin: 0; padding: 0; list-style: none; counter-reset: step; }
@@ -211,8 +210,8 @@ nav_order: 3
     .sv-contact { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; padding: 1.5rem; }
   }
   @media (max-width: 680px) {
-    .sv-areas { grid-template-columns: minmax(0, 1fr); }
-    .sv-area { padding: 1.1rem 1.15rem; }
+    .sv-area { grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 1rem; }
+    .sv-icon { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
     .sv-steps { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   }
 </style>
@@ -237,42 +236,51 @@ nav_order: 3
       {% endfor %}
     </div>
   </section>
+  <p class="sv-credit">In the pictures: BTC/USDT from Binance in TradingView Lightweight Charts · resting-state fMRI from the ADHD-200 sample in nilearn · CyberChef by GCHQ.</p>
 
   <div class="sv-head"><h2 id="sv-what">What I do</h2></div>
-  <div class="sv-areas" role="list" aria-labelledby="sv-what">
-    <article class="sv-area sv-finance" role="listitem" id="finance">
+  <ul class="sv-areas" aria-labelledby="sv-what">
+    <li class="sv-area sv-cv-area" id="computer-vision">
+      <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+      <div>
+        <h3>Computer vision</h3>
+        <p>Detection, segmentation and tracking in images and video, from one camera to a store full of them, and 3D from photos and plans.</p>
+        <p class="sv-tags">Detection · segmentation · tracking · multi-camera systems · 3D reconstruction</p>
+      </div>
+    </li>
+    <li class="sv-area sv-finance" id="finance">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
       <div>
         <h3>AI for finance</h3>
         <p>Assistants for traders and analysts that read markets, portfolios and reports, in crypto and traditional markets.</p>
         <p class="sv-tags">Market assistants · forecasting · risk · on-chain data</p>
       </div>
-    </article>
-    <article class="sv-area sv-bio" role="listitem" id="biomedicine">
+    </li>
+    <li class="sv-area sv-bio" id="biomedicine">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
       <div>
         <h3>AI for biomedicine</h3>
         <p>Models for clinical text, medical images and signals, and tools for psychiatry that follow a patient between visits.</p>
-        <p class="sv-tags">Clinical NLP · medical imaging · psychiatry · knowledge graphs</p>
+        <p class="sv-tags">Clinical NLP · medical imaging · neuroimaging · psychiatry</p>
       </div>
-    </article>
-    <article class="sv-area sv-security" role="listitem" id="cybersecurity">
+    </li>
+    <li class="sv-area sv-security" id="cybersecurity">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
       <div>
         <h3>AI for cybersecurity</h3>
         <p>Anomaly detection in logs and traffic, phishing and malware classification, assistants that help analysts triage incidents.</p>
         <p class="sv-tags">Log anomalies · phishing · threat intelligence · LLM agents</p>
       </div>
-    </article>
-    <article class="sv-area sv-production" role="listitem" id="production">
+    </li>
+    <li class="sv-area sv-production" id="production">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-server"></i></span>
       <div>
         <h3>Production systems</h3>
         <p>Models that keep working after the demo: serving, monitoring and pipelines, and models made small and fast for edge devices.</p>
         <p class="sv-tags">Serving · MLOps · monitoring · edge inference</p>
       </div>
-    </article>
-  </div>
+    </li>
+  </ul>
 
   <div class="sv-head"><h2 id="sv-how">How a project goes</h2></div>
   <ol class="sv-steps" aria-labelledby="sv-how">
@@ -329,6 +337,15 @@ nav_order: 3
   {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "Service",
+        "name": "Computer vision",
+        "serviceType": "Computer vision",
+        "description": "Detection, segmentation and tracking in images and video, multi-camera systems and 3D reconstruction.",
+        "url": {{ '/services/#computer-vision' | absolute_url | jsonify }},
+        "areaServed": "Worldwide",
+        "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
+      },
       {
         "@type": "Service",
         "name": "AI for finance",
