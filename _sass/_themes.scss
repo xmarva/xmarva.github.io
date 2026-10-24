@@ -12,9 +12,9 @@
   --global-theme-color: #{$red-color-dark};
   --global-hover-color: #{$red-color-dark};
   --global-hover-text-color: #{$white-color};
-  --global-footer-bg-color: #{$grey-color-dark};
-  --global-footer-text-color: #{$grey-color-light};
-  --global-footer-link-color: #{$white-color};
+  --global-footer-bg-color: #{$white-color};
+  --global-footer-text-color: #{$grey-text-light-theme};
+  --global-footer-link-color: #{$black-color};
   --global-distill-app-color: #{$grey-color};
   --global-divider-color: rgba(0, 0, 0, 0.1);
   --global-card-bg-color: #{$white-color};
@@ -82,9 +82,9 @@ html[data-theme="dark"] {
   --global-theme-color: #{$red-color-on-dark};
   --global-hover-color: #{$red-color-on-dark};
   --global-hover-text-color: #{$white-color};
-  --global-footer-bg-color: #{$grey-color-light};
-  --global-footer-text-color: #{$grey-color-dark};
-  --global-footer-link-color: #{$black-color};
+  --global-footer-bg-color: #{$grey-color-dark};
+  --global-footer-text-color: #{$grey-text-dark-theme};
+  --global-footer-link-color: #{$grey-color-light};
   --global-distill-app-color: #{$grey-color-light};
   --global-divider-color: #424246;
   --global-card-bg-color: #{$grey-900};
