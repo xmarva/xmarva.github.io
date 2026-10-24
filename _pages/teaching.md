@@ -63,7 +63,7 @@ nav_order: 6
                 </td>
               </tr>
               <tr class="lesson-planned">
-                <td>4. Is BLEU lying? Evaluating machine translation with chrF and COMET</td>
+                <td>4. Evaluating machine translation with chrF and COMET</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
