@@ -2,104 +2,234 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Welcome to my teaching materials collection. ⚠️ This page and course are currently under development.
+description: Courses I teach, as notebooks that run on a free GPU and posts to read here
 seo_description: "Transformers: from scratch to production, a free course: build an English to Russian translator with a Transformer written from scratch."
 nav: true
 nav_order: 6
+hide_header: true
 ---
 
-<div class="course-container" markdown="1">
-  <div class="course-card">
-    <div class="course-header">
-      <div class="header-left">
-        <h3>Transformers: from scratch to production</h3>
-      </div>
-      <a href="https://github.com/xmarva/transformers-from-scratch" class="github-link"><i class="fab fa-github"></i> GitHub</a>
-    </div>
-    <div class="course-content">
-      <p class="course-description">Build an English→Russian translator with a Transformer written from scratch, measure it honestly, improve it, and ship it as a monitored service. Every lesson is a notebook that runs on a free Kaggle or Colab GPU, and a post you can read here.</p>
+<style>
+  /* Same system as the portfolio: the site's red for the course's one action and its progress, cards that follow
+     the theme, the lesson covers (dark, red) as the only pictures. */
+  .tc { --tc-border: var(--global-divider-color); --tc-muted: var(--global-text-color-light); }
+  .tc-course { margin: 2.6rem 0 3.5rem; }
 
-      <div class="course-section">
-        <div class="section-content">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Lesson</th>
-                <th>Run the notebook</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><a href="{{ '/blog/2026/transformers-from-scratch-01-tokenization/' | relative_url }}">1. How language models read: tokenization and BPE</a></td>
-                <td>
-                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization" class="badge-link">
-                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
-                  </a>
-                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb" class="badge-link">
-                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td><a href="{{ '/blog/2026/transformers-from-scratch-02-transformer/' | relative_url }}">2. The Transformer, built by hand</a></td>
-                <td>
-                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer" class="badge-link">
-                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
-                  </a>
-                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb" class="badge-link">
-                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td><a href="{{ '/blog/2026/transformers-from-scratch-03-training/' | relative_url }}">3. From parrot to translator: training and decoding</a></td>
-                <td>
-                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding" class="badge-link">
-                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
-                  </a>
-                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb" class="badge-link">
-                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td><a href="{{ '/blog/2026/transformers-from-scratch-04-evaluation/' | relative_url }}">4. Evaluating machine translation with chrF and COMET</a></td>
-                <td>
-                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet" class="badge-link">
-                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
-                  </a>
-                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb" class="badge-link">
-                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
-                  </a>
-                </td>
-              </tr>
-              <tr class="lesson-planned">
-                <td>5. Modern Transformer improvements, measured</td>
-                <td>in progress</td>
-              </tr>
-              <tr class="lesson-planned">
-                <td>6. Hyperparameter search on a GPU budget</td>
-                <td>in progress</td>
-              </tr>
-              <tr class="lesson-planned">
-                <td>7. From notebook to package</td>
-                <td>in progress</td>
-              </tr>
-              <tr class="lesson-planned">
-                <td>8. Serving: an API and a demo</td>
-                <td>in progress</td>
-              </tr>
-              <tr class="lesson-planned">
-                <td>9. Deploy, then watch it</td>
-                <td>in progress</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  .tc-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+    padding: 2.25rem 2.25rem 2.25rem 2.5rem;
+    border: 1px solid var(--tc-border);
+    border-radius: 16px;
+    background: var(--global-card-bg-color);
+    overflow: hidden;
+  }
+  .tc-hero-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-width: 0; }
+
+  .tc-new {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    max-width: 100%;
+    padding: 0.22rem 0.8rem 0.22rem 0.25rem;
+    border: 1px solid var(--tc-border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--global-text-color) !important;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease;
+  }
+  .tc-new:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--tc-border)); }
+  .tc-new-tag {
+    flex: none;
+    padding: 0.08rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--global-theme-color) 14%, transparent);
+    color: var(--global-theme-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .tc-new-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .tc-title { margin: 0; font-size: 2.1rem; font-weight: 500; line-height: 1.18; color: var(--global-text-color); }
+  .tc-summary { margin: 0; font-size: 1.05rem; line-height: 1.6; color: var(--tc-muted); }
+  .tc-facts { margin: 0; font-size: 0.85rem; color: var(--tc-muted); }
+
+  .tc-progress { display: flex; align-items: center; gap: 0.85rem; }
+  .tc-bar { display: flex; gap: 4px; width: 200px; }
+  .tc-bar span { flex: 1; height: 6px; border-radius: 3px; background: var(--tc-border); }
+  .tc-bar span.on { background: var(--global-theme-color); }
+  .tc-progress-label { font-size: 0.85rem; color: var(--tc-muted); white-space: nowrap; }
+
+  .tc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.35rem; }
+  .tc-start {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1.15rem;
+    border-radius: 999px;
+    background: var(--global-theme-color);
+    color: var(--global-bg-color) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: filter 0.2s ease;
+  }
+  .tc-start:hover { filter: brightness(1.1); }
+  .tc-github { font-size: 0.95rem; color: var(--global-text-color) !important; text-decoration: none !important; }
+  .tc-github:hover { color: var(--global-theme-color) !important; }
+  .tc-github i { margin-right: 0.3rem; }
+
+  /* the latest lessons' covers, fanned out, the newest on top */
+  .tc-fan { position: relative; display: block; aspect-ratio: 4 / 3; }
+  .tc-fan-card {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 82%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 14px 32px rgba(0, 0, 0, 0.22);
+    transform: translate(calc(var(--i) * -10%), calc(-50% - var(--i) * 10%)) rotate(calc(var(--i) * -4deg));
+    z-index: calc(3 - var(--i));
+    filter: brightness(calc(1 - var(--i) * 0.12));
+    transition: transform 0.35s ease;
+  }
+  .tc-fan-card figure, .tc-fan-card picture { display: block; margin: 0; }
+  .tc-fan-card img { display: block; width: 100%; height: auto; }
+  .tc-fan:hover .tc-fan-card {
+    transform: translate(calc(var(--i) * -13%), calc(-50% - var(--i) * 12%)) rotate(calc(var(--i) * -6deg));
+  }
+
+  .tc-section-head { margin: 3rem 0 1rem; }
+  .tc-section-head::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 3px;
+    margin-bottom: 0.75rem;
+    background: var(--global-theme-color);
+  }
+  .tc-section-head h3 { margin: 0; font-size: 1.45rem; font-weight: 500; color: var(--global-text-color); }
+
+  .tc-lessons { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--tc-border); }
+  .tc-lesson {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+    column-gap: 1rem;
+    align-items: center;
+    padding: 1.05rem 0.25rem;
+    border-bottom: 1px solid var(--tc-border);
+  }
+  .tc-num {
+    align-self: start;
+    padding-top: 0.15rem;
+    font-family: var(--global-code-font-family, monospace);
+    font-size: 0.95rem;
+    color: var(--global-theme-color);
+  }
+  .tc-lesson-title { margin: 0; font-size: 1.1rem; font-weight: 500; line-height: 1.4; }
+  .tc-lesson-title a { color: var(--global-text-color); text-decoration: none; }
+  .tc-lesson-title a:hover { color: var(--global-theme-color); }
+  .tc-topics { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--tc-muted); }
+  .tc-links { display: flex; gap: 0.5rem; }
+  .tc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.22rem 0.7rem;
+    border: 1px solid var(--tc-border);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--global-text-color) !important;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease;
+  }
+  .tc-link:hover { border-color: var(--dot); }
+  .tc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); }
+  .tc-kaggle { --dot: #20beff; }
+  .tc-colab { --dot: #f9ab00; }
+  .tc-lesson.is-soon .tc-num,
+  .tc-lesson.is-soon .tc-lesson-title { color: var(--tc-muted); }
+  .tc-soon { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tc-muted); }
+
+  @media (max-width: 860px) {
+    .tc-hero { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; padding: 1.5rem; }
+    .tc-fan { order: -1; aspect-ratio: auto; }
+    .tc-fan-card { position: relative; top: auto; width: 100%; transform: none; filter: none; }
+    .tc-fan-card:not(:first-child) { display: none; }
+    .tc-fan:hover .tc-fan-card { transform: none; }
+    .tc-title { font-size: 1.7rem; }
+  }
+  @media (max-width: 600px) {
+    .tc-lesson { grid-template-columns: 2.1rem minmax(0, 1fr); row-gap: 0.65rem; }
+    .tc-links { grid-column: 2; }
+  }
+</style>
+
+<div class="tc">
+{% for course in site.data.courses %}
+{% if course.show %}
+{% assign published = course.lessons | where_exp: "lesson", "lesson.url" %}
+{% assign total = course.lessons | size %}
+{% assign done = published | size %}
+{% assign recent = published | reverse %}
+{% assign latest = recent | first %}
+{% assign first_lesson = published | first %}
+<section class="tc-course" aria-labelledby="tc-{{ course.id }}">
+  <div class="tc-hero">
+    <div class="tc-hero-text">
+      {% if latest %}
+      <a class="tc-new" href="{{ latest.url | relative_url }}"><span class="tc-new-tag">New</span><span class="tc-new-text">Lesson {{ done }}: {{ latest.short | default: latest.title }}</span><span aria-hidden="true">→</span></a>
+      {% endif %}
+      <h2 class="tc-title" id="tc-{{ course.id }}">{{ course.title }}</h2>
+      <p class="tc-summary">{{ course.summary }}</p>
+      <p class="tc-facts">{{ course.facts | join: " · " }}</p>
+      <div class="tc-progress">
+        <span class="tc-bar" aria-hidden="true">{% for lesson in course.lessons %}<span{% if lesson.url %} class="on"{% endif %}></span>{% endfor %}</span>
+        <span class="tc-progress-label">{{ done }} of {{ total }} lessons out</span>
+      </div>
+      <div class="tc-actions">
+        {% if first_lesson %}<a class="tc-start" href="{{ first_lesson.url | relative_url }}">Start with lesson 1 <span aria-hidden="true">→</span></a>{% endif %}
+        <a class="tc-github" href="{{ course.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i>GitHub</a>
       </div>
     </div>
-
+    {% if latest %}
+    <a class="tc-fan" href="{{ latest.url | relative_url }}" tabindex="-1" aria-hidden="true">
+      {% for lesson in recent limit: 3 %}
+      <span class="tc-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=lesson.cover alt="" sizes="(min-width: 860px) 420px, 90vw" loading="eager" %}</span>
+      {% endfor %}
+    </a>
+    {% endif %}
   </div>
+
+  <div class="tc-section-head"><h3>Lessons</h3></div>
+  <ol class="tc-lessons">
+    {% for lesson in course.lessons %}
+    <li class="tc-lesson{% unless lesson.url %} is-soon{% endunless %}">
+      <span class="tc-num">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+      <div>
+        <h4 class="tc-lesson-title">{% if lesson.url %}<a href="{{ lesson.url | relative_url }}">{{ lesson.title }}</a>{% else %}{{ lesson.title }}{% endif %}</h4>
+        <p class="tc-topics">{{ lesson.topics }}</p>
+      </div>
+      <div class="tc-links">
+        {% if lesson.url %}
+        <a class="tc-link tc-kaggle" href="{{ lesson.kaggle }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ forloop.index }} on Kaggle"><span class="tc-dot" aria-hidden="true"></span>Kaggle</a>
+        <a class="tc-link tc-colab" href="{{ lesson.colab }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ forloop.index }} in Colab"><span class="tc-dot" aria-hidden="true"></span>Colab</a>
+        {% else %}
+        <span class="tc-soon">soon</span>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+{% endfor %}
 </div>
 
 {% comment %}
@@ -406,7 +536,6 @@ comment.
 
   </div>
 </div>
-{% endcomment %}
 
 <style>
 .course-container {
@@ -525,3 +654,4 @@ comment.
   transform: translateY(-2px);
 }
 </style>
+{% endcomment %}
