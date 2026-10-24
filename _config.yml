@@ -8,7 +8,8 @@ middle_name:
 last_name: Koroleva
 email: eva.v.koroleva@gmail.com
 description: >- # ">-" folds the lines below into one and drops the trailing newline (which broke the Schema.org JSON)
-  A space for exploring the depths of natural and artificial intelligence.
+  Eva Koroleva, ML engineer and researcher in NLP, computer vision and generative models: projects, a Transformers course, and posts on ML and cognitive science.
+home_title: ML Engineer & Researcher # shown after the name in the home page's title and used as the job title in search results
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.

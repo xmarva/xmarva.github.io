@@ -3,6 +3,7 @@ layout: page
 title: portfolio
 permalink: /portfolio/
 description: Welcome to my project collection
+seo_description: "Projects by Eva Koroleva: virtual try-on with diffusion and 3D bodies, floor plans to 3D, multi-camera tracking, medical NLP and more."
 nav: true
 nav_order: 2
 display_categories: [work, personal]
@@ -392,20 +393,20 @@ display_categories: [work, personal]
               
               <div class="project-links">
                 {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i>
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Code on GitHub" title="Code on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i>
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="On Kaggle" title="On Kaggle">
+                  <i class="fab fa-kaggle" aria-hidden="true"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.website %}
-                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-globe"></i>
+                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Project website" title="Project website">
+                  <i class="fas fa-globe" aria-hidden="true"></i>
                 </a>
                 {% endif %}
               </div>
@@ -464,20 +465,20 @@ display_categories: [work, personal]
               
               <div class="project-links">
                 {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-github"></i>
+                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Code on GitHub" title="Code on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fab fa-kaggle"></i>
+                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="On Kaggle" title="On Kaggle">
+                  <i class="fab fa-kaggle" aria-hidden="true"></i>
                 </a>
                 {% endif %}
                 
                 {% if project.website %}
-                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-globe"></i>
+                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Project website" title="Project website">
+                  <i class="fas fa-globe" aria-hidden="true"></i>
                 </a>
                 {% endif %}
               </div>

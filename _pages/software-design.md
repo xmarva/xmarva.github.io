@@ -2,6 +2,7 @@
 layout: default
 permalink: /services/software-design/
 title: AI/ML Software Design
+description: "Custom AI/ML software with a network of trusted developers and ML experts: rapid prototypes and MVPs through to production-ready systems."
 parent: services
 nav: false
 stylesheets: [/assets/css/services.css]

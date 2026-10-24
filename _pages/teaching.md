@@ -3,6 +3,7 @@ layout: page
 permalink: /teaching/
 title: teaching
 description: Welcome to my teaching materials collection. ⚠️ This page and course are currently under development.
+seo_description: "Transformers: from scratch to production, a free course: build an English to Russian translator with a Transformer written from scratch."
 nav: true
 nav_order: 6
 ---

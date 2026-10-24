@@ -25,6 +25,11 @@ $pink-color-light: #ffdddd !default;
 $yellow-color: #efcc00 !default;
 
 $grey-color: #828282 !default;
+// Muted text (dates, tags, captions) and the dark theme's red, adjusted to reach a 4.5:1 contrast (WCAG AA) on the
+// page and on cards: #828282 and #ff3636 fell just short of it
+$grey-text-light-theme: #707070;
+$grey-text-dark-theme: #909090;
+$red-color-on-dark: #ff4848;
 $grey-color-light: color.adjust($grey-color, $lightness: 40%);
 $grey-color-dark: #1c1c1d;
 $grey-900: #212529;

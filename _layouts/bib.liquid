@@ -27,7 +27,7 @@
       {% endif %}
       {% if entry.preview %}
         {% if entry.preview contains '://' %}
-          <img class="preview z-depth-1 rounded" src="{{ entry.preview }}">
+          <img class="preview z-depth-1 rounded" src="{{ entry.preview }}" alt="{{ entry.title | strip_html | escape }}">
         {% else %}
           {% assign entry_path = entry.preview | prepend: '/assets/img/publication_preview/' %}
           {%
@@ -37,7 +37,7 @@
             sizes = "200px"
             class="preview z-depth-1 rounded"
             zoomable=true
-            alt=entry.preview
+            alt=entry.title
           %}
         {% endif %}
       {% endif %}

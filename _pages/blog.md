@@ -2,6 +2,7 @@
 layout: default
 permalink: /blog/
 title: blog
+seo_description: "Posts by Eva Koroleva on machine learning, LLMs, Transformers, system design and cognitive science, with code, experiments and figures."
 nav: true
 nav_order: 1
 pagination:
@@ -37,18 +38,18 @@ pagination:
           <i class="fa-solid fa-hashtag fa-sm"></i> <a href="{{ tag | slugify | prepend: '/blog/tag/' | append: '/' | relative_url }}">{{ tag }}</a>
         </li>
         {% unless forloop.last %}
-          <p>&bull;</p>
+          <li class="tag-category-sep" aria-hidden="true">&bull;</li>
         {% endunless %}
       {% endfor %}
       {% if shown_categories.size > 0 and shown_tags.size > 0 %}
-        <p>&bull;</p>
+        <li class="tag-category-sep" aria-hidden="true">&bull;</li>
       {% endif %}
       {% for category in shown_categories %}
         <li>
           <i class="fa-solid fa-tag fa-sm"></i> <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category }}</a>
         </li>
         {% unless forloop.last %}
-          <p>&bull;</p>
+          <li class="tag-category-sep" aria-hidden="true">&bull;</li>
         {% endunless %}
       {% endfor %}
     </ul>
