@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=block">
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script src="data.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 640px; height: 440px; overflow: hidden; background: #131316; color: #e6e6eb; font: 400 10px/1.3 "IBM Plex Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  header { height: 44px; display: flex; align-items: center; gap: 18px; padding: 0 14px; border-bottom: 1px solid #25252b; }
+  .pair { font: 600 13px "IBM Plex Sans"; display: flex; align-items: center; gap: 7px; }
+  .coin { width: 18px; height: 18px; border-radius: 50%; background: #f7931a; display: grid; place-items: center; font: 700 11px "IBM Plex Sans"; color: #131316; }
+  .last { font: 500 15px "IBM Plex Mono"; }
+  .stat span { display: block; color: #6e6e79; font-size: 8.5px; } .stat b { font: 500 10px "IBM Plex Mono"; }
+  .main { display: grid; grid-template-columns: 1fr 168px; height: 396px; }
+  .chartbox { position: relative; border-right: 1px solid #25252b; }
+  .tabs { height: 26px; display: flex; align-items: center; gap: 12px; padding: 0 12px; border-bottom: 1px solid #25252b; color: #6e6e79; font: 500 9.5px "IBM Plex Mono"; }
+  .tabs .on { color: #e6e6eb; }
+  #chart { position: absolute; top: 26px; left: 0; right: 0; bottom: 0; }
+  .book { display: flex; flex-direction: column; font: 400 9px "IBM Plex Mono"; }
+  .book .h { display: grid; grid-template-columns: 1fr 1fr; padding: 6px 10px; color: #6e6e79; font-size: 8.5px; border-bottom: 1px solid #25252b; }
+  .row { position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 1.6px 10px; }
+  .row i { position: absolute; right: 0; top: 0; bottom: 0; opacity: 0.16; }
+  .row span:last-of-type { text-align: right; color: #b9b9c2; }
+  .mid { padding: 7px 10px; font: 500 13px "IBM Plex Mono"; border-top: 1px solid #25252b; border-bottom: 1px solid #25252b; }
+</style></head><body>
+<header>
+  <div class="pair"><span class="coin">₿</span>BTC/USDT</div>
+  <div class="last mono" id="last"></div>
+  <div class="stat"><span>24h change</span><b id="chg"></b></div>
+  <div class="stat"><span>24h high</span><b id="hi"></b></div>
+  <div class="stat"><span>24h low</span><b id="lo"></b></div>
+  <div class="stat"><span>24h volume (BTC)</span><b id="vol"></b></div>
+</header>
+<div class="main">
+  <div class="chartbox">
+    <div class="tabs"><span>1h</span><span class="on">4h</span><span>1D</span><span>1W</span><span style="margin-left:auto">EMA 20 · EMA 50</span></div>
+    <div id="chart"></div>
+  </div>
+  <div class="book">
+    <div class="h"><span>Price (USDT)</span><span style="text-align:right">Amount (BTC)</span></div>
+    <div id="asks"></div>
+    <div class="mid" id="mid"></div>
+    <div id="bids"></div>
+  </div>
+</div>
+<script>
+document.fonts.ready.then(() => {
+  const D = window.DATA, UP = "#2fc4a4", DOWN = "#ff4d4d";
+  const fmt = (v, d = 2) => Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const t = D.ticker, up = +t.priceChange >= 0;
+  last.textContent = fmt(t.lastPrice); last.style.color = up ? UP : DOWN;
+  chg.textContent = `${up ? "+" : ""}${fmt(t.priceChangePercent)}%`; chg.style.color = up ? UP : DOWN;
+  hi.textContent = fmt(t.highPrice); lo.textContent = fmt(t.lowPrice); vol.textContent = fmt(t.volume, 0);
+  const chart = LightweightCharts.createChart(document.getElementById("chart"), {
+    layout: { background: { color: "#131316" }, textColor: "#6e6e79", fontFamily: "'IBM Plex Mono', monospace", fontSize: 9 },
+    localization: { priceFormatter: (v) => fmt(v, 0) },
+    grid: { vertLines: { color: "#1e1e23" }, horzLines: { color: "#1e1e23" } },
+    rightPriceScale: { borderColor: "#25252b" }, timeScale: { borderColor: "#25252b", timeVisible: true },
+    crosshair: { mode: 0 },
+  });
+  const candles = chart.addCandlestickSeries({ upColor: UP, downColor: DOWN, wickUpColor: UP, wickDownColor: DOWN, borderVisible: false });
+  candles.setData(D.candles);
+  const volume = chart.addHistogramSeries({ priceFormat: { type: "volume" }, priceScaleId: "" });
+  volume.priceScale().applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
+  volume.setData(D.candles.map(c => ({ time: c.time, value: c.volume, color: (c.close >= c.open ? UP : DOWN) + "55" })));
+  const ema = (n) => { const k = 2 / (n + 1); let e; return D.candles.map(c => ({ time: c.time, value: (e = e === undefined ? c.close : c.close * k + e * (1 - k)) })); };
+  chart.addLineSeries({ color: "#f0b04a", lineWidth: 1, priceLineVisible: false, lastValueVisible: false }).setData(ema(20));
+  chart.addLineSeries({ color: "#a596f7", lineWidth: 1, priceLineVisible: false, lastValueVisible: false }).setData(ema(50));
+  chart.timeScale().fitContent();
+  // the order book: 14 levels a side, grouped by 10 USDT, with depth bars
+  const group = (levels, side) => { const m = new Map(); levels.forEach(([p, q]) => { const g = side === "ask" ? Math.ceil(p / 10) * 10 : Math.floor(p / 10) * 10; m.set(g, (m.get(g) || 0) + q); }); return [...m.entries()]; };
+  const asks = group(D.asks, "ask").slice(0, 14), bids = group(D.bids, "bid").slice(0, 14);
+  const max = Math.max(...asks.concat(bids).map(r => r[1]));
+  const rows = (list, color) => list.map(([p, q]) => `<div class="row"><i style="width:${Math.max(4, q / max * 100)}%;background:${color}"></i><span style="color:${color}">${fmt(p, 1)}</span><span>${q.toFixed(4)}</span></div>`).join("");
+  document.getElementById("asks").innerHTML = rows(asks.reverse(), DOWN);
+  document.getElementById("bids").innerHTML = rows(bids, UP);
+  mid.innerHTML = `<span style="color:${up ? UP : DOWN}">${fmt(t.lastPrice)}</span>`;
+});
+</script>
+</body></html>

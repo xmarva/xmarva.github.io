@@ -77,8 +77,8 @@ display_categories: [work, personal]
     gap: 0.5rem;
     padding: 0.45rem 1.05rem;
     border-radius: 999px;
-    background: var(--global-theme-color);
-    color: var(--global-bg-color);
+    background: var(--global-button-color);
+    color: #fff;
     font-size: 0.9rem;
     font-weight: 500;
     transition: filter 0.2s ease;
