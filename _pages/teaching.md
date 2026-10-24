@@ -63,27 +63,27 @@ nav_order: 6
                 </td>
               </tr>
               <tr class="lesson-planned">
-                <td>4. Evaluating translations: BLEU, chrF, COMET and error analysis</td>
+                <td>4. Is BLEU lying? Evaluating machine translation with chrF and COMET</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
-                <td>5. Modern Transformer improvements, measured</td>
+                <td>5. What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
-                <td>6. Hyperparameter search on a GPU budget</td>
+                <td>6. Hyperparameter tuning on a free GPU with W&amp;B Sweeps</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
-                <td>7. From notebook to package</td>
+                <td>7. Your notebook is not a product: a Python package with tests and CI</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
-                <td>8. Serving: an API and a demo</td>
+                <td>8. Serving a Transformer with FastAPI and Gradio: latency under load</td>
                 <td>in progress</td>
               </tr>
               <tr class="lesson-planned">
-                <td>9. Deploy, then watch it</td>
+                <td>9. It works on my laptop: Docker, Hugging Face Spaces and monitoring</td>
                 <td>in progress</td>
               </tr>
             </tbody>
