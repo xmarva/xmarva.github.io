@@ -149,27 +149,12 @@ nav_order: 3
   }
   .sv-area h3 { margin: 0.1rem 0 0.3rem; font-size: 1.12rem; font-weight: 500; color: var(--global-text-color); }
   .sv-area p { margin: 0; font-size: 0.98rem; line-height: 1.55; color: var(--global-text-color); }
-  .sv-area .sv-tags { margin-top: 0.4rem; font-size: 0.88rem; color: var(--sv-muted); }
   .sv-cv-area { --c: var(--sv-cv); }
   .sv-finance { --c: var(--sv-3d); }
   .sv-bio { --c: var(--sv-bio); }
   .sv-security { --c: var(--sv-nlp); }
   .sv-production { --c: var(--sv-genai); }
   .sv-credit { margin: 0.6rem 0.2rem 0; font-size: 0.78rem; line-height: 1.5; color: var(--sv-muted); }
-
-  /* how it goes */
-  .sv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin: 0; padding: 0; list-style: none; counter-reset: step; }
-  .sv-step { counter-increment: step; padding-top: 1rem; border-top: 1px solid var(--sv-border); }
-  .sv-step::before {
-    content: counter(step, decimal-leading-zero);
-    display: block;
-    margin-bottom: 0.5rem;
-    font-family: var(--global-code-font-family, monospace);
-    font-size: 0.95rem;
-    color: var(--global-theme-color);
-  }
-  .sv-step h3 { margin: 0 0 0.35rem; font-size: 1.08rem; font-weight: 500; color: var(--global-text-color); }
-  .sv-step p { margin: 0; color: var(--sv-muted); line-height: 1.6; }
 
   /* contact */
   .sv-contact {
@@ -212,7 +197,6 @@ nav_order: 3
   @media (max-width: 680px) {
     .sv-area { grid-template-columns: 2.4rem minmax(0, 1fr); column-gap: 1rem; }
     .sv-icon { width: 2.4rem; height: 2.4rem; font-size: 1rem; }
-    .sv-steps { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   }
 </style>
 
@@ -224,7 +208,7 @@ nav_order: 3
     <div class="sv-hero-text">
       <span class="sv-chips"><span class="sv-chip" data-domain="computer-vision">Computer Vision</span><span class="sv-chip" data-domain="genai">GenAI</span><span class="sv-chip" data-domain="nlp">LLM</span></span>
       <h1 id="sv-title">Machine learning consulting and development</h1>
-      <p class="sv-summary">I help teams find out what machine learning can do for their product, and then build it, from a prototype on their data to a system in production.</p>
+      <p class="sv-summary">I'm an ML engineer. I design and build models for finance, biomedicine and cybersecurity, and run them in production.</p>
       <div class="sv-actions">
         <a class="sv-primary" href="#contact">Write to me <span aria-hidden="true">→</span></a>
         <a class="sv-quiet" href="{{ '/portfolio/' | relative_url }}"><i class="fas fa-briefcase" aria-hidden="true"></i>Portfolio</a>
@@ -244,59 +228,38 @@ nav_order: 3
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
       <div>
         <h3>Computer vision</h3>
-        <p>Detection, segmentation and tracking in images and video, from one camera to a store full of them, and 3D from photos and plans.</p>
-        <p class="sv-tags">Detection · segmentation · tracking · multi-camera systems · 3D reconstruction</p>
+        <p>Detection, segmentation and tracking in images and video. GenAI and 3D model adaptation.</p>
       </div>
     </li>
     <li class="sv-area sv-finance" id="finance">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
       <div>
         <h3>AI for finance</h3>
-        <p>Assistants for traders and analysts that read markets, portfolios and reports, in crypto and traditional markets.</p>
-        <p class="sv-tags">Market assistants · forecasting · risk · on-chain data</p>
+        <p>Assistants and custom software for traders and analysts that read markets, portfolios and reports.</p>
       </div>
     </li>
     <li class="sv-area sv-bio" id="biomedicine">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
       <div>
         <h3>AI for biomedicine</h3>
-        <p>Models for clinical text, medical images and signals, and tools for psychiatry that follow a patient between visits.</p>
-        <p class="sv-tags">Clinical NLP · medical imaging · neuroimaging · psychiatry</p>
+        <p>Models for clinical text, medical images and signals, and tools for neuroscience.</p>
       </div>
     </li>
     <li class="sv-area sv-security" id="cybersecurity">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
       <div>
         <h3>AI for cybersecurity</h3>
-        <p>Anomaly detection in logs and traffic, phishing and malware classification, assistants that help analysts triage incidents.</p>
-        <p class="sv-tags">Log anomalies · phishing · threat intelligence · LLM agents</p>
+        <p>Anomaly detection in logs and traffic, phishing and malware classification.</p>
       </div>
     </li>
     <li class="sv-area sv-production" id="production">
       <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-server"></i></span>
       <div>
         <h3>Production systems</h3>
-        <p>Models that keep working after the demo: serving, monitoring and pipelines, and models made small and fast for edge devices.</p>
-        <p class="sv-tags">Serving · MLOps · monitoring · edge inference</p>
+        <p>Serving, monitoring and pipelines, and models made small and fast for edge devices.</p>
       </div>
     </li>
   </ul>
-
-  <div class="sv-head"><h2 id="sv-how">How a project goes</h2></div>
-  <ol class="sv-steps" aria-labelledby="sv-how">
-    <li class="sv-step">
-      <h3>A call</h3>
-      <p>You describe the problem. I ask about the data, the constraints and what a good result looks like.</p>
-    </li>
-    <li class="sv-step">
-      <h3>A proposal</h3>
-      <p>A written plan: the approach, the risks, the timeline and the cost.</p>
-    </li>
-    <li class="sv-step">
-      <h3>The work</h3>
-      <p>In short iterations, each ending with something you can run and judge.</p>
-    </li>
-  </ol>
 
   <section class="sv-contact" id="contact" aria-labelledby="sv-contact">
     <div>
@@ -341,7 +304,7 @@ nav_order: 3
         "@type": "Service",
         "name": "Computer vision",
         "serviceType": "Computer vision",
-        "description": "Detection, segmentation and tracking in images and video, multi-camera systems and 3D reconstruction.",
+        "description": "Detection, segmentation and tracking in images and video. GenAI and 3D model adaptation.",
         "url": {{ '/services/#computer-vision' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
@@ -350,7 +313,7 @@ nav_order: 3
         "@type": "Service",
         "name": "AI for finance",
         "serviceType": "AI for finance",
-        "description": "Market and portfolio assistants, forecasting, risk and anomaly detection for crypto and traditional markets.",
+        "description": "Assistants and custom software for traders and analysts that read markets, portfolios and reports.",
         "url": {{ '/services/#finance' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
@@ -359,7 +322,7 @@ nav_order: 3
         "@type": "Service",
         "name": "AI for biomedicine",
         "serviceType": "AI for biomedicine",
-        "description": "Models for clinical text, medical images and signals, and tools for psychiatry.",
+        "description": "Models for clinical text, medical images and signals, and tools for neuroscience.",
         "url": {{ '/services/#biomedicine' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
@@ -368,7 +331,7 @@ nav_order: 3
         "@type": "Service",
         "name": "AI for cybersecurity",
         "serviceType": "AI for cybersecurity",
-        "description": "Anomaly detection in logs and network traffic, phishing and malware classification, assistants for security analysts.",
+        "description": "Anomaly detection in logs and traffic, phishing and malware classification.",
         "url": {{ '/services/#cybersecurity' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
@@ -377,7 +340,7 @@ nav_order: 3
         "@type": "Service",
         "name": "Production ML systems",
         "serviceType": "Production ML systems",
-        "description": "Serving, monitoring, pipelines and edge inference for machine learning models.",
+        "description": "Serving, monitoring and pipelines, and models made small and fast for edge devices.",
         "url": {{ '/services/#production' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
