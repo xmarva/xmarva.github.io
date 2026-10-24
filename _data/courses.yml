@@ -41,7 +41,12 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb
       cover: assets/img/teaching/tfs-04.png
     - title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
-      topics: "Pre-norm, RMSNorm, RoPE, SwiGLU, fused attention, a KV cache, ablations"
+      short: "What Llama changed"
+      topics: "Llama 3.1 from its config, pre-norm, RMSNorm, SwiGLU, RoPE, fused attention, a KV cache, an ablation ladder against the noise of random seeds"
+      url: /blog/2026/transformers-from-scratch-05-llama/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb
+      cover: assets/img/teaching/tfs-05.png
     - title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
       topics: "Experiment tracking with W&B, W&B Sweeps, early stopping, spending a GPU budget well"
     - title: "Your notebook is not a product: a Python package with tests and CI"

@@ -1859,6 +1859,6 @@ xmarva/tfs-translations-en-ru</code></pre>
 
 
 
-<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-03-training/">← Lesson 3: Training & decoding</a></p>
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-03-training/">← Lesson 3: Training & decoding</a> <a href="/blog/2026/transformers-from-scratch-05-llama/">Lesson 5: What Llama changed →</a></p>
 
 {% endraw %}
