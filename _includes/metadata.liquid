@@ -34,6 +34,8 @@
     Posts from {{ page.date | date: '%Y' }} | {{ title }}
   {% elsif page.url == '/' and site.home_title %}
     {{ title }} · {{ site.home_title }}
+  {% elsif page.seo_title %}
+    {{ page.seo_title }} | {{ title }}
   {% elsif page.title != 'blank' and page.url != '/' %}
     {% if page.title == null or page.title == '' %}
       {{ page.date | date: '%Y' }} | {{ title }}
@@ -76,7 +78,7 @@
   <!-- OpenGraph -->
   <meta property="og:site_name" content="{{ title }}">
   <meta property="og:type" content="{% if is_blog_post %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.url == '/' %}{{ title }}{% elsif page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
+  <meta property="og:title" content="{% if page.url == '/' %}{{ title }}{% elsif page.seo_title %}{{ page.seo_title }}{% elsif page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
   <meta property="og:url" content="{{ page.url | prepend: site.baseurl | prepend: site.url | remove_first: 'index.html' }}">
   <meta property="og:description" content="{{ meta_description | escape }}">
   {% if page.og_image or site.og_image %}
@@ -93,7 +95,7 @@
 
   <!-- Twitter card: a large image when the page has its own cover -->
   <meta name="twitter:card" content="{% if page.og_image %}summary_large_image{% else %}summary{% endif %}">
-  <meta name="twitter:title" content="{% if page.url == '/' %}{{ title }}{% elsif page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
+  <meta name="twitter:title" content="{% if page.url == '/' %}{{ title }}{% elsif page.seo_title %}{{ page.seo_title }}{% elsif page.title %}{{ page.title }}{% else %}{{ title }}{% endif %}">
   <meta name="twitter:description" content="{{ meta_description | escape }}">
   {% if page.og_image or site.og_image %}
     <meta name="twitter:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}{{ site.og_image }}{% endif %}">
@@ -269,7 +271,7 @@
        "author": {{ person_json }}}
     {% else %}
       {"@context": "https://schema.org", "@type": "WebPage",
-       "name": {{ page.title | default: title | jsonify }},
+       "name": {{ page.seo_title | default: page.title | default: title | jsonify }},
        "description": {{ meta_description | jsonify }},
        "url": {{ page_url | jsonify }},
        {% if page.og_image %}"image": {{ page.og_image | jsonify }},{% endif %}

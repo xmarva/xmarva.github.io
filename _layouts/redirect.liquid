@@ -1,0 +1,22 @@
+<!doctype html>
+{% comment %}
+  A page that moved: `redirect_to` is its new address. Search engines get the canonical link and noindex,
+  people are sent on at once (GitHub Pages can't answer with a 301).
+{% endcomment %}
+{% assign target = page.redirect_to | relative_url %}
+{% assign canonical = page.redirect_to | split: '#' | first | absolute_url %}
+<html lang="{{ site.lang }}">
+  <head>
+    <meta charset="utf-8">
+    <title>Moved to {{ canonical }}</title>
+    <link rel="canonical" href="{{ canonical }}">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url={{ target }}">
+    <script>
+      location.replace({{ target | jsonify }});
+    </script>
+  </head>
+  <body>
+    <p>This page has moved to <a href="{{ target }}">{{ canonical }}</a>.</p>
+  </body>
+</html>
