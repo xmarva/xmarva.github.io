@@ -1728,6 +1728,6 @@ xmarva/tfs-transformer-en-ru</code></pre>
 
 
 
-<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-02-transformer/">← Lesson 2: The Transformer</a></p>
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-02-transformer/">← Lesson 2: The Transformer</a> <a href="/blog/2026/transformers-from-scratch-04-evaluation/">Lesson 4: BLEU, chrF, COMET →</a></p>
 
 {% endraw %}

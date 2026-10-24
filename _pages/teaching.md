@@ -62,9 +62,16 @@ nav_order: 6
                   </a>
                 </td>
               </tr>
-              <tr class="lesson-planned">
-                <td>4. Evaluating translations: BLEU, chrF, COMET and error analysis</td>
-                <td>in progress</td>
+              <tr>
+                <td><a href="{{ '/blog/2026/transformers-from-scratch-04-evaluation/' | relative_url }}">4. Evaluating machine translation with chrF and COMET</a></td>
+                <td>
+                  <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet" class="badge-link">
+                    <img src="https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white" alt="Kaggle">
+                  </a>
+                  <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb" class="badge-link">
+                    <img src="https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white" alt="Colab">
+                  </a>
+                </td>
               </tr>
               <tr class="lesson-planned">
                 <td>5. Modern Transformer improvements, measured</td>
