@@ -26,11 +26,15 @@ website: https://digital.tatarstan.ru
 
 {% raw %}
 
-Amazon tested its first checkout-free store on its own employees for more than a year before opening it to the public in Seattle in January 2018. Reuters, citing a person familiar with the test, listed what went wrong along the way: the system had trouble "correctly identifying shoppers with similar body types", and "when children were brought into the store during the trial, they caused havoc by moving items to incorrect places" ([Reuters, 2018](https://www.reuters.com/article/us-amazon-com-store-idUSKBN1FA0RL)).
+Amazon tested its first checkout-free store on its own employees for more than a year before opening it to the public in Seattle in January 2018.
+
+Reuters, citing a person familiar with the test, listed what went wrong along the way: the system had trouble "correctly identifying shoppers with similar body types", and "when children were brought into the store during the trial, they caused havoc by moving items to incorrect places"<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Reuters, 2018. reuters.com.">1</a>]</sup>.
 
 Those two sentences describe the whole problem. A store without a checkout has to know, at every moment, where each person is, and what each of them took from a shelf or put back somewhere else.
 
-From February 2020 to January 2021 I worked on such a store for the Ministry of Digital Development of the Republic of Tatarstan, on the computer vision side: detection, tracking, the cameras and their calibration. The project started in a strange month. On 9 March 2020 Amazon began selling its technology to other retailers ([Reuters, 2020](https://www.reuters.com/article/us-amazon-com-store-technology-idUSKBN20W0OD)), and two days later the WHO declared COVID-19 a pandemic.
+From February 2020 to January 2021 I worked on such a store for the Ministry of Digital Development of the Republic of Tatarstan, on the computer vision side: detection, tracking, the cameras and their calibration.
+
+The project started in a strange month. On 9 March 2020 Amazon began selling its technology to other retailers<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Reuters, 2020. reuters.com.">2</a>]</sup>, and two days later the WHO declared COVID-19 a pandemic.
 
 The store's data stays private, so the figures on this page come from a simulation built for it: a 12 by 8 metre shop with twelve ceiling cameras, five shoppers walking between the shelves, and the same geometry, detection and tracking steps the real system used.
 
@@ -39,18 +43,22 @@ The store's data stays private, so the figures on this page come from a simulati
 <img class="tfs-figure tfs-light" src="/assets/img/projects/2_cachierless_store/figures/layout-light.png" width="760" alt="A floor plan of a 12 by 8 m store with wall shelves, three gondolas, a fruit table and a fridge wall, and 12 ceiling cameras: one at each end of the five aisles, looking down them, and two over the door and the front corridor. The floor is coloured by how many cameras see a person standing there: 0 to 9, 89% of the free floor is seen by at least two" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/2_cachierless_store/figures/layout-dark.png" width="760" alt="A floor plan of a 12 by 8 m store with wall shelves, three gondolas, a fruit table and a fridge wall, and 12 ceiling cameras: one at each end of the five aisles, looking down them, and two over the door and the front corridor. The floor is coloured by how many cameras see a person standing there: 0 to 9, 89% of the free floor is seen by at least two" loading="lazy">
 
-Cameras in such a store hang from the ceiling and look down at an angle, so that a person is seen from above, where shoulders and heads rarely hide each other, and still from the side, where the shelves are. In the simulation there is one camera at each end of every aisle, looking along it, and two more over the door and the front corridor.
+Cameras in such a store hang from the ceiling and look down at an angle, so that a person is seen from above, where shoulders and heads rarely hide each other, and still from the side, where the shelves are.
 
-The colours show how many cameras see a person standing at each point. Almost all of the floor, 89%, is seen by at least two cameras, and the middle of the store by up to nine. The corners next to the walls are the weak spots, and in a real store they are also where people stand to read a label.
+In the simulation there is one camera at each end of every aisle, looking along it, and two more over the door and the front corridor.
 
-Amazon did not publish its camera count, but Reuters described the Go Grocery store, opened in February 2020, as watched by "hundreds of ceiling cameras" ([Reuters, 2020](https://www.reuters.com/article/us-amazon-com-store-idUSKCN20J0XK)).
+The colours show how many cameras see a person standing at each point. Almost all of the floor, 89%, is seen by at least two cameras, and the middle of the store by up to nine.
+
+The corners next to the walls are the weak spots, and in a real store they are also where people stand to read a label.
+
+Amazon did not publish its camera count, but Reuters described the Go Grocery store, opened in February 2020, as watched by "hundreds of ceiling cameras"<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Reuters, 2020. reuters.com.">3</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/2_cachierless_store/figures/views-light.png" width="760" alt="Six camera pictures of the simulated store at 36 seconds: shelves with coloured rows of products, a tiled floor and shoppers drawn as simple figures, each with a coloured box. Where a shelf or the picture&#x27;s edge hides the feet, the box is dashed and marked at the top" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/2_cachierless_store/figures/views-dark.png" width="760" alt="Six camera pictures of the simulated store at 36 seconds: shelves with coloured rows of products, a tiled floor and shoppers drawn as simple figures, each with a coloured box. Where a shelf or the picture&#x27;s edge hides the feet, the box is dashed and marked at the top" loading="lazy">
 
 Each camera runs a person detector on every frame, here five frames a second. The detector returns a box around each person it sees, and everything else on this page is built from those boxes.
 
-In 2020 the detectors were changing fast: YOLOv4 appeared in April ([Bochkovskiy et al., 2020](https://arxiv.org/abs/2004.10934)) and the YOLOv5 code in May. For a fixed set of cameras in one room, the bigger difference came from training on frames from those cameras, with their angles and their lighting.
+In 2020 the detectors were changing fast: YOLOv4 appeared in April<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Bochkovskiy, Wang and Liao. YOLOv4: Optimal Speed and Accuracy of Object Detection. 2020.">4</a>]</sup> and the YOLOv5 code in May. For a fixed set of cameras in one room, the bigger difference came from training on frames from those cameras, with their angles and their lighting.
 
 ## From a pixel to a point on the floor
 
@@ -70,12 +78,12 @@ $$
 \lambda \begin{pmatrix} u \\ v \\ 1 \end{pmatrix} = \underbrace{K \, [\, r_1 \;\; r_2 \;\; t \,]}_{H_0} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix}, \qquad \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} \propto H_0^{-1} \begin{pmatrix} u \\ v \\ 1 \end{pmatrix}.
 $$
 
-A homography has eight degrees of freedom, so four marked points on the floor, seen in the picture and measured on the plan, fix it ([Hartley and Zisserman, 2004](https://www.robots.ox.ac.uk/~vgg/hzbook/)). In practice more points are marked and fitted by least squares, and each lens is first calibrated with a printed checkerboard to undo its distortion ([Zhang, 2000](https://doi.org/10.1109/34.888718)).
+A homography has eight degrees of freedom, so four marked points on the floor, seen in the picture and measured on the plan, fix it<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Hartley and Zisserman. Multiple View Geometry in Computer Vision. 2004.">5</a>]</sup>. In practice more points are marked and fitted by least squares, and each lens is first calibrated with a printed checkerboard to undo its distortion<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Zhang. A flexible new technique for camera calibration. TPAMI, 2000.">6</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/2_cachierless_store/figures/homography-light.png" width="760" alt="Left: the picture of one aisle camera with two grids drawn into it, one on the floor and one at head height, and four numbered floor points. Right: the floor plan with the same grid and the same four points, which is enough to fix the homography between them" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/2_cachierless_store/figures/homography-dark.png" width="760" alt="Left: the picture of one aisle camera with two grids drawn into it, one on the floor and one at head height, and four numbered floor points. Right: the floor plan with the same grid and the same four points, which is enough to fix the homography between them" loading="lazy">
 
-The point to carry is where the person touches the floor: the middle of the bottom of the box. DukeMTMC, the largest multi-camera dataset of the time, annotated exactly this, "each person's foot contact point with the ground", with homographies from each camera to the ground plane ([Ristani et al., 2016](https://arxiv.org/abs/1609.01775)).
+The point to carry is where the person touches the floor: the middle of the bottom of the box. DukeMTMC, the largest multi-camera dataset of the time, annotated exactly this, "each person's foot contact point with the ground", with homographies from each camera to the ground plane<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Ristani et al. Performance Measures and a Data Set for Multi-Target, Multi-Camera Tracking. ECCV Workshops 2016.">7</a>]</sup>.
 
 The same algebra works for any horizontal plane. At height $$h$$ the third column comes back as $$h\,r_3$$, giving $$H_h = K\,[\,r_1 \;\; r_2 \;\; h\,r_3 + t\,]$$. That matters in a store, because the feet are often hidden.
 
@@ -99,23 +107,29 @@ The errors of different cameras point along different lines of sight, so they pa
 
 A position in every frame is not yet a person. The tracker has to say that the point here now is the same shopper as the point half a metre away a fifth of a second ago, and keep saying it for the whole visit.
 
-Each track is a Kalman filter with a constant-velocity model ([Kalman, 1960](https://doi.org/10.1115/1.3662552)): it predicts where the person will be in the next frame, with an uncertainty that grows while they are unseen. New points are assigned to predicted tracks by the Hungarian method, which finds the matching with the smallest total distance ([Kuhn, 1955](https://doi.org/10.1002/nav.3800020109)).
+Each track is a Kalman filter with a constant-velocity model<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Kalman. A New Approach to Linear Filtering and Prediction Problems. J. Basic Engineering, 1960.">8</a>]</sup>: it predicts where the person will be in the next frame, with an uncertainty that grows while they are unseen. New points are assigned to predicted tracks by the Hungarian method, which finds the matching with the smallest total distance<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Kuhn. The Hungarian method for the assignment problem. Naval Research Logistics Quarterly, 1955.">9</a>]</sup>.
 
-This is the scheme of SORT, which matched boxes in the image ([Bewley et al., 2016](https://arxiv.org/abs/1602.00763)). DeepSORT added an appearance descriptor from a re-identification network and reported that it cut identity switches by 45% ([Wojke et al., 2017](https://arxiv.org/abs/1703.07402)). Our tracker worked on the floor plan instead of the image: every camera's points are matched to the same tracks, and each track keeps a running appearance vector, as in DeepSORT.
+This is the scheme of SORT, which matched boxes in the image<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Bewley et al. Simple Online and Realtime Tracking. ICIP 2016.">10</a>]</sup>. DeepSORT added an appearance descriptor from a re-identification network and reported that it cut identity switches by 45%<sup class="cite">[<a href="#ref-11" id="cite-11" data-ref="11" aria-label="Reference 11: Wojke, Bewley and Paulus. Simple Online and Realtime Tracking with a Deep Association Metric. ICIP 2017.">11</a>]</sup>.
+
+Our tracker worked on the floor plan instead of the image: every camera's points are matched to the same tracks, and each track keeps a running appearance vector, as in DeepSORT.
 
 The floor plan gives the tracker one more piece of knowledge an image tracker does not have: people only appear and disappear at the door. A track that loses its person in the middle of the store waits for them, for up to twelve seconds in the simulation, instead of ending; a new track can only start near the entrance.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/2_cachierless_store/figures/tracks-light.png" width="760" alt="The floor plan with five shoppers&#x27; true paths dashed and the tracker&#x27;s paths solid, in the same colours, from the door through the aisles and back, with rings where they stopped. Mean error 20 cm, 99.7% of the time tracked, 4 identity switches" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/2_cachierless_store/figures/tracks-dark.png" width="760" alt="The floor plan with five shoppers&#x27; true paths dashed and the tracker&#x27;s paths solid, in the same colours, from the door through the aisles and back, with rings where they stopped. Mean error 20 cm, 99.7% of the time tracked, 4 identity switches" loading="lazy">
 
-In the simulation the tracker follows all five shoppers for 99.7% of the time they are in the store, with a mean error of 20 cm. It makes four identity switches, in two short episodes near the door: a second track briefly starts for a shopper who is already being followed, takes over for a second or two, and is dropped.
+In the simulation the tracker follows all five shoppers for 99.7% of the time they are in the store, with a mean error of 20 cm.
+
+It makes four identity switches, in two short episodes near the door: a second track briefly starts for a shopper who is already being followed, takes over for a second or two, and is dropped.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/2_cachierless_store/figures/handoff-light.png" width="760" alt="A heat strip per shopper over the minute of the simulation, showing how many cameras detected them in each frame, changing as they walk from aisle to aisle" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/2_cachierless_store/figures/handoff-dark.png" width="760" alt="A heat strip per shopper over the minute of the simulation, showing how many cameras detected them in each frame, changing as they walk from aisle to aisle" loading="lazy">
 
 The strip shows why the problem is called multi-camera. A shopper is seen by about six cameras on average, never by none, but the set of cameras changes every few seconds as they turn into an aisle. Nothing in the tracker depends on which cameras those are, which is the point of tracking on the floor.
 
-Benchmarks of the time were mostly about crowds in the street. MOT20, released in March 2020, has scenes where "the density can reach values of 246 pedestrians per frame" ([Dendorfer et al., 2020](https://arxiv.org/abs/2003.09003)). A store is the opposite: few people, many occluders, and a demand that the identity never be lost, because a lost identity is a receipt sent to the wrong person.
+Benchmarks of the time were mostly about crowds in the street. MOT20, released in March 2020, has scenes where "the density can reach values of 246 pedestrians per frame"<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: Dendorfer et al. MOT20: A benchmark for multi object tracking in crowded scenes. 2020.">12</a>]</sup>.
+
+A store is the opposite: few people, many occluders, and a demand that the identity never be lost, because a lost identity is a receipt sent to the wrong person.
 
 ## Who took what
 
@@ -126,13 +140,15 @@ Knowing where every shopper is gives the second half of the problem its context.
 
 A track that slows below 0.3 m/s for a second and a half is a stop. In the simulation all nine planned stops are found, each within a second of when it really began, and the stop's position names the nearest shelf.
 
-The floor alone is not enough to say which shelf, though. Shopper 4's first stop is in the corner between the back wall and the fridges, and the nearest shelf by distance is the wrong one. In an aisle the person may face either gondola. That is decided by the cameras that see the shelf and the hand, and by what disappears from it.
+The floor alone is not enough to say which shelf, though. Shopper 4's first stop is in the corner between the back wall and the fridges, and the nearest shelf by distance is the wrong one.
 
-Actions at a shelf were studied on overhead video: the MERL Shopping dataset labelled "Reach to Shelf", "Retract from Shelf", "Hand in Shelf", "Inspect Product" and "Inspect Shelf" ([Singh et al., 2016](https://openaccess.thecvf.com/content_cvpr_2016/html/Singh_A_Multi-Stream_Bi-Directional_CVPR_2016_paper.html)).
+In an aisle the person may face either gondola. That is decided by the cameras that see the shelf and the hand, and by what disappears from it.
 
-Recognizing the product itself is a fine-grained problem, with thousands of similar packages, rotated, half hidden, packed next to each other. SKU-110K collected 11,762 shelf images with an average of 147 products each, because "man-made scenes can be densely packed" ([Goldman et al., 2019](https://arxiv.org/abs/1904.00853)).
+Actions at a shelf were studied on overhead video: the MERL Shopping dataset labelled "Reach to Shelf", "Retract from Shelf", "Hand in Shelf", "Inspect Product" and "Inspect Shelf"<sup class="cite">[<a href="#ref-13" id="cite-13" data-ref="13" aria-label="Reference 13: Singh et al. A Multi-Stream Bi-Directional Recurrent Neural Network for Fine-Grained Action Detection. CVPR 2016.">13</a>]</sup>.
 
-Amazon put weight sensors into its shelves for the same reason ([Reuters, 2018](https://www.reuters.com/article/us-amazon-com-store-idUSKBN1FA0RL)). A camera sees which shopper reached in; the shelf knows how much it lost.
+Recognizing the product itself is a fine-grained problem, with thousands of similar packages, rotated, half hidden, packed next to each other. SKU-110K collected 11,762 shelf images with an average of 147 products each, because "man-made scenes can be densely packed"<sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Goldman et al. Precise Detection in Densely Packed Scenes. CVPR 2019.">14</a>]</sup>.
+
+Amazon put weight sensors into its shelves for the same reason<sup class="cite">[<a href="#ref-1" id="cite-15" data-ref="1" aria-label="Reference 1: Reuters, 2018. reuters.com.">1</a>]</sup>. A camera sees which shopper reached in; the shelf knows how much it lost.
 
 ## The system
 
@@ -141,30 +157,29 @@ Amazon put weight sensors into its shelves for the same reason ([Reuters, 2018](
 
 The top row of the diagram is what this page has shown: frames from every camera, people detected in each, put on the floor and tracked. The bottom row turns tracks into purchases: stops at shelves, takes and put-backs, the product, and a virtual cart per track that becomes a receipt at the door.
 
-Detection is the heavy part, every camera at several frames a second on GPUs; everything on the floor plan, from fusion to tracking, is light enough for one process. The fragile part is the geometry. A homography is only as good as the points it was fitted on, and a camera nudged by a ladder moves every point it reports, so the calibration has to be checked, not done once.
+Detection is the heavy part, every camera at several frames a second on GPUs; everything on the floor plan, from fusion to tracking, is light enough for one process. The fragile part is the geometry.
 
-These stores also raise the obvious question of privacy. None of the steps above needs a face: people are followed by position and by the look of their clothes, and the companies building such stores in 2019 were "finding ways to do without facial recognition" ([AP, 2019](https://www.foxbusiness.com/features/correction-grab-and-go-shopping-story)).
+A homography is only as good as the points it was fitted on, and a camera nudged by a ladder moves every point it reports, so the calibration has to be checked, not done once.
+
+These stores also raise the obvious question of privacy. None of the steps above needs a face: people are followed by position and by the look of their clothes, and the companies building such stores in 2019 were "finding ways to do without facial recognition"<sup class="cite">[<a href="#ref-15" id="cite-16" data-ref="15" aria-label="Reference 15: AP, 2019. foxbusiness.com.">15</a>]</sup>.
 
 ## References
 
-Tracking:
-
-- Kalman. [A New Approach to Linear Filtering and Prediction Problems](https://doi.org/10.1115/1.3662552). J. Basic Engineering, 1960.
-- Kuhn. [The Hungarian method for the assignment problem](https://doi.org/10.1002/nav.3800020109). Naval Research Logistics Quarterly, 1955.
-- Bewley et al. [Simple Online and Realtime Tracking](https://arxiv.org/abs/1602.00763). ICIP 2016.
-- Wojke, Bewley and Paulus. [Simple Online and Realtime Tracking with a Deep Association Metric](https://arxiv.org/abs/1703.07402). ICIP 2017.
-- Ristani et al. [Performance Measures and a Data Set for Multi-Target, Multi-Camera Tracking](https://arxiv.org/abs/1609.01775). ECCV Workshops 2016.
-- Dendorfer et al. [MOT20: A benchmark for multi object tracking in crowded scenes](https://arxiv.org/abs/2003.09003). 2020.
-
-Geometry and detection:
-
-- Zhang. [A flexible new technique for camera calibration](https://doi.org/10.1109/34.888718). TPAMI, 2000.
-- Hartley and Zisserman. [Multiple View Geometry in Computer Vision](https://www.robots.ox.ac.uk/~vgg/hzbook/). 2004.
-- Bochkovskiy, Wang and Liao. [YOLOv4: Optimal Speed and Accuracy of Object Detection](https://arxiv.org/abs/2004.10934). 2020.
-
-Shelves and products:
-
-- Goldman et al. [Precise Detection in Densely Packed Scenes](https://arxiv.org/abs/1904.00853). CVPR 2019.
-- Singh et al. [A Multi-Stream Bi-Directional Recurrent Neural Network for Fine-Grained Action Detection](https://openaccess.thecvf.com/content_cvpr_2016/html/Singh_A_Multi-Stream_Bi-Directional_CVPR_2016_paper.html). CVPR 2016.
+1. {:#ref-1} Reuters, 2018. [reuters.com](https://www.reuters.com/article/us-amazon-com-store-idUSKBN1FA0RL). <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} Reuters, 2020. [reuters.com](https://www.reuters.com/article/us-amazon-com-store-technology-idUSKBN20W0OD). <a class="ref-back" href="#cite-2" aria-label="Back to the text">&#8617;</a>
+3. {:#ref-3} Reuters, 2020. [reuters.com](https://www.reuters.com/article/us-amazon-com-store-idUSKCN20J0XK). <a class="ref-back" href="#cite-3" aria-label="Back to the text">&#8617;</a>
+4. {:#ref-4} Bochkovskiy, Wang and Liao. [YOLOv4: Optimal Speed and Accuracy of Object Detection](https://arxiv.org/abs/2004.10934). 2020. <a class="ref-back" href="#cite-4" aria-label="Back to the text">&#8617;</a>
+5. {:#ref-5} Hartley and Zisserman. [Multiple View Geometry in Computer Vision](https://www.robots.ox.ac.uk/~vgg/hzbook/). 2004. <a class="ref-back" href="#cite-5" aria-label="Back to the text">&#8617;</a>
+6. {:#ref-6} Zhang. [A flexible new technique for camera calibration](https://doi.org/10.1109/34.888718). TPAMI, 2000. <a class="ref-back" href="#cite-6" aria-label="Back to the text">&#8617;</a>
+7. {:#ref-7} Ristani et al. [Performance Measures and a Data Set for Multi-Target, Multi-Camera Tracking](https://arxiv.org/abs/1609.01775). ECCV Workshops 2016. <a class="ref-back" href="#cite-7" aria-label="Back to the text">&#8617;</a>
+8. {:#ref-8} Kalman. [A New Approach to Linear Filtering and Prediction Problems](https://doi.org/10.1115/1.3662552). J. Basic Engineering, 1960. <a class="ref-back" href="#cite-8" aria-label="Back to the text">&#8617;</a>
+9. {:#ref-9} Kuhn. [The Hungarian method for the assignment problem](https://doi.org/10.1002/nav.3800020109). Naval Research Logistics Quarterly, 1955. <a class="ref-back" href="#cite-9" aria-label="Back to the text">&#8617;</a>
+10. {:#ref-10} Bewley et al. [Simple Online and Realtime Tracking](https://arxiv.org/abs/1602.00763). ICIP 2016. <a class="ref-back" href="#cite-10" aria-label="Back to the text">&#8617;</a>
+11. {:#ref-11} Wojke, Bewley and Paulus. [Simple Online and Realtime Tracking with a Deep Association Metric](https://arxiv.org/abs/1703.07402). ICIP 2017. <a class="ref-back" href="#cite-11" aria-label="Back to the text">&#8617;</a>
+12. {:#ref-12} Dendorfer et al. [MOT20: A benchmark for multi object tracking in crowded scenes](https://arxiv.org/abs/2003.09003). 2020. <a class="ref-back" href="#cite-12" aria-label="Back to the text">&#8617;</a>
+13. {:#ref-13} Singh et al. [A Multi-Stream Bi-Directional Recurrent Neural Network for Fine-Grained Action Detection](https://openaccess.thecvf.com/content_cvpr_2016/html/Singh_A_Multi-Stream_Bi-Directional_CVPR_2016_paper.html). CVPR 2016. <a class="ref-back" href="#cite-13" aria-label="Back to the text">&#8617;</a>
+14. {:#ref-14} Goldman et al. [Precise Detection in Densely Packed Scenes](https://arxiv.org/abs/1904.00853). CVPR 2019. <a class="ref-back" href="#cite-14" aria-label="Back to the text">&#8617;</a>
+15. {:#ref-15} AP, 2019. [foxbusiness.com](https://www.foxbusiness.com/features/correction-grab-and-go-shopping-story). <a class="ref-back" href="#cite-16" aria-label="Back to the text">&#8617;</a>
+{: .tfs-refs}
 
 {% endraw %}

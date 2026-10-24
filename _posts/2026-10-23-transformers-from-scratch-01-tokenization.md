@@ -22,14 +22,13 @@ when you ask it:
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/01/hero-light.png" width="760" alt="The question as GPT-4o receives it: eight tokens, each an integer id; the word &#x27; strawberry&#x27; with its leading space is a single token" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/01/hero-dark.png" width="760" alt="The question as GPT-4o receives it: eight tokens, each an integer id; the word &#x27; strawberry&#x27; with its leading space is a single token" loading="lazy">
 
-Eight integers. The word <code markdown="0">&nbsp;strawberry</code>, together with the space in front of it, arrives as one of them, and its
-letters are not in the input at all. Whatever the model knows about how that integer is spelled, it had to pick
-up indirectly, from the rare places in its training text where someone spelled the word out.
+Eight integers. The word <code markdown="0">&nbsp;strawberry</code>, together with the space in front of it, arrives as one of them, and its letters are not in the input at all.
 
-The program that turns text into integers is the **tokenizer**. It is built before the model, from a large pile
-of text, and then frozen: every model you have heard of reads the world through a fixed list of pieces chosen
-that way. The choice of pieces decides what a request costs, which languages a model handles well, and, as you
-just saw, what it can count.
+Whatever the model knows about how that integer is spelled, it had to pick up indirectly, from the rare places in its training text where someone spelled the word out.
+
+The program that turns text into integers is the **tokenizer**. It is built before the model, from a large pile of text, and then frozen: every model you have heard of reads the world through a fixed list of pieces chosen that way.
+
+The choice of pieces decides what a request costs, which languages a model handles well, and, as you just saw, what it can count.
 
 This course builds a Transformer that translates English into Russian, and in this lesson you build the
 tokenizer it will read and write with. Russian is a good language to learn this on: as you are about to see,
@@ -101,9 +100,9 @@ print(gpt4o.encode(question).ids)
 
 <pre class="tfs-printed" markdown="0"><code>[5299, 1991, 428, 885, 553, 306, 101830, 30]</code></pre>
 
-The same eight numbers as in the picture above. Each one is a position in GPT-4o's vocabulary, and `decode`
-turns positions back into text. Decoding the ids one at a time shows the piece behind each of them. The function
-below does that for a few texts and draws the pieces as chips, with the id under each chip:
+The same eight numbers as in the picture above. Each one is a position in GPT-4o's vocabulary, and `decode` turns positions back into text.
+
+Decoding the ids one at a time shows the piece behind each of them. The function below does that for a few texts and draws the pieces as chips, with the id under each chip:
 
 ```python
 def show_tokens(tokenizer, texts):
@@ -123,15 +122,13 @@ show_tokens(gpt4o, spellings)
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-01.png" alt="Output of the code above" loading="lazy">
 
-Five spellings of one word, five unrelated sequences of numbers (`␣` marks a space inside a token). In the middle
-of a sentence the word comes with a space in front of it and is a single token. At the very start of a message
-there is no space, and the same word becomes three tokens, `st`, `raw` and `berry`. The capitalized word has a
-token of its own, the word in capitals falls apart into four pieces, and the plural is yet another token.
+Five spellings of one word, five unrelated sequences of numbers (`␣` marks a space inside a token). In the middle of a sentence the word comes with a space in front of it and is a single token.
 
-Nothing in these numbers says that they are the same word. The model works it out from how the tokens are
-used, and it learns how each of them is spelled the same indirect way. Tokenizers keep the space attached to the
-word that follows it because that saves a token per word; the price is that a word has a different token at
-the start of a text than in the middle.
+At the very start of a message there is no space, and the same word becomes three tokens, `st`, `raw` and `berry`. The capitalized word has a token of its own, the word in capitals falls apart into four pieces, and the plural is yet another token.
+
+Nothing in these numbers says that they are the same word. The model works it out from how the tokens are used, and it learns how each of them is spelled the same indirect way.
+
+Tokenizers keep the space attached to the word that follows it because that saves a token per word; the price is that a word has a different token at the start of a text than in the middle.
 
 ### The same sentence in two languages
 
@@ -183,9 +180,9 @@ table(example_counts)
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">model</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">vocabulary</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">Russian</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">GPT-2 (2019)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">50,257</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">46</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">GPT-4 (2023)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">100,263</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">19</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Llama 3 (2024)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">128,256</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">14</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">DeepSeek-V3 (2024)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">128,815</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">14</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">GPT-4o (2024)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">200,000</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">11</td></tr></tbody></table></div>
 
-The same numbers as a chart. We will draw this chart again at the end of the lesson, with one more tokenizer in
-it, so it gets a function. English is teal and Russian is rose here and in every plot of the course: they are the
-colors of the encoder, which reads English, and of the decoder, which writes Russian.
+The same numbers as a chart. We will draw this chart again at the end of the lesson, with one more tokenizer in it, so it gets a function.
+
+English is teal and Russian is rose here and in every plot of the course: they are the colors of the encoder, which reads English, and of the decoder, which writes Russian.
 
 ```python
 def plot_token_counts(counts, title):
@@ -216,12 +213,11 @@ plot_token_counts(example_counts, "One sentence, two languages, five tokenizers"
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-02.png" alt="Output of the code above" loading="lazy">
 
-Every tokenizer spends about the same on the English sentence. The Russian one costs several times more in
-GPT-2, and the newer tokenizers narrow the gap. Note the vocabulary sizes next to the names: the gap closed as
-the vocabularies grew from about fifty thousand pieces to two hundred thousand, enough room for frequent pieces
-of many languages. Even in GPT-4o, though, the Russian sentence is more expensive than the English one. The extra
-cost has a name, the **token tax**: [Petrov et al. (2023)](https://arxiv.org/abs/2305.15425) measured it across
-hundreds of languages and found that the same text can take up to 15 times as many tokens as in English.
+Every tokenizer spends about the same on the English sentence. The Russian one costs several times more in GPT-2, and the newer tokenizers narrow the gap.
+
+Note the vocabulary sizes next to the names: the gap closed as the vocabularies grew from about fifty thousand pieces to two hundred thousand, enough room for frequent pieces of many languages. Even in GPT-4o, though, the Russian sentence is more expensive than the English one.
+
+The extra cost has a name, the **token tax**: [Petrov et al. (2023)](https://arxiv.org/abs/2305.15425) measured it across hundreds of languages and found that the same text can take up to 15 times as many tokens as in English.
 
 Where does GPT-2's bill come from? Look at the pieces it cuts the first Russian word into:
 
@@ -231,11 +227,11 @@ show_tokens(llm_tokenizers["GPT-2 (2019)"], ["Исследовательница
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-03.png" alt="Output of the code above" loading="lazy">
 
-Most letters are tokens of their own, and some, like the first one, are cut in half: each `�` is a fragment of a
-letter that is not valid text on its own. That is not a display bug. GPT-2 tokenizes **bytes**. It writes text in
-UTF-8, where every Cyrillic letter takes two bytes, and starts from the 256 possible bytes as its alphabet. GPT-2
-was trained on WebText, a crawl from which, as the GPT-2 paper notes, OpenAI deliberately removed non-English
-pages, and its merges rarely glue Russian bytes into anything longer than a letter.
+Most letters are tokens of their own, and some, like the first one, are cut in half: each `�` is a fragment of a letter that is not valid text on its own. That is not a display bug.
+
+GPT-2 tokenizes **bytes**. It writes text in UTF-8, where every Cyrillic letter takes two bytes, and starts from the 256 possible bytes as its alphabet.
+
+GPT-2 was trained on WebText, a crawl from which, as the GPT-2 paper notes, OpenAI deliberately removed non-English pages, and its merges rarely glue Russian bytes into anything longer than a letter.
 
 GPT-4o works on bytes too, but among its 200 000 pieces there are plenty of Russian letters, syllables and
 words. Here is a word from the Russian sentence and one more:
@@ -246,10 +242,9 @@ show_tokens(gpt4o, [" вымоталась", " недопонимание"])
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-04.png" alt="Output of the code above" loading="lazy">
 
-Fewer tokens, but look at where the cuts fall in the second word, *недопонимание*, "misunderstanding". It is
-built as `недо` (under-) + `понима` (the stem of *понимать*, to understand) + `ние` (which turns a verb into a
-noun), and GPT-4o's pieces cut across all three. That isn't a mistake: a tokenizer learns statistics, not grammar,
-and it learns the statistics of the text it was built from.
+Fewer tokens, but look at where the cuts fall in the second word, *недопонимание*, "misunderstanding". It is built as `недо` (under-) + `понима` (the stem of *понимать*, to understand) + `ние` (which turns a verb into a noun), and GPT-4o's pieces cut across all three.
+
+That isn't a mistake: a tokenizer learns statistics, not grammar, and it learns the statistics of the text it was built from.
 
 By the end of this lesson you will have a tokenizer of your own, trained in a couple of minutes on
 English–Russian sentences, with sixteen thousand pieces instead of two hundred thousand. On the Russian sentences
@@ -319,10 +314,9 @@ test pairs: 36385</code></pre>
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">en</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">ru</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Tom says that he knows you.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том говорит, что знает тебя.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Do you want us to help?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Хотите, мы поможем?</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Mary said that she&#x27;d come.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мэри сказала, что придёт.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Do you think Cookie would be a good name for a dog?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Как ты думаешь, Куки - хорошая кличка для собаки?</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">A lot of people think Buenos Aires is located in Brazil.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Многие думают, что Буэнос-Айрес находится в Бразилии.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">What you&#x27;re saying now has nothing to do with the question.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">То, что ты сейчас говоришь, не имеет отношения к вопросу.</td></tr></tbody></table></div>
 
-Before cleaning anything, read some data; every corpus has habits. Tatoeba's most famous one is a man called
-Tom. Prolific contributors use him (and Mary) as the default name in example sentences, so often that in 2019
-the project [discussed banning them](https://blog.tatoeba.org/2019/08/should-we-stop-sentences-with-tom-and.html)
-and decided not to. He is everywhere:
+Before cleaning anything, read some data; every corpus has habits. Tatoeba's most famous one is a man called Tom.
+
+Prolific contributors use him (and Mary) as the default name in example sentences, so often that in 2019 the project [discussed banning them](https://blog.tatoeba.org/2019/08/should-we-stop-sentences-with-tom-and.html) and decided not to. He is everywhere:
 
 ```python
 for name in ["Tom", "Mary"]:
@@ -333,10 +327,9 @@ for name in ["Tom", "Mary"]:
 <pre class="tfs-printed" markdown="0"><code>Tom appears in 22.8% of the English sentences
 Mary appears in 4.5% of the English sentences</code></pre>
 
-This matters more than it seems. Russian declines names: Tom is *Том*, *Тома*, *Тому*, *Томом*, *о Томе*
-depending on his role in the sentence, so our translator will get plenty of practice with Russian cases on
-one name. It will also be much better at sentences about Tom than about anyone else. A model learns the
-distribution of its data, quirks included.
+This matters more than it seems. Russian declines names: Tom is *Том*, *Тома*, *Тому*, *Томом*, *о Томе* depending on his role in the sentence, so our translator will get plenty of practice with Russian cases on one name.
+
+It will also be much better at sentences about Tom than about anyone else. A model learns the distribution of its data, quirks included.
 
 ### One sentence, many translations
 
@@ -531,10 +524,9 @@ table(train[cyrillic_in_english].head(2))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">en</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">ru</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You have added a comment, not a translation. To add a translation, click on the &quot;あ→а&quot; icon above the sentence.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Вы добавили комментарий, а не перевод. Чтобы добавить перевод, щёлкните по значку &quot;あ→а&quot; над предложением.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">I sent her birthday present bу post.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я послал ей подарок ко дню рождения по почте.</td></tr></tbody></table></div>
 
-The first pair is Tatoeba's own interface text that slipped into the data: the icon `あ→а` ends in a Cyrillic
-`а`. The second is a typo nobody can see: the `у` in `bу post` is the Cyrillic letter, which looks exactly like
-the Latin `y`. A model would learn these lookalikes as different symbols, so we drop all the broken pairs, and
-then the duplicates: after normalization some pairs became identical.
+The first pair is Tatoeba's own interface text that slipped into the data: the icon `あ→а` ends in a Cyrillic `а`. The second is a typo nobody can see: the `у` in `bу post` is the Cyrillic letter, which looks exactly like the Latin `y`.
+
+A model would learn these lookalikes as different symbols, so we drop all the broken pairs, and then the duplicates: after normalization some pairs became identical.
 
 ```python
 broken = cyrillic_in_english | no_cyrillic_in_russian | too_long
@@ -570,10 +562,9 @@ these pairs.
 
 ### The test set must stay unseen
 
-The Tatoeba test set was cut from the same pool of sentences as our training data. If a test sentence also
-appears in training, the model can recite the answer and the test score stops measuring translation. This
-problem, **contamination**, is one that large-model papers take seriously: the GPT-4 technical report has a
-whole appendix of contamination checks for its benchmarks.
+The Tatoeba test set was cut from the same pool of sentences as our training data. If a test sentence also appears in training, the model can recite the answer and the test score stops measuring translation.
+
+This problem, **contamination**, is one that large-model papers take seriously: the GPT-4 technical report has a whole appendix of contamination checks for its benchmarks.
 
 Comparing exact strings is not enough: `Хватит!` and `хватит.` are the same sentence for our purposes. We
 compare **fingerprints** instead: lowercase, without punctuation and spaces, and with `ё` read as `е` (Russian
@@ -626,16 +617,13 @@ picture shows why.
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/01/leakage-light.png" width="760" alt="A random split puts the pair &#x27;Cut it out!&#x27; / &#x27;Прекрати!&#x27; into validation while both sentences also appear in training pairs; splitting by connected component keeps the whole group on one side" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/01/leakage-dark.png" width="760" alt="A random split puts the pair &#x27;Cut it out!&#x27; / &#x27;Прекрати!&#x27; into validation while both sentences also appear in training pairs; splitting by connected component keeps the whole group on one side" loading="lazy">
 
-These are real pairs from our data. Think of every sentence as a node and every translation pair as an edge. A
-random split cuts edges independently, so a validation pair like `Cut it out!` → `Прекрати!` still has both of
-its sentences in training pairs. The model has seen the source and has learned to produce the target, and
-validation would reward memory.
+These are real pairs from our data. Think of every sentence as a node and every translation pair as an edge.
 
-The fix is to split whole **connected components**: groups of sentences linked by translation, directly or
-through each other. A classic data structure finds them, **union–find**. Every sentence starts as a group of
-its own. Every pair says "these two sentences belong together", and we merge their groups. To tell whether two
-sentences are already in one group, each group has a representative, its *root*: every sentence keeps a link to
-a "parent" sentence, and following the parents leads to the root.
+A random split cuts edges independently, so a validation pair like `Cut it out!` → `Прекрати!` still has both of its sentences in training pairs. The model has seen the source and has learned to produce the target, and validation would reward memory.
+
+The fix is to split whole **connected components**: groups of sentences linked by translation, directly or through each other. A classic data structure finds them, **union–find**. Every sentence starts as a group of its own.
+
+Every pair says "these two sentences belong together", and we merge their groups. To tell whether two sentences are already in one group, each group has a representative, its *root*: every sentence keeps a link to a "parent" sentence, and following the parents leads to the root.
 
 ```python
 class UnionFind:
@@ -705,7 +693,7 @@ All eight pairs from the picture end up in one group, and the unrelated pair for
 With path compression alone, $$m$$ operations on $$n$$ sentences cost $$O(m \log n)$$ in the worst case. Also
 attaching the smaller group under the larger one (union by rank) gives the famous near-linear bound
 $$O(m\,\alpha(n))$$, where $$\alpha$$ is the inverse Ackermann function, which stays below 5 for any $$n$$ that fits
-in our universe ([Tarjan, 1975](https://doi.org/10.1145/321879.321884)). For our data compression alone is
+in our universe<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Tarjan, R. E. (1975). Efficiency of a good but not linear set union algorithm. Journal of the ACM, 22(2).">1</a>]</sup>. For our data compression alone is
 plenty. Now the real thing: every training pair, and a group label for each.
 
 ```python
@@ -964,21 +952,18 @@ used way to find those pieces.
 
 ## 4. BPE from scratch
 
-BPE was invented in 1994 by Philip Gage as a way to compress files: find the most common pair of adjacent bytes,
-replace it everywhere with a byte value the file doesn't use, repeat. In 2016
-[Sennrich, Haddow and Birch](https://arxiv.org/abs/1508.07909) noticed that the same procedure, run on the
-letters of words, finds good subword units for translation. Today it builds the tokenizers of GPT-2, GPT-4o,
-Llama 3 and DeepSeek-V3, all of which you took apart in section 1.
+BPE was invented in 1994 by Philip Gage as a way to compress files: find the most common pair of adjacent bytes, replace it everywhere with a byte value the file doesn't use, repeat.
+
+In 2016 [Sennrich, Haddow and Birch](https://arxiv.org/abs/1508.07909) noticed that the same procedure, run on the letters of words, finds good subword units for translation. Today it builds the tokenizers of GPT-2, GPT-4o, Llama 3 and DeepSeek-V3, all of which you took apart in section 1.
 
 The idea fits in one picture:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/01/bpe-loop-light.png" width="560" alt="The BPE training loop: count adjacent symbol pairs, take the most frequent, merge it everywhere, add the new symbol to the vocabulary, repeat until the vocabulary is full" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/01/bpe-loop-dark.png" width="560" alt="The BPE training loop: count adjacent symbol pairs, take the most frequent, merge it everywhere, add the new symbol to the vocabulary, repeat until the vocabulary is full" loading="lazy">
 
-Start with every word spelled out as single characters. Then repeat: find the pair of adjacent symbols that
-occurs most often in the corpus, merge it into one new symbol everywhere, and add that symbol to the vocabulary.
-Frequent words end up as one symbol, because merging their pieces paid off again and again; rare words stay
-split into pieces that other words share.
+Start with every word spelled out as single characters. Then repeat: find the pair of adjacent symbols that occurs most often in the corpus, merge it into one new symbol everywhere, and add that symbol to the vocabulary.
+
+Frequent words end up as one symbol, because merging their pieces paid off again and again; rare words stay split into pieces that other words share.
 
 Formally, let $$f(w)$$ be the frequency of word $$w$$ in the corpus and $$n_{ab}(w)$$ the number of times symbol $$a$$ is
 immediately followed by symbol $$b$$ in the current spelling of $$w$$. The frequency of the pair is
@@ -989,18 +974,15 @@ and each step merges
 
 $$(a^*, b^*) = \operatorname*{arg\,max}_{(a, b)} c(a, b).$$
 
-If two pairs are equally frequent we take the one that compares greater as a pair of Python strings, that is,
-by Unicode code points. Any fixed rule works; what matters is that it is deterministic, so the same corpus always
-yields the same tokenizer. After $$M$$ merges the vocabulary holds the initial alphabet $$\Sigma$$ plus one symbol per
-merge: $$\lvert\mathcal{V}\rvert = \lvert\Sigma\rvert + M$$.
+If two pairs are equally frequent we take the one that compares greater as a pair of Python strings, that is, by Unicode code points.
+
+Any fixed rule works; what matters is that it is deterministic, so the same corpus always yields the same tokenizer. After $$M$$ merges the vocabulary holds the initial alphabet $$\Sigma$$ plus one symbol per merge: $$\lvert\mathcal{V}\rvert = \lvert\Sigma\rvert + M$$.
 
 ### Pre-tokenization
 
-Merges never cross word boundaries, so we first split text into words and punctuation. A word keeps the space in
-front of it, written as `▁` (the convention of SentencePiece,
-[Kudo and Richardson, 2018](https://arxiv.org/abs/1808.06226)). It's the same trick you saw in GPT-4o's
-`␣strawberry`: with the spaces inside the tokens, decoding is plain concatenation, and the model can tell the
-beginning of a word from the middle of one.
+Merges never cross word boundaries, so we first split text into words and punctuation. A word keeps the space in front of it, written as `▁` (the convention of SentencePiece, [Kudo and Richardson, 2018](https://arxiv.org/abs/1808.06226)).
+
+It's the same trick you saw in GPT-4o's `␣strawberry`: with the spaces inside the tokens, decoding is plain concatenation, and the model can tell the beginning of a word from the middle of one.
 
 The regular expression has two alternatives: <code markdown="0">&nbsp;?\w+</code> is an optional space followed by letters or digits, and
 <code markdown="0">&nbsp;?[^\w\s]+</code> is an optional space followed by punctuation (anything that is neither a word character nor
@@ -1194,10 +1176,9 @@ we keep two tables between steps:
 - `pair_freq`: how often each pair occurs in the corpus, $$c(a, b)$$;
 - `words_with_pair`: for each pair, which words contain it.
 
-After a merge we visit only the affected words. For each of them, `remove_pairs` takes all its pairs out of the
-tables, the word is rewritten, and `add_pairs` puts its new pairs back. Removing and re-adding the whole word is
-simpler than computing the exact difference, and the result is the same: the pairs that didn't change go out
-and come back with the same count.
+After a merge we visit only the affected words. For each of them, `remove_pairs` takes all its pairs out of the tables, the word is rewritten, and `add_pairs` puts its new pairs back.
+
+Removing and re-adding the whole word is simpler than computing the exact difference, and the result is the same: the pairs that didn't change go out and come back with the same count.
 
 ```python
 def train_bpe(word_freqs, n_merges):
@@ -1282,10 +1263,9 @@ vocabulary: 242 characters + 8000 merges
 
 ### Encoding: replay the merges in order
 
-To tokenize new text we don't count anything. We apply the learned merges in the order they were learned: in
-each word, find the adjacent pair that was merged earliest during training, its **rank**, merge it, and repeat
-until no adjacent pair is in the merge table. Ranks matter because merges build on each other: `▁недо` exists
-only because `▁н`, `▁не` and `до` were merged first.
+To tokenize new text we don't count anything. We apply the learned merges in the order they were learned: in each word, find the adjacent pair that was merged earliest during training, its **rank**, merge it, and repeat until no adjacent pair is in the merge table.
+
+Ranks matter because merges build on each other: `▁недо` exists only because `▁н`, `▁не` and `до` were merged first.
 
 ```python
 ranks = {}
@@ -1381,17 +1361,15 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-12.png" alt="Output of the code above" loading="lazy">
 
-Some splits look like a linguist's: `недо`, or the feminine suffix `ница`, the piece that turns *исследователь*
-(a researcher) into a woman researcher. Others don't (`st` + `and`). BPE optimizes frequency, not meaning. The
-model will learn what the pieces mean from context; what the tokenizer controls is that frequent things are short
-and every rare thing can still be spelled.
+Some splits look like a linguist's: `недо`, or the feminine suffix `ница`, the piece that turns *исследователь* (a researcher) into a woman researcher. Others don't (`st` + `and`).
+
+BPE optimizes frequency, not meaning. The model will learn what the pieces mean from context; what the tokenizer controls is that frequent things are short and every rare thing can still be spelled.
 
 ## 5. The production tokenizer
 
-Our implementation is readable and correct. It would also be slow at serving time and easy to break: the
-normalization lives in one function, the pre-tokenization in another, and nothing forces a server to call them
-the same way as training did. Hugging Face [`tokenizers`](https://huggingface.co/docs/tokenizers), written in
-Rust, packs the whole pipeline into one object that is saved as one file:
+Our implementation is readable and correct. It would also be slow at serving time and easy to break: the normalization lives in one function, the pre-tokenization in another, and nothing forces a server to call them the same way as training did.
+
+Hugging Face [`tokenizers`](https://huggingface.co/docs/tokenizers), written in Rust, packs the whole pipeline into one object that is saved as one file:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/01/hf-tokenizer-light.png" width="760" alt="A Hugging Face tokenizer holds the normalizer, the pre-tokenizer and the BPE model for encoding, and the decoder for decoding; each stage replaces one function from the lesson, and all are saved in tokenizer.json" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/01/hf-tokenizer-dark.png" width="760" alt="A Hugging Face tokenizer holds the normalizer, the pre-tokenizer and the BPE model for encoding, and the decoder for decoding; each stage replaces one function from the lesson, and all are saved in tokenizer.json" loading="lazy">
@@ -1505,11 +1483,9 @@ print(tokenizer.encode(RU_EXAMPLE).tokens)
 <pre class="tfs-printed" markdown="0"><code>vocabulary of 16000 trained in 19.3 s
 [&#x27;▁И&#x27;, &#x27;сс&#x27;, &#x27;ледо&#x27;, &#x27;ватель&#x27;, &#x27;ница&#x27;, &#x27;▁сказала&#x27;, &#x27;,&#x27;, &#x27;▁что&#x27;, &#x27;▁вы&#x27;, &#x27;мот&#x27;, &#x27;алась&#x27;, &#x27;.&#x27;]</code></pre>
 
-Compare the timings: the Rust trainer builds twice as many symbols in a fraction of the time our Python one
-needed for the same corpus. Both see exactly the same words, since we checked normalization and
-pre-tokenization, so their merges should agree except where the two implementations make different choices:
-Hugging Face breaks ties between equally frequent pairs differently, and skips pairs seen only once
-(`min_frequency=2`). The saved tokenizer lists its merges in order; compare the first thousand with ours:
+Compare the timings: the Rust trainer builds twice as many symbols in a fraction of the time our Python one needed for the same corpus.
+
+Both see exactly the same words, since we checked normalization and pre-tokenization, so their merges should agree except where the two implementations make different choices: Hugging Face breaks ties between equally frequent pairs differently, and skips pairs seen only once (`min_frequency=2`). The saved tokenizer lists its merges in order; compare the first thousand with ours:
 
 ```python
 saved = json.loads(tokenizer.to_str())
@@ -1588,13 +1564,11 @@ it isn't free. The first layer of the model is an **embedding table**, one learn
 
 $$\text{embedding parameters} = \lvert\mathcal{V}\rvert \cdot d_{\text{model}},$$
 
-and the last layer is the same size again, because at every output position the model scores every token in
-the vocabulary. Worse, a rare token gets few training examples, so its row is learned poorly. The most famous
-case is <code markdown="0">&nbsp;SolidGoldMagikarp</code>: a Reddit username that was frequent enough in the text GPT-2's tokenizer was built
-from to become a token of its own, but that, it seems, almost never occurred in the text the models were then
-trained on. In 2023, [Rumbelow and Watkins](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation)
-found that GPT-3 models, which share that tokenizer, couldn't even repeat the word back and answered with
-unrelated ones. The token is still there:
+and the last layer is the same size again, because at every output position the model scores every token in the vocabulary. Worse, a rare token gets few training examples, so its row is learned poorly.
+
+The most famous case is <code markdown="0">&nbsp;SolidGoldMagikarp</code>: a Reddit username that was frequent enough in the text GPT-2's tokenizer was built from to become a token of its own, but that, it seems, almost never occurred in the text the models were then trained on.
+
+In 2023, [Rumbelow and Watkins](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation) found that GPT-3 models, which share that tokenizer, couldn't even repeat the word back and answered with unrelated ones. The token is still there:
 
 ```python
 show_tokens(llm_tokenizers["GPT-2 (2019)"], [" SolidGoldMagikarp"])
@@ -1653,11 +1627,11 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-14.png" alt="Diminishing returns of a bigger vocabulary" loading="lazy">
 
-Each doubling of the vocabulary saves fewer tokens than the previous one, while the embedding table doubles every
-time. We keep 16 000 symbols. Compare the last two rows of the table: going to 32 000 would save less than a
-token per sentence in either language, and double an embedding table that already holds millions of parameters,
-a sizeable share of a small translation model. Models with billions of parameters can afford 200 000 tokens,
-because next to the rest of the model even a huge embedding table is small. Ours can't.
+Each doubling of the vocabulary saves fewer tokens than the previous one, while the embedding table doubles every time. We keep 16 000 symbols.
+
+Compare the last two rows of the table: going to 32 000 would save less than a token per sentence in either language, and double an embedding table that already holds millions of parameters, a sizeable share of a small translation model.
+
+Models with billions of parameters can afford 200 000 tokens, because next to the rest of the model even a huge embedding table is small. Ours can't.
 
 ### The token tax, revisited
 
@@ -1684,12 +1658,11 @@ plot_token_counts(validation_counts, "Average tokens per validation sentence")
 
 <img class="tfs-output" src="/assets/posts/tfs/01/output-15.png" alt="Output of the code above" loading="lazy">
 
-On Russian, our tokenizer needs fewer tokens than every model in the chart, GPT-4o included, with a vocabulary a
-fraction of the size. That's not because we out-engineered OpenAI. Our tokenizer was trained on exactly this
-kind of text in exactly these two languages; theirs has to serve code, math and dozens of languages at once. On
-English we're slightly worse than all of them, which is the honest price of sharing 16 000 symbols between two
-languages. A tokenizer is a decision about what to be good at, and for a translator that reads English and
-writes Russian this one is right.
+On Russian, our tokenizer needs fewer tokens than every model in the chart, GPT-4o included, with a vocabulary a fraction of the size. That's not because we out-engineered OpenAI.
+
+Our tokenizer was trained on exactly this kind of text in exactly these two languages; theirs has to serve code, math and dozens of languages at once.
+
+On English we're slightly worse than all of them, which is the honest price of sharing 16 000 symbols between two languages. A tokenizer is a decision about what to be good at, and for a translator that reads English and writes Russian this one is right.
 
 And the word from section 1, cut by GPT-4o and by ours:
 
@@ -1716,10 +1689,9 @@ reloaded = Tokenizer.from_file(str(TOKENIZER_PATH))
 assert reloaded.encode(RU_EXAMPLE).ids == tokenizer.encode(RU_EXAMPLE).ids
 ```
 
-The next lessons download the tokenizer and the three splits from the Hugging Face Hub, so that every lesson
-can start on its own. The course's copies are published from this notebook. To publish your own, set the
-environment variable `TFS_HUB_USER` to your Hugging Face username and add a write token as the `HF_TOKEN` secret
-(Kaggle: *Add-ons → Secrets*; Colab: the key icon in the sidebar).
+The next lessons download the tokenizer and the three splits from the Hugging Face Hub, so that every lesson can start on its own. The course's copies are published from this notebook.
+
+To publish your own, set the environment variable `TFS_HUB_USER` to your Hugging Face username and add a write token as the `HF_TOKEN` secret (Kaggle: *Add-ons → Secrets*; Colab: the key icon in the sidebar).
 
 Every repository on the Hub needs a card that says what it holds, where it comes from and how it was made. The
 dataset's card:
@@ -1833,18 +1805,21 @@ xmarva/tfs-tatoeba-en-ru and xmarva/tfs-bpe-en-ru-16k</code></pre>
 
 ## References
 
-- Gage, P. (1994). A new algorithm for data compression. *The C Users Journal*, 12(2).
-- Sennrich, R., Haddow, B., Birch, A. (2016). [Neural Machine Translation of Rare Words with Subword Units](https://arxiv.org/abs/1508.07909). ACL.
-- Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., Sutskever, I. (2019). [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). OpenAI. *GPT-2 and its byte-level BPE.*
-- Kudo, T., Richardson, J. (2018). [SentencePiece: A simple and language independent subword tokenizer and detokenizer](https://arxiv.org/abs/1808.06226). EMNLP.
-- Petrov, A., La Malfa, E., Torr, P., Bibi, A. (2023). [Language Model Tokenizers Introduce Unfairness Between Languages](https://arxiv.org/abs/2305.15425). NeurIPS.
-- Rumbelow, J., Watkins, M. (2023). [SolidGoldMagikarp (plus, prompt generation)](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation). LessWrong.
-- OpenAI (2023). [GPT-4 Technical Report](https://arxiv.org/abs/2303.08774). *Appendix C on contamination.*
-- Tiedemann, J. (2020). [The Tatoeba Translation Challenge](https://arxiv.org/abs/2010.06354). WMT.
-- Heaps, H. S. (1978). *Information Retrieval: Computational and Theoretical Aspects*. Academic Press.
-- Tarjan, R. E. (1975). [Efficiency of a good but not linear set union algorithm](https://doi.org/10.1145/321879.321884). *Journal of the ACM*, 22(2).
-- [Unicode Standard Annex #15: Unicode Normalization Forms](https://unicode.org/reports/tr15/).
-- [tiktoken](https://github.com/openai/tiktoken), OpenAI's tokenizers, and the [Hugging Face Tokenizers documentation](https://huggingface.co/docs/tokenizers).
+1. {:#ref-1} Tarjan, R. E. (1975). [Efficiency of a good but not linear set union algorithm](https://doi.org/10.1145/321879.321884). *Journal of the ACM*, 22(2). <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} Gage, P. (1994). A new algorithm for data compression. *The C Users Journal*, 12(2).
+3. {:#ref-3} Sennrich, R., Haddow, B., Birch, A. (2016). [Neural Machine Translation of Rare Words with Subword Units](https://arxiv.org/abs/1508.07909). ACL.
+4. {:#ref-4} Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., Sutskever, I. (2019). [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). OpenAI. *GPT-2 and its byte-level BPE.*
+5. {:#ref-5} Kudo, T., Richardson, J. (2018). [SentencePiece: A simple and language independent subword tokenizer and detokenizer](https://arxiv.org/abs/1808.06226). EMNLP.
+6. {:#ref-6} Petrov, A., La Malfa, E., Torr, P., Bibi, A. (2023). [Language Model Tokenizers Introduce Unfairness Between Languages](https://arxiv.org/abs/2305.15425). NeurIPS.
+7. {:#ref-7} Rumbelow, J., Watkins, M. (2023). [SolidGoldMagikarp (plus, prompt generation)](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation). LessWrong.
+8. {:#ref-8} OpenAI (2023). [GPT-4 Technical Report](https://arxiv.org/abs/2303.08774). *Appendix C on contamination.*
+9. {:#ref-9} Tiedemann, J. (2020). [The Tatoeba Translation Challenge](https://arxiv.org/abs/2010.06354). WMT.
+10. {:#ref-10} Heaps, H. S. (1978). *Information Retrieval: Computational and Theoretical Aspects*. Academic Press.
+11. {:#ref-11} [Unicode Standard Annex #15: Unicode Normalization Forms](https://unicode.org/reports/tr15/).
+12. {:#ref-12} [tiktoken](https://github.com/openai/tiktoken), OpenAI's tokenizers, and the [Hugging Face Tokenizers documentation](https://huggingface.co/docs/tokenizers).
+{: .tfs-refs}
+
+
 
 <p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-02-transformer/">Lesson 2: The Transformer →</a></p>
 

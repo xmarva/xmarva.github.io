@@ -15,11 +15,9 @@ toc:
 
 <p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 3 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
-Ask a chatbot the same question twice and you may get two different answers. Ask a translation model twice and
-you get the same translation both times. The networks inside are close relatives, so the difference isn't in the
-model. It is in the step after it: every model of this kind produces probabilities for the next token, and a
-separate procedure, **decoding**, turns those probabilities into text. Here is how four real models are shipped
-to decode, read from their own configuration files:
+Ask a chatbot the same question twice and you may get two different answers. Ask a translation model twice and you get the same translation both times. The networks inside are close relatives, so the difference isn't in the model.
+
+It is in the step after it: every model of this kind produces probabilities for the next token, and a separate procedure, **decoding**, turns those probabilities into text. Here is how four real models are shipped to decode, read from their own configuration files:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/03/hero-light.png" width="760" alt="Decoding settings shipped with real models: the translators opus-mt-en-ru and m2m100 search with 4 and 5 beams, the chat models Llama 3.1 Instruct and Qwen 2.5 Instruct sample with temperatures 0.6 and 0.7" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/03/hero-dark.png" width="760" alt="Decoding settings shipped with real models: the translators opus-mt-en-ru and m2m100 search with 4 and 5 beams, the chat models Llama 3.1 Instruct and Qwen 2.5 Instruct sample with temperatures 0.6 and 0.7" loading="lazy">
@@ -28,11 +26,9 @@ The translators *search* for the most probable sentence; the chat models *sample
 random from its probabilities. By the end of this lesson you'll have written both, and seen why each side chose
 its way.
 
-First the model has to have probabilities worth decoding. In lesson 2 our Transformer could only parrot the
-token it had just read, or recite sixteen sentences it had learned by heart. In this lesson it trains on half a
-million sentence pairs, on a free GPU, in about twenty minutes, with the recipe of the 2017 paper: batches built
-from tokens, a smoothed loss, Adam with a warm-up, and half-precision arithmetic. Every piece is explained and
-tested before it goes into the loop.
+First the model has to have probabilities worth decoding. In lesson 2 our Transformer could only parrot the token it had just read, or recite sixteen sentences it had learned by heart.
+
+In this lesson it trains on half a million sentence pairs, on a free GPU, in about twenty minutes, with the recipe of the 2017 paper: batches built from tokens, a smoothed loss, Adam with a warm-up, and half-precision arithmetic. Every piece is explained and tested before it goes into the loop.
 
 **What you'll do**
 
@@ -43,9 +39,9 @@ tested before it goes into the loop.
 4. Decode three ways: greedy, beam search and sampling.
 5. Look inside: does *сказала* now look at *she*? And put our model next to opus-mt-en-ru.
 
-**What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
-T4 GPU*. The notebook downloads lesson 1's data and tokenizer and imports lesson 2's model. It runs in under an
-hour.
+**What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type → T4 GPU*.
+
+The notebook downloads lesson 1's data and tokenizer and imports lesson 2's model. It runs in under an hour.
 
 ## Setup
 
@@ -129,12 +125,9 @@ compete with in lesson 4, writing our sentence:
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/03/decode-steps-light.png" width="760" alt="opus-mt-en-ru translating &#x27;The researcher said she was exhausted.&#x27; one token at a time: four of its steps with the four most probable next tokens each. At the verb, сказал gets 0.52, сказала 0.20 and the suffix ница 0.03; taking the most probable token every time gives Исследователь сказал, что она устала." loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/03/decode-steps-dark.png" width="760" alt="opus-mt-en-ru translating &#x27;The researcher said she was exhausted.&#x27; one token at a time: four of its steps with the four most probable next tokens each. At the verb, сказал gets 0.52, сказала 0.20 and the suffix ница 0.03; taking the most probable token every time gives Исследователь сказал, что она устала." loading="lazy">
 
-Some steps are easy: after *Ис*, the continuation *следователь* gets almost all of the probability. Others are
-real choices. At the verb, the model gives the masculine *сказал* about half of it and the feminine *сказала* a
-fifth; it even keeps a small chance for *ница*, the suffix that would make the researcher a woman. The model
-itself doesn't choose; it hands these numbers on. Which token gets written is decided by a separate procedure,
-**decoding**, and the picture used the simplest one: take the most probable token at every step. That's how the
-masculine translation of section 8 comes about.
+Some steps are easy: after *Ис*, the continuation *следователь* gets almost all of the probability. Others are real choices. At the verb, the model gives the masculine *сказал* about half of it and the feminine *сказала* a fifth; it even keeps a small chance for *ница*, the suffix that would make the researcher a woman.
+
+The model itself doesn't choose; it hands these numbers on. Which token gets written is decided by a separate procedure, **decoding**, and the picture used the simplest one: take the most probable token at every step. That's how the masculine translation of section 8 comes about.
 
 A model on the Hugging Face Hub can come with a `generation_config.json`: the decoding settings its authors
 recommend. Read four of them, two translators and two chat models:
@@ -165,11 +158,11 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">model</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">beams</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">samples</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">temperature</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">top-p</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">opus-mt-en-ru (translator)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">False</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">–</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">–</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">m2m100 418M (translator)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">False</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">–</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">–</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Llama 3.1 8B Instruct (chat)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.60</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.90</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Qwen 2.5 7B Instruct (chat)</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.70</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.80</td></tr></tbody></table></div>
 
-The two translators keep 4 and 5 **beams**: candidate translations followed in parallel, so that the model can
-choose the most probable whole sentence rather than the most probable next word. The chat models instead
-**sample** with a **temperature** below 1 and a **top-p** cut-off, settings that control how adventurous the
-random choice is. Sections 8 and 9 build all of this. Behind the difference is a different idea of a good output:
-a translation has to be faithful, an answer in a conversation has to be varied and alive.
+The two translators keep 4 and 5 **beams**: candidate translations followed in parallel, so that the model can choose the most probable whole sentence rather than the most probable next word.
+
+The chat models instead **sample** with a **temperature** below 1 and a **top-p** cut-off, settings that control how adventurous the random choice is. Sections 8 and 9 build all of this.
+
+Behind the difference is a different idea of a good output: a translation has to be faithful, an answer in a conversation has to be varied and alive.
 
 ## 2. The plan
 
@@ -178,10 +171,9 @@ Training repeats one step thousands of times. Each piece of this loop is a secti
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/03/step-light.png" width="760" alt="One training step: a batch of sentence pairs goes through the Transformer, the loss compares the scores with the targets, backward computes the gradients, they are clipped, and Adam updates the weights with a learning rate from the schedule" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/03/step-dark.png" width="760" alt="One training step: a batch of sentence pairs goes through the Transformer, the loss compares the scores with the targets, backward computes the gradients, they are clipped, and Adam updates the weights with a learning rate from the schedule" loading="lazy">
 
-In words: take a batch of sentence pairs, let the model score every possible next token at every position,
-measure how far the scores are from the right answers (the **loss**), compute how each weight should change to
-reduce it (the **gradients**, by backpropagation), and move every weight a small step in that direction. The size
-of the step is the **learning rate**, and how it changes over training is the **schedule**.
+In words: take a batch of sentence pairs, let the model score every possible next token at every position, measure how far the scores are from the right answers (the **loss**), compute how each weight should change to reduce it (the **gradients**, by backpropagation), and move every weight a small step in that direction.
+
+The size of the step is the **learning rate**, and how it changes over training is the **schedule**.
 
 ## 3. Batches
 
@@ -232,10 +224,9 @@ print("longest English:", max(en_lengths), "tokens; longest Russian:", max(ru_le
 
 <pre class="tfs-printed" markdown="0"><code>longest English: 90 tokens; longest Russian: 90</code></pre>
 
-Most sentences take a handful of tokens (mind the logarithmic scale), and a thin tail of long ones reaches far to
-the right. That tail matters for the GPU. In a batch every sentence is padded to the longest one, and a padded
-position costs as much as a real one, so a single long sentence would turn the rest of its batch into mostly
-padding. We leave out the few pairs longer than 64 tokens on either side:
+Most sentences take a handful of tokens (mind the logarithmic scale), and a thin tail of long ones reaches far to the right. That tail matters for the GPU.
+
+In a batch every sentence is padded to the longest one, and a padded position costs as much as a real one, so a single long sentence would turn the rest of its batch into mostly padding. We leave out the few pairs longer than 64 tokens on either side:
 
 ```python
 MAX_LEN = 64
@@ -249,11 +240,9 @@ print("training pairs kept:", len(keep), "of", len(train_src))
 
 <pre class="tfs-printed" markdown="0"><code>training pairs kept: 508021 of 508093</code></pre>
 
-Now the batches. A fixed number of sentences per batch would make the batches of long sentences much more
-expensive than the others, so the size of a batch is measured in **tokens**: a batch takes sentences until it
-would exceed `MAX_TOKENS` positions, padding included. And because padding is wasted work, it matters *which*
-sentences share a batch. Compare a random batch with a batch of sentences of similar length; violet cells are
-real tokens, grey ones padding:
+Now the batches. A fixed number of sentences per batch would make the batches of long sentences much more expensive than the others, so the size of a batch is measured in **tokens**: a batch takes sentences until it would exceed `MAX_TOKENS` positions, padding included.
+
+And because padding is wasted work, it matters *which* sentences share a batch. Compare a random batch with a batch of sentences of similar length; violet cells are real tokens, grey ones padding:
 
 ```python
 def pad_batch(sequences):
@@ -282,11 +271,9 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/03/output-03.png" alt="Output of the code above" loading="lazy">
 
-The standard fix is **bucketing**: sort the pairs by length, cut the sorted list into batches, and shuffle the
-order of the batches, so that the model still sees a random mix of lengths over an epoch while every single batch
-is nearly free of padding. `make_batches` does exactly that and builds the three tensors a training step needs,
-as in lesson 2: the English ids, the Russian ids behind `<bos>` that the decoder reads, and the Russian ids
-followed by `<eos>` that it must predict.
+The standard fix is **bucketing**: sort the pairs by length, cut the sorted list into batches, and shuffle the order of the batches, so that the model still sees a random mix of lengths over an epoch while every single batch is nearly free of padding.
+
+`make_batches` does exactly that and builds the three tensors a training step needs, as in lesson 2: the English ids, the Russian ids behind `<bos>` that the decoder reads, and the Russian ids followed by `<eos>` that it must predict.
 
 ```python
 def make_batches(src, tgt, rows, max_tokens, sort=True):
@@ -344,10 +331,9 @@ del unsorted  # only needed for the comparison
 <pre class="tfs-printed" markdown="0"><code>padding in random batches: 70.6%
 random batches: 2733 bucketed: 814</code></pre>
 
-Random batches waste a large share of every step on padding, and need more steps to cover the same data. One
-trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less
-representative of the whole data than a random batch's. Shuffling the batch order every epoch keeps that
-harmless in practice, and the paper's authors batched the same way.
+Random batches waste a large share of every step on padding, and need more steps to cover the same data.
+
+One trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less representative of the whole data than a random batch's. Shuffling the batch order every epoch keeps that harmless in practice, and the paper's authors batched the same way.
 
 ## 4. The loss, smoothed
 
@@ -356,10 +342,9 @@ probabilities with softmax, $$p_j = e^{z_j} / \sum_k e^{z_k}$$, and pays $$-\log
 
 $$\mathcal{L} = -\log p_y.$$
 
-Read $$-\log p$$ as surprise. A model that gave the right token probability 1 isn't surprised at all and pays 0; one
-that gave it 0.5 pays 0.69; one that was confident in something else and gave the right token 0.01 pays 4.6, and
-the price grows without bound as $$p_y \to 0$$. Averaged over all target tokens of a batch, this is the number
-training brings down.
+Read $$-\log p$$ as surprise. A model that gave the right token probability 1 isn't surprised at all and pays 0; one that gave it 0.5 pays 0.69; one that was confident in something else and gave the right token 0.01 pays 4.6, and the price grows without bound as $$p_y \to 0$$.
+
+Averaged over all target tokens of a batch, this is the number training brings down.
 
 Written as a sum over the vocabulary, the same loss compares the model's distribution $$p$$ with a target
 distribution $$q$$ that puts all its mass on the right token:
@@ -369,7 +354,7 @@ $$\mathcal{L} = -\sum_{j=1}^{\lvert\mathcal{V}\rvert} q_j \log p_j, \qquad q_j =
 
 That target is a demand for certainty. On data like ours, where *He's stupid.* has two dozen correct translations
 (lesson 1), total certainty is wrong anyway. **Label smoothing**
-([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)), used in the 2017 paper with $$\varepsilon = 0.1$$,
+<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., Wojna, Z. (2016). Rethinking the Inception Architecture for Computer Vision. CVPR. Label smoothing.">1</a>]</sup>, used in the 2017 paper with $$\varepsilon = 0.1$$,
 softens the target: it keeps $$1 - \varepsilon$$ of the mass on the right token and spreads $$\varepsilon$$ evenly
 over the whole vocabulary,
 
@@ -418,11 +403,11 @@ almost everything cancels:
 
 $$\frac{\partial \mathcal{L}}{\partial z_j} = p_j - q_j.$$
 
-Training moves every score in proportion to how far the model's probability is from the target: the right token's
-score goes up by $$1 - p_y$$ at most, every other score goes down by its own probability. With the plain target the
-push on the right token only stops at $$p_y = 1$$, which needs its score infinitely far above the rest. With the
-smoothed target the push stops at $$p = q$$: the model is rewarded for being *mostly* sure. The paper reports that
-this hurts perplexity, since the model learns to be less sure, but improves the translations.
+Training moves every score in proportion to how far the model's probability is from the target: the right token's score goes up by $$1 - p_y$$ at most, every other score goes down by its own probability.
+
+With the plain target the push on the right token only stops at $$p_y = 1$$, which needs its score infinitely far above the rest.
+
+With the smoothed target the push stops at $$p = q$$: the model is rewarded for being *mostly* sure. The paper reports that this hurts perplexity, since the model learns to be less sure, but improves the translations.
 
 Check both formulas, the loss and its gradient, against PyTorch on five tokens, small enough to follow:
 
@@ -530,16 +515,14 @@ for eta in [0.1, 0.6, 1.6, 2.1]:
 η = 1.6: 0.05 from the minimum after 8 steps, starting from 3
 η = 2.1: 6.43 from the minimum after 8 steps, starting from 3</code></pre>
 
-A real loss has millions of directions, each with its own curvature, and one learning rate for all of them. The
-steepest direction caps it: beyond $$\eta = 2 / \lambda_{\max}$$ that direction diverges. The flattest direction then
-moves by only a factor $$1 - \eta\lambda_{\min}$$ per step, which is barely below 1 when the two curvatures are far
-apart. Here is a valley 100 times steeper across than along, $$\mathcal{L}(\theta) = \tfrac12(100\,\theta_1^2 +
-\theta_2^2)$$, where any $$\eta$$ above $$2/100 = 0.02$$ diverges.
+A real loss has millions of directions, each with its own curvature, and one learning rate for all of them. The steepest direction caps it: beyond $$\eta = 2 / \lambda_{\max}$$ that direction diverges.
+
+The flattest direction then moves by only a factor $$1 - \eta\lambda_{\min}$$ per step, which is barely below 1 when the two curvatures are far apart. Here is a valley 100 times steeper across than along, $$\mathcal{L}(\theta) = \tfrac12(100\,\theta_1^2 + \theta_2^2)$$, where any $$\eta$$ above $$2/100 = 0.02$$ diverges.
 
 ### Adam
 
 The optimizer of the 2017 paper, and of nearly every Transformer since, is **Adam**
-([Kingma and Ba, 2015](https://arxiv.org/abs/1412.6980)). It gives every weight its own effective step size. For
+<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Kingma, D. P., Ba, J. (2015). Adam: A Method for Stochastic Optimization. ICLR.">2</a>]</sup>. It gives every weight its own effective step size. For
 each weight it keeps two running averages, of the gradient and of its square:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/03/adam-light.png" width="760" alt="Adam&#x27;s update for one weight: the gradient feeds a running average m of the gradient and a running average v of its square; after a correction for starting at zero, the weight moves by eta times m-hat over the square root of v-hat" loading="lazy">
@@ -687,11 +670,9 @@ print("Adam ends at the same point in all three valleys:", same_path)
 
 <pre class="tfs-printed" markdown="0"><code>Adam ends at the same point in all three valleys: True</code></pre>
 
-On a mildly uneven valley a well-tuned gradient descent is even ahead. But it falls behind fast as the valley
-gets more uneven, while Adam ends at exactly the same point in all three. Each
-coordinate's gradient is divided by its own typical size, so stretching one direction of the landscape changes
-nothing for Adam. The loss of a Transformer has millions of directions whose curvatures differ by orders of
-magnitude, and that is why Adam, not plain gradient descent, trains it.
+On a mildly uneven valley a well-tuned gradient descent is even ahead. But it falls behind fast as the valley gets more uneven, while Adam ends at exactly the same point in all three.
+
+Each coordinate's gradient is divided by its own typical size, so stretching one direction of the landscape changes nothing for Adam. The loss of a Transformer has millions of directions whose curvatures differ by orders of magnitude, and that is why Adam, not plain gradient descent, trains it.
 
 ### The learning-rate schedule
 
@@ -699,11 +680,9 @@ The learning rate $$\eta_t$$ isn't constant either. The paper changes it with ev
 
 $$\eta_t = d_{\text{model}}^{-0.5} \cdot \min\!\big(t^{-0.5},\ t \cdot t_{\text{warm}}^{-1.5}\big).$$
 
-For the first $$t_{\text{warm}}$$ steps the second term is the smaller one, and the rate grows linearly from zero:
-the **warm-up**. After that the first term takes over and the rate decays like $$1/\sqrt{t}$$, so the steps get
-shorter as the model approaches a good solution. The two terms meet at $$t = t_{\text{warm}}$$, the peak, and the
-factor $$d_{\text{model}}^{-0.5}$$ makes wider models take smaller steps. Our run lasts `EPOCHS` passes over the
-data, one epoch every `len(train_batches)` steps:
+For the first $$t_{\text{warm}}$$ steps the second term is the smaller one, and the rate grows linearly from zero: the **warm-up**. After that the first term takes over and the rate decays like $$1/\sqrt{t}$$, so the steps get shorter as the model approaches a good solution.
+
+The two terms meet at $$t = t_{\text{warm}}$$, the peak, and the factor $$d_{\text{model}}^{-0.5}$$ makes wider models take smaller steps. Our run lasts `EPOCHS` passes over the data, one epoch every `len(train_batches)` steps:
 
 ```python
 def learning_rate(step, d_model=256, warmup=4_000):
@@ -738,11 +717,9 @@ print("warm-up lasts", round(WARMUP / len(train_batches), 1), "epochs of", EPOCH
 <pre class="tfs-printed" markdown="0"><code>peak learning rate: 9.88e-04 at step 4000
 warm-up lasts 4.9 epochs of 20</code></pre>
 
-Why start slowly? At the beginning, Adam's running average $$v$$ has seen only a few gradients, so its estimate of
-their size is poor and some steps come out far too large ([Liu et al., 2020](https://arxiv.org/abs/1908.03265)).
-And a Transformer with normalization after the residual addition, like ours, has especially large gradients near
-its output at initialization ([Xiong et al., 2020](https://arxiv.org/abs/2002.04745)). Large early steps can
-throw the weights somewhere training never recovers from.
+Why start slowly? At the beginning, Adam's running average $$v$$ has seen only a few gradients, so its estimate of their size is poor and some steps come out far too large<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Liu, L. et al. (2020). On the Variance of the Adaptive Learning Rate and Beyond. ICLR. Why Adam needs a warm-up.">3</a>]</sup>.
+
+And a Transformer with normalization after the residual addition, like ours, has especially large gradients near its output at initialization<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Xiong, R. et al. (2020). On Layer Normalization in the Transformer Architecture. ICML. Why post-norm Transformers do.">4</a>]</sup>. Large early steps can throw the weights somewhere training never recovers from.
 
 Rather than take this on trust, train two copies of the model for a few hundred steps with the same peak learning
 rate, one with a warm-up and one without. First the pieces of the training step, which section 7 reuses:
@@ -868,10 +845,11 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/03/output-08.png" alt="The same peak learning rate, with and without warm-up" loading="lazy">
 
-Same model, same data, same peak learning rate; only the first thousand steps differ. With the warm-up, the loss
-falls steadily. Without it, the first steps at full speed throw the weights somewhere the model doesn't recover
-from: the loss sticks near the dashed line, where a model knows little more than which tokens are frequent. In
-the real run the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
+Same model, same data, same peak learning rate; only the first thousand steps differ. With the warm-up, the loss falls steadily.
+
+Without it, the first steps at full speed throw the weights somewhere the model doesn't recover from: the loss sticks near the dashed line, where a model knows little more than which tokens are frequent.
+
+In the real run the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
 
 The last protection is **gradient clipping**, the `clip_grad_norm_` line: if the length of the whole gradient
 vector, over all the model's weights, exceeds a limit $$c$$, the vector is scaled down to that length,
@@ -879,7 +857,7 @@ vector, over all the model's weights, exceeds a limit $$c$$, the vector is scale
 $$g \leftarrow g \cdot \min\!\left(1, \frac{c}{\lVert g \rVert}\right).$$
 
 The direction stays, only an occasional huge step is cut short
-([Pascanu et al., 2013](https://arxiv.org/abs/1211.5063)). The 2017 paper doesn't mention it; it has become a
+<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Pascanu, R., Mikolov, T., Bengio, Y. (2013). On the difficulty of training recurrent neural networks. ICML. Gradient clipping.">5</a>]</sup>. The 2017 paper doesn't mention it; it has become a
 standard part of training recipes since, and $$c = 1$$ is a common choice.
 
 ## 6. Half precision
@@ -958,12 +936,9 @@ A few percent of the gradients would vanish outright, and most of them would los
 loss by $$2^{16}$$ multiplies every gradient by the same factor (the chain rule is linear), shifts the whole
 histogram to the right and brings almost all of them into range.
 
-That is **mixed precision** ([Micikevicius et al., 2018](https://arxiv.org/abs/1710.03740)): matrix products run
-in float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in
-float32; and **loss scaling**: multiply the loss by a large factor before backpropagation, then divide the
-gradients back before the optimizer uses them. `GradScaler` does both and picks the factor itself: it raises it
-while all goes well and lowers it, skipping that step, whenever a gradient overflows. In `train_steps` these are
-the lines with `autocast` and `scaler`.
+That is **mixed precision**<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Micikevicius, P. et al. (2018). Mixed Precision Training. ICLR.">6</a>]</sup>: matrix products run in float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in float32; and **loss scaling**: multiply the loss by a large factor before backpropagation, then divide the gradients back before the optimizer uses them.
+
+`GradScaler` does both and picks the factor itself: it raises it while all goes well and lowers it, skipping that step, whenever a gradient overflows. In `train_steps` these are the lines with `autocast` and `scaler`.
 
 What does it buy? Time a few steps each way:
 
@@ -1132,11 +1107,11 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/03/output-10.png" alt="Training" loading="lazy">
 
-The validation loss falls fast for a few epochs and then flattens: most of what this model can learn from
-Tatoeba, it learns early. The training curve lies *above* the validation one, which looks backwards and isn't:
-it is measured with label smoothing, which can't go below the dashed floor, and with dropout switching off a
-tenth of the model at every step. Only the validation curve is plain cross-entropy, so the floor doesn't apply to
-it, and late in the run it passes below the line.
+The validation loss falls fast for a few epochs and then flattens: most of what this model can learn from Tatoeba, it learns early.
+
+The training curve lies *above* the validation one, which looks backwards and isn't: it is measured with label smoothing, which can't go below the dashed floor, and with dropout switching off a tenth of the model at every step.
+
+Only the validation curve is plain cross-entropy, so the floor doesn't apply to it, and late in the run it passes below the line.
 
 > The loss you train on and the number you judge by are different numbers. Compare like with like.
 
@@ -1150,17 +1125,15 @@ table(progress[["epoch", *PROBES]])
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">epoch</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">The researcher said she was exhausted.</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">Tom forgot to lock the door.</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">I can&#x27;t believe you did that.</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">С С очень очень очень</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том хотел дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я не могу это это это.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Корррр, что она сказала.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том забыл, чтобы я забыл дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я не могу, что ты это сделал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">3</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Старрр сказала, что она измер.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том забыл запереть дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Не могу поверить, что ты это сделал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мерник сказал, что она изможён.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том забыл запереть дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я не могу поверить, что ты это сделал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">10</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследование сказал, что она измощена.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том забыл запереть дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Не могу поверить, что ты это сделал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">20</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она измотанная.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том забыл запереть дверь.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Поверить не могу, что ты это сделал.</td></tr></tbody></table></div>
 
-In the first epoch the model strings frequent words together and repeats itself. Within a few epochs the
-everyday sentences come out right and stay right. Our own sentence improves too, from nonsense to nearly correct
-Russian, but never to the right translation: the researcher never becomes a woman. Section 10 finds out why.
+In the first epoch the model strings frequent words together and repeats itself. Within a few epochs the everyday sentences come out right and stay right.
+
+Our own sentence improves too, from nonsense to nearly correct Russian, but never to the right translation: the researcher never becomes a woman. Section 10 finds out why.
 
 ## 8. Decoding by search
 
-The trained model gives, for any English sentence and any Russian prefix, a probability for every possible next
-token. A translation needs a whole sentence, and the step from one to the other is less innocent than it looks.
-In training the decoder always read the correct Russian prefix; when it translates, it reads its own output, and
-an early mistake becomes the history every later word is written from. Here is a real case, from the translator
-we will compete with:
+The trained model gives, for any English sentence and any Russian prefix, a probability for every possible next token. A translation needs a whole sentence, and the step from one to the other is less innocent than it looks.
+
+In training the decoder always read the correct Russian prefix; when it translates, it reads its own output, and an early mistake becomes the history every later word is written from. Here is a real case, from the translator we will compete with:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/03/exposure-light.png" width="760" alt="In training the decoder reads the reference translation; when translating it reads its own words. opus-mt-en-ru writes Исследователь сказал, что она устала: a masculine first word, and the verb agrees with the mistake" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/03/exposure-dark.png" width="760" alt="In training the decoder reads the reference translation; when translating it reads its own words. opus-mt-en-ru writes Исследователь сказал, что она устала: a masculine first word, and the verb agrees with the mistake" loading="lazy">
@@ -1210,11 +1183,9 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">greedy</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">score</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The researcher said she was exhausted.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она измотанная.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-4.40</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The researcher said he was exhausted.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что он измотан.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-3.02</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The teacher said she was tired.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учитель сказал, что она устала.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-0.76</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The teacher said he was tired.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учитель сказал, что он устал.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-1.43</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">My neighbour said she was busy.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что она занята.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-1.58</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">My neighbour said he was busy.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что занят.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">-1.47</td></tr></tbody></table></div>
 
-The pronoun and the words after it follow the English: *она* with a feminine form for *she*, *он* or a masculine
-*занят* for *he* (Russian often drops the pronoun there). The first half never changes with the pronoun: the
-person who speaks is a man, or several people, whatever the English says. The sentences about the teacher and
-the neighbour, simple and frequent in the data, get scores much closer to 0 than those about the researcher, a
-rare word. Hold these observations until section 10.
+The pronoun and the words after it follow the English: *она* with a feminine form for *she*, *он* or a masculine *занят* for *he* (Russian often drops the pronoun there). The first half never changes with the pronoun: the person who speaks is a man, or several people, whatever the English says.
+
+The sentences about the teacher and the neighbour, simple and frequent in the data, get scores much closer to 0 than those about the researcher, a rare word. Hold these observations until section 10.
 
 Greedy decoding commits to every token for good. The most probable next token, though, isn't always the start of
 the most probable sentence:
@@ -1231,7 +1202,7 @@ cases where greedy goes wrong.
 
 One correction is needed. Every token multiplies the probability by a number below 1, so longer sentences always
 have lower scores, and a plain beam search prefers translations that stop early. The usual fix divides the score
-by a **length penalty** ([Wu et al., 2016](https://arxiv.org/abs/1609.08144)),
+by a **length penalty**<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Wu, Y. et al. (2016). Google&#x27;s Neural Machine Translation System. The length penalty.">7</a>]</sup>,
 
 $$\operatorname{lp}(\mathbf{y}) = \left(\frac{5 + \lvert\mathbf{y}\rvert}{6}\right)^{\alpha},$$
 
@@ -1320,12 +1291,9 @@ print("beam search:", beam)
 <pre class="tfs-printed" markdown="0"><code>greedy:      Исследователи сказали, что она измотанная.
 beam search: Исследователи сказали, что она измотанная.</code></pre>
 
-Every step keeps four partial translations, ranked by their total log-probability, which only goes down as they
-grow. The runners-up are the alternatives the search weighs: a plural subject, a different verb form, sometimes a
-word that doesn't exist, which falls behind and is dropped. The plural *Исследователи* takes the lead early and
-keeps it, so for this sentence beam search ends where greedy decoding does; the singular *Исследователь* stays
-in the beam as a runner-up. On other sentences an alternative overtakes the leader, as the comparison below
-shows.
+Every step keeps four partial translations, ranked by their total log-probability, which only goes down as they grow. The runners-up are the alternatives the search weighs: a plural subject, a different verb form, sometimes a word that doesn't exist, which falls behind and is dropped.
+
+The plural *Исследователи* takes the lead early and keeps it, so for this sentence beam search ends where greedy decoding does; the singular *Исследователь* stays in the beam as a runner-up. On other sentences an alternative overtakes the leader, as the comparison below shows.
 
 Compare the two decoders on validation sentences: how often beam search changes the translation, and whether the
 translations it picks are more probable under the model, which is what it searches for.
@@ -1373,11 +1341,9 @@ sentence; lesson 4 answers it with metrics that compare outputs with the referen
 
 ## 9. Decoding by sampling
 
-Search looks for the single most probable output. For a translation that's what we want. For a chat model, or any
-open-ended text, it is not: the most probable continuation of a conversation is bland, and beam search on long
-open text famously falls into repeating itself ([Holtzman et al., 2020](https://arxiv.org/abs/1904.09751)).
-Those models **sample** instead: at every step they draw the next token at random, with the probabilities the
-model gives.
+Search looks for the single most probable output. For a translation that's what we want. For a chat model, or any open-ended text, it is not: the most probable continuation of a conversation is bland, and beam search on long open text famously falls into repeating itself<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Holtzman, A., Buys, J., Du, L., Forbes, M., Choi, Y. (2020). The Curious Case of Neural Text Degeneration. ICLR. Top-p sampling.">8</a>]</sup>.
+
+Those models **sample** instead: at every step they draw the next token at random, with the probabilities the model gives.
 
 Two knobs shape the draw. The **temperature** $$\tau$$ divides the scores before softmax,
 
@@ -1416,10 +1382,9 @@ A low temperature hands almost everything to the most probable token. At tempera
 distribution shows a long tail: the grey bar, every token outside the top eight, together. At 1.5 that tail takes
 most of the probability, and a random draw will usually come from it.
 
-The second knob, **top-p** or nucleus sampling, cuts off the long tail: sort the tokens by probability, keep the
-smallest set whose probabilities add up to at least $$p$$, and sample only from that set, renormalized. The tail of
-thousands of individually unlikely tokens holds a surprising share of the probability in total, and a single draw
-from it can derail a sentence.
+The second knob, **top-p** or nucleus sampling, cuts off the long tail: sort the tokens by probability, keep the smallest set whose probabilities add up to at least $$p$$, and sample only from that set, renormalized.
+
+The tail of thousands of individually unlikely tokens holds a surprising share of the probability in total, and a single draw from it can derail a sentence.
 
 ```python
 @torch.no_grad()
@@ -1467,19 +1432,15 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">settings</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">translation</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователь сказал, что она изможённа.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Утрои Прис попробуем Откуда-то измо нарушён.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследованная тяжалась передо приезжающаясь have.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она изможена.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она измота.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она изможена.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ижарselvestestairs лекарства атkingthплее просить. psy.ением вегетариа stateинys согласна. неё какаяхи запас присобе носит.ерк ногтиucleри ктостьghediansсси piecesсер Р brought rescued бо but diamonduteченвидноck написано гряставили carr тупой наружу. handwrit относительно</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Искатка зарпла nature попросишь fish Ваши бercвания пусты studied mat.врознаваются.сь пара contain кровьжный begin узнает маме учё умный удостожденияologistбой Дождь improve странныйationоружении шкаф diary Two</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ваешьсяпет ЖальТы встрече cup cupранцмучен hope ровно привет попросилапечаткли напуга mu юмораум фанановый билеты заплачет сом chat шутишьейчас visitingegялась instead менееamidubeдерж great ху breadнтересоваться процерик Ещёшка подтвержд great поте M Кто asked</td></tr></tbody></table></div>
 
-At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the
-tail includes English tokens, because lesson 1 built one vocabulary for both languages. At 1.5 the output falls
-apart. A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the
-greedy translation and varies a little from draw to draw. For a translation that variety is no virtue: we want
-the one best reading, and that's why translators search.
+At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the tail includes English tokens, because lesson 1 built one vocabulary for both languages. At 1.5 the output falls apart.
+
+A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the greedy translation and varies a little from draw to draw. For a translation that variety is no virtue: we want the one best reading, and that's why translators search.
 
 ## 10. Inside the trained model
 
-Lesson 2 ended with a flat map: after memorizing sixteen pairs, the cross-attention of the last decoder layer
-spread evenly over the English sentence. Here are the same maps for the trained model, one per decoder layer,
-side by side, each averaged over the four heads. The model reads the reference translation of our sentence, and
-each row is the step at which it writes one Russian token: the row labelled *▁сказала* is where the model decides
-on *сказала*, and its cells show which English tokens it looks at while doing so.
+Lesson 2 ended with a flat map: after memorizing sixteen pairs, the cross-attention of the last decoder layer spread evenly over the English sentence. Here are the same maps for the trained model, one per decoder layer, side by side, each averaged over the four heads.
+
+The model reads the reference translation of our sentence, and each row is the step at which it writes one Russian token: the row labelled *▁сказала* is where the model decides on *сказала*, and its cells show which English tokens it looks at while doing so.
 
 ```python
 RU_EXAMPLE = "Исследовательница сказала, что вымоталась."
@@ -1520,18 +1481,16 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">writing</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">layer 1 looks at</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">layer 2 looks at</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">layer 3 looks at</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁И</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁The</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁rese</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁rese</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">сс</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁The</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁rese</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁rese</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ледо</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ватель</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ница</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁said</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">cher</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁сказала</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁said</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁said</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁said</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">,</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁said</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁что</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁вы</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁was</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">мот</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁she</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁exhausted</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁exhausted</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">алась</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁exhausted</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁exhausted</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">&lt;eos&gt;</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">▁exhausted</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">.</td></tr></tbody></table></div>
 
-The decoder has learned an alignment: while writing the stem *Исследо-ватель* it looks at the pieces of
-*researcher*, while writing *сказала* at *said*, while writing *-мот-* at *exhausted*, and while writing *что*, the
-start of the clause about her, at *she*. Nobody told the model which word translates which. Looking at the right
-English word made the next token easier to predict, and training found that out on its own. The maps above show
-that the middle layer points most sharply; the others spread their attention more widely.
+The decoder has learned an alignment: while writing the stem *Исследо-ватель* it looks at the pieces of *researcher*, while writing *сказала* at *said*, while writing *-мот-* at *exhausted*, and while writing *что*, the start of the clause about her, at *she*.
+
+Nobody told the model which word translates which. Looking at the right English word made the next token easier to predict, and training found that out on its own. The maps above show that the middle layer points most sharply; the others spread their attention more widely.
 
 That answers the question lesson 2 left open: *сказала* doesn't look at *she*. It doesn't need to, as you are
 about to see.
 
-So the attention works. Why, then, does the model never write *Исследовательница*? Ask it directly: give it the
-reference translation and read off the probability it assigns to each token at the moment of writing it. Tokens it
-finds unlikely, below 0.1, are filled:
+So the attention works. Why, then, does the model never write *Исследовательница*?
+
+Ask it directly: give it the reference translation and read off the probability it assigns to each token at the moment of writing it. Tokens it finds unlikely, below 0.1, are filled:
 
 ```python
 probs = logits[0].float().softmax(dim=-1)  # (T, |V|)
@@ -1548,12 +1507,9 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/03/output-14.png" alt="Output of the code above" loading="lazy">
 
-The model is sure of *Исследо-*, much less sure of *-ватель*, and gives the feminine suffix *ница* almost nothing.
-Once
-*ница* is in place (we supplied it), *сказала* becomes likely: agreement inside Russian, from one word to the
-next, the model has learned. What it hasn't learned is to make the noun feminine because of a *she* that comes
-three words later in the English. (The other filled tokens are choices, not grammar: the model would rather
-continue *что она* than *что вы-*, and after the rare *вымоталась* it doesn't expect the sentence to end.)
+The model is sure of *Исследо-*, much less sure of *-ватель*, and gives the feminine suffix *ница* almost nothing. Once *ница* is in place (we supplied it), *сказала* becomes likely: agreement inside Russian, from one word to the next, the model has learned.
+
+What it hasn't learned is to make the noun feminine because of a *she* that comes three words later in the English. (The other filled tokens are choices, not grammar: the model would rather continue *что она* than *что вы-*, and after the rare *вымоталась* it doesn't expect the sentence to end.)
 
 And while it writes that suffix, does it look at *she* at all? Every head of every layer, at that one step:
 
@@ -1578,15 +1534,13 @@ print("the most any head gives to ▁she here:", round(at_suffix[:, she].max().i
 
 <pre class="tfs-printed" markdown="0"><code>the most any head gives to ▁she here: 0.63</code></pre>
 
-Most heads look at *said* and at the end of *researcher*. But one head of the first layer gives most of its
-attention to *she*: the information does reach the step that decides the suffix. And still the model writes
-*ница* with a probability near zero. Looking at the right word is not enough; the layers above must also have
-learned what *she* should do to a noun, and for that they need examples.
+Most heads look at *said* and at the end of *researcher*. But one head of the first layer gives most of its attention to *she*: the information does reach the step that decides the suffix. And still the model writes *ница* with a probability near zero.
 
-How many examples did they get? Look at what the training data says. For a few English nouns of people, count the training pairs, and
-how their Russian translations render the noun: with the masculine form or the feminine one. The patterns are
-word stems, so that every case form counts (*учителем*, *учительницы*). Then the same counts for the pairs whose
-English also contains *she* or *her*:
+Looking at the right word is not enough; the layers above must also have learned what *she* should do to a noun, and for that they need examples.
+
+How many examples did they get? Look at what the training data says. For a few English nouns of people, count the training pairs, and how their Russian translations render the noun: with the masculine form or the feminine one.
+
+The patterns are word stems, so that every case form counts (*учителем*, *учительницы*). Then the same counts for the pairs whose English also contains *she* or *her*:
 
 ```python
 NOUNS = {  # English noun pattern: (stem of the masculine form, stem of the feminine form)
@@ -1630,10 +1584,9 @@ table(train[teacher_and_she & masculine_noun].head(5))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">en</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">ru</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The woman speaks as if she were a teacher.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Женщина говорит так, словно она учитель.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ann apologized to her teacher for coming to school late.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Анна извинилась перед учителем за то, что опоздала в школу.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">She&#x27;s our teacher.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Она наш учитель.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">My sister has made up her mind to be a teacher.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Моя сестра решила стать учителем.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">She always writes down every word her teacher says.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Она всегда записывает каждое слово за своим учителем.</td></tr></tbody></table></div>
 
-Often *she* is someone else (*Ann apologized to her teacher…*). And when the woman is the teacher, Russian still
-uses the masculine noun: *Она наш учитель*, *Моя сестра решила стать учителем*. That's ordinary Russian, where the masculine names of professions describe
-women too. So the data teaches the model, correctly, that *учитель* is the usual word, and only rarely shows it a
-sentence where *she* forces *учительница* and a feminine verb. For *исследовательница* it never shows one at all.
+Often *she* is someone else (*Ann apologized to her teacher…*). And when the woman is the teacher, Russian still uses the masculine noun: *Она наш учитель*, *Моя сестра решила стать учителем*. That's ordinary Russian, where the masculine names of professions describe women too.
+
+So the data teaches the model, correctly, that *учитель* is the usual word, and only rarely shows it a sentence where *she* forces *учительница* and a feminine verb. For *исследовательница* it never shows one at all.
 
 > A model learns the distribution of its data. Rare constructions are learned last, or not at all.
 
@@ -1670,11 +1623,9 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">ours, beam of 4</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">opus-mt-en-ru</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The researcher said she was exhausted.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она измотанная.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователь сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The researcher said he was exhausted.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что он измотан.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователь сказал, что он устал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The teacher said she was tired.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учитель сказал, что она устала.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учительница сказала, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The teacher said he was tired.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учитель сказал, что он устал.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Учитель сказал, что устал.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">My neighbour said she was busy.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что она занята.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Моя соседка сказала, что она занята.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">My neighbour said he was busy.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что занят.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что он занят.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The novel has been translated into German.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Роман был переведён на немецкий роман.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Роман был переведен на немецкий язык.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">I wonder why you never told me about it.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Интересно, почему ты никогда мне об этом не рассказывал.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Интересно, почему ты никогда не говорил мне об этом.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Arguing is no way to go about it.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Спасание — не способа пойти об этом.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Спорить - это не способ.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Please tell me I&#x27;m right.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Пожалуйста, скажи мне, что я прав.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Пожалуйста, скажи мне, что я прав.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">I watch TV all the time.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я постоянно смотрю телевизор.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Я все время смотрю телевизор.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Tell Tom that I may be late.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Скажи Тому, что я, возможно, опоздаю.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Скажи Тому, что я, возможно, опоздаю.</td></tr></tbody></table></div>
 
-opus-mt-en-ru gets the teacher and the neighbour right, noun and verb. It was trained on
-[OPUS](https://opus.nlpl.eu), a collection of translated texts of every kind, of which Tatoeba is one small part,
-and has most likely seen many more sentences like these. On the researcher it fails too, *Исследователь сказал*: even that
-much data didn't teach it this word. The architecture is the same, number for
-number, as lesson 2 showed; what differs is what each model has seen.
+opus-mt-en-ru gets the teacher and the neighbour right, noun and verb. It was trained on [OPUS](https://opus.nlpl.eu), a collection of translated texts of every kind, of which Tatoeba is one small part, and has most likely seen many more sentences like these.
+
+On the researcher it fails too, *Исследователь сказал*: even that much data didn't teach it this word. The architecture is the same, number for number, as lesson 2 showed; what differs is what each model has seen.
 
 On the sentences from the test set ours is uneven for a model trained in twenty minutes: some translations match
 opus-mt-en-ru's word for word, others fall apart. That's an impression from a dozen sentences; lesson 4 replaces
@@ -1761,18 +1712,21 @@ xmarva/tfs-transformer-en-ru</code></pre>
 
 ## References
 
-- Vaswani, A. et al. (2017). [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS. *The training recipe and the decoding settings.*
-- Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., Wojna, Z. (2016). [Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567). CVPR. *Label smoothing.*
-- Müller, R., Kornblith, S., Hinton, G. (2019). [When Does Label Smoothing Help?](https://arxiv.org/abs/1906.02629). NeurIPS.
-- Kingma, D. P., Ba, J. (2015). [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980). ICLR.
-- Liu, L. et al. (2020). [On the Variance of the Adaptive Learning Rate and Beyond](https://arxiv.org/abs/1908.03265). ICLR. *Why Adam needs a warm-up.*
-- Xiong, R. et al. (2020). [On Layer Normalization in the Transformer Architecture](https://arxiv.org/abs/2002.04745). ICML. *Why post-norm Transformers do.*
-- Pascanu, R., Mikolov, T., Bengio, Y. (2013). [On the difficulty of training recurrent neural networks](https://arxiv.org/abs/1211.5063). ICML. *Gradient clipping.*
-- Micikevicius, P. et al. (2018). [Mixed Precision Training](https://arxiv.org/abs/1710.03740). ICLR.
-- Wu, Y. et al. (2016). [Google's Neural Machine Translation System](https://arxiv.org/abs/1609.08144). *The length penalty.*
-- Holtzman, A., Buys, J., Du, L., Forbes, M., Choi, Y. (2020). [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751). ICLR. *Top-p sampling.*
-- Stanovsky, G., Smith, N. A., Zettlemoyer, L. (2019). [Evaluating Gender Bias in Machine Translation](https://arxiv.org/abs/1906.00591). ACL.
-- Tiedemann, J., Thottingal, S. (2020). [OPUS-MT: Building open translation services for the World](https://aclanthology.org/2020.eamt-1.61/). EAMT.
+1. {:#ref-1} Szegedy, C., Vanhoucke, V., Ioffe, S., Shlens, J., Wojna, Z. (2016). [Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567). CVPR. *Label smoothing.* <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} Kingma, D. P., Ba, J. (2015). [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980). ICLR. <a class="ref-back" href="#cite-2" aria-label="Back to the text">&#8617;</a>
+3. {:#ref-3} Liu, L. et al. (2020). [On the Variance of the Adaptive Learning Rate and Beyond](https://arxiv.org/abs/1908.03265). ICLR. *Why Adam needs a warm-up.* <a class="ref-back" href="#cite-3" aria-label="Back to the text">&#8617;</a>
+4. {:#ref-4} Xiong, R. et al. (2020). [On Layer Normalization in the Transformer Architecture](https://arxiv.org/abs/2002.04745). ICML. *Why post-norm Transformers do.* <a class="ref-back" href="#cite-4" aria-label="Back to the text">&#8617;</a>
+5. {:#ref-5} Pascanu, R., Mikolov, T., Bengio, Y. (2013). [On the difficulty of training recurrent neural networks](https://arxiv.org/abs/1211.5063). ICML. *Gradient clipping.* <a class="ref-back" href="#cite-5" aria-label="Back to the text">&#8617;</a>
+6. {:#ref-6} Micikevicius, P. et al. (2018). [Mixed Precision Training](https://arxiv.org/abs/1710.03740). ICLR. <a class="ref-back" href="#cite-6" aria-label="Back to the text">&#8617;</a>
+7. {:#ref-7} Wu, Y. et al. (2016). [Google's Neural Machine Translation System](https://arxiv.org/abs/1609.08144). *The length penalty.* <a class="ref-back" href="#cite-7" aria-label="Back to the text">&#8617;</a>
+8. {:#ref-8} Holtzman, A., Buys, J., Du, L., Forbes, M., Choi, Y. (2020). [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751). ICLR. *Top-p sampling.* <a class="ref-back" href="#cite-8" aria-label="Back to the text">&#8617;</a>
+9. {:#ref-9} Vaswani, A. et al. (2017). [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS. *The training recipe and the decoding settings.*
+10. {:#ref-10} Müller, R., Kornblith, S., Hinton, G. (2019). [When Does Label Smoothing Help?](https://arxiv.org/abs/1906.02629). NeurIPS.
+11. {:#ref-11} Stanovsky, G., Smith, N. A., Zettlemoyer, L. (2019). [Evaluating Gender Bias in Machine Translation](https://arxiv.org/abs/1906.00591). ACL.
+12. {:#ref-12} Tiedemann, J., Thottingal, S. (2020). [OPUS-MT: Building open translation services for the World](https://aclanthology.org/2020.eamt-1.61/). EAMT.
+{: .tfs-refs}
+
+
 
 <p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-02-transformer/">← Lesson 2: The Transformer</a></p>
 

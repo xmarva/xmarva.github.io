@@ -64,30 +64,38 @@ A photographed plan is worse. The figure runs exactly the same threshold and ope
 <img class="tfs-figure tfs-light" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/scan-light.png" width="760" alt="Three panels: the plan as if photographed from a printout, tilted, with a shadow in one corner, noise and handwritten scribbles; the walls the same rules find on it, with the shadowed corner turned solid; and a comparison with the true walls, where false walls are coloured and almost nothing is missed" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/scan-dark.png" width="760" alt="Three panels: the plan as if photographed from a printout, tilted, with a shadow in one corner, noise and handwritten scribbles; the walls the same rules find on it, with the shadowed corner turned solid; and a comparison with the true walls, where false walls are coloured and almost nothing is missed" loading="lazy">
 
-In the shadow the floor itself turns dark enough to count as wall, and the door leaves there thicken into walls too. Almost no true wall is missed, but nearly half of what the rules call walls is something else, and the overlap with the true walls drops to 55%. Each fault could be fixed by another rule, and every rule would break some other plan.
+In the shadow the floor itself turns dark enough to count as wall, and the door leaves there thicken into walls too.
 
-That is why the segmentation itself was done by neural networks trained on annotated plans. The published work of the time showed both the promise and the cost. Raster-to-Vector, at ICCV 2017, predicted wall corners and door ends with a network and joined them by integer programming, at "around 90% precision and recall" ([Liu et al., 2017](http://art-programmer.github.io/floorplan-transformation.html); [code](https://github.com/art-programmer/FloorplanTransformation)).
+Almost no true wall is missed, but nearly half of what the rules call walls is something else, and the overlap with the true walls drops to 55%. Each fault could be fixed by another rule, and every rule would break some other plan.
+
+That is why the segmentation itself was done by neural networks trained on annotated plans. The published work of the time showed both the promise and the cost. Raster-to-Vector, at ICCV 2017, predicted wall corners and door ends with a network and joined them by integer programming, at "around 90% precision and recall"<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Liu, Wu, Kohli and Furukawa. Raster-to-Vector: Revisiting Floorplan Transformation. ICCV 2017. Code.">1</a>]</sup>.
 
 It was trained on 870 plans annotated by hand, out of a collection of five million. Its authors also noted a limit: "Relying on Manhattan assumption, our method is unable to detect walls which are neither horizontal nor vertical".
 
-Researchers at Arizona State University and Rakuten segmented walls with a fully convolutional network and detected objects with Faster R-CNN ([Dodge et al., 2017](https://web.archive.org/web/20201111170058/http://www.mva-org.jp/Proceedings/2017USB/papers/10-01.pdf)). Mask R-CNN gave a mask for every detected object ([He et al., 2017](https://arxiv.org/abs/1703.06870)), and the most used open implementation of it was published by Matterport, a company that makes 3D tours of real estate ([code](https://github.com/matterport/Mask_RCNN)).
+Researchers at Arizona State University and Rakuten segmented walls with a fully convolutional network and detected objects with Faster R-CNN<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Dodge, Xu and Stenger. Parsing Floor Plan Images. MVA 2017.">2</a>]</sup>. Mask R-CNN gave a mask for every detected object<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: He, Gkioxari, Dollár and Girshick. Mask R-CNN. ICCV 2017. Matterport&#x27;s implementation.">3</a>]</sup>, and the most used open implementation of it was published by Matterport, a company that makes 3D tours of real estate<sup class="cite">[<a href="#ref-3" id="cite-4" data-ref="3" aria-label="Reference 3: He, Gkioxari, Dollár and Girshick. Mask R-CNN. ICCV 2017. Matterport&#x27;s implementation.">3</a>]</sup>.
 
-The data was the bottleneck. In April 2019, in the middle of our project, CubiCasa released 5,000 Finnish plans annotated into more than 80 categories ([Kalervo et al., 2019](https://arxiv.org/abs/1904.01920); [code](https://github.com/CubiCasa/CubiCasa5k)). They report that one plan took "from 5 to 120 minutes" to annotate. Their licence is non-commercial, so for a product the annotation still had to be our own.
+The data was the bottleneck. In April 2019, in the middle of our project, CubiCasa released 5,000 Finnish plans annotated into more than 80 categories<sup class="cite">[<a href="#ref-4" id="cite-5" data-ref="4" aria-label="Reference 4: Kalervo et al. CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis. SCIA 2019. Code.">4</a>]</sup>.
+
+They report that one plan took "from 5 to 120 minutes" to annotate. Their licence is non-commercial, so for a product the annotation still had to be our own.
 
 ## The scale
 
 A plan in pixels has no size. Everything in the 3D model, the height of the walls, the width of a bed, whether a sofa fits, depends on knowing how many centimetres a pixel is.
 
-Some plans print dimension lines with numbers, and reading them means OCR on small rotated digits. Tesseract switched to an LSTM recognizer in its 4.0 release in October 2018 ([Tesseract 4.0.0](https://github.com/tesseract-ocr/tesseract/releases/tag/4.0.0)). Japanese plans write each room's area in tatami units, and Dodge and colleagues read those labels with OCR to get pixels per tatami; their OCR found "74.1% of the room size annotations".
+Some plans print dimension lines with numbers, and reading them means OCR on small rotated digits. Tesseract switched to an LSTM recognizer in its 4.0 release in October 2018 ([Tesseract 4.0.0](https://github.com/tesseract-ocr/tesseract/releases/tag/4.0.0)).
 
-When a plan prints nothing, the doors are the most reliable ruler. Door sizes are standardized: the Russian standard in force then, GOST 475-2016, gives openings of 710, 810, 910 and 1010 mm, and the older GOST 6629-88 drew door leaves of 600, 700, 800 and 900 mm ([GOST 475-2016](https://meganorm.ru/Data2/1/4293749/4293749722.htm)).
+Japanese plans write each room's area in tatami units, and Dodge and colleagues read those labels with OCR to get pixels per tatami; their OCR found "74.1% of the room size annotations".
+
+When a plan prints nothing, the doors are the most reliable ruler. Door sizes are standardized: the Russian standard in force then, GOST 475-2016, gives openings of 710, 810, 910 and 1010 mm, and the older GOST 6629-88 drew door leaves of 600, 700, 800 and 900 mm<sup class="cite">[<a href="#ref-5" id="cite-6" data-ref="5" aria-label="Reference 5: GOST 475-2016, wooden doors.">5</a>]</sup>.
 
 On this plan, taking interior doors as 70 cm and the entrance as 90 cm gives three estimates that agree within 4%, and a scale of 1.23 cm per pixel. The flat comes out at 31.2 m², with a 22.8 m² main room.
 
 <img class="tfs-figure tfs-light" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/scale-light.png" width="760" alt="A line chart of the flat&#x27;s floor area against the width assumed for an interior door, from 55 to 95 cm; the area grows with the square of the assumed width, marked at 60, 70, 80 and 90 cm" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/scale-dark.png" width="760" alt="A line chart of the flat&#x27;s floor area against the width assumed for an interior door, from 55 to 95 cm; the area grows with the square of the assumed width, marked at 60, 70, 80 and 90 cm" loading="lazy">
 
-The assumption carries a lot of weight. Area grows with the square of the scale, so if the bathroom door is really 60 cm, the same flat shrinks to about 23 m², and at 80 cm it grows to about 41. A model that disagrees with the developer's brochure by ten square metres is useless, which is why each estimate had to be checked against the others.
+The assumption carries a lot of weight. Area grows with the square of the scale, so if the bathroom door is really 60 cm, the same flat shrinks to about 23 m², and at 80 cm it grows to about 41.
+
+A model that disagrees with the developer's brochure by ten square metres is useless, which is why each estimate had to be checked against the others.
 
 ## From a drawing to a model
 
@@ -96,17 +104,17 @@ Once the walls are known in metres, the model itself is simple geometry. The wal
 <img class="tfs-figure tfs-light" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/model-light.png" width="760" alt="Left: the plan with its walls covered by 48 rectangles. Right: those rectangles extruded to full height in an axonometric view, with the plan&#x27;s own drawing of doors and fixtures on the floors and each room tinted" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/img/projects/3-vr-floorplan-reconstruction/figures/model-dark.png" width="760" alt="Left: the plan with its walls covered by 48 rectangles. Right: those rectangles extruded to full height in an axonometric view, with the plan&#x27;s own drawing of doors and fixtures on the floors and each room tinted" loading="lazy">
 
-Wall height is the one number the plan does not contain. Dodge and colleagues simply wrote: "In absence of this information, we arbitrarily choose a height." For Russian flats the building code gives a floor: living rooms and kitchens at least 2.5 m, or 2.7 m in the colder regions ([SP 54.13330.2016](https://web.archive.org/web/20191226232843/http://docs.cntd.ru/document/456054198)).
+Wall height is the one number the plan does not contain. Dodge and colleagues simply wrote: "In absence of this information, we arbitrarily choose a height." For Russian flats the building code gives a floor: living rooms and kitchens at least 2.5 m, or 2.7 m in the colder regions<sup class="cite">[<a href="#ref-6" id="cite-7" data-ref="6" aria-label="Reference 6: SP 54.13330.2016, apartment buildings.">6</a>]</sup>.
 
 The doors and windows become openings in the boxes, and the plan's own drawing of the bathtub and the stove tells the engine where to place real fixtures.
 
-Curved and diagonal walls were the persistent trouble. A rectangle cover handles them badly, and the methods built on corner junctions assumed a Manhattan world. Zeng and colleagues showed a network that handled curved walls and walls of uneven thickness at ICCV in the autumn of 2019, shortly before the project ended ([Zeng et al., 2019](https://arxiv.org/abs/1908.11025); [code](https://github.com/zlzeng/DeepFloorplan)).
+Curved and diagonal walls were the persistent trouble. A rectangle cover handles them badly, and the methods built on corner junctions assumed a Manhattan world. Zeng and colleagues showed a network that handled curved walls and walls of uneven thickness at ICCV in the autumn of 2019, shortly before the project ended<sup class="cite">[<a href="#ref-7" id="cite-8" data-ref="7" aria-label="Reference 7: Zeng, Li, Yu and Fu. Deep Floor Plan Recognition Using a Multi-Task Network with Room-Boundary-Guided Attention. ICCV 2019. Code.">7</a>]</sup>.
 
 ## Furniture
 
 An empty apartment in 3D looks like a warehouse. The product placed furniture automatically, and the rules for it are older than deep learning.
 
-Merrell and colleagues turned interior design guidelines into terms of a cost function: clearance in front of furniture, circulation paths through the room, pairs of objects that belong together, balance, alignment ([Merrell et al., 2011](https://paulmerrell.org//furnitureLayout2.pdf)). "Make it Home", from the same year, optimized a similar cost by "simulated annealing using a Metropolis-Hastings state search step" ([Yu et al., 2011](https://ww3.math.ucla.edu/camreport/cam11-49.pdf)).
+Merrell and colleagues turned interior design guidelines into terms of a cost function: clearance in front of furniture, circulation paths through the room, pairs of objects that belong together, balance, alignment<sup class="cite">[<a href="#ref-8" id="cite-9" data-ref="8" aria-label="Reference 8: Merrell, Schkufza, Li, Agrawala and Koltun. Interactive Furniture Layout Using Interior Design Guidelines. SIGGRAPH 2011.">8</a>]</sup>. "Make it Home", from the same year, optimized a similar cost by "simulated annealing using a Metropolis-Hastings state search step"<sup class="cite">[<a href="#ref-9" id="cite-10" data-ref="9" aria-label="Reference 9: Yu et al. Make it Home: Automatic Optimization of Furniture Arrangement. SIGGRAPH 2011.">9</a>]</sup>.
 
 The figure does a small version of this in the studio's main room. A bed, a desk, a table and an armchair are placed one by one at random positions where they fit; the bed's head and the desk's back must touch a wall, and each piece keeps a clearance zone in front of it free of the others.
 
@@ -117,7 +125,7 @@ A layout is rejected if a person can no longer walk from the entrance to every d
 
 Out of 3,000 random attempts, 290 passed. Every one of the others failed in the same way: the furniture fitted, but the path was blocked. A bed that fits the room perfectly can cut the hall in two.
 
-Deep learning arrived in this task while we worked. Wang and colleagues learned where objects go from top-down images of rooms at SIGGRAPH 2018, taking "an average overall room synthesis time of 4 minutes" ([Wang et al., 2018](https://kwang-ether.github.io/pdf/deepsynth.pdf)), and Ritchie and colleagues cut that to "under 2 seconds" at CVPR 2019 ([Ritchie et al., 2019](https://arxiv.org/abs/1811.12463)).
+Deep learning arrived in this task while we worked. Wang and colleagues learned where objects go from top-down images of rooms at SIGGRAPH 2018, taking "an average overall room synthesis time of 4 minutes"<sup class="cite">[<a href="#ref-10" id="cite-11" data-ref="10" aria-label="Reference 10: Wang, Savva, Chang and Ritchie. Deep Convolutional Priors for Indoor Scene Synthesis. SIGGRAPH 2018.">10</a>]</sup>, and Ritchie and colleagues cut that to "under 2 seconds" at CVPR 2019<sup class="cite">[<a href="#ref-11" id="cite-12" data-ref="11" aria-label="Reference 11: Ritchie, Wang and Lin. Fast and Flexible Indoor Scene Synthesis via Deep Convolutional Generative Models. CVPR 2019.">11</a>]</sup>.
 
 Both learned from SUNCG, a dataset of 45,622 indoor scenes designed by people. In June 2019 Planner 5D sued over where the data came from, and the dataset disappeared from the web; a lab's code page from that month reads: "Due to an ongoing legal dispute, SUNCG is currently unavailable to download" ([fast-synth](https://github.com/brownvc/fast-synth)).
 
@@ -127,32 +135,28 @@ Both learned from SUNCG, a dataset of 45,622 indoor scenes designed by people. I
 
 <p class="tfs-caption">An apartment in Unreal Engine 4, from the project: the ring in the middle changes the colour of the kitchen.</p>
 
-The finished model went to a game engine, where it could be lit, textured and walked through. Epic had opened Unreal Studio in March 2018 with a toolkit that "simplifies importing CAD and 3ds Max data" into Unreal Engine 4 ([Epic Games, 2018](https://web.archive.org/web/20190925131023/https://www.unrealengine.com/en-US/blog/announcing-unreal-studio-now-in-open-beta)).
+The finished model went to a game engine, where it could be lit, textured and walked through. Epic had opened Unreal Studio in March 2018 with a toolkit that "simplifies importing CAD and 3ds Max data" into Unreal Engine 4<sup class="cite">[<a href="#ref-12" id="cite-13" data-ref="12" aria-label="Reference 12: Epic Games, 2018. web.archive.org.">12</a>]</sup>.
 
-VR headsets also changed during the project. The Oculus Go, the company's first standalone headset, went on sale for &#36;199 in May 2018 ([Facebook, 2018](https://about.fb.com/news/2018/05/oculus-go/)), and the Oculus Quest, "our first all-in-one VR gaming system" as the company put it, followed in May 2019 for &#36;399 ([Oculus, 2019](https://web.archive.org/web/20191208062944/https://www.oculus.com/blog/game-on-oculus-quest-and-rift-s-pre-orders-are-live-shipping-begins-may-21/)).
+VR headsets also changed during the project. The Oculus Go, the company's first standalone headset, went on sale for &#36;199 in May 2018<sup class="cite">[<a href="#ref-13" id="cite-14" data-ref="13" aria-label="Reference 13: Facebook, 2018. about.fb.com.">13</a>]</sup>, and the Oculus Quest, "our first all-in-one VR gaming system" as the company put it, followed in May 2019 for &#36;399<sup class="cite">[<a href="#ref-14" id="cite-15" data-ref="14" aria-label="Reference 14: Oculus, 2019. web.archive.org.">14</a>]</sup>.
 
 With a headset a buyer could stand in a kitchen that did not exist yet, look around, and change the colour of the cabinets.
 
 ## References
 
-Reading plans:
-
-- Liu, Wu, Kohli and Furukawa. [Raster-to-Vector: Revisiting Floorplan Transformation](http://art-programmer.github.io/floorplan-transformation.html). ICCV 2017. [Code](https://github.com/art-programmer/FloorplanTransformation).
-- Dodge, Xu and Stenger. [Parsing Floor Plan Images](https://web.archive.org/web/20201111170058/http://www.mva-org.jp/Proceedings/2017USB/papers/10-01.pdf). MVA 2017.
-- Kalervo et al. [CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis](https://arxiv.org/abs/1904.01920). SCIA 2019. [Code](https://github.com/CubiCasa/CubiCasa5k).
-- Zeng, Li, Yu and Fu. [Deep Floor Plan Recognition Using a Multi-Task Network with Room-Boundary-Guided Attention](https://arxiv.org/abs/1908.11025). ICCV 2019. [Code](https://github.com/zlzeng/DeepFloorplan).
-- He, Gkioxari, Dollár and Girshick. [Mask R-CNN](https://arxiv.org/abs/1703.06870). ICCV 2017. [Matterport's implementation](https://github.com/matterport/Mask_RCNN).
-
-Furniture:
-
-- Merrell, Schkufza, Li, Agrawala and Koltun. [Interactive Furniture Layout Using Interior Design Guidelines](https://paulmerrell.org//furnitureLayout2.pdf). SIGGRAPH 2011.
-- Yu et al. [Make it Home: Automatic Optimization of Furniture Arrangement](https://ww3.math.ucla.edu/camreport/cam11-49.pdf). SIGGRAPH 2011.
-- Wang, Savva, Chang and Ritchie. [Deep Convolutional Priors for Indoor Scene Synthesis](https://kwang-ether.github.io/pdf/deepsynth.pdf). SIGGRAPH 2018.
-- Ritchie, Wang and Lin. [Fast and Flexible Indoor Scene Synthesis via Deep Convolutional Generative Models](https://arxiv.org/abs/1811.12463). CVPR 2019.
-
-Standards:
-
-- [GOST 475-2016](https://meganorm.ru/Data2/1/4293749/4293749722.htm), wooden doors.
-- [SP 54.13330.2016](https://web.archive.org/web/20191226232843/http://docs.cntd.ru/document/456054198), apartment buildings.
+1. {:#ref-1} Liu, Wu, Kohli and Furukawa. [Raster-to-Vector: Revisiting Floorplan Transformation](http://art-programmer.github.io/floorplan-transformation.html). ICCV 2017. [Code](https://github.com/art-programmer/FloorplanTransformation). <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} Dodge, Xu and Stenger. [Parsing Floor Plan Images](https://web.archive.org/web/20201111170058/http://www.mva-org.jp/Proceedings/2017USB/papers/10-01.pdf). MVA 2017. <a class="ref-back" href="#cite-2" aria-label="Back to the text">&#8617;</a>
+3. {:#ref-3} He, Gkioxari, Dollár and Girshick. [Mask R-CNN](https://arxiv.org/abs/1703.06870). ICCV 2017. [Matterport's implementation](https://github.com/matterport/Mask_RCNN). <a class="ref-back" href="#cite-3" aria-label="Back to the text">&#8617;</a>
+4. {:#ref-4} Kalervo et al. [CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis](https://arxiv.org/abs/1904.01920). SCIA 2019. [Code](https://github.com/CubiCasa/CubiCasa5k). <a class="ref-back" href="#cite-5" aria-label="Back to the text">&#8617;</a>
+5. {:#ref-5} [GOST 475-2016](https://meganorm.ru/Data2/1/4293749/4293749722.htm), wooden doors. <a class="ref-back" href="#cite-6" aria-label="Back to the text">&#8617;</a>
+6. {:#ref-6} [SP 54.13330.2016](https://web.archive.org/web/20191226232843/http://docs.cntd.ru/document/456054198), apartment buildings. <a class="ref-back" href="#cite-7" aria-label="Back to the text">&#8617;</a>
+7. {:#ref-7} Zeng, Li, Yu and Fu. [Deep Floor Plan Recognition Using a Multi-Task Network with Room-Boundary-Guided Attention](https://arxiv.org/abs/1908.11025). ICCV 2019. [Code](https://github.com/zlzeng/DeepFloorplan). <a class="ref-back" href="#cite-8" aria-label="Back to the text">&#8617;</a>
+8. {:#ref-8} Merrell, Schkufza, Li, Agrawala and Koltun. [Interactive Furniture Layout Using Interior Design Guidelines](https://paulmerrell.org//furnitureLayout2.pdf). SIGGRAPH 2011. <a class="ref-back" href="#cite-9" aria-label="Back to the text">&#8617;</a>
+9. {:#ref-9} Yu et al. [Make it Home: Automatic Optimization of Furniture Arrangement](https://ww3.math.ucla.edu/camreport/cam11-49.pdf). SIGGRAPH 2011. <a class="ref-back" href="#cite-10" aria-label="Back to the text">&#8617;</a>
+10. {:#ref-10} Wang, Savva, Chang and Ritchie. [Deep Convolutional Priors for Indoor Scene Synthesis](https://kwang-ether.github.io/pdf/deepsynth.pdf). SIGGRAPH 2018. <a class="ref-back" href="#cite-11" aria-label="Back to the text">&#8617;</a>
+11. {:#ref-11} Ritchie, Wang and Lin. [Fast and Flexible Indoor Scene Synthesis via Deep Convolutional Generative Models](https://arxiv.org/abs/1811.12463). CVPR 2019. <a class="ref-back" href="#cite-12" aria-label="Back to the text">&#8617;</a>
+12. {:#ref-12} Epic Games, 2018. [web.archive.org](https://web.archive.org/web/20190925131023/https://www.unrealengine.com/en-US/blog/announcing-unreal-studio-now-in-open-beta). <a class="ref-back" href="#cite-13" aria-label="Back to the text">&#8617;</a>
+13. {:#ref-13} Facebook, 2018. [about.fb.com](https://about.fb.com/news/2018/05/oculus-go/). <a class="ref-back" href="#cite-14" aria-label="Back to the text">&#8617;</a>
+14. {:#ref-14} Oculus, 2019. [web.archive.org](https://web.archive.org/web/20191208062944/https://www.oculus.com/blog/game-on-oculus-quest-and-rift-s-pre-orders-are-live-shipping-begins-may-21/). <a class="ref-back" href="#cite-15" aria-label="Back to the text">&#8617;</a>
+{: .tfs-refs}
 
 {% endraw %}

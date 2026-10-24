@@ -22,22 +22,20 @@ drawn to scale, next to the one you will build in this lesson:
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/hero-light.png" width="760" alt="Five Transformers drawn to scale, width proportional to d_model and height to the number of layers: ours is tiny next to opus-mt-en-ru, GPT-2, Llama 3.1 8B and DeepSeek-V3" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/hero-dark.png" width="760" alt="Five Transformers drawn to scale, width proportional to d_model and height to the number of layers: ours is tiny next to opus-mt-en-ru, GPT-2, Llama 3.1 8B and DeepSeek-V3" loading="lazy">
 
-The block comes from a 2017 paper with a famous title, [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762)
-(Vaswani et al.). It wasn't about chatbots. It was about translating English into German and French, and its
-model, the **Transformer**, beat every translation system published before it. On English–German even the smaller
-of its two versions did, after twelve hours of training on eight GPUs.
+The block comes from a 2017 paper with a famous title, [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762) (Vaswani et al.). It wasn't about chatbots. It was about translating English into German and French, and its model, the **Transformer**, beat every translation system published before it.
+
+On English–German even the smaller of its two versions did, after twelve hours of training on eight GPUs.
 
 Translation also shows best why the block is built the way it is. Take the course's sentence:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/agreement-light.png" width="540" alt="To translate &#x27;The researcher said she was exhausted.&#x27; into Russian, three words take feminine forms because of &#x27;she&#x27;: Исследовательница, сказала, вымоталась" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/agreement-dark.png" width="540" alt="To translate &#x27;The researcher said she was exhausted.&#x27; into Russian, three words take feminine forms because of &#x27;she&#x27;: Исследовательница, сказала, вымоталась" loading="lazy">
 
-English doesn't mark gender on *researcher*, *said* or *exhausted*; Russian marks it on all three. To write the
-very first word, *Исследовательница* (a woman researcher), a translator needs *she*, which comes later in the
-English sentence, and the same *she* decides the endings of *сказала* and *вымоталась*. The first neural
-translators read a sentence one word at a time and squeezed everything they might need later into a single vector
-of fixed size. The Transformer lets every word look directly at any other word, however far away. The mechanism is called
-**attention**, and in this lesson you build it, and the Transformer around it, line by line.
+English doesn't mark gender on *researcher*, *said* or *exhausted*; Russian marks it on all three. To write the very first word, *Исследовательница* (a woman researcher), a translator needs *she*, which comes later in the English sentence, and the same *she* decides the endings of *сказала* and *вымоталась*.
+
+The first neural translators read a sentence one word at a time and squeezed everything they might need later into a single vector of fixed size.
+
+The Transformer lets every word look directly at any other word, however far away. The mechanism is called **attention**, and in this lesson you build it, and the Transformer around it, line by line.
 
 **What you'll do**
 
@@ -240,22 +238,17 @@ the bottom up, and comes back to this picture at the end.
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/architecture-light.png" width="760" alt="The encoder–decoder Transformer at our size: an encoder of self-attention and feed-forward layers reads the English tokens, a decoder of masked self-attention, cross-attention and feed-forward layers writes the Russian tokens, and the shared embedding matrix turns the decoder&#x27;s output into scores for every token" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/architecture-dark.png" width="760" alt="The encoder–decoder Transformer at our size: an encoder of self-attention and feed-forward layers reads the English tokens, a decoder of masked self-attention, cross-attention and feed-forward layers writes the Russian tokens, and the shared embedding matrix turns the decoder&#x27;s output into scores for every token" loading="lazy">
 
-The **encoder** (teal) reads the English sentence. Every token becomes a vector, receives a signal about its
-position, and goes through $$N$$ layers of two parts: *self-attention*, where the tokens look at each other, and a
-*feed-forward* network, which processes every token on its own. The **decoder** (rose) writes the Russian
-sentence one token at a time. Its layers have one more part, *cross-attention*, through which it reads the
-encoder's output, called the **memory**. At the top, the same embedding matrix that turned tokens into vectors
-turns vectors back into a score for every token of the vocabulary; the highest score is the model's guess for the
-next token.
+The **encoder** (teal) reads the English sentence. Every token becomes a vector, receives a signal about its position, and goes through $$N$$ layers of two parts: *self-attention*, where the tokens look at each other, and a *feed-forward* network, which processes every token on its own.
+
+The **decoder** (rose) writes the Russian sentence one token at a time. Its layers have one more part, *cross-attention*, through which it reads the encoder's output, called the **memory**.
+
+At the top, the same embedding matrix that turned tokens into vectors turns vectors back into a score for every token of the vocabulary; the highest score is the model's guess for the next token.
 
 ## 3. From tokens to vectors
 
-A model can't do arithmetic with token ids: id 5 000 isn't "bigger" than id 50 in any meaningful way, and ids that
-are neighbours aren't related. So every token gets a vector of `D_MODEL` numbers instead, a row of the
-**embedding matrix** $$E \in \mathbb{R}^{\lvert\mathcal{V}\rvert \times d_{\text{model}}}$$, one row per token of
-the vocabulary. The rows start out random. Training moves them, and tokens that are used in similar ways end up
-with similar vectors. That is how a model can come to treat *сказал* and *сказала* as relatives, although to it
-they are just two different ids.
+A model can't do arithmetic with token ids: id 5 000 isn't "bigger" than id 50 in any meaningful way, and ids that are neighbours aren't related. So every token gets a vector of `D_MODEL` numbers instead, a row of the **embedding matrix** $$E \in \mathbb{R}^{\lvert\mathcal{V}\rvert \times d_{\text{model}}}$$, one row per token of the vocabulary.
+
+The rows start out random. Training moves them, and tokens that are used in similar ways end up with similar vectors. That is how a model can come to treat *сказал* and *сказала* as relatives, although to it they are just two different ids.
 
 Our sentence as token ids, the row numbers in $$E$$:
 
@@ -290,10 +283,9 @@ print("looking up rows = multiplying by one-hot vectors")
 <pre class="tfs-printed" markdown="0"><code>vectors: (1, 9, 256)
 looking up rows = multiplying by one-hot vectors</code></pre>
 
-Notice the initialization: random numbers with standard deviation $$d_{\text{model}}^{-1/2}$$, not PyTorch's
-default. The reason is at the top of the architecture. The paper uses the same matrix $$E$$ twice: as the embedding
-at the bottom and as the output layer at the top, where the score of token $$j$$ is the dot product of the
-decoder's final vector $$\mathbf{h}$$ with row $$\mathbf{e}_j$$:
+Notice the initialization: random numbers with standard deviation $$d_{\text{model}}^{-1/2}$$, not PyTorch's default. The reason is at the top of the architecture.
+
+The paper uses the same matrix $$E$$ twice: as the embedding at the bottom and as the output layer at the top, where the score of token $$j$$ is the dot product of the decoder's final vector $$\mathbf{h}$$ with row $$\mathbf{e}_j$$:
 
 $$z_j = \mathbf{h} \cdot \mathbf{e}_j = \sum_{i=1}^{d_{\text{model}}} h_i\, e_{ji}.$$
 
@@ -348,9 +340,9 @@ over to those who find it):
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/qkv-light.png" width="760" alt="Every token&#x27;s vector, a row of X, is multiplied by three learned matrices W^Q, W^K and W^V, giving the rows of Q, K and V: its query, key and value" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/qkv-dark.png" width="760" alt="Every token&#x27;s vector, a row of X, is multiplied by three learned matrices W^Q, W^K and W^V, giving the rows of Q, K and V: its query, key and value" loading="lazy">
 
-Why three separate vectors and not one? Because the roles differ. What *сказала* needs (the subject, its gender)
-is not what it offers to others (a verb in the past tense), and neither is what it passes on. Separate learned
-matrices let the model shape each role on its own.
+Why three separate vectors and not one? Because the roles differ. What *сказала* needs (the subject, its gender) is not what it offers to others (a verb in the past tense), and neither is what it passes on.
+
+Separate learned matrices let the model shape each role on its own.
 
 The computation itself, step by step:
 
@@ -435,11 +427,9 @@ come from.
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/self-cross-light.png" width="760" alt="Two grids of attention weights with real tokens: in the encoder&#x27;s self-attention every English token is a query and every English token a key; in the decoder&#x27;s cross-attention every Russian token is a query and every English token a key" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/self-cross-dark.png" width="760" alt="Two grids of attention weights with real tokens: in the encoder&#x27;s self-attention every English token is a query and every English token a key; in the decoder&#x27;s cross-attention every Russian token is a query and every English token a key" loading="lazy">
 
-In **self-attention** all three come from one sentence: every English token looks at every English token, and
-the result is a version of the sentence in which each token knows something about its neighbours, near and far.
-In **cross-attention** the queries come from the Russian side and the keys and values from the English side: this
-is where the translation reads the source. The decoder also has a self-attention of its own, over the Russian
-tokens written so far; section 6 shows what it must not see.
+In **self-attention** all three come from one sentence: every English token looks at every English token, and the result is a version of the sentence in which each token knows something about its neighbours, near and far.
+
+In **cross-attention** the queries come from the Russian side and the keys and values from the English side: this is where the translation reads the source. The decoder also has a self-attention of its own, over the Russian tokens written so far; section 6 shows what it must not see.
 
 ## 5. Why divide by $$\sqrt{d_k}$$
 
@@ -551,10 +541,9 @@ for ids in src.tolist():
 [256, 10, 78, 10890, 17, 0, 0, 0, 0, 0, 0]
 [402, 496, 462, 1157, 1894, 265, 389, 4293, 879, 1995, 17]</code></pre>
 
-**The future.** The decoder is trained on whole Russian sentences at once (section 10 shows how), but when it
-translates, it writes one token at a time and can't see the tokens it hasn't written yet. So during training,
-position $$t$$ may look only at positions up to $$t$$; otherwise the model would learn to copy the next word instead
-of predicting it.
+**The future.** The decoder is trained on whole Russian sentences at once (section 10 shows how), but when it translates, it writes one token at a time and can't see the tokens it hasn't written yet.
+
+So during training, position $$t$$ may look only at positions up to $$t$$; otherwise the model would learn to copy the next word instead of predicting it.
 
 Both rules are written into the mask $$M$$ of the formula, which is added to the scores before softmax. Where looking
 is allowed, $$M$$ is $$0$$ and changes nothing. Where it is forbidden, $$M$$ is $$-\infty$$, and since $$e^{-\infty} = 0$$,
@@ -570,10 +559,9 @@ print("with the mask:   ", (scores + mask).softmax(dim=0))
 <pre class="tfs-printed" markdown="0"><code>without the mask: tensor([0.5105, 0.1139, 0.1878, 0.1878])
 with the mask:    tensor([0.8176, 0.1824, 0.0000, 0.0000])</code></pre>
 
-The two mask functions build exactly that, for whole batches. Their shapes look odd, `(B, 1, 1, T)` and
-`(1, 1, T, T)`, but they are chosen for **broadcasting**: the scores of multi-head attention have the shape
-`(B, h, T_q, T_k)`, and PyTorch stretches every dimension of size 1 to match. One padding mask per sentence
-then applies to every head and every query; one causal mask applies to every sentence and every head.
+The two mask functions build exactly that, for whole batches. Their shapes look odd, `(B, 1, 1, T)` and `(1, 1, T, T)`, but they are chosen for **broadcasting**: the scores of multi-head attention have the shape `(B, h, T_q, T_k)`, and PyTorch stretches every dimension of size 1 to match.
+
+One padding mask per sentence then applies to every head and every query; one causal mask applies to every sentence and every head.
 
 ```python
 def padding_mask(ids, pad_id):
@@ -670,11 +658,9 @@ print("earlier positions can't see the change; the last one can")
 
 ## 7. Several heads
 
-One attention gives every position one weighted average: one way of distributing its attention. A word often
-needs several kinds of information at once: *сказала* needs the subject and its gender, the tense of *said*, and
-the word it translates. These may sit in different places in the sentence. The paper's answer is **multi-head
-attention**: $$h$$ attentions run side by side, each with its own projections, so each can learn its own pattern
-of looking:
+One attention gives every position one weighted average: one way of distributing its attention. A word often needs several kinds of information at once: *сказала* needs the subject and its gender, the tense of *said*, and the word it translates. These may sit in different places in the sentence.
+
+The paper's answer is **multi-head attention**: $$h$$ attentions run side by side, each with its own projections, so each can learn its own pattern of looking:
 
 $$\operatorname{head}_i = \operatorname{Attention}(X W_i^Q,\ X W_i^K,\ X W_i^V), \qquad
 \operatorname{MultiHead}(X) = \operatorname{Concat}(\operatorname{head}_1, \dots, \operatorname{head}_h)\, W^O.$$
@@ -712,9 +698,9 @@ tensor([[[[ 0.,  1.,  2.,  3.],
          [[ 4.,  5.,  6.,  7.],
           [12., 13., 14., 15.]]]])</code></pre>
 
-Head 0 got the first four entries of every token (0–3 and 8–11), head 1 the last four. After `transpose` the
-heads stand in the batch dimension, so `attention` runs on all of them at once without knowing that heads exist.
-Gluing them back is the same in reverse, `transpose` then `reshape`. The class:
+Head 0 got the first four entries of every token (0–3 and 8–11), head 1 the last four.
+
+After `transpose` the heads stand in the batch dimension, so `attention` runs on all of them at once without knowing that heads exist. Gluing them back is the same in reverse, `transpose` then `reshape`. The class:
 
 ```python
 class MultiHeadAttention(nn.Module):
@@ -862,10 +848,9 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/02/output-07.png" alt="Positional encoding: fast hands at the top" loading="lazy">
 
-On the left, every column is one position's vector: the top rows alternate fast, the bottom rows hardly change. On
-the right, the three curves lie on top of each other, and the similarity falls as positions move apart. Llama and
-DeepSeek use a descendant of this idea, rotary position embeddings (RoPE), which apply the rotation inside
-attention itself; lesson 5 builds them.
+On the left, every column is one position's vector: the top rows alternate fast, the bottom rows hardly change. On the right, the three curves lie on top of each other, and the similarity falls as positions move apart.
+
+Llama and DeepSeek use a descendant of this idea, rotary position embeddings (RoPE), which apply the rotation inside attention itself; lesson 5 builds them.
 
 ## 9. The rest of a layer
 
@@ -885,7 +870,7 @@ the vector is widened four times, passed through ReLU, $$\max(0, \cdot)$$, which
 narrowed back. The ReLU is what makes it more than a matrix multiplication: without it, $$W_1 W_2$$ would collapse
 into a single matrix. Studies of trained models suggest these layers act as a kind of memory: their first matrix
 recognizes patterns in the vector and the second adds what is associated with them
-([Geva et al., 2021](https://arxiv.org/abs/2012.14913)).
+<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Geva, M., Schuster, R., Berant, J., Levy, O. (2021). Transformer Feed-Forward Layers Are Key-Value Memories. EMNLP.">1</a>]</sup>.
 
 ```python
 class FeedForward(nn.Module):
@@ -909,16 +894,16 @@ attention:    263168 parameters</code></pre>
 Two thirds of an encoder layer's parameters sit in the feed-forward network, not in attention.
 
 **Residual connection.** Every sub-layer's output is *added* to its input,
-$$\mathbf{x} + \operatorname{Sublayer}(\mathbf{x})$$ ([He et al., 2016](https://arxiv.org/abs/1512.03385)). A
+$$\mathbf{x} + \operatorname{Sublayer}(\mathbf{x})$$<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: He, K., Zhang, X., Ren, S., Sun, J. (2016). Deep Residual Learning for Image Recognition. CVPR.">2</a>]</sup>. A
 sub-layer then only has to learn a correction to what is already there, rather than rebuild the whole vector. And
 during training, the gradient flows back through the "+" undiminished, however many layers are stacked. One
 useful way to picture the result is a **residual stream**
-([Elhage et al., 2021](https://transformer-circuits.pub/2021/framework/index.html)): a vector per token that
+<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Elhage, N. et al. (2021). A Mathematical Framework for Transformer Circuits. Where the &quot;residual stream&quot; comes from.">3</a>]</sup>: a vector per token that
 runs from the embedding to the output, with every sub-layer reading from it and adding its contribution back.
 Among other things, the stream carries the input embedding all the way to the top, which matters more than you'd
 think in section 11.
 
-**Layer normalization** ([Ba et al., 2016](https://arxiv.org/abs/1607.06450)) keeps the stream's numbers in a
+**Layer normalization**<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Ba, J. L., Kiros, J. R., Hinton, G. E. (2016). Layer Normalization.">4</a>]</sup> keeps the stream's numbers in a
 stable range, however much the sub-layers add. It rescales every vector to mean 0 and variance 1, then lets the
 model choose its own scale and shift:
 
@@ -952,11 +937,9 @@ print("same as nn.LayerNorm; from here on we use PyTorch's")
 after:  mean 0.0 std 1.0
 same as nn.LayerNorm; from here on we use PyTorch&#x27;s</code></pre>
 
-The 2017 paper puts the normalization after the addition, $$\operatorname{LayerNorm}(\mathbf{x} +
-\operatorname{Sublayer}(\mathbf{x}))$$: the "add & norm" boxes of the diagram. Most models since put it before the
-sub-layer instead; lesson 5 measures the difference. Last, **dropout** with probability $$0.1$$ on every
-sub-layer's output and on the embeddings: during training, random entries are set to zero (and the rest scaled up
-to compensate), so the model can't come to rely on any single one.
+The 2017 paper puts the normalization after the addition, $$\operatorname{LayerNorm}(\mathbf{x} + \operatorname{Sublayer}(\mathbf{x}))$$: the "add & norm" boxes of the diagram. Most models since put it before the sub-layer instead; lesson 5 measures the difference.
+
+Last, **dropout** with probability $$0.1$$ on every sub-layer's output and on the embeddings: during training, random entries are set to zero (and the rest scaled up to compensate), so the model can't come to rely on any single one.
 
 ## 10. The whole model
 
@@ -1014,7 +997,7 @@ its answer.
 The full model puts it together. One matrix $$E$$ serves three times: as the source embedding, as the target
 embedding (lesson 1 built one shared vocabulary for both languages) and as the output layer. Besides saving
 parameters, tying the output layer to the embedding tends to improve language models
-([Press and Wolf, 2017](https://arxiv.org/abs/1608.05859)). The class has three methods besides `forward`:
+<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Press, O., Wolf, L. (2017). Using the Output Embedding to Improve Language Models. EACL.">5</a>]</sup>. The class has three methods besides `forward`:
 `embed` turns ids into vectors with positions, `encode` runs the encoder, and `decode` runs the decoder and returns
 the scores. Keeping them separate lets us call the encoder once and the decoder many times when translating.
 
@@ -1198,10 +1181,9 @@ $$\mathcal{L}(\theta) = -\frac{1}{m} \sum_{t=1}^{m} \log p_\theta(y_t \mid y_{<t
 where the probabilities come from the scores by softmax. In terms of the scores $$z_j$$ at one position, the loss
 there is $$\log \sum_j e^{z_j} - z_{\text{target}}$$.
 
-Before training, we can predict its value. Section 3 set the scores up to be roughly independent, with mean 0 and
-a variance $$\sigma^2$$ of about 1. The target's score is then 0 on average, and a sum over sixteen thousand tokens
-is close to its expected value, $$\lvert\mathcal{V}\rvert\,\mathbb{E}[e^{z}] = \lvert\mathcal{V}\rvert\,
-e^{\sigma^2/2}$$ (the mean of $$e^z$$ when $$z$$ is normal). So
+Before training, we can predict its value. Section 3 set the scores up to be roughly independent, with mean 0 and a variance $$\sigma^2$$ of about 1.
+
+The target's score is then 0 on average, and a sum over sixteen thousand tokens is close to its expected value, $$\lvert\mathcal{V}\rvert\,\mathbb{E}[e^{z}] = \lvert\mathcal{V}\rvert\, e^{\sigma^2/2}$$ (the mean of $$e^z$$ when $$z$$ is normal). So
 
 $$\mathcal{L}_{\text{init}} \approx \log\lvert\mathcal{V}\rvert + \frac{\sigma^2}{2}.$$
 
@@ -1277,10 +1259,9 @@ print("spread of all scores, std:", round(logits[real].std().item(), 2))
 <pre class="tfs-printed" markdown="0"><code>score of the token just read, on average: 10.98
 spread of all scores, std: 1.01</code></pre>
 
-One score in sixteen thousand, far above all the others, is exactly what pushes $$\log\sum_j e^{z_j}$$ up. Take it
-out at every position, as if that token weren't in the vocabulary, and check the two parts of the loss
-separately: the log of the sum, which the formula now predicts as $$\log(\lvert\mathcal{V}\rvert - 1) +
-\sigma^2/2$$, and the score of the right token, which it assumes to be 0 on average.
+One score in sixteen thousand, far above all the others, is exactly what pushes $$\log\sum_j e^{z_j}$$ up.
+
+Take it out at every position, as if that token weren't in the vocabulary, and check the two parts of the loss separately: the log of the sum, which the formula now predicts as $$\log(\lvert\mathcal{V}\rvert - 1) + \sigma^2/2$$, and the score of the right token, which it assumes to be 0 on average.
 
 ```python
 # drop the score of the token just read; skip the rare positions whose answer is that token
@@ -1304,10 +1285,9 @@ assert abs(log_sum - expected) < 0.02
 log(|V| - 1) + sigma²/2:     10.1818
 score of the right token:    -0.204</code></pre>
 
-Now the formula holds to the second decimal. The score of the right token is near 0 but not exactly: a different
-random initialization moves it a little above or below, and the loss with it. The parrot is the big effect, and
-the first steps of training break the habit, because it is wrong almost everywhere: a translation rarely repeats
-a token twice in a row.
+Now the formula holds to the second decimal. The score of the right token is near 0 but not exactly: a different random initialization moves it a little above or below, and the loss with it.
+
+The parrot is the big effect, and the first steps of training break the habit, because it is wrong almost everywhere: a translation rarely repeats a token twice in a row.
 
 ## 12. Can it learn?
 
@@ -1315,10 +1295,9 @@ Before spending an hour of GPU time on training (lesson 3), make sure the model 
 test is to teach it a handful of sentence pairs by heart: a model that can't memorize sixteen pairs has a bug
 somewhere. [Karpathy (2019)](https://karpathy.github.io/2019/04/25/recipe/) calls this step "overfit one batch".
 
-One detail: lesson 1 kept groups of linked pairs together, so the validation set holds several translations of
-some English sentences. Nobody can memorize two answers to one question, so we take one pair per English
-sentence, plus our own sentence. The training loop is the simplest possible; lesson 3 explains each of its parts
-and adds the ones a real run needs.
+One detail: lesson 1 kept groups of linked pairs together, so the validation set holds several translations of some English sentences. Nobody can memorize two answers to one question, so we take one pair per English sentence, plus our own sentence.
+
+The training loop is the simplest possible; lesson 3 explains each of its parts and adds the ones a real run needs.
 
 ```python
 distinct = valid.drop_duplicates("en")
@@ -1395,10 +1374,9 @@ table(memorized.head(6))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">model&#x27;s Russian</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">exact</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">The researcher said she was exhausted.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследовательница сказала, что вымоталась.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You are not old enough to go swimming by yourself.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты недостаточно большая, чтобы идти плавать одной.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You are made to be a poet.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты прирождённый поэт.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You are the next in line for promotion.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Вы — следующий в очереди на повышение.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You are the master of your own destiny.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты хозяин своей собственной судьбы.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">You are wearing your socks inside out.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У тебя носки наизнанку.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">True</td></tr></tbody></table></div>
 
-Every pair comes back exactly, our sentence with its three feminine forms included. The model memorized, though;
-it hasn't learned to translate anything it hasn't seen. Its attention shows it. Here is the cross-attention of the
-last decoder layer while it writes our sentence, averaged over the four heads: every row is a Russian token, and
-its cells show how much it took from each English token.
+Every pair comes back exactly, our sentence with its three feminine forms included. The model memorized, though; it hasn't learned to translate anything it hasn't seen. Its attention shows it.
+
+Here is the cross-attention of the last decoder layer while it writes our sentence, averaged over the four heads: every row is a Russian token, and its cells show how much it took from each English token.
 
 ```python
 src = torch.tensor([tokenizer.encode(EN_EXAMPLE).ids], device=device)
@@ -1430,10 +1408,9 @@ print("largest weight in the map:", round(cross.max().item(), 3))
 <pre class="tfs-printed" markdown="0"><code>uniform weight over the English tokens: 0.111
 largest weight in the map: 0.259</code></pre>
 
-Nearly flat: almost every Russian token spreads its attention evenly across the English sentence. Memorizing
-sixteen pairs doesn't require knowing which English word a Russian word translates; the model can get by on what
-each sentence looks like as a whole. Lesson 3 trains on half a million pairs, where that shortcut no longer works,
-and we will come back to this picture to see whether *сказала* has learned to look at *she*.
+Nearly flat: almost every Russian token spreads its attention evenly across the English sentence. Memorizing sixteen pairs doesn't require knowing which English word a Russian word translates; the model can get by on what each sentence looks like as a whole.
+
+Lesson 3 trains on half a million pairs, where that shortcut no longer works, and we will come back to this picture to see whether *сказала* has learned to look at *she*.
 
 ## 13. Our code, at the size of a real model
 
@@ -1459,10 +1436,9 @@ print(round(opus_sized_params / by_formula, 1), "times the size of our model")
 <pre class="tfs-printed" markdown="0"><code>our class at opus-mt-en-ru&#x27;s size: 76147712 parameters
 7.9 times the size of our model</code></pre>
 
-The real model's weights are a file of about 300 MB. Without downloading it, the Hub tells us its size, and at
-four bytes per number we can account for nearly every byte. Two differences from our model are known in advance:
-Marian stores its sinusoidal position tables in the file (one for the encoder and one for the decoder) instead of
-computing them, and it adds a bias to the output scores.
+The real model's weights are a file of about 300 MB. Without downloading it, the Hub tells us its size, and at four bytes per number we can account for nearly every byte.
+
+Two differences from our model are known in advance: Marian stores its sinusoidal position tables in the file (one for the encoder and one for the decoder) instead of computing them, and it adds a bias to the output scores.
 
 ```python
 info = HfApi().model_info("Helsinki-NLP/opus-mt-en-ru", files_metadata=True)
@@ -1507,18 +1483,21 @@ print("tfs.model.Transformer is the model of this lesson")
 
 ## References
 
-- Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., Polosukhin, I. (2017). [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS.
-- Bahdanau, D., Cho, K., Bengio, Y. (2015). [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473). ICLR. *Attention itself was invented for translation, three years before the Transformer.*
-- He, K., Zhang, X., Ren, S., Sun, J. (2016). [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385). CVPR.
-- Ba, J. L., Kiros, J. R., Hinton, G. E. (2016). [Layer Normalization](https://arxiv.org/abs/1607.06450).
-- Press, O., Wolf, L. (2017). [Using the Output Embedding to Improve Language Models](https://arxiv.org/abs/1608.05859). EACL.
-- Geva, M., Schuster, R., Berant, J., Levy, O. (2021). [Transformer Feed-Forward Layers Are Key-Value Memories](https://arxiv.org/abs/2012.14913). EMNLP.
-- Elhage, N. et al. (2021). [A Mathematical Framework for Transformer Circuits](https://transformer-circuits.pub/2021/framework/index.html). *Where the "residual stream" comes from.*
-- Rush, A. (2018). [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/). *The paper, line by line, in PyTorch.*
-- Junczys-Dowmunt, M. et al. (2018). [Marian: Fast Neural Machine Translation in C++](https://arxiv.org/abs/1804.00344). ACL.
-- Tiedemann, J., Thottingal, S. (2020). [OPUS-MT: Building open translation services for the World](https://aclanthology.org/2020.eamt-1.61/). EAMT.
-- Karpathy, A. (2019). [A Recipe for Training Neural Networks](https://karpathy.github.io/2019/04/25/recipe/).
-- Model configurations: [GPT-2](https://huggingface.co/openai-community/gpt2), [opus-mt-en-ru](https://huggingface.co/Helsinki-NLP/opus-mt-en-ru), [Llama 3.1 8B](https://huggingface.co/meta-llama/Llama-3.1-8B), [DeepSeek-V3](https://huggingface.co/deepseek-ai/DeepSeek-V3).
+1. {:#ref-1} Geva, M., Schuster, R., Berant, J., Levy, O. (2021). [Transformer Feed-Forward Layers Are Key-Value Memories](https://arxiv.org/abs/2012.14913). EMNLP. <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} He, K., Zhang, X., Ren, S., Sun, J. (2016). [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385). CVPR. <a class="ref-back" href="#cite-2" aria-label="Back to the text">&#8617;</a>
+3. {:#ref-3} Elhage, N. et al. (2021). [A Mathematical Framework for Transformer Circuits](https://transformer-circuits.pub/2021/framework/index.html). *Where the "residual stream" comes from.* <a class="ref-back" href="#cite-3" aria-label="Back to the text">&#8617;</a>
+4. {:#ref-4} Ba, J. L., Kiros, J. R., Hinton, G. E. (2016). [Layer Normalization](https://arxiv.org/abs/1607.06450). <a class="ref-back" href="#cite-4" aria-label="Back to the text">&#8617;</a>
+5. {:#ref-5} Press, O., Wolf, L. (2017). [Using the Output Embedding to Improve Language Models](https://arxiv.org/abs/1608.05859). EACL. <a class="ref-back" href="#cite-5" aria-label="Back to the text">&#8617;</a>
+6. {:#ref-6} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., Polosukhin, I. (2017). [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS.
+7. {:#ref-7} Bahdanau, D., Cho, K., Bengio, Y. (2015). [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473). ICLR. *Attention itself was invented for translation, three years before the Transformer.*
+8. {:#ref-8} Rush, A. (2018). [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/). *The paper, line by line, in PyTorch.*
+9. {:#ref-9} Junczys-Dowmunt, M. et al. (2018). [Marian: Fast Neural Machine Translation in C++](https://arxiv.org/abs/1804.00344). ACL.
+10. {:#ref-10} Tiedemann, J., Thottingal, S. (2020). [OPUS-MT: Building open translation services for the World](https://aclanthology.org/2020.eamt-1.61/). EAMT.
+11. {:#ref-11} Karpathy, A. (2019). [A Recipe for Training Neural Networks](https://karpathy.github.io/2019/04/25/recipe/).
+12. {:#ref-12} Model configurations: [GPT-2](https://huggingface.co/openai-community/gpt2), [opus-mt-en-ru](https://huggingface.co/Helsinki-NLP/opus-mt-en-ru), [Llama 3.1 8B](https://huggingface.co/meta-llama/Llama-3.1-8B), [DeepSeek-V3](https://huggingface.co/deepseek-ai/DeepSeek-V3).
+{: .tfs-refs}
+
+
 
 <p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-01-tokenization/">← Lesson 1: Tokenization</a> <a href="/blog/2026/transformers-from-scratch-03-training/">Lesson 3: Training & decoding →</a></p>
 
