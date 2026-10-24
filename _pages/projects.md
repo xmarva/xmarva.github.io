@@ -2,490 +2,275 @@
 layout: page
 title: portfolio
 permalink: /portfolio/
-description: Welcome to my project collection
+description: Computer vision and ML systems I have built, from the first prototype to production
 seo_description: "Projects by Eva Koroleva: virtual try-on with diffusion and 3D bodies, floor plans to 3D, multi-camera tracking, medical NLP and more."
 nav: true
 nav_order: 2
+hide_header: true
 display_categories: [work, personal]
 ---
 
-  <style>
-    /* Base styling for projects page */
-    .projects-wrapper {
-      font-family: var(--global-font-family), sans-serif;
-      color: var(--global-text-color);
-      max-width: 100%;
-      margin: 0 auto;
-    }
+<style>
+  /* One accent (the site's red) for the one action; color otherwise encodes the domain of a project. */
+  .pf {
+    --pf-cv: #0f8c7e;
+    --pf-genai: #6a55d8;
+    --pf-3d: #b86e00;
+    --pf-nlp: #3567d0;
+    --pf-bio: #c4385a;
+    --pf-seq: #8a6a12;
+    --pf-chip-alpha: 12%;
+    --pf-border: var(--global-divider-color);
+    --pf-muted: var(--global-text-color-light);
+  }
+  html[data-theme="dark"] .pf {
+    --pf-cv: #4cc9b8;
+    --pf-genai: #a596f7;
+    --pf-3d: #f0b04a;
+    --pf-nlp: #86a8f7;
+    --pf-bio: #f4879d;
+    --pf-seq: #d9b45a;
+    --pf-chip-alpha: 16%;
+  }
 
-    /* Section styling */
-    .project-section {
-      margin-bottom: 4rem;
-    }
+  /* the resume: its first page sticks out of the card like a sheet out of a folder */
+  .pf-cv {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 2.6rem 0 3rem;
+    padding: 1.1rem 1.5rem 1.1rem 128px;
+    min-height: 104px;
+    border: 1px solid var(--pf-border);
+    border-radius: 14px;
+    background: var(--global-card-bg-color);
+    color: var(--global-text-color) !important;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease;
+  }
+  .pf-cv:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--pf-border)); }
+  .pf-cv-sheet {
+    position: absolute;
+    left: 28px;
+    bottom: 14px;
+    width: 76px;
+    aspect-ratio: 240 / 340;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 22px rgba(0, 0, 0, 0.18);
+    transform: rotate(-5deg);
+    transform-origin: 50% 100%;
+    transition: transform 0.3s ease;
+  }
+  .pf-cv-sheet img { display: block; width: 100%; height: 100%; }
+  .pf-cv:hover .pf-cv-sheet { transform: rotate(0deg) translateY(-6px); }
+  .pf-cv-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .pf-cv-title { font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
+  .pf-cv-meta { font-size: 0.9rem; color: var(--pf-muted); }
+  .pf-cv-action {
+    margin-left: auto;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1.05rem;
+    border-radius: 999px;
+    background: var(--global-theme-color);
+    color: var(--global-bg-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: filter 0.2s ease;
+  }
+  .pf-cv:hover .pf-cv-action { filter: brightness(1.1); }
 
-    .section-title {
-      font-family: var(--global-serif-font-family), serif;
-      font-size: 1.5rem; /* Уменьшено до 1.5rem как запрошено */
-      font-weight: normal;
-      color: var(--global-theme-color);
-      margin-bottom: 2rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--global-divider-color);
-      text-decoration: none;
-      pointer-events: none;
-    }
+  .pf-section { margin-bottom: 3.5rem; }
+  .pf-section-head { margin-bottom: 1.4rem; }
+  .pf-section-head::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 3px;
+    margin-bottom: 0.75rem;
+    background: var(--global-theme-color);
+  }
+  .pf-section-head h2 {
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--global-text-color);
+    margin: 0;
+  }
 
-    /* Project card styling */
-    .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
+  /* domain chips: tinted, one hue per domain */
+  .pf-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .pf-chip {
+    --c: var(--pf-muted);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) var(--pf-chip-alpha), transparent);
+    white-space: nowrap;
+  }
+  .pf-chip[data-domain="computer-vision"] { --c: var(--pf-cv); }
+  .pf-chip[data-domain="genai"] { --c: var(--pf-genai); }
+  .pf-chip[data-domain="3d"] { --c: var(--pf-3d); }
+  .pf-chip[data-domain="nlp"] { --c: var(--pf-nlp); }
+  .pf-chip[data-domain="biomed"] { --c: var(--pf-bio); }
+  .pf-chip[data-domain="neurosymbolic-ai"] { --c: var(--pf-genai); }
+  .pf-chip[data-domain="sequence-prediction"] { --c: var(--pf-seq); }
 
-    .project-card {
-      background-color: var(--global-card-bg-color);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
-      height: 220px;
-      width: 100%;
-    }
+  .pf-stack {
+    margin: 0;
+    font-family: var(--global-code-font-family, monospace);
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--pf-muted);
+  }
 
-    .project-card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-      transform: translateY(-3px);
-      background-color: var(--card-hover, rgba(0, 0, 0, 0.03));
-    }
+  /* selected work: wide cards */
+  .pf-work { display: flex; flex-direction: column; gap: 1.5rem; }
+  .pf-case {
+    display: grid;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    border: 1px solid var(--pf-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--global-card-bg-color);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .pf-case:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--pf-border)); }
+  /* the covers are drawn on #161618: the column fills the card's height in that color, the cover centred in it */
+  .pf-case-media { display: flex; align-items: center; overflow: hidden; background: #161618; }
+  .pf-case-media figure, .pf-case-media picture { display: block; width: 100%; margin: 0; }
+  .pf-case-media img { width: 100%; height: auto; display: block; }
+  .pf-case-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0; }
+  .pf-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.4rem 1rem; }
+  .pf-head .pf-chips { justify-content: flex-end; margin-left: auto; padding-top: 0.3rem; }
+  .pf-title { font-size: 1.3rem; font-weight: 500; margin: 0; line-height: 1.3; }
+  .pf-title a { color: var(--global-text-color); text-decoration: none; }
+  .pf-title a:hover { color: var(--global-theme-color); }
+  .pf-desc { margin: 0; color: var(--pf-muted); line-height: 1.6; }
+  .pf-foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding-top: 0.35rem; }
+  .pf-more { font-size: 0.9rem; font-weight: 500; color: var(--global-text-color) !important; text-decoration: none !important; }
+  .pf-more:hover { color: var(--global-theme-color) !important; }
+  .pf-ext { font-size: 0.85rem; color: var(--pf-muted) !important; text-decoration: none !important; }
+  .pf-ext:hover { color: var(--global-text-color) !important; }
+  .pf-ext i { margin-right: 0.3rem; }
 
-    html[data-theme="dark"] .project-card:hover {
-      background-color: var(--card-hover, rgba(255, 255, 255, 0.05));
-    }
+  /* experiments: a compact grid */
+  .pf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
+  .pf-mini {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--pf-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--global-card-bg-color);
+    transition: border-color 0.2s ease;
+  }
+  .pf-mini:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--pf-border)); }
+  .pf-mini-media { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: #f3f3f3; border-bottom: 1px solid var(--pf-border); }
+  .pf-mini-media figure, .pf-mini-media picture { display: block; height: 100%; margin: 0; }
+  .pf-mini-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pf-mini-body { padding: 0.85rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+  .pf-mini h3 { font-size: 1rem; font-weight: 500; margin: 0; line-height: 1.35; }
+  .pf-mini h3 a { color: var(--global-text-color); text-decoration: none; }
+  .pf-mini h3 a:hover { color: var(--global-theme-color); }
+  .pf-mini p {
+    margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--pf-muted);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .pf-mini .pf-stack { font-size: 0.74rem; display: block; -webkit-line-clamp: none; }
+  .pf-mini .pf-foot { padding-top: 0.2rem; }
+  .pf-mini .pf-foot .pf-chips { margin-left: auto; }
 
-    .project-content {
-      display: flex;
-      flex-direction: row;
-      height: 100%;
-    }
+  @media (max-width: 991px) {
+    .pf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pf-head .pf-chips { margin-left: 0; justify-content: flex-start; padding-top: 0; }  /* under the title here */
+  }
+  @media (max-width: 760px) {
+    .pf-cv { margin-top: 2rem; padding: 0.9rem 1rem 0.9rem 100px; gap: 0.75rem; }
+    .pf-cv-sheet { left: 20px; width: 62px; }
+    .pf-cv-title { font-size: 1.15rem; }
+    .pf-case { grid-template-columns: minmax(0, 1fr); }
+    .pf-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .pf-cv-meta { display: none; }
+    .pf-cv-action span { display: none; }
+    .pf-cv-action { padding: 0.55rem 0.7rem; }
+  }
+</style>
 
-    /* Project image */
-    .project-image {
-      flex: 0 0 320px; /* Увеличено с 300px (примерно на 6.7%) для расширения по горизонтали */
-      width: 320px; /* Увеличено с 300px */
-      height: 220px; /* Оставлено без изменений по высоте */
-      overflow: hidden;
-      position: relative;
-    }
+<div class="pf">
+  <a class="pf-cv" href="{{ '/assets/pdf/eva_koroleva_cv.pdf' | relative_url }}" target="_blank" rel="noopener">
+    <span class="pf-cv-sheet" aria-hidden="true"><img src="{{ '/assets/img/resume-page.webp' | relative_url }}" width="240" height="340" alt="" loading="eager" decoding="async"></span>
+    <span class="pf-cv-text">
+      <span class="pf-cv-title">Resume</span>
+      <span class="pf-cv-meta">Experience, skills and education on one page</span>
+    </span>
+    <span class="pf-cv-action"><i class="fas fa-arrow-down" aria-hidden="true"></i><span>PDF</span></span>
+  </a>
 
-    /* figure.liquid wraps the image in <figure><picture> to serve the responsive webp versions */
-    .project-image figure,
-    .project-image picture {
-      display: block;
-      height: 100%;
-      margin: 0;
-    }
-
-    .project-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    .no-image {
-      background-color: var(--global-code-bg-color);
-      height: 100%;
-    }
-
-    /* Project details */
-    .project-details {
-      flex: 1;
-      padding: 1.2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    /* Domain tags in top right corner */
-    .project-domains {
-      position: absolute;
-      top: 0.7rem;
-      right: 1.5rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.4rem;
-      max-width: 70%;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .domain-tag {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      white-space: nowrap;
-    }
-
-    .project-title {
-      font-family: var(--global-serif-font-family), serif;
-      font-size: 1.2rem; /* Уменьшено до 1.2rem как запрошено */
-      font-weight: normal;
-      margin: 0 0 0.6rem 0;
-      letter-spacing: -0.02em;
-      padding-right: 6rem; /* Make space for domain tags */
-      padding-top: 0;
-      margin-top: -0.5rem; /* Сдвиг вверх к верхней границе карточки */
-    }
-
-    .project-title a {
-      color: var(--global-text-color);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .project-title a:hover {
-      color: var(--global-theme-color);
-    }
-
-    .project-role {
-      display: none;
-    }
-
-    .project-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 0.5rem;
-      color: var(--global-text-color-light);
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-    }
-
-    /* Project metadata (technologies, links) */
-    .project-meta {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .project-tech {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .tech-tag {
-      display: inline-block;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: normal;
-      background-color: transparent;
-      color: var(--global-theme-color);
-      border: 1px solid var(--global-theme-color);
-      transition: transform 0.2s ease;
-    }
-
-    .tech-tag:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Project links */
-    .project-links {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      display: flex;
-      gap: 1rem;
-    }
-
-    .project-link {
-      display: inline-flex;
-      align-items: center;
-      color: var(--global-theme-color);
-      text-decoration: none;
-      font-weight: normal;
-      font-size: 0.9rem;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
-    .project-link:hover {
-      transform: translateY(-2px);
-      opacity: 0.8;
-    }
-
-    .project-link i {
-      font-size: 1.3rem;
-    }
-
-    .project-link span {
-      display: none;
-    }
-
-    /* Resume button styling */
-    .resume-btn-container {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: -3.5rem;
-      margin-bottom: 2rem;
-      position: relative;
-      z-index: 10;
-    }
-
-    .resume-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.4rem 1rem;
-      background-color: var(--global-theme-color);
-      color: var(--global-bg-color);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: normal;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      transition: transform 0.3s ease;
-    }
-
-    .resume-btn:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-      z-index: -1;
-    }
-
-    .resume-btn:hover {
-      transform: translateY(-3px);
-      color: var(--global-bg-color); /* Сохранение цвета текста при наведении */
-    }
-
-    .resume-btn:hover:before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    .resume-btn i {
-      margin-right: 0.5rem;
-    }
-
-    /* Media queries for responsiveness */
-    @media (max-width: 900px) {
-      .project-card {
-        height: auto;
-        min-height: 440px;
-      }
-      
-      .project-content {
-        flex-direction: column;
-      }
-      
-      .project-image {
-        flex: none;
-        width: 100%;
-        height: 200px;
-      }
-      
-      .project-details {
-        padding: 1.5rem;
-        min-height: 240px;
-      }
-      
-      .project-domains {
-        position: relative;
-        top: 0;
-        right: 0;
-        flex-direction: row;
-        justify-content: flex-start;
-        max-width: 100%;
-        margin-bottom: 0.8rem;
-      }
-      
-      .project-title {
-        padding-right: 0;
-        margin-top: 0.5rem;
-      }
-      
-      .project-links {
-        position: relative;
-        bottom: 0;
-        right: 0;
-        margin-top: 1rem;
-      }
-      
-      .resume-btn-container {
-        margin-top: 1rem;
-        justify-content: flex-start;
-      }
-    }
-  </style>
-
-<!-- Resume button container -->
-  <div class="resume-btn-container">
-    <a href="{{ '/assets/pdf/eva_koroleva_cv.pdf' | relative_url }}" class="resume-btn" target="_blank">
-      <i class="fas fa-file-download"></i> Download Resume
-    </a>
-  </div>
-
-  <div class="projects-wrapper">
-    <!-- Work projects section -->
-    <section id="work" class="project-section">
-      <h2 class="section-title">what I worked on</h2>
-      <div class="project-list">
-        {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
-        {% for project in work_projects %}
-        <div class="project-card">
-          <div class="project-content">
-            <div class="project-image">
-              {% if project.img %}
-              <a href="{{ project.url | relative_url }}">
-                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
-              </a>
-              {% else %}
-              <a href="{{ project.url | relative_url }}">
-                <div class="no-image"></div>
-              </a>
-              {% endif %}
-            </div>
-            <div class="project-details">
-              {% if project.domains %}
-              <div class="project-domains">
-                {% for domain in project.domains %}
-                <span class="domain-tag">{{ domain }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-              
-              <h3 class="project-title">
-                <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
-              </h3>
-              
-              <div class="project-description">{{ project.description }}</div>
-              
-              <!-- Кнопка Read More удалена -->
-              
-              <div class="project-meta">
-                {% if project.tech %}
-                <div class="project-tech">
-                  {% for tech in project.tech %}
-                  <span class="tech-tag">{{ tech }}</span>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
-              
-              <div class="project-links">
-                {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Code on GitHub" title="Code on GitHub">
-                  <i class="fab fa-github" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-                
-                {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="On Kaggle" title="On Kaggle">
-                  <i class="fab fa-kaggle" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-                
-                {% if project.website %}
-                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Project website" title="Project website">
-                  <i class="fas fa-globe" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-              </div>
-            </div>
+  <section class="pf-section" aria-labelledby="pf-work">
+    <div class="pf-section-head">
+      <h2 id="pf-work">Case studies</h2>
+    </div>
+    <div class="pf-work">
+      {% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
+      {% for project in work_projects %}
+      <article class="pf-case">
+        <a class="pf-case-media" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true">
+          {% if project.img %}{% include figure.liquid path=project.img alt="" sizes="(min-width: 760px) 340px, 100vw" %}{% endif %}
+        </a>
+        <div class="pf-case-body">
+          <div class="pf-head">
+            <h3 class="pf-title"><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+            <span class="pf-chips">{% for domain in project.domains %}<span class="pf-chip" data-domain="{{ domain | slugify }}">{{ domain }}</span>{% endfor %}</span>
+          </div>
+          <p class="pf-desc">{{ project.description }}</p>
+          {% if project.tech %}<p class="pf-stack">{{ project.tech | join: " · " }}</p>{% endif %}
+          <div class="pf-foot">
+            <a class="pf-more" href="{{ project.url | relative_url }}">Read the case study →</a>
+            {% if project.website %}<a class="pf-ext" href="{{ project.website }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe" aria-hidden="true"></i>{{ project.website | remove: "https://" | remove: "http://" | remove: "www." }}</a>{% endif %}
+            {% if project.github %}<a class="pf-ext" href="{{ project.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i>code</a>{% endif %}
           </div>
         </div>
-        {% endfor %}
-      </div>
-    </section>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
 
-    <!-- Personal projects section -->
-    <section id="personal" class="project-section">
-      <h2 class="section-title">fun / experimental</h2>
-      <div class="project-list">
-        {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
-        {% for project in personal_projects %}
-        <div class="project-card">
-          <div class="project-content">
-            <div class="project-image">
-              {% if project.img %}
-              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                {% include figure.liquid path=project.img alt=project.title sizes="(min-width: 900px) 320px, 100vw" %}
-              </a>
-              {% else %}
-              <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>
-                <div class="no-image"></div>
-              </a>
-              {% endif %}
-            </div>
-            <div class="project-details">
-              {% if project.domains %}
-              <div class="project-domains">
-                {% for domain in project.domains %}
-                <span class="domain-tag">{{ domain }}</span>
-                {% endfor %}
-              </div>
-              {% endif %}
-              
-              <h3 class="project-title">
-                <a href="{% if project.github %}{{ project.github }}{% elsif project.kaggle %}{{ project.kaggle }}{% else %}{{ project.url | relative_url }}{% endif %}" {% if project.github or project.kaggle %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ project.title }}</a>
-              </h3>
-              
-              <div class="project-description">{{ project.description }}</div>
-              
-              <!-- Кнопка Take a Peek удалена -->
-              
-              <div class="project-meta">
-                {% if project.tech %}
-                <div class="project-tech">
-                  {% for tech in project.tech %}
-                  <span class="tech-tag">{{ tech }}</span>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
-              
-              <div class="project-links">
-                {% if project.github %}
-                <a href="{{ project.github }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Code on GitHub" title="Code on GitHub">
-                  <i class="fab fa-github" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-                
-                {% if project.kaggle %}
-                <a href="{{ project.kaggle }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="On Kaggle" title="On Kaggle">
-                  <i class="fab fa-kaggle" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-                
-                {% if project.website %}
-                <a href="{{ project.website }}" class="project-link" target="_blank" rel="noopener noreferrer" aria-label="Project website" title="Project website">
-                  <i class="fas fa-globe" aria-hidden="true"></i>
-                </a>
-                {% endif %}
-              </div>
-            </div>
+  <section class="pf-section" aria-labelledby="pf-lab">
+    <div class="pf-section-head">
+      <h2 id="pf-lab">Experiments</h2>
+    </div>
+    <div class="pf-grid">
+      {% assign personal_projects = site.projects | where: "category", "personal" | sort: "importance" %}
+      {% for project in personal_projects %}
+      {% if project.github %}{% assign link = project.github %}{% elsif project.kaggle %}{% assign link = project.kaggle %}{% else %}{% assign link = project.url | relative_url %}{% endif %}
+      <article class="pf-mini">
+        <a class="pf-mini-media" href="{{ link }}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+          {% if project.img %}{% include figure.liquid path=project.img alt="" sizes="(min-width: 992px) 300px, (min-width: 760px) 50vw, 100vw" %}{% endif %}
+        </a>
+        <div class="pf-mini-body">
+          <h3><a href="{{ link }}" target="_blank" rel="noopener noreferrer">{{ project.title }}</a></h3>
+          <p>{{ project.description }}</p>
+          {% if project.tech %}<p class="pf-stack">{{ project.tech | join: " · " }}</p>{% endif %}
+          <div class="pf-foot">
+            {% if project.github %}<a class="pf-ext" href="{{ project.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i>GitHub</a>{% endif %}
+            {% if project.kaggle %}<a class="pf-ext" href="{{ project.kaggle }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-kaggle" aria-hidden="true"></i>Kaggle</a>{% endif %}
+            <span class="pf-chips">{% for domain in project.domains %}<span class="pf-chip" data-domain="{{ domain | slugify }}">{{ domain }}</span>{% endfor %}</span>
           </div>
         </div>
-        {% endfor %}
-      </div>
-    </section>
-  </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+</div>
