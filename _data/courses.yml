@@ -1,0 +1,52 @@
+# Courses on /teaching/, in this order. A course with `show: false` stays off the page.
+# A lesson with a `url` is published; one without is listed as coming soon.
+# `short` names the newest lesson in the course's "New" pill. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
+
+- id: tfs
+  show: true
+  title: "Transformers: from scratch to production"
+  summary: "Build an English→Russian translator with a Transformer you write yourself, measure it honestly, improve it, and ship it as a monitored service."
+  facts:
+    - "Free GPU on Kaggle or Colab"
+    - "every lesson runs on its own"
+    - "open source"
+  github: https://github.com/xmarva/transformers-from-scratch
+  lessons:
+    - title: "How language models read: tokenization and BPE"
+      short: "Tokenization"
+      topics: "Inside the tokenizers of GPT-4o and Llama 3, cleaning parallel data, leak-free splits, BPE by hand, Hugging Face tokenizers"
+      url: /blog/2026/transformers-from-scratch-01-tokenization/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb
+      cover: assets/img/teaching/tfs-01.png
+    - title: "Implementing the Transformer in PyTorch: why attention divides by √d_k"
+      short: "The Transformer"
+      topics: "Real models' blueprints, attention and why it divides by √d_k, masks, heads, positions, the encoder–decoder, checks against PyTorch"
+      url: /blog/2026/transformers-from-scratch-02-transformer/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb
+      cover: assets/img/teaching/tfs-02.png
+    - title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
+      short: "Training & decoding"
+      topics: "Token-based batches, label smoothing, warm-up and what happens without it, mixed precision, greedy, beam search and sampling"
+      url: /blog/2026/transformers-from-scratch-03-training/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb
+      cover: assets/img/teaching/tfs-03.png
+    - title: "Evaluating machine translation with chrF and COMET"
+      short: "BLEU, chrF, COMET"
+      topics: "BLEU and chrF from scratch, COMET by hand, sacreBLEU signatures, metrics against human judgments, the paired bootstrap, test-set contamination"
+      url: /blog/2026/transformers-from-scratch-04-evaluation/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb
+      cover: assets/img/teaching/tfs-04.png
+    - title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
+      topics: "Pre-norm, RMSNorm, RoPE, SwiGLU, fused attention, a KV cache, ablations"
+    - title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
+      topics: "Experiment tracking with W&B, W&B Sweeps, early stopping, spending a GPU budget well"
+    - title: "Your notebook is not a product: a Python package with tests and CI"
+      topics: "Project layout, configs, a CLI, tests, CI, a model card"
+    - title: "Serving a Transformer with FastAPI and Gradio: latency under load"
+      topics: "FastAPI, batching, Gradio, faster inference, latency under load"
+    - title: "It works on my laptop: Docker, Hugging Face Spaces and monitoring"
+      topics: "Docker, Hugging Face Spaces, CI/CD, metrics, drift, feedback"

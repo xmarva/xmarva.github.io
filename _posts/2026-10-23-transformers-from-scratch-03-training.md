@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "From parrot to translator: training and decoding"
+title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
 date: 2026-10-23 12:00:00
 description: "Train a Transformer on half a million sentence pairs on a free GPU, then decode it with greedy search, beam search and sampling."
 tags: [transformers-from-scratch, training, decoding, beam-search, pytorch]
@@ -35,7 +35,7 @@ In this lesson it trains on half a million sentence pairs, on a free GPU, in abo
 1. Turn half a million pairs into batches that waste little on padding.
 2. Build the training step: label smoothing, Adam with the paper's learning-rate schedule, gradient clipping,
    mixed precision. See what warm-up is for by training without it.
-3. Train the lesson 2 Transformer and watch it go from parrot to translator, epoch by epoch.
+3. Train the lesson 2 Transformer and read its translations epoch by epoch.
 4. Decode three ways: greedy, beam search and sampling.
 5. Look inside: does *сказала* now look at *she*? And put our model next to opus-mt-en-ru.
 
