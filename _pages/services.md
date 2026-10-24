@@ -273,19 +273,18 @@ nav_order: 3
 
 <script>
   // The address is put together here rather than written into the page, which keeps it from the simplest scrapers.
-  document.querySelectorAll('.sv-copy').forEach((button) => {
-    const address = `${button.dataset.u}@${button.dataset.d}`;
-    const box = button.closest('.sv-address');
+  // Plain ES2017: the production build minifies inline scripts with Uglifier, which stops at newer syntax.
+  document.querySelectorAll('.sv-copy').forEach(function (button) {
+    var address = button.dataset.u + '@' + button.dataset.d;
+    var box = button.closest('.sv-address');
     box.querySelector('.sv-address-text').textContent = address;
     box.hidden = false;
-    button.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(address);
-        button.textContent = 'Copied';
-      } catch {
-        button.textContent = 'Select and copy';
-      }
-      setTimeout(() => (button.textContent = 'Copy'), 2000);
+    button.addEventListener('click', function () {
+      navigator.clipboard.writeText(address).then(
+        function () { button.textContent = 'Copied'; },
+        function () { button.textContent = 'Select and copy'; }
+      );
+      setTimeout(function () { button.textContent = 'Copy'; }, 2000);
     });
   });
 </script>
