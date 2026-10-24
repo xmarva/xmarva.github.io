@@ -5,7 +5,7 @@ title: services
 seo_title: Machine learning consulting and development
 seo_description: "Machine learning consulting and development by Eva Koroleva: computer vision, AI for finance, biomedicine and cybersecurity, and production ML systems, with generative AI and LLMs."
 description: Machine learning consulting and development
-# the hero's pictures, the top one first; drawn as HTML in _art/services/
+# the hero's pictures: the front one, then the left and the right; sources in _art/services/
 pictures:
   - assets/img/services/finance.png
   - assets/img/services/biomed.png
@@ -37,22 +37,18 @@ nav_order: 3
   }
   .sv-page { margin: 2.6rem 0 3.5rem; }
 
-  /* hero */
+  /* hero: the title across the card, a line and the actions under it, the pictures rising from the bottom edge */
   .sv-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    gap: 1.5rem;
-    align-items: center;
-    padding: 2.25rem 2.25rem 2.25rem 2.5rem;
     border: 1px solid var(--sv-border);
     border-radius: 16px;
     background: var(--global-card-bg-color);
     overflow: hidden;
   }
-  .sv-hero-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-width: 0; }
-  .sv-hero h1 { margin: 0; font-size: 2.1rem; font-weight: 500; line-height: 1.18; color: var(--global-text-color); }
-  .sv-summary { margin: 0; font-size: 1.05rem; line-height: 1.6; color: var(--sv-muted); }
-  .sv-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.35rem; }
+  .sv-hero-text { padding: 2.4rem 2.4rem 0; }
+  .sv-hero h1 { margin: 0.9rem 0 0.9rem; font-size: 2.4rem; font-weight: 500; line-height: 1.15; color: var(--global-text-color); text-wrap: balance; }
+  .sv-hero-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; }
+  .sv-summary { margin: 0; max-width: 40rem; font-size: 1.08rem; line-height: 1.6; color: var(--sv-muted); }
+  .sv-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
   .sv-primary {
     display: inline-flex;
     align-items: center;
@@ -70,6 +66,25 @@ nav_order: 3
   .sv-quiet { font-size: 0.95rem; color: var(--global-text-color) !important; text-decoration: none !important; }
   .sv-quiet:hover { color: var(--global-theme-color) !important; }
   .sv-quiet i { margin-right: 0.35rem; }
+
+  /* the stage: the exchange in front, the brain to the left, CyberChef to the right; the card's edge crops them */
+  .sv-stage { position: relative; height: 22rem; margin-top: 2.2rem; }
+  .sv-shot {
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    /* a hairline keeps the dark windows apart from each other and from a dark card */
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.15), 0 18px 40px rgba(0, 0, 0, 0.35);
+    transition: transform 0.35s ease;
+  }
+  .sv-shot figure, .sv-shot picture { display: block; margin: 0; }
+  .sv-shot img { display: block; width: 100%; height: auto; }
+  .sv-shot:nth-child(1) { left: 22%; width: 56%; top: 0; z-index: 3; }
+  .sv-shot:nth-child(2) { left: 2.5%; width: 46%; top: 3.6rem; z-index: 2; transform: rotate(-3deg); filter: brightness(0.9); }
+  .sv-shot:nth-child(3) { right: 2.5%; width: 46%; top: 3.6rem; z-index: 1; transform: rotate(3deg); filter: brightness(0.9); }
+  .sv-stage:hover .sv-shot:nth-child(1) { transform: translateY(-6px); }
+  .sv-stage:hover .sv-shot:nth-child(2) { transform: rotate(-4deg) translateX(-8px); }
+  .sv-stage:hover .sv-shot:nth-child(3) { transform: rotate(4deg) translateX(8px); }
 
   .sv-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .sv-chip {
@@ -91,27 +106,6 @@ nav_order: 3
   .sv-chip[data-domain="nlp"] { --c: var(--sv-nlp); }
   .sv-chip[data-domain="biomed"] { --c: var(--sv-bio); }
   .sv-chip[data-domain="neurosymbolic-ai"] { --c: var(--sv-genai); }
-
-  /* the areas' pictures: finance in front, the brain lower left, security above */
-  .sv-fan { position: relative; display: block; aspect-ratio: 5 / 4; }
-  .sv-fan-card {
-    position: absolute;
-    top: 50%;
-    width: 74%;
-    border-radius: 10px;
-    overflow: hidden;
-    /* a hairline keeps the dark windows apart from each other and from a dark card */
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.15), 0 16px 36px rgba(0, 0, 0, 0.32);
-    transform: translate(var(--x, 0%), calc(-50% + var(--y, 0%))) rotate(var(--r, 0deg));
-    transition: transform 0.35s ease;
-  }
-  .sv-fan-card:nth-child(1) { right: 0; --y: 4%; z-index: 3; }
-  .sv-fan-card:nth-child(2) { left: 0; --y: 22%; --r: -4deg; z-index: 2; filter: brightness(0.92); }
-  .sv-fan-card:nth-child(3) { left: 9%; width: 66%; --y: -34%; --r: 3deg; z-index: 1; filter: brightness(0.82); }
-  .sv-fan:hover .sv-fan-card:nth-child(2) { --x: -3%; --r: -6deg; }
-  .sv-fan:hover .sv-fan-card:nth-child(3) { --y: -40%; --r: 4deg; }
-  .sv-fan-card figure, .sv-fan-card picture { display: block; margin: 0; }
-  .sv-fan-card img { display: block; width: 100%; height: auto; }
 
   /* sections */
   .sv-head { margin: 3rem 0 1rem; }
@@ -154,7 +148,6 @@ nav_order: 3
   .sv-bio { --c: var(--sv-bio); }
   .sv-security { --c: var(--sv-nlp); }
   .sv-production { --c: var(--sv-genai); }
-  .sv-credit { margin: 0.6rem 0.2rem 0; font-size: 0.78rem; line-height: 1.5; color: var(--sv-muted); }
 
   /* contact */
   .sv-contact {
@@ -187,11 +180,11 @@ nav_order: 3
   .sv-others { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
 
   @media (max-width: 860px) {
-    .sv-hero { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; padding: 1.5rem; }
-    .sv-fan { order: -1; aspect-ratio: auto; }
-    .sv-fan-card:nth-child(1) { position: relative; top: auto; width: 100%; transform: none; }
-    .sv-fan-card:not(:first-child) { display: none; }
-    .sv-hero h1 { font-size: 1.7rem; }
+    .sv-hero-text { padding: 1.5rem 1.5rem 0; }
+    .sv-hero h1 { font-size: 1.8rem; }
+    .sv-stage { height: auto; margin-top: 1.5rem; padding: 0 1.5rem; }
+    .sv-shot:nth-child(1) { position: relative; left: auto; width: 100%; margin-bottom: -1.2rem; }
+    .sv-shot:not(:first-child) { display: none; }
     .sv-contact { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; padding: 1.5rem; }
   }
   @media (max-width: 680px) {
@@ -208,19 +201,20 @@ nav_order: 3
     <div class="sv-hero-text">
       <span class="sv-chips"><span class="sv-chip" data-domain="computer-vision">Computer Vision</span><span class="sv-chip" data-domain="genai">GenAI</span><span class="sv-chip" data-domain="nlp">LLM</span></span>
       <h1 id="sv-title">Machine learning consulting and development</h1>
-      <p class="sv-summary">I'm an ML engineer. I design and build models for finance, biomedicine and cybersecurity, and run them in production.</p>
-      <div class="sv-actions">
-        <a class="sv-primary" href="#contact">Write to me <span aria-hidden="true">→</span></a>
-        <a class="sv-quiet" href="{{ '/portfolio/' | relative_url }}"><i class="fas fa-briefcase" aria-hidden="true"></i>Portfolio</a>
+      <div class="sv-hero-row">
+        <p class="sv-summary">I'm an ML engineer. I design and build models for finance, biomedicine and cybersecurity, and run them in production.</p>
+        <div class="sv-actions">
+          <a class="sv-primary" href="#contact">Write to me <span aria-hidden="true">→</span></a>
+          <a class="sv-quiet" href="{{ '/portfolio/' | relative_url }}"><i class="fas fa-briefcase" aria-hidden="true"></i>Portfolio</a>
+        </div>
       </div>
     </div>
-    <div class="sv-fan" aria-hidden="true">
+    <div class="sv-stage" aria-hidden="true">
       {% for picture in page.pictures %}
-      <span class="sv-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=picture alt="" sizes="(min-width: 860px) 360px, 90vw" loading="eager" %}</span>
+      <span class="sv-shot">{% include figure.liquid path=picture alt="" sizes="(min-width: 860px) 560px, 90vw" loading="eager" %}</span>
       {% endfor %}
     </div>
   </section>
-  <p class="sv-credit">In the pictures: BTC/USDT from Binance in TradingView Lightweight Charts · resting-state fMRI from the ADHD-200 sample in nilearn · CyberChef by GCHQ.</p>
 
   <div class="sv-head"><h2 id="sv-what">What I do</h2></div>
   <ul class="sv-areas" aria-labelledby="sv-what">
