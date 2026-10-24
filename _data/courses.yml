@@ -19,14 +19,14 @@
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb
       cover: assets/img/teaching/tfs-01.png
-    - title: "The Transformer, built by hand"
+    - title: "Implementing the Transformer in PyTorch: why attention divides by √d_k"
       short: "The Transformer"
       topics: "Real models' blueprints, attention and why it divides by √d_k, masks, heads, positions, the encoder–decoder, checks against PyTorch"
       url: /blog/2026/transformers-from-scratch-02-transformer/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb
       cover: assets/img/teaching/tfs-02.png
-    - title: "From parrot to translator: training and decoding"
+    - title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
       short: "Training & decoding"
       topics: "Token-based batches, label smoothing, warm-up and what happens without it, mixed precision, greedy, beam search and sampling"
       url: /blog/2026/transformers-from-scratch-03-training/
@@ -40,13 +40,13 @@
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb
       cover: assets/img/teaching/tfs-04.png
-    - title: "Modern Transformer improvements, measured"
+    - title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
       topics: "Pre-norm, RMSNorm, RoPE, SwiGLU, fused attention, a KV cache, ablations"
-    - title: "Hyperparameter search on a GPU budget"
-      topics: "W&B Sweeps, early stopping, spending a GPU budget well"
-    - title: "From notebook to package"
+    - title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
+      topics: "Experiment tracking with W&B, W&B Sweeps, early stopping, spending a GPU budget well"
+    - title: "Your notebook is not a product: a Python package with tests and CI"
       topics: "Project layout, configs, a CLI, tests, CI, a model card"
-    - title: "Serving: an API and a demo"
+    - title: "Serving a Transformer with FastAPI and Gradio: latency under load"
       topics: "FastAPI, batching, Gradio, faster inference, latency under load"
-    - title: "Deploy, then watch it"
+    - title: "It works on my laptop: Docker, Hugging Face Spaces and monitoring"
       topics: "Docker, Hugging Face Spaces, CI/CD, metrics, drift, feedback"
