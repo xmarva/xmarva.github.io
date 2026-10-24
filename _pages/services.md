@@ -3,15 +3,20 @@ layout: default
 permalink: /services/
 title: services
 seo_title: Machine learning consulting and development
-seo_description: "Machine learning consulting and development by Eva Koroleva: computer vision, generative AI and language models, from a feasibility check to a prototype on your data and a system in production."
+seo_description: "Machine learning consulting and development by Eva Koroleva: AI for finance, biomedicine and cybersecurity, and production ML systems, built with computer vision, generative AI and LLMs."
 description: Machine learning consulting and development
+# the hero's pictures, the top one first; drawn as HTML in _art/services/
+pictures:
+  - assets/img/services/finance.png
+  - assets/img/services/biomed.png
+  - assets/img/services/security.png
 nav: true
 nav_order: 3
 ---
 
 <style>
-  /* The teaching page's language: a hero card with covers fanned out, numbered rows, the site's red for the one
-     action and the numbers; the portfolio's domain colours for the chips. */
+  /* The teaching page's language: a hero card with pictures fanned out, the site's red for the one action, the
+     portfolio's domain colours for the chips and the areas. */
   .sv {
     --sv-border: var(--global-divider-color);
     --sv-muted: var(--global-text-color-light);
@@ -35,8 +40,8 @@ nav_order: 3
   /* hero */
   .sv-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 1.5rem;
     align-items: center;
     padding: 2.25rem 2.25rem 2.25rem 2.5rem;
     border: 1px solid var(--sv-border);
@@ -87,26 +92,26 @@ nav_order: 3
   .sv-chip[data-domain="biomed"] { --c: var(--sv-bio); }
   .sv-chip[data-domain="neurosymbolic-ai"] { --c: var(--sv-genai); }
 
-  /* the case studies' covers, fanned out */
-  .sv-fan { position: relative; display: block; aspect-ratio: 4 / 3; }
+  /* the areas' pictures: finance in front, the brain lower left, security above */
+  .sv-fan { position: relative; display: block; aspect-ratio: 5 / 4; }
   .sv-fan-card {
     position: absolute;
-    right: 0;
     top: 50%;
-    width: 78%;
+    width: 74%;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 14px 32px rgba(0, 0, 0, 0.22);
-    transform: translate(calc(var(--i) * -12%), calc(-50% - var(--i) * 9%)) rotate(calc(var(--i) * -4deg));
-    z-index: calc(3 - var(--i));
-    filter: brightness(calc(1 - var(--i) * 0.12));
+    /* a hairline keeps the dark windows apart from each other and from a dark card */
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.15), 0 16px 36px rgba(0, 0, 0, 0.32);
+    transform: translate(var(--x, 0%), calc(-50% + var(--y, 0%))) rotate(var(--r, 0deg));
     transition: transform 0.35s ease;
   }
+  .sv-fan-card:nth-child(1) { right: 0; --y: 4%; z-index: 3; }
+  .sv-fan-card:nth-child(2) { left: 0; --y: 22%; --r: -4deg; z-index: 2; filter: brightness(0.92); }
+  .sv-fan-card:nth-child(3) { left: 9%; width: 66%; --y: -34%; --r: 3deg; z-index: 1; filter: brightness(0.82); }
+  .sv-fan:hover .sv-fan-card:nth-child(2) { --x: -3%; --r: -6deg; }
+  .sv-fan:hover .sv-fan-card:nth-child(3) { --y: -40%; --r: 4deg; }
   .sv-fan-card figure, .sv-fan-card picture { display: block; margin: 0; }
   .sv-fan-card img { display: block; width: 100%; height: auto; }
-  .sv-fan:hover .sv-fan-card {
-    transform: translate(calc(var(--i) * -15%), calc(-50% - var(--i) * 11%)) rotate(calc(var(--i) * -6deg));
-  }
 
   /* sections */
   .sv-head { margin: 3rem 0 1rem; }
@@ -120,62 +125,38 @@ nav_order: 3
   }
   .sv-head h2 { margin: 0; font-size: 1.45rem; font-weight: 500; color: var(--global-text-color); }
 
-  /* numbered rows, as the lessons on /teaching/ */
-  .sv-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sv-border); }
-  .sv-row {
+  /* what I do: four areas, an icon each */
+  .sv-areas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+  .sv-area {
+    --c: var(--sv-muted);
     display: grid;
-    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
-    column-gap: 1rem;
-    align-items: center;
-    padding: 1.15rem 0.25rem;
-    border-bottom: 1px solid var(--sv-border);
-    scroll-margin-top: 5rem;
-  }
-  .sv-num {
-    align-self: start;
-    padding-top: 0.15rem;
-    font-family: var(--global-code-font-family, monospace);
-    font-size: 0.95rem;
-    color: var(--global-theme-color);
-  }
-  .sv-row-title { margin: 0; font-size: 1.1rem; font-weight: 500; line-height: 1.4; color: var(--global-text-color); }
-  .sv-row-text { margin: 0.2rem 0 0; font-size: 0.98rem; line-height: 1.55; color: var(--global-text-color); }
-  .sv-row-meta { margin: 0.3rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--sv-muted); }
-  .sv-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.22rem 0.8rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 1rem;
+    padding: 1.35rem 1.4rem;
     border: 1px solid var(--sv-border);
-    border-radius: 999px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    color: var(--global-text-color) !important;
-    text-decoration: none !important;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    border-radius: 14px;
+    background: var(--global-card-bg-color);
+    transition: border-color 0.2s ease;
   }
-  .sv-pill:hover { border-color: var(--global-theme-color); color: var(--global-theme-color) !important; }
-
-  /* case studies: a row each, the cover as a thumbnail */
-  .sv-case {
+  .sv-area:hover { border-color: color-mix(in srgb, var(--c) 50%, var(--sv-border)); }
+  .sv-icon {
     display: grid;
-    grid-template-columns: 9rem minmax(0, 1fr) auto;
-    column-gap: 1.25rem;
-    align-items: center;
-    padding: 0.9rem 0.25rem;
-    border-bottom: 1px solid var(--sv-border);
-    color: var(--global-text-color) !important;
-    text-decoration: none !important;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) var(--sv-chip-alpha), transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent);
   }
-  .sv-thumb { display: block; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: #161618; }
-  .sv-thumb figure, .sv-thumb picture { display: block; height: 100%; margin: 0; }
-  .sv-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sv-case .sv-row-title { display: block; }
-  .sv-case:hover .sv-row-title { color: var(--global-theme-color); }
-  .sv-case .sv-row-meta {
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .sv-case .sv-chips { justify-content: flex-end; max-width: 15rem; }
+  .sv-area h3 { margin: 0.15rem 0 0.35rem; font-size: 1.12rem; font-weight: 500; color: var(--global-text-color); }
+  .sv-area p { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--global-text-color); }
+  .sv-area .sv-tags { margin-top: 0.55rem; font-size: 0.85rem; color: var(--sv-muted); }
+  .sv-finance { --c: var(--sv-cv); }
+  .sv-bio { --c: var(--sv-bio); }
+  .sv-security { --c: var(--sv-nlp); }
+  .sv-production { --c: var(--sv-3d); }
 
   /* how it goes */
   .sv-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin: 0; padding: 0; list-style: none; counter-reset: step; }
@@ -224,29 +205,25 @@ nav_order: 3
   @media (max-width: 860px) {
     .sv-hero { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; padding: 1.5rem; }
     .sv-fan { order: -1; aspect-ratio: auto; }
-    .sv-fan-card { position: relative; top: auto; width: 100%; transform: none; filter: none; }
+    .sv-fan-card:nth-child(1) { position: relative; top: auto; width: 100%; transform: none; }
     .sv-fan-card:not(:first-child) { display: none; }
-    .sv-fan:hover .sv-fan-card { transform: none; }
     .sv-hero h1 { font-size: 1.7rem; }
     .sv-contact { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; padding: 1.5rem; }
   }
   @media (max-width: 680px) {
-    .sv-row { grid-template-columns: 2.1rem minmax(0, 1fr); row-gap: 0.75rem; }
-    .sv-row .sv-pill { grid-column: 2; justify-self: start; }
-    .sv-case { grid-template-columns: 6.5rem minmax(0, 1fr); row-gap: 0.6rem; }
-    .sv-case .sv-chips { grid-column: 2; justify-content: flex-start; }
+    .sv-areas { grid-template-columns: minmax(0, 1fr); }
+    .sv-area { padding: 1.1rem 1.15rem; }
     .sv-steps { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   }
 </style>
 
 {% assign email_parts = site.email | split: "@" %}
 {% capture mailto %}mailto:{{ site.email | encode_email }}?body=Hi%20Eva%2C%0A%0AWhat%20we%20are%20building%3A%0AWhat%20data%20we%20have%3A%0AWhen%20we%20need%20it%3A%0A{% endcapture %}
-{% assign work_projects = site.projects | where: "category", "work" | sort: "importance" %}
 
 <div class="post sv sv-page">
   <section class="sv-hero" aria-labelledby="sv-title">
     <div class="sv-hero-text">
-      <span class="sv-chips"><span class="sv-chip" data-domain="computer-vision">Computer Vision</span><span class="sv-chip" data-domain="genai">GenAI</span><span class="sv-chip" data-domain="3d">3D</span><span class="sv-chip" data-domain="nlp">NLP</span></span>
+      <span class="sv-chips"><span class="sv-chip" data-domain="computer-vision">Computer Vision</span><span class="sv-chip" data-domain="genai">GenAI</span><span class="sv-chip" data-domain="nlp">LLM</span></span>
       <h1 id="sv-title">Machine learning consulting and development</h1>
       <p class="sv-summary">I help teams find out what machine learning can do for their product, and then build it, from a prototype on their data to a system in production.</p>
       <div class="sv-actions">
@@ -254,47 +231,47 @@ nav_order: 3
         <a class="sv-quiet" href="{{ '/portfolio/' | relative_url }}"><i class="fas fa-briefcase" aria-hidden="true"></i>Portfolio</a>
       </div>
     </div>
-    <a class="sv-fan" href="{{ '/portfolio/' | relative_url }}" tabindex="-1" aria-hidden="true">
-      {% for project in work_projects limit: 3 %}
-      <span class="sv-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=project.img alt="" sizes="(min-width: 860px) 360px, 90vw" loading="eager" %}</span>
+    <div class="sv-fan" aria-hidden="true">
+      {% for picture in page.pictures %}
+      <span class="sv-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=picture alt="" sizes="(min-width: 860px) 360px, 90vw" loading="eager" %}</span>
       {% endfor %}
-    </a>
+    </div>
   </section>
 
   <div class="sv-head"><h2 id="sv-what">What I do</h2></div>
-  <ol class="sv-rows" aria-labelledby="sv-what">
-    <li class="sv-row" id="consulting">
-      <span class="sv-num">01</span>
+  <div class="sv-areas" role="list" aria-labelledby="sv-what">
+    <article class="sv-area sv-finance" role="listitem" id="finance">
+      <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span>
       <div>
-        <h3 class="sv-row-title">Consulting</h3>
-        <p class="sv-row-text">For deciding what to build, or finding out why something doesn't work.</p>
-        <p class="sv-row-meta">Feasibility checks: whether ML can solve the problem, with what data and at what cost · reviews of models and ML systems already running · roadmaps: what to build first, buy or skip</p>
+        <h3>AI for finance</h3>
+        <p>Assistants for traders and analysts that read markets, portfolios and reports, in crypto and traditional markets.</p>
+        <p class="sv-tags">Market assistants · forecasting · risk · on-chain data</p>
       </div>
-      <a class="sv-pill" href="{{ mailto | replace: '?body=', '?subject=Consulting&body=' }}">Ask about it</a>
-    </li>
-    <li class="sv-row" id="development">
-      <span class="sv-num">02</span>
+    </article>
+    <article class="sv-area sv-bio" role="listitem" id="biomedicine">
+      <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
       <div>
-        <h3 class="sv-row-title">Development</h3>
-        <p class="sv-row-text">A prototype or a production system, built with a small team of engineers I have worked with.</p>
-        <p class="sv-row-meta">Prototypes that test the idea on your data · production services with an API, tests and monitoring · models made small and fast for phones and edge devices · slow or inaccurate models, fixed</p>
+        <h3>AI for biomedicine</h3>
+        <p>Models for clinical text, medical images and signals, and tools for psychiatry that follow a patient between visits.</p>
+        <p class="sv-tags">Clinical NLP · medical imaging · psychiatry · knowledge graphs</p>
       </div>
-      <a class="sv-pill" href="{{ mailto | replace: '?body=', '?subject=Development&body=' }}">Ask about it</a>
-    </li>
-  </ol>
-
-  <div class="sv-head"><h2 id="sv-cases">Case studies</h2></div>
-  <div class="sv-rows" role="list" aria-labelledby="sv-cases">
-    {% for project in work_projects %}
-    <a class="sv-case" role="listitem" href="{{ project.url | relative_url }}">
-      <span class="sv-thumb">{% if project.img %}{% include figure.liquid path=project.img alt="" sizes="144px" %}{% endif %}</span>
-      <span>
-        <span class="sv-row-title">{{ project.title }}</span>
-        <span class="sv-row-meta">{{ project.description }}</span>
-      </span>
-      <span class="sv-chips">{% for domain in project.domains %}<span class="sv-chip" data-domain="{{ domain | slugify }}">{{ domain }}</span>{% endfor %}</span>
-    </a>
-    {% endfor %}
+    </article>
+    <article class="sv-area sv-security" role="listitem" id="cybersecurity">
+      <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+      <div>
+        <h3>AI for cybersecurity</h3>
+        <p>Anomaly detection in logs and traffic, phishing and malware classification, assistants that help analysts triage incidents.</p>
+        <p class="sv-tags">Log anomalies · phishing · threat intelligence · LLM agents</p>
+      </div>
+    </article>
+    <article class="sv-area sv-production" role="listitem" id="production">
+      <span class="sv-icon" aria-hidden="true"><i class="fa-solid fa-server"></i></span>
+      <div>
+        <h3>Production systems</h3>
+        <p>Models that keep working after the demo: serving, monitoring and pipelines, and models made small and fast for edge devices.</p>
+        <p class="sv-tags">Serving · MLOps · monitoring · edge inference</p>
+      </div>
+    </article>
   </div>
 
   <div class="sv-head"><h2 id="sv-how">How a project goes</h2></div>
@@ -354,19 +331,37 @@ nav_order: 3
     "@graph": [
       {
         "@type": "Service",
-        "name": "Machine learning consulting",
-        "serviceType": "Machine learning consulting",
-        "description": "Feasibility checks, reviews of ML systems and roadmaps for computer vision, generative AI and language models.",
-        "url": {{ '/services/#consulting' | absolute_url | jsonify }},
+        "name": "AI for finance",
+        "serviceType": "AI for finance",
+        "description": "Market and portfolio assistants, forecasting, risk and anomaly detection for crypto and traditional markets.",
+        "url": {{ '/services/#finance' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
       },
       {
         "@type": "Service",
-        "name": "Machine learning development",
-        "serviceType": "Machine learning development",
-        "description": "Prototypes and production systems for computer vision, generative AI and language models, including models for mobile and edge devices.",
-        "url": {{ '/services/#development' | absolute_url | jsonify }},
+        "name": "AI for biomedicine",
+        "serviceType": "AI for biomedicine",
+        "description": "Models for clinical text, medical images and signals, and tools for psychiatry.",
+        "url": {{ '/services/#biomedicine' | absolute_url | jsonify }},
+        "areaServed": "Worldwide",
+        "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
+      },
+      {
+        "@type": "Service",
+        "name": "AI for cybersecurity",
+        "serviceType": "AI for cybersecurity",
+        "description": "Anomaly detection in logs and network traffic, phishing and malware classification, assistants for security analysts.",
+        "url": {{ '/services/#cybersecurity' | absolute_url | jsonify }},
+        "areaServed": "Worldwide",
+        "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
+      },
+      {
+        "@type": "Service",
+        "name": "Production ML systems",
+        "serviceType": "Production ML systems",
+        "description": "Serving, monitoring, pipelines and edge inference for machine learning models.",
+        "url": {{ '/services/#production' | absolute_url | jsonify }},
         "areaServed": "Worldwide",
         "provider": {"@type": "Person", "name": "Eva Koroleva", "url": {{ '/' | absolute_url | jsonify }}}
       }
