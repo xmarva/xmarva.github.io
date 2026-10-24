@@ -72,8 +72,8 @@ hide_header: true
     gap: 0.45rem;
     padding: 0.5rem 1.15rem;
     border-radius: 999px;
-    background: var(--global-theme-color);
-    color: var(--global-bg-color) !important;
+    background: var(--global-button-color);
+    color: #fff !important;
     font-size: 0.95rem;
     font-weight: 500;
     text-decoration: none !important;

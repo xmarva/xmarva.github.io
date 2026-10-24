@@ -10,6 +10,7 @@
   --global-text-color: #{$black-color};
   --global-text-color-light: #{$grey-text-light-theme};
   --global-theme-color: #{$red-color-dark};
+  --global-button-color: #{$red-color-dark}; // a filled button: white text on it reads at 6.9:1
   --global-hover-color: #{$red-color-dark};
   --global-hover-text-color: #{$white-color};
   --global-footer-bg-color: #{$white-color};
@@ -80,6 +81,7 @@ html[data-theme="dark"] {
   --global-text-color: #{$grey-color-light};
   --global-text-color-light: #{$grey-text-dark-theme};
   --global-theme-color: #{$red-color-on-dark};
+  --global-button-color: #d92b2b; // the dark theme's red is too light under white text (3.4:1); this is 4.8:1
   --global-hover-color: #{$red-color-on-dark};
   --global-hover-text-color: #{$white-color};
   --global-footer-bg-color: #{$grey-color-dark};
