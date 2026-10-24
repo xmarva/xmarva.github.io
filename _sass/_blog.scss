@@ -560,6 +560,125 @@ html[data-theme="dark"] #markdown-content {
   }
 }
 
+// ---------------------------------------------------------------- numbered citations
+// A citation is a small raised number in the palette's rose, quieter than the red of ordinary links; it shows its
+// reference in a card (citations.js) and leads to the numbered list under References.
+
+:root {
+  --cite-color: #d23f57;
+  --cite-tint: rgba(210, 63, 87, 0.1);
+}
+
+html[data-theme="dark"] {
+  --cite-color: #f48a9a;
+  --cite-tint: rgba(244, 138, 154, 0.14);
+}
+
+#markdown-content {
+  sup.cite {
+    font-size: 0.7em;
+    line-height: 0;
+    vertical-align: super;
+    margin-left: 0.08em;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+
+    a {
+      color: var(--cite-color);
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0 0.08em;
+      border-radius: 3px;
+      scroll-margin-top: 6rem;
+
+      &:hover,
+      &:focus-visible,
+      &[aria-expanded="true"] {
+        background: var(--cite-tint);
+        text-decoration: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--cite-color);
+        outline-offset: 1px;
+      }
+    }
+  }
+
+  ol.tfs-refs {
+    padding-left: 2.1rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+
+    li {
+      margin: 0.4rem 0;
+      padding: 0.1rem 0.35rem;
+      border-radius: 5px;
+      scroll-margin-top: 6rem;
+      transition: background-color 0.6s ease;
+
+      &::marker {
+        color: var(--cite-color);
+        font-variant-numeric: tabular-nums;
+      }
+
+      &:target {
+        background: var(--cite-tint);
+      }
+    }
+
+    .ref-back {
+      margin-left: 0.3rem;
+      color: var(--global-text-color-light);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--cite-color);
+      }
+    }
+  }
+}
+
+.cite-card {
+  position: absolute;
+  z-index: 1050;
+  max-width: min(26rem, calc(100vw - 2rem));
+  padding: 0.7rem 0.85rem 0.75rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 8px;
+  background: var(--global-card-bg-color);
+  color: var(--global-text-color);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  font-size: 0.85rem;
+  line-height: 1.45;
+
+  .cite-card-number {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--cite-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  a {
+    color: var(--global-theme-color);
+  }
+
+  .cite-card-jump {
+    display: inline-block;
+    margin-top: 0.45rem;
+    color: var(--global-text-color-light);
+    font-size: 0.78rem;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--cite-color);
+    }
+  }
+}
+
 // ---------------------------------------------------------------- read next
 
 .read-next {
