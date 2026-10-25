@@ -11,34 +11,19 @@ seo_description: "Eva Koroleva's blog: long reads on machine learning, Transform
 ---
 
 {% comment %}
-  The home page is the blog, laid out like a magazine: the newest post large, the others as a grid of covers. Lessons
-  of the course are posts like the rest, with a small badge. Chips filter by category in the page (ES2017 script at
-  the end: the production build minifies it with Uglifier). The full list by date stays at /blog/.
+  The home page is the blog: the newest posts as rows, the cover on the left and the title on the right, level with
+  the top of the cover. Lessons of the course are posts like the rest, with a small badge. Chips filter by category
+  in the page (ES2017 script at the end: the production build minifies it with Uglifier). The full list by date
+  stays at /blog/.
 {% endcomment %}
 
 {% assign course = site.data.courses | where: 'id', 'tfs' | first %}
-{% assign lead = site.posts | first %}
-{% assign rest = site.posts | slice: 1, 12 %}
+{% assign shown = 14 %}
 
 <style>
   .bh { --bh-border: var(--global-divider-color); --bh-muted: var(--global-text-color-light); margin: 2.4rem 0 1rem; }
 
-  .bh-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
-
-  .bh-lesson {
-    display: inline-block;
-    margin-right: 0.45rem;
-    padding: 0.02rem 0.5rem;
-    border: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
-    border-radius: 999px;
-    color: var(--global-theme-color) !important;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-decoration: none !important;
-    vertical-align: 0.05rem;
-  }
-  .bh-lesson:hover { background: color-mix(in srgb, var(--global-theme-color) 10%, transparent); }
+  .bh-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
   .bh-chip {
     padding: 0.3rem 0.9rem;
     border: 1px solid var(--bh-border);
@@ -57,30 +42,40 @@ seo_description: "Eva Koroleva's blog: long reads on machine learning, Transform
     color: var(--global-theme-color);
   }
 
+  .bh-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--bh-border);
+  }
+
   /* covers keep their 1200x630 shape; a post without one gets a typographic cover in the same dark-and-red style */
   .bh-cover {
     position: relative;
     display: block;
     aspect-ratio: 1200 / 630;
     border: 1px solid var(--bh-border);
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     background: #161618;
   }
   .bh-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-  .bh-card:hover .bh-cover img, .bh-lead:hover .bh-cover img { transform: scale(1.02); }
+  .bh-row:hover .bh-cover img { transform: scale(1.03); }
   .bh-cover-text {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 8% 7%;
+    padding: 7% 7%;
     color: #f2f3f5;
   }
   .bh-cover-text small {
     font-family: var(--global-code-font-family, monospace);
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #9da3ae;
@@ -94,67 +89,75 @@ seo_description: "Eva Koroleva's blog: long reads on machine learning, Transform
     border-radius: 50%;
     background: #ff3636;
   }
-  .bh-cover-text strong { font-size: 1.35rem; font-weight: 600; line-height: 1.2; }
+  .bh-cover-text strong { font-size: 1.05rem; font-weight: 600; line-height: 1.2; }
 
-  .bh-meta { margin: 0; font-size: 0.82rem; color: var(--bh-muted); }
+  .bh-text { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  /* the first line of the title sits level with the top edge of the cover: the negative margin takes back the space
+     a line box keeps above the capitals */
+  .bh-title { margin: -0.32em 0 0; font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
+  .bh-title a { color: var(--global-text-color); text-decoration: none; transition: color 0.2s ease; }
+  .bh-row:hover .bh-title a { color: var(--global-theme-color); }
+  .bh-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--bh-muted);
+  }
+  .bh-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.5rem;
+    margin: 0.15rem 0 0;
+    font-size: 0.82rem;
+    color: var(--bh-muted);
+  }
+  .bh-meta span, .bh-meta time { color: inherit; }
   .bh-meta a { position: relative; z-index: 2; color: inherit; }
   .bh-meta a:hover { color: var(--global-theme-color); }
-  .bh-title { margin: 0; font-weight: 500; line-height: 1.3; }
-  .bh-title a { color: var(--global-text-color); text-decoration: none; }
-  .bh-title a:hover { color: var(--global-theme-color); }
-  .bh-desc { margin: 0; color: var(--bh-muted); line-height: 1.55; }
+  .bh-dot { opacity: 0.6; }
 
-  .bh-lead {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    gap: 2rem;
-    align-items: center;
-    margin: 1.75rem 0 0;
-  }
-  .bh-lead-text { display: flex; flex-direction: column; gap: 0.75rem; }
-  .bh-lead .bh-title { font-size: 1.85rem; }
-  .bh-lead .bh-desc { font-size: 1.02rem; }
-  .bh-label {
-    align-self: flex-start;
-    padding: 0.08rem 0.55rem;
+  .bh-badge, .bh-lesson {
+    display: inline-block;
+    padding: 0.02rem 0.5rem;
     border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .bh-badge {
     background: color-mix(in srgb, var(--global-theme-color) 14%, transparent);
     color: var(--global-theme-color);
-    font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-
-  .bh-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.4rem 1.75rem; margin: 3rem 0 0; }
-  .bh-card { position: relative; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
-  .bh-card .bh-cover { margin-bottom: 0.25rem; }
-  .bh-card .bh-title { font-size: 1.08rem; }
-  .bh-card .bh-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    font-size: 0.9rem;
+  .bh-lesson {
+    border: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
+    color: var(--global-theme-color) !important;
+    text-decoration: none !important;
   }
+  .bh-lesson:hover { background: color-mix(in srgb, var(--global-theme-color) 10%, transparent); }
 
-  .bh-more { display: flex; justify-content: flex-end; margin: 3rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--bh-border); }
+  .bh-more { display: flex; justify-content: flex-end; padding-top: 1.25rem; border-top: 1px solid var(--bh-border); }
   .bh-more a { font-size: 0.95rem; color: var(--global-text-color); text-decoration: none; }
   .bh-more a:hover { color: var(--global-theme-color); }
 
   .bh [hidden] { display: none !important; }
 
-  @media (max-width: 991px) {
-    .bh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
   @media (max-width: 767px) {
     .bh { margin-top: 1.5rem; }
-    .bh-lead { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-    .bh-lead .bh-title { font-size: 1.45rem; }
+    .bh-row { grid-template-columns: 12rem minmax(0, 1fr); gap: 1.1rem; }
+    .bh-title { font-size: 1.1rem; }
+    .bh-desc { -webkit-line-clamp: 3; font-size: 0.9rem; }
   }
   @media (max-width: 575px) {
-    .bh-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    .bh-row { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+    .bh-title { margin-top: 0; font-size: 1.15rem; }
   }
 </style>
 
@@ -167,53 +170,37 @@ seo_description: "Eva Koroleva's blog: long reads on machine learning, Transform
     {% endfor %}
   </ul>
 
-  {% assign category = lead.categories | first %}
-  {% assign read_time = lead.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-  {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == lead.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
-  <article class="bh-lead" data-category="{{ category }}">
-    <a class="bh-cover" href="{{ lead.url | relative_url }}" tabindex="-1" aria-hidden="true">
-      {% if lead.thumbnail %}
-        <img src="{{ lead.thumbnail | relative_url }}" alt="" width="1200" height="630" decoding="async">
-      {% else %}
-        <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ lead.title }}</strong></span>
-      {% endif %}
-    </a>
-    <div class="bh-lead-text">
-      <span class="bh-label">Latest</span>
-      <p class="bh-meta">
-        {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">Course · lesson {{ lesson }}</a>{% endif %}
-        <time datetime="{{ lead.date | date_to_xmlschema }}">{{ lead.date | date: '%b %-d, %Y' }}</time> · {{ read_time }} min read
-        {% if category %}· <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}
-      </p>
-      <h2 class="bh-title"><a href="{{ lead.url | relative_url }}">{{ lead.title }}</a></h2>
-      {% if lead.description %}<p class="bh-desc">{{ lead.description }}</p>{% endif %}
-    </div>
-  </article>
-
-  <div class="bh-grid">
-    {% for post in rest %}
-      {% assign category = post.categories | first %}
-      {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-      {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
-      <article class="bh-card" data-category="{{ category }}">
-        <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
-          {% if post.thumbnail %}
-            <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
-          {% else %}
-            <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ post.title }}</strong></span>
-          {% endif %}
-        </a>
-        <p class="bh-meta">
-          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">Course · lesson {{ lesson }}</a>{% endif %}
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time> · {{ read_time }} min read
-        </p>
-        <h3 class="bh-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+  {% for post in site.posts limit: shown %}
+    {% assign category = post.categories | first %}
+    {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+    {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
+    <article class="bh-row" data-category="{{ category }}">
+      <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% if post.thumbnail %}
+          <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" {% unless forloop.first %}loading="lazy" {% endunless %}decoding="async">
+        {% else %}
+          <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ post.title }}</strong></span>
+        {% endif %}
+      </a>
+      <div class="bh-text">
+        <h2 class="bh-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         {% if post.description %}<p class="bh-desc">{{ post.description }}</p>{% endif %}
-      </article>
-    {% endfor %}
-  </div>
+        <p class="bh-meta">
+          {% if forloop.first %}<span class="bh-badge">Latest</span>{% endif %}
+          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">Course · lesson {{ lesson }}</a>{% endif %}
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time>
+          <span class="bh-dot" aria-hidden="true">·</span>
+          <span>{{ read_time }} min read</span>
+          {% if category %}
+            <span class="bh-dot" aria-hidden="true">·</span>
+            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
+          {% endif %}
+        </p>
+      </div>
+    </article>
+  {% endfor %}
 
-  <nav class="bh-more"><a href="{{ '/blog/' | relative_url }}">All posts by date →</a></nav>
+  <nav class="bh-more"><a href="{{ '/blog/' | relative_url }}">All posts by date&nbsp;→</a></nav>
 </div>
 
 <script>

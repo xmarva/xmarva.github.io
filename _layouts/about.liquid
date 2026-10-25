@@ -1,88 +1,202 @@
 ---
 layout: default
 ---
-<div class="post">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
+{% comment %}
+  The about page: the name, the place and the text from the page next to the photo, then news, the newest posts and
+  the selected publications as quiet lists under the red-bar section heads of /teaching/, and the contacts at the end.
+  The text itself lives in _pages/about.md.
+{% endcomment %}
+<style>
+  .ab { --ab-border: var(--global-divider-color); --ab-muted: var(--global-text-color-light); margin: 2.6rem 0 1rem; }
 
-  <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
-          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
-      </div>
-    {% endif %}
+  .ab-hero { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: 3rem; align-items: start; }
+  .ab-name { margin: 0; font-size: 2.6rem; font-weight: 300; line-height: 1.1; color: var(--global-text-color); }
+  .ab-name b { font-weight: 600; }
+  .ab-place { margin: 0.7rem 0 0; font-size: 0.9rem; color: var(--ab-muted); }
+  .ab-place p { margin: 0; }
+  .ab-bio { margin-top: 1.6rem; font-size: 1.05rem; line-height: 1.7; }
+  .ab-bio p { margin: 0 0 0.95rem; }
+  .ab-bio p:last-child { margin-bottom: 0; }
 
-    <div class="clearfix">{{ content }}</div>
+  /* the photo with a thin ring set off from it, the one ornament on the page */
+  .ab-photo { margin: 0.4rem 0 0; }
+  .ab-photo figure, .ab-photo picture { display: block; margin: 0; }
+  .ab-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    outline: 1px solid var(--ab-border);
+    outline-offset: 7px;
+    box-shadow: none !important;
+  }
 
-    <!-- News, latest posts and selected papers, each section in a card (see h2-cards.js) -->
-    <div class="h2-cards">
-      <!-- News -->
-      {% if page.news and site.announcements.enabled %}
-        <h2>
-          <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-        </h2>
-        {% include news.liquid limit=true %}
-      {% endif %}
+  .ab-section { margin-top: 3.4rem; }
+  .ab-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; }
+  .ab-head h2 { margin: 0; font-size: 1.4rem; font-weight: 500; color: var(--global-text-color); }
+  .ab-head h2::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 3px;
+    margin-bottom: 0.75rem;
+    background: var(--global-theme-color);
+  }
+  .ab-head a { font-size: 0.9rem; color: var(--ab-muted); text-decoration: none; }
+  .ab-head a:hover { color: var(--global-theme-color); }
 
-      <!-- Latest posts -->
-      {% if site.latest_posts.enabled %}
-        <h2>
-          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-        </h2>
-        {% include latest_posts.liquid %}
-      {% endif %}
+  .ab-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-border); }
+  .ab-list > li { border-bottom: 1px solid var(--ab-border); }
 
-      <!-- Selected papers -->
-      {% if page.selected_papers %}
-        {% assign publications_page = site.pages | where: 'permalink', '/publications/' | first %}
-        <h2>
-          {% if publications_page %}
-            <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-          {% else %}
-            selected publications
-          {% endif %}
-        </h2>
-        {% include selected_papers.liquid %}
-      {% endif %}
+  .ab-news > li { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1.25rem; padding: 0.95rem 0.15rem; }
+  .ab-date {
+    padding-top: 0.12rem;
+    font-family: var(--global-code-font-family, monospace);
+    font-size: 0.82rem;
+    color: var(--ab-muted);
+    white-space: nowrap;
+  }
+  .ab-news p { margin: 0; line-height: 1.6; }
+
+  .ab-posts > li { position: relative; display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1.25rem; align-items: center; padding: 0.9rem 0.15rem; }
+  .ab-thumb {
+    display: block;
+    aspect-ratio: 1200 / 630;
+    border: 1px solid var(--ab-border);
+    border-radius: 7px;
+    overflow: hidden;
+    background: #161618;
+  }
+  .ab-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ab-post-title { margin: 0; font-size: 1.05rem; font-weight: 500; line-height: 1.4; }
+  .ab-post-title a { color: var(--global-text-color); text-decoration: none; }
+  .ab-posts > li:hover .ab-post-title a { color: var(--global-theme-color); }
+  .ab-posts .ab-date { display: block; margin-top: 0.3rem; padding: 0; }
+
+  /* the bibliography as al-folio renders it, flattened into the same list style */
+  .ab .publications ol.bibliography { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-border); }
+  .ab .publications ol.bibliography > li { padding: 1.1rem 0 1.1rem 0.15rem; border-bottom: 1px solid var(--ab-border); }
+  .ab .publications .row { align-items: flex-start; }
+  .ab .publications .preview { width: 100%; max-width: 8.5rem; border-radius: 7px !important; box-shadow: none !important; border: 1px solid var(--ab-border); }
+  .ab .publications .title { font-weight: 500; line-height: 1.4; }
+  .ab .publications .author, .ab .publications .periodical { color: var(--ab-muted); font-size: 0.92rem; }
+  .ab .publications .links { margin-top: 0.45rem; }
+  .ab .publications .links .btn {
+    padding: 0.08rem 0.65rem;
+    border: 1px solid var(--ab-border);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+  .ab .publications .links .btn:hover { border-color: var(--global-theme-color); color: var(--global-theme-color); }
+
+  .ab-contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2.6rem; }
+  .ab-contact .contact-icons { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: 1rem !important; }
+  .ab-contact .contact-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid var(--ab-border);
+    border-radius: 50%;
+    color: var(--global-text-color) !important;
+    font-size: 1.05rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .ab-contact .contact-icons a:hover { border-color: var(--global-theme-color); color: var(--global-theme-color) !important; }
+  .ab-contact .contact-note { color: var(--ab-muted); font-size: 0.9rem; }
+
+  @media (max-width: 767px) {
+    .ab { margin-top: 1.6rem; }
+    .ab-hero { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+    .ab-photo { order: -1; width: 9.5rem; margin: 0.5rem 0 0 0.5rem; }
+    .ab-name { font-size: 2.1rem; }
+    .ab-news > li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
+    .ab-posts > li { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.9rem; }
+  }
+</style>
+
+<div class="ab">
+  <section class="ab-hero">
+    <div>
+      <h1 class="ab-name">
+        {% if site.title == 'blank' %}<b>{{ site.first_name }}</b> {{ site.middle_name }} {{ site.last_name }}{% else %}{{ site.title }}{% endif %}
+      </h1>
+      {% if page.profile.more_info %}<div class="ab-place">{{ page.profile.more_info }}</div>{% endif %}
+      <div class="ab-bio">{{ content }}</div>
     </div>
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
+    {% if page.profile.image %}
+      <div class="ab-photo">
+        {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
+        {%
+          include figure.liquid loading="eager" path=profile_image_path class="ab-photo-img" sizes="(min-width: 768px) 240px, 152px"
+          alt="Eva Koroleva" cache_bust=true
+        %}
       </div>
     {% endif %}
+  </section>
 
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
-    {% endif %}
-  </article>
+  {% if page.news and site.announcements.enabled and site.news != blank %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>News</h2>
+      </div>
+      <ul class="ab-list ab-news">
+        {% assign news = site.news | reverse %}
+        {% for item in news limit: site.announcements.limit %}
+          <li>
+            <span class="ab-date">{{ item.date | date: '%b %-d, %Y' }}</span>
+            <p>
+              {% if item.inline %}
+                {{ item.content | remove: '<p>' | remove: '</p>' | emojify }}
+              {% else %}
+                <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+              {% endif %}
+            </p>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  {% if site.latest_posts.enabled %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>Latest posts</h2>
+        <a href="{{ '/' | relative_url }}">All posts&nbsp;→</a>
+      </div>
+      <ul class="ab-list ab-posts">
+        {% for post in site.posts limit: site.latest_posts.limit %}
+          <li>
+            <a class="ab-thumb" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+              {% if post.thumbnail %}<img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">{% endif %}
+            </a>
+            <div>
+              <h3 class="ab-post-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+              <span class="ab-date">{{ post.date | date: '%b %-d, %Y' }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  {% if page.selected_papers %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>Selected publications</h2>
+      </div>
+      {% include selected_papers.liquid %}
+    </section>
+  {% endif %}
+
+  {% if page.social %}
+    <footer class="ab-contact">
+      <div class="contact-icons">{% include social.liquid %}</div>
+      {% if site.contact_note != blank %}<div class="contact-note">{{ site.contact_note }}</div>{% endif %}
+    </footer>
+  {% endif %}
 </div>
