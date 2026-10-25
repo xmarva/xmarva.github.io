@@ -33,58 +33,6 @@ display_categories: [work, personal]
     --pf-chip-alpha: 16%;
   }
 
-  /* the resume: its first page sticks out of the card like a sheet out of a folder */
-  .pf-cv {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    margin: 2.6rem 0 3rem;
-    padding: 1.1rem 1.5rem 1.1rem 128px;
-    min-height: 104px;
-    border: 1px solid var(--pf-border);
-    border-radius: 14px;
-    background: var(--global-card-bg-color);
-    color: var(--global-text-color) !important;
-    text-decoration: none !important;
-    transition: border-color 0.2s ease;
-  }
-  .pf-cv:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--pf-border)); }
-  .pf-cv-sheet {
-    position: absolute;
-    left: 28px;
-    bottom: 14px;
-    width: 76px;
-    aspect-ratio: 240 / 340;
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 22px rgba(0, 0, 0, 0.18);
-    transform: rotate(-5deg);
-    transform-origin: 50% 100%;
-    transition: transform 0.3s ease;
-  }
-  .pf-cv-sheet img { display: block; width: 100%; height: 100%; }
-  .pf-cv:hover .pf-cv-sheet { transform: rotate(0deg) translateY(-6px); }
-  .pf-cv-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
-  .pf-cv-title { font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
-  .pf-cv-meta { font-size: 0.9rem; color: var(--pf-muted); }
-  .pf-cv-action {
-    margin-left: auto;
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 1.05rem;
-    border-radius: 999px;
-    background: var(--global-button-color);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: filter 0.2s ease;
-  }
-  .pf-cv:hover .pf-cv-action { filter: brightness(1.1); }
-
   .pf-section { margin-bottom: 3.5rem; }
   .pf-section-head { margin-bottom: 1.4rem; }
   .pf-section-head::before {
@@ -195,28 +143,12 @@ display_categories: [work, personal]
     .pf-head .pf-chips { margin-left: 0; justify-content: flex-start; padding-top: 0; }  /* under the title here */
   }
   @media (max-width: 760px) {
-    .pf-cv { margin-top: 2rem; padding: 0.9rem 1rem 0.9rem 100px; gap: 0.75rem; }
-    .pf-cv-sheet { left: 20px; width: 62px; }
-    .pf-cv-title { font-size: 1.15rem; }
     .pf-case { grid-template-columns: minmax(0, 1fr); }
     .pf-grid { grid-template-columns: minmax(0, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .pf-cv-meta { display: none; }
-    .pf-cv-action span { display: none; }
-    .pf-cv-action { padding: 0.55rem 0.7rem; }
   }
 </style>
 
 <div class="pf">
-  <a class="pf-cv" href="{{ '/assets/pdf/eva_koroleva_cv.pdf' | relative_url }}" target="_blank" rel="noopener">
-    <span class="pf-cv-sheet" aria-hidden="true"><img src="{{ '/assets/img/resume-page.webp' | relative_url }}" width="240" height="340" alt="" loading="eager" decoding="async"></span>
-    <span class="pf-cv-text">
-      <span class="pf-cv-title">Resume</span>
-      <span class="pf-cv-meta">Experience, skills and education on one page</span>
-    </span>
-    <span class="pf-cv-action"><i class="fas fa-arrow-down" aria-hidden="true"></i><span>PDF</span></span>
-  </a>
 
   <section class="pf-section" aria-labelledby="pf-work">
     <div class="pf-section-head">
