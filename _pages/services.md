@@ -10,8 +10,10 @@ pictures:
   - assets/img/services/finance.png
   - assets/img/services/biomed.png
   - assets/img/services/security.png
-nav: true
-nav_order: 3
+# hidden for now: out of the menu, the sitemap and search results; the address still works
+nav: false
+sitemap: false
+robots: noindex, follow
 ---
 
 <style>
