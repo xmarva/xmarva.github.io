@@ -251,13 +251,15 @@
   {% endif %}
 
   {% capture page_url %}{{ page.url | prepend: site.baseurl | prepend: site.url | remove_first: 'index.html' }}{% endcapture %}
-  {% capture person_json %}{"@type": "Person", "name": {{ author_name | strip | jsonify }}, "url": {{ site.url | append: '/' | jsonify }}{% if site.og_image %}, "image": {{ site.og_image | jsonify }}{% endif %}{% if site.home_title %}, "jobTitle": {{ site.home_title | jsonify }}{% endif %}{% if sameaslinks != blank %}, "sameAs": {{ sameaslinks | join: '' }}{% endif %}}{% endcapture %}
+  {% capture person_json %}{"@type": "Person", "name": {{ author_name | strip | jsonify }}, "url": {{ site.url | append: '/about/' | jsonify }}{% if site.og_image %}, "image": {{ site.og_image | jsonify }}{% endif %}{% if site.home_title %}, "jobTitle": {{ site.home_title | jsonify }}{% endif %}{% if sameaslinks != blank %}, "sameAs": {{ sameaslinks | join: '' }}{% endif %}}{% endcapture %}
   <script type="application/ld+json">
     {% if page.url == '/' %}
       {"@context": "https://schema.org", "@graph": [
         {"@type": "WebSite", "name": {{ title | strip | jsonify }}, "url": {{ site.url | append: '/' | jsonify }}, "description": {{ meta_description | jsonify }}},
-        {{ person_json }}
+        {"@type": "Blog", "name": {{ title | strip | jsonify }}, "url": {{ site.url | append: '/' | jsonify }}, "description": {{ meta_description | jsonify }}, "author": {{ person_json }}}
       ]}
+    {% elsif page.url == '/about/' %}
+      {"@context": "https://schema.org", "@type": "ProfilePage", "url": {{ page_url | jsonify }}, "mainEntity": {{ person_json }}}
     {% elsif is_blog_post %}
       {"@context": "https://schema.org", "@type": "BlogPosting",
        "headline": {{ page.title | jsonify }},

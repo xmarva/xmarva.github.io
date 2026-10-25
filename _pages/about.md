@@ -1,7 +1,11 @@
 ---
 layout: about
 title: about
-permalink: /
+permalink: /about/
+seo_title: About
+seo_description: "Eva Koroleva, ML engineer and researcher in NLP, computer vision and generative models: about me, news and selected publications."
+nav: true
+nav_order: 10
 subtitle:
 
 profile:
