@@ -3,7 +3,8 @@ layout: default
 permalink: /blog/
 title: blog
 seo_description: "Posts by Eva Koroleva on machine learning, LLMs, Transformers, system design and cognitive science, with code, experiments and figures."
-nav: false # the home page is the blog; this is the full list by date
+nav: true # the full list by date; the home page shows the newest posts as a magazine
+nav_order: 1
 pagination:
   enabled: true
   collection: posts
