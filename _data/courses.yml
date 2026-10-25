@@ -48,7 +48,12 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb
       cover: assets/img/teaching/tfs-05.png
     - title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
-      topics: "Experiment tracking with W&B, W&B Sweeps, early stopping, spending a GPU budget well"
+      short: "W&B Sweeps tuning"
+      topics: "Experiment tracking with W&B, a learning-rate range test, random search and successive halving from scratch, W&B Sweeps with Bayesian optimization"
+      url: /blog/2026/transformers-from-scratch-06-sweeps/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb
+      cover: assets/img/teaching/tfs-06.png
     - title: "Your notebook is not a product: a Python package with tests and CI"
       topics: "Project layout, configs, a CLI, tests, CI, a model card"
     - title: "Serving a Transformer with FastAPI and Gradio: latency under load"

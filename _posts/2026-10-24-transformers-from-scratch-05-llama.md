@@ -1429,6 +1429,6 @@ xmarva/tfs-transformer-en-ru-llama</code></pre>
 
 
 
-<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-04-evaluation/">← Lesson 4: BLEU, chrF, COMET</a></p>
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-04-evaluation/">← Lesson 4: BLEU, chrF, COMET</a> <a href="/blog/2026/transformers-from-scratch-06-sweeps/">Lesson 6: W&B Sweeps tuning →</a></p>
 
 {% endraw %}
