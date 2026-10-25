@@ -4,8 +4,7 @@ title: portfolio
 permalink: /portfolio/
 description: Computer vision and ML systems I have built, from the first prototype to production
 seo_description: "Projects by Eva Koroleva: virtual try-on with diffusion and 3D bodies, floor plans to 3D, multi-camera tracking, medical NLP and more."
-nav: true
-nav_order: 2
+nav: false # in the menu under about
 hide_header: true
 display_categories: [work, personal]
 ---
@@ -107,6 +106,8 @@ display_categories: [work, personal]
   .pf-foot { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding-top: 0.35rem; }
   .pf-more { font-size: 0.9rem; font-weight: 500; color: var(--global-text-color) !important; text-decoration: none !important; }
   .pf-more:hover { color: var(--global-theme-color) !important; }
+  .pf-case .pf-foot { justify-content: flex-end; } /* the case study link at the bottom right */
+  .pf-case .pf-more { order: 2; }
   .pf-ext { font-size: 0.85rem; color: var(--pf-muted) !important; text-decoration: none !important; }
   .pf-ext:hover { color: var(--global-text-color) !important; }
   .pf-ext i { margin-right: 0.3rem; }
@@ -170,7 +171,6 @@ display_categories: [work, personal]
           {% if project.tech %}<p class="pf-stack">{{ project.tech | join: " · " }}</p>{% endif %}
           <div class="pf-foot">
             <a class="pf-more" href="{{ project.url | relative_url }}">Read the case study →</a>
-            {% if project.website %}<a class="pf-ext" href="{{ project.website }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe" aria-hidden="true"></i>{{ project.website | remove: "https://" | remove: "http://" | remove: "www." }}</a>{% endif %}
             {% if project.github %}<a class="pf-ext" href="{{ project.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i>code</a>{% endif %}
           </div>
         </div>

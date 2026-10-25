@@ -76,6 +76,27 @@
                     {% endfor %}
                   </div>
                 </li>
+              {% elsif p.submenu %}
+                {% comment %}
+                  A link that also opens a menu on hover (about → about me, portfolio): clicking the item opens its own
+                  page; on phones the sub-items are listed instead.
+                {% endcomment %}
+                {% assign current = false %}
+                {% for item in p.submenu %}
+                  {% if page.url contains item.url %}{% assign current = true %}{% endif %}
+                {% endfor %}
+                {% if page.collection == 'projects' %}{% assign current = true %}{% endif %}
+                <li class="nav-item dropdown nav-hover {% if current %}active{% endif %}">
+                  <a class="nav-link" href="{{ p.url | relative_url }}" aria-haspopup="true">
+                    {{- p.title -}}<i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    {% for item in p.submenu %}
+                      {% if page.url contains item.url or item.url == '/portfolio/' and page.collection == 'projects' %}{% assign on = true %}{% else %}{% assign on = false %}{% endif %}
+                      <a class="dropdown-item {% if on %}active{% endif %}" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                    {% endfor %}
+                  </div>
+                </li>
               {% else %}
                 {% assign parent_link = p.permalink | remove: 'index.html' %}
                 {% assign current = false %}
