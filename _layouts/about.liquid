@@ -179,11 +179,10 @@ layout: default
   }
   @media (max-width: 767px) {
     .ab { margin-top: 1.6rem; }
-    .ab-side { width: 9.5rem; margin-left: 1.4rem; }
+    /* on phones the photo, the place and the contacts take the whole width first, then the text */
+    .ab-side { float: none; width: auto; margin: 0 0 2rem; }
+    .ab-photo { width: 15rem; max-width: 72%; margin: 0 auto; }
     .ab-name { font-size: 2.1rem; }
-    .ab-place { margin-top: 1rem; font-size: 0.82rem; }
-    .ab-side .contact-icons { gap: 0.35rem; }
-    .ab-side .contact-icons a { width: 2rem; height: 2rem; font-size: 0.85rem; }
     .ab-news > li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
     .ab-posts > li { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.9rem; }
   }
