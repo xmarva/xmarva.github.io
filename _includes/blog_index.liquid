@@ -1,0 +1,263 @@
+{% comment %}
+  The blog's list, shared by the home page and /blog/ so that the two are the same page: the pinned post (front
+  matter `featured: true`) large above the category chips, then the posts as rows, the cover on the left and the
+  title on the right, level with the cover's top edge. Lessons of the course get a small badge. The chips filter the
+  rows in the page (plain ES2017 at the end: the production build minifies it with Uglifier). The chips' categories
+  are in _data/blog.yml.
+
+  Parameters: posts (the rows of this page), pinned (show the pinned post: the first page only), newer, older (links
+  to the neighbouring pages, if any).
+{% endcomment %}
+{% assign course = site.data.courses | where: 'id', 'tfs' | first %}
+{% assign pin = site.posts | where: 'featured', true | first %}
+
+<style>
+  .bh { --bh-border: var(--global-divider-color); --bh-muted: var(--global-text-color-light); margin: 2.4rem 0 1rem; }
+
+  .bh-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
+  .bh-chip {
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--bh-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--global-text-color);
+    font-size: 0.88rem;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .bh-chip:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--bh-border)); }
+  .bh-chip[aria-pressed="true"] {
+    border-color: var(--global-theme-color);
+    background: color-mix(in srgb, var(--global-theme-color) 12%, transparent);
+    color: var(--global-theme-color);
+  }
+
+  .bh-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 17.5rem minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--bh-border);
+  }
+
+  /* covers keep their 1200x630 shape; a post without one gets a typographic cover in the same dark-and-red style */
+  .bh-cover {
+    position: relative;
+    display: block;
+    aspect-ratio: 1200 / 630;
+    border: 1px solid var(--bh-border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #161618;
+  }
+  .bh-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .bh-row:hover .bh-cover img { transform: scale(1.03); }
+  .bh-cover-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 7% 7%;
+    color: #f2f3f5;
+  }
+  .bh-cover-text small {
+    font-family: var(--global-code-font-family, monospace);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9da3ae;
+  }
+  .bh-cover-text small::before {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-right: 0.5em;
+    border-radius: 50%;
+    background: #ff3636;
+  }
+  .bh-cover-text strong { font-size: 1.05rem; font-weight: 600; line-height: 1.2; }
+
+  .bh-text { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  /* the first line of the title sits level with the top edge of the cover: the negative margin takes back the space
+     a line box keeps above the capitals */
+  .bh-title { margin: -0.32em 0 0; font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
+  .bh-title a { color: var(--global-text-color); text-decoration: none; transition: color 0.2s ease; }
+  .bh-row:hover .bh-title a { color: var(--global-theme-color); }
+  .bh-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--bh-muted);
+  }
+  .bh-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.5rem;
+    margin: 0.15rem 0 0;
+    font-size: 0.82rem;
+    color: var(--bh-muted);
+  }
+  .bh-meta span, .bh-meta time { color: inherit; }
+  .bh-meta a { position: relative; z-index: 2; color: inherit; }
+  .bh-meta a:hover { color: var(--global-theme-color); }
+  .bh-dot { opacity: 0.6; }
+
+  .bh-badge, .bh-lesson {
+    display: inline-block;
+    padding: 0.02rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .bh-badge {
+    background: color-mix(in srgb, var(--global-theme-color) 14%, transparent);
+    color: var(--global-theme-color);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bh-lesson {
+    border: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
+    color: var(--global-theme-color) !important;
+    text-decoration: none !important;
+  }
+  .bh-lesson:hover { background: color-mix(in srgb, var(--global-theme-color) 10%, transparent); }
+
+
+  .bh [hidden] { display: none !important; }
+
+  @media (max-width: 767px) {
+    .bh { margin-top: 1.5rem; }
+    .bh-row { grid-template-columns: 12rem minmax(0, 1fr); gap: 1.1rem; }
+    .bh-title { font-size: 1.1rem; }
+    .bh-desc { -webkit-line-clamp: 3; font-size: 0.9rem; }
+  }
+  @media (max-width: 575px) {
+    .bh-row { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+    .bh-title { margin-top: 0; font-size: 1.15rem; }
+  }
+
+  /* the pinned post, large, above the chips */
+  .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: start; margin: 0 0 2.4rem; }
+  .bh-pin .bh-cover { border-radius: 14px; }
+  .bh-pin:hover .bh-cover img { transform: scale(1.02); }
+  .bh-pin .bh-text { gap: 0.8rem; }
+  .bh-pin .bh-title { margin-top: -0.28em; font-size: 2rem; line-height: 1.22; }
+  .bh-pin:hover .bh-title a { color: var(--global-theme-color); }
+  .bh-pin .bh-desc { -webkit-line-clamp: 5; font-size: 1.05rem; line-height: 1.6; }
+  .bh-pin .bh-badge i { margin-right: 0.3rem; }
+  .bh-pager { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--bh-border); }
+  .bh-pager a { font-size: 0.95rem; color: var(--global-text-color); text-decoration: none; }
+  .bh-pager a:hover { color: var(--global-theme-color); }
+  @media (max-width: 767px) {
+    .bh-pin { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
+    .bh-pin .bh-title { margin-top: 0; font-size: 1.5rem; }
+  }
+</style>
+
+<div class="bh">
+  <h1 class="sr-only">Eva Koroleva's blog</h1>
+
+  {% if include.pinned and pin %}
+    {% assign category = pin.categories | first %}
+    {% assign read_time = pin.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+    <article class="bh-pin" data-category="{{ category }}">
+      <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% if pin.thumbnail %}
+          <img src="{{ pin.thumbnail | relative_url }}" alt="" width="1200" height="630" decoding="async">
+        {% else %}
+          <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ pin.title }}</strong></span>
+        {% endif %}
+      </a>
+      <div class="bh-text">
+        <h2 class="bh-title"><a class="stretched-link" href="{{ pin.url | relative_url }}">{{ pin.title }}</a></h2>
+        {% if pin.description %}<p class="bh-desc">{{ pin.description }}</p>{% endif %}
+        <p class="bh-meta">
+          <span class="bh-badge"><i class="fa-solid fa-thumbtack fa-xs" aria-hidden="true"></i>Pinned</span>
+          <time datetime="{{ pin.date | date_to_xmlschema }}">{{ pin.date | date: '%b %-d, %Y' }}</time>
+          <span class="bh-dot" aria-hidden="true">·</span>
+          <span>{{ read_time }} min read</span>
+          {% if category %}
+            <span class="bh-dot" aria-hidden="true">·</span>
+            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
+          {% endif %}
+        </p>
+      </div>
+    </article>
+  {% endif %}
+
+  <ul class="bh-chips" aria-label="Filter posts by topic">
+    <li><button type="button" class="bh-chip" data-filter="all" aria-pressed="true">All</button></li>
+    {% for chip in site.data.blog.chips %}
+      <li><button type="button" class="bh-chip" data-filter="{{ chip.category }}" aria-pressed="false">{{ chip.label }}</button></li>
+    {% endfor %}
+  </ul>
+
+  {% for post in include.posts %}
+    {% if include.pinned and pin and post.url == pin.url %}{% continue %}{% endif %}
+    {% assign category = post.categories | first %}
+    {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+    {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
+    <article class="bh-row" data-category="{{ category }}">
+      <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% if post.thumbnail %}
+          <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+        {% else %}
+          <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ post.title }}</strong></span>
+        {% endif %}
+      </a>
+      <div class="bh-text">
+        <h2 class="bh-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        {% if post.description %}<p class="bh-desc">{{ post.description }}</p>{% endif %}
+        <p class="bh-meta">
+          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">Course · lesson {{ lesson }}</a>{% endif %}
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time>
+          <span class="bh-dot" aria-hidden="true">·</span>
+          <span>{{ read_time }} min read</span>
+          {% if category %}
+            <span class="bh-dot" aria-hidden="true">·</span>
+            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
+          {% endif %}
+        </p>
+      </div>
+    </article>
+  {% endfor %}
+
+  {% if include.newer or include.older %}
+    <nav class="bh-pager" aria-label="More posts">
+      <span>{% if include.newer %}<a href="{{ include.newer | relative_url }}">←&nbsp;Newer posts</a>{% endif %}</span>
+      <span>{% if include.older %}<a href="{{ include.older | relative_url }}">Older posts&nbsp;→</a>{% endif %}</span>
+    </nav>
+  {% endif %}
+</div>
+
+<script>
+  (function () {
+    var chips = document.querySelectorAll(".bh-chip");
+    var items = document.querySelectorAll(".bh [data-category]");
+    function show(filter) {
+      for (var i = 0; i < chips.length; i++) {
+        chips[i].setAttribute("aria-pressed", chips[i].getAttribute("data-filter") === filter ? "true" : "false");
+      }
+      for (var j = 0; j < items.length; j++) {
+        items[j].hidden = filter !== "all" && items[j].getAttribute("data-category") !== filter;
+      }
+    }
+    for (var k = 0; k < chips.length; k++) {
+      chips[k].addEventListener("click", function (event) {
+        show(event.currentTarget.getAttribute("data-filter"));
+      });
+    }
+  })();
+</script>

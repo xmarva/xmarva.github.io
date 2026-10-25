@@ -305,6 +305,60 @@ ul.task-list input[type="checkbox"] {
   }
 }
 
+// A menu item that is a link and shows its sub-items on hover (about → about me, portfolio).
+.navbar .nav-hover .nav-caret {
+  margin-left: 0.3rem;
+  font-size: 0.55em;
+  opacity: 0.55;
+  vertical-align: 0.2em;
+}
+
+@media (min-width: 576px) {
+  .navbar .nav-hover > .dropdown-menu {
+    top: 100%;
+    margin-top: 0;
+    min-width: 9rem;
+    padding: 0.4rem 0;
+    border-radius: 10px;
+  }
+
+  .navbar .nav-hover > .dropdown-menu::before {
+    // a bridge over the gap between the item and its menu, so the pointer can cross it
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 12px;
+  }
+
+  .navbar .nav-hover:hover > .dropdown-menu,
+  .navbar .nav-hover:focus-within > .dropdown-menu {
+    display: block;
+  }
+}
+
+@media (max-width: 575.98px) {
+  // in the collapsed menu the sub-items are listed in place of the item
+  .navbar .nav-hover > .nav-link {
+    display: none;
+  }
+
+  .navbar .nav-hover > .dropdown-menu {
+    display: block;
+    position: static !important; // mdbootstrap pins every navbar menu with position: absolute !important
+    float: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: right;
+  }
+
+  .navbar .nav-hover .dropdown-item {
+    padding: 0.5rem 0;
+  }
+}
+
 .navbar.navbar-light {
   a {
     &:hover {

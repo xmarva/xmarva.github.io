@@ -69,7 +69,12 @@
 {% for stylesheet in page.stylesheets %}
   <link rel="stylesheet" href="{{ stylesheet | relative_url | bust_file_cache }}">
 {% endfor %}
-<link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+{% comment %} /blog/'s first page repeats the home page, so it names the home page as the one to index {% endcomment %}
+{% if page.canonical_first_page and paginator.page == 1 %}
+  <link rel="canonical" href="{{ page.canonical_first_page | absolute_url }}">
+{% else %}
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+{% endif %}
 
 <!-- Dark Mode -->
 <script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>

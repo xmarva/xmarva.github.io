@@ -1,88 +1,303 @@
 ---
 layout: default
 ---
-<div class="post">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
-      {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
+{% comment %}
+  The about page: the text from the page flows around the photo, with the place and the contacts under it; then the
+  resume and the portfolio as two cards, and news, the newest posts and the selected publications as quiet lists
+  under the red-bar section heads of /teaching/. The text itself lives in _pages/about.md.
+{% endcomment %}
+<style>
+  .ab { --ab-border: var(--global-divider-color); --ab-muted: var(--global-text-color-light); margin: 2.6rem 0 1rem; }
 
-  <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
+  .ab-hero::after { content: ""; display: block; clear: both; }
+  .ab-side { float: right; width: 15rem; margin: 0.3rem 0 1.2rem 2.75rem; text-align: center; }
+  .ab-name { margin: 0; font-size: 2.6rem; font-weight: 300; line-height: 1.1; color: var(--global-text-color); }
+  .ab-name b { font-weight: 600; }
+  .ab-bio { margin-top: 1.5rem; font-size: 1.05rem; line-height: 1.7; }
+  .ab-bio p { margin: 0 0 0.95rem; }
+  .ab-bio p:last-child { margin-bottom: 0; }
+
+  /* the photo with a thin ring set off from it, the one ornament on the page */
+  .ab-photo { padding: 8px; } /* room for the ring */
+  .ab-photo figure, .ab-photo picture { display: block; margin: 0; }
+  .ab-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    outline: 1px solid var(--ab-border);
+    outline-offset: 7px;
+    box-shadow: none !important;
+  }
+  .ab-place { margin: 1.3rem 0 0; font-size: 0.9rem; color: var(--ab-muted); }
+  .ab-place p { margin: 0; }
+  .ab-side .contact-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem; margin-top: 0.8rem; font-size: 1rem !important; }
+  .ab-side .contact-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1px solid var(--ab-border);
+    border-radius: 50%;
+    color: var(--global-text-color) !important;
+    font-size: 0.88rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .ab-side .contact-icons a:hover { border-color: var(--global-theme-color); color: var(--global-theme-color) !important; }
+
+  /* the resume and the portfolio: a page or three covers stick out of each card like sheets out of a folder */
+  .ab-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 3rem; }
+  .ab-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 104px;
+    padding: 1.1rem 1.25rem 1.1rem 128px;
+    border: 1px solid var(--ab-border);
+    border-radius: 14px;
+    background: var(--global-card-bg-color);
+    color: var(--global-text-color) !important;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease;
+  }
+  .ab-card:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--ab-border)); }
+  .ab-sheet {
+    position: absolute;
+    left: 28px;
+    bottom: 14px;
+    width: 76px;
+    aspect-ratio: 240 / 340;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 22px rgba(0, 0, 0, 0.18);
+    transform: rotate(-5deg);
+    transform-origin: 50% 100%;
+    transition: transform 0.3s ease;
+  }
+  .ab-sheet img { display: block; width: 100%; height: 100%; }
+  .ab-card:hover .ab-sheet { transform: rotate(0deg) translateY(-6px); }
+  .ab-stack { position: absolute; left: 16px; bottom: 16px; width: 96px; height: 66px; }
+  .ab-stack img {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 96px;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 22px rgba(0, 0, 0, 0.2);
+    transform: translate(calc(var(--i) * 5px), calc(var(--i) * -9px)) rotate(calc(-7deg + var(--i) * 5deg));
+    transform-origin: 50% 100%;
+    z-index: calc(3 - var(--i));
+    transition: transform 0.3s ease;
+  }
+  .ab-card:hover .ab-stack img { transform: translate(calc(var(--i) * 9px), calc(-6px - var(--i) * 13px)) rotate(calc(-9deg + var(--i) * 7deg)); }
+  .ab-card-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .ab-card-title { font-size: 1.25rem; font-weight: 500; line-height: 1.3; }
+  .ab-card-meta { font-size: 0.88rem; color: var(--ab-muted); }
+  .ab-card-action {
+    margin-left: auto;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: var(--global-button-color);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: filter 0.2s ease;
+  }
+  .ab-card:hover .ab-card-action { filter: brightness(1.1); }
+
+  .ab-section { margin-top: 3.4rem; }
+  .ab-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; }
+  .ab-head h2 { margin: 0; font-size: 1.4rem; font-weight: 500; color: var(--global-text-color); }
+  .ab-head h2::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 3px;
+    margin-bottom: 0.75rem;
+    background: var(--global-theme-color);
+  }
+  .ab-head a { font-size: 0.9rem; color: var(--ab-muted); text-decoration: none; }
+  .ab-head a:hover { color: var(--global-theme-color); }
+
+  .ab-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-border); }
+  .ab-list > li { border-bottom: 1px solid var(--ab-border); }
+
+  .ab-news > li { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1.25rem; padding: 0.95rem 0.15rem; }
+  .ab-date {
+    padding-top: 0.12rem;
+    font-family: var(--global-code-font-family, monospace);
+    font-size: 0.82rem;
+    color: var(--ab-muted);
+    white-space: nowrap;
+  }
+  .ab-news p { margin: 0; line-height: 1.6; }
+
+  .ab-posts > li { position: relative; display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1.25rem; align-items: center; padding: 0.9rem 0.15rem; }
+  .ab-thumb {
+    display: block;
+    aspect-ratio: 1200 / 630;
+    border: 1px solid var(--ab-border);
+    border-radius: 7px;
+    overflow: hidden;
+    background: #161618;
+  }
+  .ab-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ab-post-title { margin: 0; font-size: 1.05rem; font-weight: 500; line-height: 1.4; }
+  .ab-post-title a { color: var(--global-text-color); text-decoration: none; }
+  .ab-posts > li:hover .ab-post-title a { color: var(--global-theme-color); }
+  .ab-posts .ab-date { display: block; margin-top: 0.3rem; padding: 0; }
+
+  /* the bibliography as al-folio renders it, flattened into the same list style */
+  .ab .publications ol.bibliography { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ab-border); }
+  .ab .publications ol.bibliography > li { padding: 1.1rem 0 1.1rem 0.15rem; border-bottom: 1px solid var(--ab-border); }
+  .ab .publications .row { align-items: flex-start; }
+  .ab .publications .preview { width: 100%; max-width: 8.5rem; border-radius: 7px !important; box-shadow: none !important; border: 1px solid var(--ab-border); }
+  .ab .publications .title { font-weight: 500; line-height: 1.4; }
+  .ab .publications .author, .ab .publications .periodical { color: var(--ab-muted); font-size: 0.92rem; }
+  .ab .publications .links { margin-top: 0.45rem; }
+  .ab .publications .links .btn {
+    padding: 0.08rem 0.65rem;
+    border: 1px solid var(--ab-border);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+  }
+  .ab .publications .links .btn:hover { border-color: var(--global-theme-color); color: var(--global-theme-color); }
+
+  @media (max-width: 991px) {
+    .ab-cards { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .ab { margin-top: 1.6rem; }
+    /* on phones the photo, the place and the contacts take the whole width first, then the text */
+    .ab-side { float: none; width: auto; margin: 0 0 2rem; }
+    .ab-photo { width: 15rem; max-width: 72%; margin: 0 auto; }
+    .ab-name { font-size: 2.1rem; }
+    .ab-news > li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
+    .ab-posts > li { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.9rem; }
+  }
+  @media (max-width: 480px) {
+    .ab-card { padding: 0.9rem 1rem 0.9rem 100px; }
+    .ab-sheet { left: 20px; width: 62px; }
+    .ab-stack { left: 12px; width: 78px; }
+    .ab-stack img { width: 78px; }
+    .ab-card-meta { display: none; }
+    .ab-card-action span { display: none; }
+    .ab-card-action { padding: 0.55rem 0.7rem; }
+  }
+</style>
+
+<div class="ab">
+  <section class="ab-hero">
+    <aside class="ab-side">
+      {% if page.profile.image %}
+        <div class="ab-photo">
           {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
           {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
+            include figure.liquid loading="eager" path=profile_image_path class="ab-photo-img" sizes="(min-width: 768px) 240px, 152px"
+            alt="Eva Koroleva" cache_bust=true
           %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
+        </div>
+      {% endif %}
+      {% if page.profile.more_info %}<div class="ab-place">{{ page.profile.more_info }}</div>{% endif %}
+      {% if page.social %}<div class="contact-icons">{% include social.liquid %}</div>{% endif %}
+    </aside>
+    <h1 class="ab-name">
+      {% if site.title == 'blank' %}<b>{{ site.first_name }}</b> {{ site.middle_name }} {{ site.last_name }}{% else %}{{ site.title }}{% endif %}
+    </h1>
+    <div class="ab-bio">{{ content }}</div>
+  </section>
+
+  <div class="ab-cards">
+    <a class="ab-card" href="{{ '/assets/pdf/eva_koroleva_cv.pdf' | relative_url }}" target="_blank" rel="noopener">
+      <span class="ab-sheet" aria-hidden="true"><img src="{{ '/assets/img/resume-page.webp' | relative_url }}" width="240" height="340" alt="" decoding="async"></span>
+      <span class="ab-card-text">
+        <span class="ab-card-title">Resume</span>
+        <span class="ab-card-meta">Experience, skills and education on one page</span>
+      </span>
+      <span class="ab-card-action"><i class="fas fa-arrow-down" aria-hidden="true"></i><span>PDF</span></span>
+    </a>
+    {% assign cases = site.projects | where: 'category', 'work' | sort: 'importance' %}
+    <a class="ab-card" href="{{ '/portfolio/' | relative_url }}">
+      <span class="ab-stack" aria-hidden="true">
+        {% for project in cases limit: 3 %}
+          {% assign card = project.img | remove: '.png' %}
+          <picture>
+            {% if site.imagemagick.enabled %}<source srcset="{{ card | relative_url }}-480.webp" type="image/webp">{% endif %}
+            <img src="{{ project.img | relative_url }}" width="1280" height="880" alt="" loading="lazy" decoding="async" style="--i: {{ forloop.index0 }}">
+          </picture>
+        {% endfor %}
+      </span>
+      <span class="ab-card-text">
+        <span class="ab-card-title">Portfolio</span>
+        <span class="ab-card-meta">Case studies and experiments</span>
+      </span>
+      <span class="ab-card-action"><span>Open</span><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+    </a>
+  </div>
+
+  {% if page.news and site.announcements.enabled and site.news != blank %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>News</h2>
       </div>
-    {% endif %}
+      <ul class="ab-list ab-news">
+        {% assign news = site.news | reverse %}
+        {% for item in news limit: site.announcements.limit %}
+          <li>
+            <span class="ab-date">{{ item.date | date: '%b %-d, %Y' }}</span>
+            <p>
+              {% if item.inline %}
+                {{ item.content | remove: '<p>' | remove: '</p>' | emojify }}
+              {% else %}
+                <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+              {% endif %}
+            </p>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
-    <div class="clearfix">{{ content }}</div>
-
-    <!-- News, latest posts and selected papers, each section in a card (see h2-cards.js) -->
-    <div class="h2-cards">
-      <!-- News -->
-      {% if page.news and site.announcements.enabled %}
-        <h2>
-          <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-        </h2>
-        {% include news.liquid limit=true %}
-      {% endif %}
-
-      <!-- Latest posts -->
-      {% if site.latest_posts.enabled %}
-        <h2>
-          <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-        </h2>
-        {% include latest_posts.liquid %}
-      {% endif %}
-
-      <!-- Selected papers -->
-      {% if page.selected_papers %}
-        {% assign publications_page = site.pages | where: 'permalink', '/publications/' | first %}
-        <h2>
-          {% if publications_page %}
-            <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-          {% else %}
-            selected publications
-          {% endif %}
-        </h2>
-        {% include selected_papers.liquid %}
-      {% endif %}
-    </div>
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
+  {% if site.latest_posts.enabled %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>Latest posts</h2>
+        <a href="{{ '/' | relative_url }}">All posts&nbsp;→</a>
       </div>
-    {% endif %}
+      <ul class="ab-list ab-posts">
+        {% for post in site.posts limit: site.latest_posts.limit %}
+          <li>
+            <a class="ab-thumb" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+              {% if post.thumbnail %}<img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">{% endif %}
+            </a>
+            <div>
+              <h3 class="ab-post-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+              <span class="ab-date">{{ post.date | date: '%b %-d, %Y' }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
-    {% endif %}
-  </article>
+  {% if page.selected_papers %}
+    <section class="ab-section">
+      <div class="ab-head">
+        <h2>Selected publications</h2>
+      </div>
+      {% include selected_papers.liquid %}
+    </section>
+  {% endif %}
+
 </div>

@@ -2,28 +2,24 @@
   <!-- Nav Bar -->
   <nav id="navbar" class="navbar navbar-light navbar-expand-sm {% if site.navbar_fixed %}fixed-top{% else %}sticky-top{% endif %}" role="navigation">
     <div class="container">
-      {% if page.permalink != '/' %}
-        <a class="navbar-brand title font-weight-lighter" href="{{ site.baseurl }}/">
-          {% if site.title == 'blank' %}
-            {% if site.first_name %}
-              <span class="font-weight-bold">
-                {{- site.first_name -}}
-              </span>
-            {% endif %}
-            {% if site.middle_name %}
-              {{- site.middle_name -}}
-            {% endif %}
-            {% if site.last_name %}
-              {{- site.last_name -}}
-            {% endif %}
-          {% else %}
-            {{- site.title -}}
+      <!-- the name links to the home page, which is the blog -->
+      <a class="navbar-brand title font-weight-lighter" href="{{ site.baseurl }}/">
+        {% if site.title == 'blank' %}
+          {% if site.first_name %}
+            <span class="font-weight-bold">
+              {{- site.first_name -}}
+            </span>
           {% endif %}
-        </a>
-      {% elsif site.enable_navbar_social %}
-        <!-- Social Icons -->
-        <div class="navbar-brand social">{% include social.liquid %}</div>
-      {% endif %}
+          {% if site.middle_name %}
+            {{- site.middle_name -}}
+          {% endif %}
+          {% if site.last_name %}
+            {{- site.last_name -}}
+          {% endif %}
+        {% else %}
+          {{- site.title -}}
+        {% endif %}
+      </a>
       <!-- Navbar Toggle -->
       <button
         class="navbar-toggler collapsed ml-auto"
@@ -42,20 +38,6 @@
 
       <div class="collapse navbar-collapse text-right" id="navbarNav">
         <ul class="navbar-nav ml-auto flex-nowrap">
-          {% for page in site.pages %}
-            {% if page.permalink == '/' %} {% assign about_title = page.title %} {% endif %}
-          {% endfor %}
-
-          <!-- About -->
-          <li class="nav-item {% if page.permalink == '/' %}active{% endif %}">
-            <a class="nav-link" href="{{ '/' | relative_url }}">
-              {{- about_title }}
-              {% if page.permalink == '/' %}
-                <span class="sr-only">(current)</span>
-              {% endif %}
-            </a>
-          </li>
-
           <!-- Other pages -->
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}
           {% for p in sorted_pages %}
@@ -94,9 +76,34 @@
                     {% endfor %}
                   </div>
                 </li>
+              {% elsif p.submenu %}
+                {% comment %}
+                  A link that also opens a menu on hover (about → about me, portfolio): clicking the item opens its own
+                  page; on phones the sub-items are listed instead.
+                {% endcomment %}
+                {% assign current = false %}
+                {% for item in p.submenu %}
+                  {% if page.url contains item.url %}{% assign current = true %}{% endif %}
+                {% endfor %}
+                {% if page.collection == 'projects' %}{% assign current = true %}{% endif %}
+                <li class="nav-item dropdown nav-hover {% if current %}active{% endif %}">
+                  <a class="nav-link" href="{{ p.url | relative_url }}" aria-haspopup="true">
+                    {{- p.title -}}<i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    {% for item in p.submenu %}
+                      {% if page.url contains item.url or item.url == '/portfolio/' and page.collection == 'projects' %}{% assign on = true %}{% else %}{% assign on = false %}{% endif %}
+                      <a class="dropdown-item {% if on %}active{% endif %}" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                    {% endfor %}
+                  </div>
+                </li>
               {% else %}
                 {% assign parent_link = p.permalink | remove: 'index.html' %}
-                <li class="nav-item {% if page.url contains parent_link %}active{% endif %}">
+                {% assign current = false %}
+                {% if page.url contains parent_link %}{% assign current = true %}{% endif %}
+                {% comment %} the home page is the blog, so "blog" is the current item there too {% endcomment %}
+                {% if page.url == '/' and p.permalink contains '/blog/' %}{% assign current = true %}{% endif %}
+                <li class="nav-item {% if current %}active{% endif %}">
                   {% if p.permalink contains '/blog/' %}{% assign url = '/blog/' %} {% else %}{% assign url = p.url %}{% endif %}
                   <a class="nav-link" href="{{ url | relative_url }}">
                     {{- p.title }}
