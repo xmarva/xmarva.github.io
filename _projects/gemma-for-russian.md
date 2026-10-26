@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Gemma for Russian
-description: This project fine-tunes a Gemma language model using PEFT and LoRA on a dataset of texts by communist authors of the Soviet era.
+title: Red Russian Gemma
+description: "A LoRA adapter for Gemma 1.1 2B-it trained on six books of Stalin's writings in Russian. On a held-out seventh book the loss falls from 4.24 to 2.60 nats per token after 20 minutes on a free T4, and the generations move from assistant-style answers to the register of the corpus."
 img: assets/img/projects/personal/red-russian-cover.png
 importance: 11
 category: personal
@@ -13,8 +13,10 @@ domains:
 tech:
   - LLM
   - LoRA
+  - QLoRA
 
 kaggle: https://www.kaggle.com/code/qmarva/red-russian-gemma-lora-hf
+sitemap: false
 ---
 
-Coming soon.
+The notebook, with the loss curves and the before-and-after generations, is [on Kaggle](https://www.kaggle.com/code/qmarva/red-russian-gemma-lora-hf).
