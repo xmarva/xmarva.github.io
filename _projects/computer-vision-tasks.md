@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Curved Surface Segmentation
-description: Just a set of Computer Vision problems solved using classical methods and the SAM model 
-img: assets/img/projects/personal/atlas.png
+title: Computer Vision Tasks
+description: "Four puzzles on rendered images: a shortest route across a terrain map, curved surfaces found with SAM, hidden letters recovered from highlights with DBSCAN, and twelve surfaces grouped into three shapes with k-means."
+img: assets/img/projects/personal/cv-tasks-cover.png
 importance: 9
 category: personal
 related_publications: false
@@ -11,11 +11,12 @@ domains:
   - Computer Vision
 
 tech:
-  - Classification
+  - Path Finding
   - Segmentation
   - Clustering
 
 kaggle: https://www.kaggle.com/code/qmarva/computer-vision-tasks
+sitemap: false
 ---
 
-Coming soon.
+The notebook, with every figure and result, is [on Kaggle](https://www.kaggle.com/code/qmarva/computer-vision-tasks).
