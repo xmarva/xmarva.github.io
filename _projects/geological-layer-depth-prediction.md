@@ -2,7 +2,7 @@
 layout: page
 title: Geological Layer-Depth Prediction
 description: Predicting likely 1D layer-depth sequences based on formations where lateral wells are typical
-img: assets/img/projects/07-geology-forecast/geology.png
+img: assets/img/projects/personal/geology-cover.png
 importance: 8
 category: personal
 related_publications: false

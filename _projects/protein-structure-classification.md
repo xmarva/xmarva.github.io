@@ -1,8 +1,8 @@
 ---
 layout: page
 title: Protein Structure Classification
-description: Custom protein structure classification, based on PDB and CATH data. The core task is predicting protein architecture based on its amino acid sequence and 3D structure.
-img: assets/img/projects/personal/proteins.png
+description: "Predicting the CATH architecture of a protein domain, one of ten shapes such as a barrel or a sandwich, from its sequence and 3D structure with Protein Structure Transformer embeddings. In progress: the pipeline is built and checked, results are pending."
+img: assets/img/projects/personal/proteins-cover.png
 importance: 5
 category: personal
 related_publications: false
@@ -11,10 +11,11 @@ domains:
   - Biomed
 
 tech:
-  - Classification
+  - Protein Language Models
   - Graph Neural Networks
 
 github: https://github.com/xmarva/protein-structure-transformer
+sitemap: false
 ---
 
-Coming soon.
+The code, the data description and the current status are in the [GitHub repository](https://github.com/xmarva/protein-structure-transformer).
