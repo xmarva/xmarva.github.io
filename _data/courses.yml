@@ -62,8 +62,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/07_package.ipynb
       cover: assets/img/teaching/tfs-07.png
     - title: "Serving a Transformer with FastAPI and Gradio: latency under load"
-      topics: "Where inference time goes, the KV cache in beam search, int8 quantization, FastAPI, load tests, queueing theory, dynamic batching, Gradio"
+      short: "Serving under load"
+      topics: "Where inference time goes, the KV cache in beam search, int8 quantization, FastAPI and asyncio, load tests without coordinated omission, queueing theory checked by simulation, dynamic batching, Gradio"
+      url: /blog/2026/transformers-from-scratch-08-serving/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-08-serving-under-load
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb
+      cover: assets/img/teaching/tfs-08.png
     - title: "It works on my laptop: a reproducible Docker image of a model"
-      topics: "Docker images and layers, lock files with hashes, reproducible builds, GitHub Container Registry, CI/CD, metrics and drift"
+      topics: "Docker images and layers, lock files with hashes, reproducible builds, image digests, GitHub Container Registry, CI that rebuilds and compares"
     - title: "Knowledge distillation, data and scale: what makes a translator better"
       topics: "Sequence-level distillation from opus-mt, synthetic in-domain data, a bigger student, checkpoint averaging and ensembles, NLLB and LLMs as reference points"

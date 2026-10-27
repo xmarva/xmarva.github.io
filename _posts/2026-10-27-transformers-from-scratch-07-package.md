@@ -1110,10 +1110,10 @@ from perevod import Translator
 print("perevod", perevod.__version__, "from", Path(perevod.__file__).parent)
 ```
 
-<pre class="tfs-printed" markdown="0"><code>  Installing build dependencies ... [?25l[?25hdone
-  Getting requirements to build wheel ... [?25l[?25hdone
-  Preparing metadata (pyproject.toml) ... [?25l[?25hdone
-  Building wheel for perevod (pyproject.toml) ... [?25l[?25hdone
+<pre class="tfs-printed" markdown="0"><code>  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+  Building wheel for perevod (pyproject.toml) ... done
 perevod 0.1.0 from /usr/local/lib/python3.13/dist-packages/perevod</code></pre>
 
 The path shows where Python found it: site-packages, not our folder. Now the two lines:
@@ -2034,10 +2034,10 @@ for name in zipfile.ZipFile(our_wheel).namelist():
     print("  ", name)
 ```
 
-<pre class="tfs-printed" markdown="0"><code>  Installing build dependencies ... [?25l[?25hdone
-  Getting requirements to build wheel ... [?25l[?25hdone
-  Preparing metadata (pyproject.toml) ... [?25l[?25hdone
-  Building wheel for perevod (pyproject.toml) ... [?25l[?25hdone
+<pre class="tfs-printed" markdown="0"><code>  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+  Building wheel for perevod (pyproject.toml) ... done
 perevod-0.1.0-py3-none-any.whl
    perevod/__init__.py
    perevod/cli.py
