@@ -5,7 +5,7 @@
 - id: tfs
   show: true
   title: "Transformers: from scratch to production"
-  summary: "Build an English→Russian translator with a Transformer you write yourself, measure it honestly, improve it, and ship it as a monitored service."
+  summary: "Build an English→Russian translator with a Transformer you write yourself, measure it honestly, improve it, and ship it as a tested package and a reproducible service."
   facts:
     - "Free GPU on Kaggle or Colab"
     - "every lesson runs on its own"
@@ -55,8 +55,15 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb
       cover: assets/img/teaching/tfs-06.png
     - title: "Your notebook is not a product: a Python package with tests and CI"
-      topics: "Project layout, configs, a CLI, tests, CI, a model card"
+      short: "Package, tests, CI"
+      topics: "The src layout, pyproject.toml, configs that refuse bad values, a command line, four kinds of tests, mutation testing, GitHub Actions, a model card"
+      url: /blog/2026/transformers-from-scratch-07-package/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-07-package-tests-ci
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/07_package.ipynb
+      cover: assets/img/teaching/tfs-07.png
     - title: "Serving a Transformer with FastAPI and Gradio: latency under load"
-      topics: "FastAPI, batching, Gradio, faster inference, latency under load"
-    - title: "It works on my laptop: Docker, Hugging Face Spaces and monitoring"
-      topics: "Docker, Hugging Face Spaces, CI/CD, metrics, drift, feedback"
+      topics: "Where inference time goes, the KV cache in beam search, int8 quantization, FastAPI, load tests, queueing theory, dynamic batching, Gradio"
+    - title: "It works on my laptop: a reproducible Docker image of a model"
+      topics: "Docker images and layers, lock files with hashes, reproducible builds, GitHub Container Registry, CI/CD, metrics and drift"
+    - title: "Knowledge distillation, data and scale: what makes a translator better"
+      topics: "Sequence-level distillation from opus-mt, synthetic in-domain data, a bigger student, checkpoint averaging and ensembles, NLLB and LLMs as reference points"
