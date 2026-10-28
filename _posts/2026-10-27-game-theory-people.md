@@ -16,9 +16,7 @@ toc:
 
 On quiet stretches of the Western Front in the First World War, British and German soldiers sat in trenches within rifle range of each other and, for weeks at a time, tried not to kill each other.
 
-A British staff officer arriving in one sector was "astonished to observe German soldiers walking about within rifle range behind their own line. Our men appeared to take no notice.
-
-I privately made up my mind to do away with that sort of thing when we took over; such things should not be allowed. These people evidently did not know there was a war on. Both sides apparently believed in the policy of 'live and let live'"<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Axelrod, R. (1984). The Evolution of Cooperation. Basic Books. Chapter 4, The live-and-let-live system in trench warfare in World War I, pp. 73–87.">1</a>]</sup>.
+A British staff officer arriving in one sector was "astonished to observe German soldiers walking about within rifle range behind their own line. Our men appeared to take no notice. I privately made up my mind to do away with that sort of thing when we took over; such things should not be allowed. These people evidently did not know there was a war on. Both sides apparently believed in the policy of 'live and let live'"<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Axelrod, R. (1984). The Evolution of Cooperation. Basic Books. Chapter 4, The live-and-let-live system in trench warfare in World War I, pp. 73–87.">1</a>]</sup>.
 
 Nobody negotiated this, and fraternising with the enemy was forbidden. The truce lived in the rhythm of the shooting.
 
@@ -239,9 +237,9 @@ Leaving achieves the same deterrence at a lower price, as long as finding a new 
 
 ## Trust as a coordination problem
 
-Not every social situation is a prisoner's dilemma. In many, nobody gains by betraying anyone; what is risky is relying on someone. Jean-Jacques Rousseau told the canonical story: "Was a deer to be taken?
+Not every social situation is a prisoner's dilemma. In many, nobody gains by betraying anyone; what is risky is relying on someone.
 
-Every one saw that to succeed he must faithfully stand to his post; but suppose a hare to have slipped by within reach of any one of them, it is not to be doubted but he pursued it without scruple, and when he had seized his prey never reproached himself with having made his companions miss theirs"<sup class="cite">[<a href="#ref-22" id="cite-27" data-ref="22" aria-label="Reference 22: Rousseau, J.-J. (1755). A Discourse upon the Origin and the Foundation of the Inequality among Mankind, part II.">22</a>]</sup>.
+Jean-Jacques Rousseau told the canonical story: "Was a deer to be taken? Every one saw that to succeed he must faithfully stand to his post; but suppose a hare to have slipped by within reach of any one of them, it is not to be doubted but he pursued it without scruple, and when he had seized his prey never reproached himself with having made his companions miss theirs"<sup class="cite">[<a href="#ref-22" id="cite-27" data-ref="22" aria-label="Reference 22: Rousseau, J.-J. (1755). A Discourse upon the Origin and the Foundation of the Inequality among Mankind, part II.">22</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-people/stag-light.png" width="760" alt="Expected catch of hunting the stag (4 times the share p of others who hunt it) and of hunting hare (3). Hunting the stag pays when more than three quarters of the others hunt it; below that the share of stag hunters falls, above it it rises" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-people/stag-dark.png" width="760" alt="Expected catch of hunting the stag (4 times the share p of others who hunt it) and of hunting hare (3). Hunting the stag pays when more than three quarters of the others hunt it; below that the share of stag hunters falls, above it it rises" loading="lazy">
@@ -250,9 +248,9 @@ With a stag worth 4 to each hunter if all stay, a hare worth 3, and nothing for 
 
 Unlike the prisoner's dilemma, mutual cooperation here is an equilibrium: nobody wants to leave a successful stag hunt. But so is mutual distrust, and the distrustful equilibrium is the safer of the two, what John Harsanyi and Reinhard Selten called **risk-dominant**<sup class="cite">[<a href="#ref-23" id="cite-28" data-ref="23" aria-label="Reference 23: Harsanyi, J. C., &amp; Selten, R. (1988). A General Theory of Equilibrium Selection in Games. MIT Press.">23</a>]</sup>.
 
-The philosopher Brian Skyrms argued that this game deserves at least as much attention as the prisoner's dilemma: "The Stag Hunt is a story that became a game.
+The philosopher Brian Skyrms argued that this game deserves at least as much attention as the prisoner's dilemma: "The Stag Hunt is a story that became a game. The game is a prototype of the social contract"<sup class="cite">[<a href="#ref-24" id="cite-29" data-ref="24" aria-label="Reference 24: Skyrms, B. (2001). The stag hunt. Proceedings and Addresses of the American Philosophical Association, 75(2), 31–41. The book: The Stag Hunt and the Evolution of Social Structure (2004), Cambridge University Press.">24</a>]</sup>.
 
-The game is a prototype of the social contract"<sup class="cite">[<a href="#ref-24" id="cite-29" data-ref="24" aria-label="Reference 24: Skyrms, B. (2001). The stag hunt. Proceedings and Addresses of the American Philosophical Association, 75(2), 31–41. The book: The Stag Hunt and the Evolution of Social Structure (2004), Cambridge University Press.">24</a>]</sup>. He also noted the link to everything above: "If the probability of repetition is high enough, the stag hunting equilibrium becomes risk dominant."
+He also noted the link to everything above: "If the probability of repetition is high enough, the stag hunting equilibrium becomes risk dominant."
 
 The arrows in the chart are the reason that trust in groups is so hard to build and so easy to lose.
 
