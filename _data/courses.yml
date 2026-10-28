@@ -69,6 +69,11 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb
       cover: assets/img/teaching/tfs-08.png
     - title: "It works on my laptop: a reproducible Docker image of a model"
-      topics: "Docker images and layers, lock files with hashes, reproducible builds, image digests, GitHub Container Registry, CI that rebuilds and compares"
+      short: "Reproducible Docker"
+      topics: "Lock files with hashes, an image taken apart by hand (registries, manifests, layers, digests), reproducible builds, CI that rebuilds and compares, GitHub Container Registry, the image run without Docker, ONNX in the browser"
+      url: /blog/2026/transformers-from-scratch-09-docker/
+      kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-09-reproducible-docker
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/09_docker.ipynb
+      cover: assets/img/teaching/tfs-09.png
     - title: "Knowledge distillation, data and scale: what makes a translator better"
       topics: "Sequence-level distillation from opus-mt, synthetic in-domain data, a bigger student, checkpoint averaging and ensembles, NLLB and LLMs as reference points"
