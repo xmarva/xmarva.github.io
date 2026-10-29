@@ -18,10 +18,6 @@
   - /blog/2025/minds-as-computers/
   - /blog/2025/antonio-damasio/
   - /blog/2024/llms-for-those-who-missed-out/
-/blog/2025/attention/:
-  - /blog/2026/transformers-from-scratch-02-transformer/
-  - /blog/2026/transformers-from-scratch-05-llama/
-  - /blog/2025/inference-optimization/
 /blog/2025/tokenization/:
   - /blog/2026/transformers-from-scratch-01-tokenization/
   - /blog/2026/transformers-from-scratch-02-transformer/
