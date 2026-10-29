@@ -6,9 +6,6 @@ description: Exploring attention from RNN to FlashAttention
 tags: [transformers, attention, flash-attention]
 categories: featured-posts
 featured: false
-# kept on the blog, hidden from search engines
-robots: noindex, follow
-sitemap: false
 ---
 
 In recurrent neural networks, what we typically do is take our sequence and pass in a single timestep at a time and produce an output. This means when we pass in $$x_1$$ we create a hidden state $$h_1$$ that captures all the relevant information in the input, and this hidden state then is used to produce the output $$y_1$$. 
