@@ -1,0 +1,80 @@
+# "Read next" at the end of a post, chosen by hand: post URL -> up to three post URLs, in order.
+# Posts not listed here fall back to shared tags, then category (_includes/related_posts.liquid).
+# Lessons don't list their neighbours: the course navigation above "Read next" already links them.
+
+/blog/2023/python-code/:
+  - /blog/2026/transformers-from-scratch-07-package/
+  - /blog/2026/transformers-from-scratch-09-docker/
+  - /blog/2026/transformers-from-scratch-08-serving/
+/blog/2024/llms-for-those-who-missed-out/:
+  - /blog/2026/transformers-from-scratch-01-tokenization/
+  - /blog/2024/lora-algorithm-for-llms/
+  - /blog/2025/inference-optimization/
+/blog/2024/lora-algorithm-for-llms/:
+  - /blog/2025/adapters/
+  - /blog/2024/llms-for-those-who-missed-out/
+  - /blog/2026/transformers-from-scratch-02-transformer/
+/blog/2025/creative-ai/:
+  - /blog/2025/minds-as-computers/
+  - /blog/2025/antonio-damasio/
+  - /blog/2024/llms-for-those-who-missed-out/
+/blog/2025/tokenization/:
+  - /blog/2026/transformers-from-scratch-01-tokenization/
+  - /blog/2026/transformers-from-scratch-02-transformer/
+  - /blog/2024/llms-for-those-who-missed-out/
+/blog/2025/building-a-transformer/:
+  - /blog/2026/transformers-from-scratch-02-transformer/
+  - /blog/2026/transformers-from-scratch-03-training/
+  - /blog/2026/transformers-from-scratch-05-llama/
+/blog/2025/minds-as-computers/:
+  - /blog/2025/antonio-damasio/
+  - /blog/2025/creative-ai/
+  - /blog/2024/llms-for-those-who-missed-out/
+/blog/2025/adapters/:
+  - /blog/2024/lora-algorithm-for-llms/
+  - /blog/2024/llms-for-those-who-missed-out/
+  - /blog/2026/transformers-from-scratch-06-sweeps/
+/blog/2025/inference-optimization/:
+  - /blog/2026/transformers-from-scratch-08-serving/
+  - /blog/2026/transformers-from-scratch-05-llama/
+  - /blog/2026/transformers-from-scratch-03-training/
+/blog/2025/antonio-damasio/:
+  - /blog/2025/minds-as-computers/
+  - /blog/2025/creative-ai/
+  - /blog/2024/llms-for-those-who-missed-out/
+/blog/2026/transformers-from-scratch-01-tokenization/:
+  - /blog/2024/llms-for-those-who-missed-out/
+  - /blog/2026/transformers-from-scratch-05-llama/
+  - /blog/2026/transformers-from-scratch-04-evaluation/
+/blog/2026/transformers-from-scratch-02-transformer/:
+  - /blog/2026/transformers-from-scratch-05-llama/
+  - /blog/2024/llms-for-those-who-missed-out/
+  - /blog/2025/inference-optimization/
+/blog/2026/transformers-from-scratch-03-training/:
+  - /blog/2025/inference-optimization/
+  - /blog/2026/transformers-from-scratch-05-llama/
+  - /blog/2026/transformers-from-scratch-01-tokenization/
+/blog/2026/transformers-from-scratch-04-evaluation/:
+  - /blog/2026/transformers-from-scratch-06-sweeps/
+  - /blog/2026/transformers-from-scratch-01-tokenization/
+  - /blog/2024/llms-for-those-who-missed-out/
+/blog/2026/transformers-from-scratch-05-llama/:
+  - /blog/2025/inference-optimization/
+  - /blog/2026/transformers-from-scratch-02-transformer/
+  - /blog/2026/transformers-from-scratch-08-serving/
+/blog/2026/transformers-from-scratch-06-sweeps/:
+  - /blog/2024/lora-algorithm-for-llms/
+  - /blog/2025/adapters/
+  - /blog/2026/transformers-from-scratch-04-evaluation/
+/blog/2026/transformers-from-scratch-07-package/:
+  - /blog/2023/python-code/
+  - /blog/2026/transformers-from-scratch-09-docker/
+  - /blog/2026/transformers-from-scratch-04-evaluation/
+/blog/2026/transformers-from-scratch-08-serving/:
+  - /blog/2025/inference-optimization/
+  - /blog/2026/transformers-from-scratch-05-llama/
+  - /blog/2026/transformers-from-scratch-03-training/
+/blog/2026/transformers-from-scratch-09-docker/:
+  - /blog/2026/transformers-from-scratch-07-package/
+  - /blog/2025/inference-optimization/
+  - /blog/2023/python-code/

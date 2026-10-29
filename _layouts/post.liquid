@@ -102,6 +102,8 @@ layout: default
     </div>
   {% endif %}
 
+  {% include course_nav.liquid %}
+
   {% if site.related_blog_posts.enabled %}
     {% if page.related_posts == null or page.related_posts %}
       {% include related_posts.liquid %}

@@ -10,6 +10,8 @@ featured: false
 
 [![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=plastic&logo=kaggle&logoColor=white)](https://www.kaggle.com/code/qmarva/implementing-transformer-en) [![Colab](https://img.shields.io/badge/Colab-F9AB00?style=plastic&logo=google-colab&logoColor=white)](https://colab.research.google.com/drive/1m34XYFZZTt-jbHo2OXlUfxR33zvFbXJZ?usp=sharing)
 
+*This post is from the first version of my Transformer course. The current course builds the Transformer again, line by line, and checks it against real models: [Implementing the Transformer in PyTorch](/blog/2026/transformers-from-scratch-02-transformer/).*
+
 ## Building a Transformer
 
 The Transformer architecture marked a revolutionary step in sequence processing. Unlike traditional models such as RNNs and LSTMs, which handle data sequentially, the Transformer uses an attention mechanism that enables parallel processing of the entire sequence. This significantly accelerates training and improves performance.

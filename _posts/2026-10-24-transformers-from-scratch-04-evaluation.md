@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 4 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 4 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
 At WMT24, the main machine translation competition, Claude 3.5 Sonnet won 9 of the 11 language pairs. The verdict came from people who read the translations.
 

@@ -1,15 +1,27 @@
 {% comment %}
-  "Read next" at the end of a post: up to three posts, chosen in order from those that share a tag with this one,
-  then those in the same category, then the newest. Each is a card with its cover.
+  "Read next" at the end of a post: up to three posts, chosen in order from those listed for it in _data/related.yml,
+  those that share a tag with this one, those in the same category, then the newest. Each is a card with its cover.
 {% endcomment %}
 {% assign limit = site.related_blog_posts.max_related | default: 3 %}
 {% if limit > 3 %}{% assign limit = 3 %}{% endif %}
 {% assign picked = '' | split: '' %}
 {% assign picked_urls = '' %}
 
+{% comment %} First the posts chosen by hand in _data/related.yml, then the rest as below. {% endcomment %}
+{% assign chosen = site.data.related[page.url] %}
+{% for url in chosen %}
+  {% if picked.size >= limit %}{% break %}{% endif %}
+  {% assign candidate = site.posts | where: 'url', url | first %}
+  {% if candidate %}
+    {% assign picked = picked | push: candidate %}
+    {% assign picked_urls = picked_urls | append: candidate.url | append: '|' %}
+  {% endif %}
+{% endfor %}
+
 {% for candidate in site.posts %}
   {% if picked.size >= limit %}{% break %}{% endif %}
-  {% if candidate.url == page.url %}{% continue %}{% endif %}
+  {% assign key = candidate.url | append: '|' %}
+  {% if candidate.url == page.url or picked_urls contains key %}{% continue %}{% endif %}
   {% assign shares = false %}
   {% for tag in page.tags %}
     {% if candidate.tags contains tag -%}

@@ -1,0 +1,41 @@
+{% comment %}
+  At the end of a lesson of a course on /teaching/ (_data/courses.yml): the previous lesson, the course page and
+  the next lesson. A next lesson without a url yet is shown as coming.
+{% endcomment %}
+{% for course in site.data.courses %}
+  {% for lesson in course.lessons %}
+    {% if lesson.url != page.url %}{% continue %}{% endif %}
+    {% assign number = forloop.index %}
+    {% assign before = forloop.index0 | minus: 1 %}
+    {% assign after = forloop.index0 | plus: 1 %}
+    <nav class="course-nav" aria-label="{{ course.title }}: lessons">
+      <div class="course-nav-side">
+        {% if number > 1 %}
+          {% assign previous = course.lessons[before] %}
+          <a class="course-nav-link" href="{{ previous.url | relative_url }}" rel="prev">
+            <span class="course-nav-label">&larr; Lesson {{ number | minus: 1 }}</span>
+            <span class="course-nav-title">{{ previous.title }}</span>
+          </a>
+        {% endif %}
+      </div>
+      <a class="course-nav-all" href="{{ '/teaching/' | relative_url }}">
+        <span class="course-nav-label">Lesson {{ number }} of {{ course.lessons.size }}</span>
+        <span class="course-nav-title">{{ course.title }}</span>
+      </a>
+      <div class="course-nav-side course-nav-side-next">
+        {% assign following = course.lessons[after] %}
+        {% if following and following.url %}
+          <a class="course-nav-link" href="{{ following.url | relative_url }}" rel="next">
+            <span class="course-nav-label">Lesson {{ number | plus: 1 }} &rarr;</span>
+            <span class="course-nav-title">{{ following.title }}</span>
+          </a>
+        {% elsif following %}
+          <span class="course-nav-link course-nav-coming">
+            <span class="course-nav-label">Lesson {{ number | plus: 1 }}, coming</span>
+            <span class="course-nav-title">{{ following.title }}</span>
+          </span>
+        {% endif %}
+      </div>
+    </nav>
+  {% endfor %}
+{% endfor %}

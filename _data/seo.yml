@@ -1,0 +1,18 @@
+# Meta descriptions for search results, by page URL, where the post's own description is too long for them
+# (search engines show about 155 characters) or too vague. The visible description on the site stays as it is.
+
+/blog/2023/python-code/: "Rules for readable, maintainable Python: naming, comments, modules, tests, docstrings, exceptions, keyword arguments, the Zen of Python and refactoring."
+/blog/2024/llms-for-those-who-missed-out/: "What a large language model is and how it is built in three stages, after Andrej Karpathy's talk, with each claim checked and measured on small open models."
+/blog/2024/lora-algorithm-for-llms/: "Why a fine-tuning update fits in two thin matrices: rank, SVD and the Eckart–Young theorem, then LoRA's initialization, gradients and scale, checked on BERT."
+/blog/2025/creative-ai/: "What happens in a brain that has a new idea, and what measurements of machine creativity show, from AlphaGo's move 37 to GPT-4 on the Alternate Uses Task."
+/blog/2025/attention/: "Attention from RNN translation models to self-attention and multi-head attention in PyTorch, step by step, and how it is made faster and lighter on memory."
+/blog/2025/tokenization/: "Byte-pair encoding explained and implemented step by step in Python, then trained on real text and compared with Hugging Face tokenizers."
+/blog/2025/building-a-transformer/: "Positional encoding, self-attention, multi-head attention and cross-attention explained and implemented in PyTorch, building a Transformer layer by layer."
+/blog/2025/adapters/: "Adapters, LoRA, prefix and prompt tuning, BitFit, (IA)³ and Compacter: parameter-efficient fine-tuning of a transformer, written in PyTorch and measured."
+/blog/2025/antonio-damasio/: "Damasio's somatic marker hypothesis: a patient who could reason but not decide, the Iowa Gambling Task, and the evidence for and against the theory."
+/blog/2026/transformers-from-scratch-04-evaluation/: "Evaluate English–Russian machine translation with BLEU, chrF and COMET written from scratch: references, agreement with translators, significance tests."
+/blog/2026/transformers-from-scratch-05-llama/: "Pre-norm, RMSNorm, SwiGLU and RoPE: what Llama changed in the 2017 Transformer, written in PyTorch and measured one change at a time against seed noise."
+/blog/2026/transformers-from-scratch-06-sweeps/: "Hyperparameter tuning on a free GPU: Weights & Biases tracking, a learning-rate range test, random search, successive halving and W&B Sweeps."
+/blog/2026/transformers-from-scratch-07-package/: "Turn a notebook model into a Python package: src layout, pyproject.toml, a command line, tests checked by mutation testing, GitHub Actions, a model card."
+/blog/2026/transformers-from-scratch-08-serving/: "Serve a Transformer with FastAPI and Gradio and measure latency under load: KV cache, int8 quantization, load tests, queueing theory, dynamic batching."
+/blog/2026/transformers-from-scratch-09-docker/: "A reproducible Docker image of an ML model: lock files with hashes, images pinned by digest, bit-identical builds, GHCR from CI, and ONNX in the browser."

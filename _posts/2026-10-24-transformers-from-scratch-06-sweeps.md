@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 6 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 6 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
 Meta trained Llama 3 405B on up to sixteen thousand H100 GPUs; its model card counts 30.84 million GPU hours.
 Nobody tunes a run like that by trying things out. The paper's learning rate, $$8 \times 10^{-5}$$ with 8,000

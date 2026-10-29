@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 1 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 1 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
 Chatbots used to be famously bad at one question: *how many r's are in "strawberry"?* It looks like a test of
 attention to detail. Mostly it tests something the model cannot see. Here is what GPT-4o actually receives
