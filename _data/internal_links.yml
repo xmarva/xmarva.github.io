@@ -1,0 +1,45 @@
+# Terms that link, at their first mention in a post, to the post that covers them best (_plugins/internal-links.rb).
+# In this order, at most six per post; a post never links to itself, and a link a post already has isn't repeated.
+# `pattern` is a Ruby regular expression, case-insensitive unless `case_sensitive: true`.
+
+- pattern: '\bLoRA\b'
+  case_sensitive: true
+  url: /blog/2024/lora-algorithm-for-llms/
+- pattern: '\bparameter-efficient fine-tuning\b|\bPEFT\b'
+  url: /blog/2025/adapters/
+- pattern: '\bRLHF\b|\breinforcement learning from human feedback\b|\bpre-?training\b'
+  url: /blog/2024/llms-for-those-who-missed-out/
+- pattern: '\bKV[- ]cache\b|\bspeculative decoding\b|\bcontinuous batching\b|\bPagedAttention\b'
+  url: /blog/2025/inference-optimization/
+- pattern: '\bFlashAttention\b'
+  url: /blog/2026/transformers-from-scratch-05-llama/
+- pattern: '\b(?:[Bb]yte[- ][Pp]air [Ee]ncoding|BPE)\b|\btokeniz(?:er|ers|ation)\b'
+  case_sensitive: true
+  url: /blog/2026/transformers-from-scratch-01-tokenization/
+- pattern: '\bself-attention\b|\bmulti-head attention\b|\bTransformer architecture\b|\bencoder-decoder\b'
+  url: /blog/2026/transformers-from-scratch-02-transformer/
+- pattern: '\bbeam search\b|\blabel smoothing\b'
+  url: /blog/2026/transformers-from-scratch-03-training/
+- pattern: '\bchrF\b|\bCOMET\b|\bBLEU\b'
+  case_sensitive: true
+  url: /blog/2026/transformers-from-scratch-04-evaluation/
+- pattern: '\bRoPE\b|\bRMSNorm\b|\bSwiGLU\b'
+  case_sensitive: true
+  url: /blog/2026/transformers-from-scratch-05-llama/
+- pattern: '\bW&B Sweeps\b|\bhyperparameter (?:search|tuning)\b'
+  url: /blog/2026/transformers-from-scratch-06-sweeps/
+- pattern: '\bmutation testing\b|\bpyproject\.toml\b'
+  url: /blog/2026/transformers-from-scratch-07-package/
+- pattern: '\bFastAPI\b|\bdynamic batching\b'
+  url: /blog/2026/transformers-from-scratch-08-serving/
+- pattern: '\bDocker\b'
+  case_sensitive: true
+  url: /blog/2026/transformers-from-scratch-09-docker/
+- pattern: '\bfine-tun(?:e|ed|ing)\b'
+  url: /blog/2025/adapters/
+- pattern: '\bsomatic markers?\b'
+  url: /blog/2025/antonio-damasio/
+- pattern: '\bcomputational theory of mind\b|\bphysical symbol system\b|\bChinese Room\b'
+  url: /blog/2025/minds-as-computers/
+- pattern: '\bAlternate Uses Task\b|\bmove 37\b'
+  url: /blog/2025/creative-ai/

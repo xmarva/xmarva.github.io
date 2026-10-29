@@ -51,7 +51,7 @@
 {% elsif page.type == 'year' %}
   {% capture archive_description %}Posts by {{ author_name | strip }} from {{ page.date | date: '%Y' }}.{% endcapture %}
 {% endif %}
-{% assign meta_description = page.seo_description | default: page.description | default: archive_description | default: site.description | strip_html | strip_newlines | strip %}
+{% assign meta_description = site.data.seo[page.url] | default: page.seo_description | default: page.description | default: archive_description | default: site.description | strip_html | strip_newlines | strip %}
 <meta name="author" content="{{ author_name }}">
 <meta name="description" content="{{ meta_description | escape }}">
 {% comment %}
@@ -260,16 +260,46 @@
       ]}
     {% elsif page.url == '/about/' %}
       {"@context": "https://schema.org", "@type": "ProfilePage", "url": {{ page_url | jsonify }}, "mainEntity": {{ person_json }}}
+    {% elsif page.url == '/teaching/' %}
+      {"@context": "https://schema.org", "@graph": [
+      {% for course in site.data.courses %}
+        {% unless course.show %}{% continue %}{% endunless %}
+        {"@type": "Course", "name": {{ course.title | jsonify }}, "description": {{ course.summary | jsonify }},
+         "url": {{ page_url | jsonify }}, "inLanguage": {{ site.lang | jsonify }}, "isAccessibleForFree": true,
+         "provider": {{ person_json }},
+         "hasPart": [
+         {%- assign first = true -%}
+         {%- for lesson in course.lessons -%}
+           {%- if lesson.url -%}
+             {%- unless first %}, {% endunless -%}
+             {"@type": "LearningResource", "name": {{ lesson.title | jsonify }}, "url": {{ lesson.url | absolute_url | jsonify }}, "position": {{ forloop.index }}, "learningResourceType": "lesson"}
+             {%- assign first = false -%}
+           {%- endif -%}
+         {%- endfor -%}
+         ]}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+      ]}
     {% elsif is_blog_post %}
+      {% assign lesson_course = nil %}
+      {% for course in site.data.courses %}
+        {% for lesson in course.lessons %}
+          {% if lesson.url == page.url %}
+            {% assign lesson_course = course %}
+            {% assign lesson_number = forloop.index %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
       {"@context": "https://schema.org", "@type": "BlogPosting",
        "headline": {{ page.title | jsonify }},
        "description": {{ meta_description | jsonify }},
        "url": {{ page_url | jsonify }},
        "mainEntityOfPage": {{ page_url | jsonify }},
+       "inLanguage": {{ site.lang | jsonify }},
        "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
        "dateModified": {{ page.last_updated | default: page.date | date_to_xmlschema | jsonify }},
        {% if page.og_image %}"image": {{ page.og_image | jsonify }},{% endif %}
        {% if page.tags.size > 0 %}"keywords": {{ page.tags | join: ', ' | jsonify }},{% endif %}
+       {% if lesson_course %}"isPartOf": {"@type": "Course", "name": {{ lesson_course.title | jsonify }}, "url": {{ '/teaching/' | absolute_url | jsonify }}}, "position": {{ lesson_number }},{% endif %}
        "author": {{ person_json }}}
     {% else %}
       {"@context": "https://schema.org", "@type": "WebPage",
@@ -280,6 +310,38 @@
        "author": {{ person_json }}}
     {% endif %}
   </script>
+  {% comment %}
+    Breadcrumbs for search results: a lesson sits under Teaching, a post under its category, a case study under
+    Portfolio.
+  {% endcomment %}
+  {% assign crumb_name = nil %}
+  {% if is_blog_post %}
+    {% if lesson_course %}
+      {% assign crumb_name = 'Teaching' %}
+      {% assign crumb_url = '/teaching/' | absolute_url %}
+    {% else %}
+      {% assign crumb_category = page.categories | first %}
+      {% if crumb_category %}
+        {% assign crumb_name = crumb_category | replace: '-', ' ' | capitalize %}
+        {% for chip in site.data.blog.chips %}
+          {% if chip.category == crumb_category %}{% assign crumb_name = chip.label %}{% endif %}
+        {% endfor %}
+        {% capture crumb_url %}{{ '/blog/category/' | append: crumb_category | append: '/' | absolute_url }}{% endcapture %}
+      {% endif %}
+    {% endif %}
+  {% elsif page.collection == 'projects' %}
+    {% assign crumb_name = 'Portfolio' %}
+    {% assign crumb_url = '/portfolio/' | absolute_url %}
+  {% endif %}
+  {% if crumb_name %}
+    <script type="application/ld+json">
+      {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": {{ title | strip | jsonify }}, "item": {{ site.url | append: '/' | jsonify }}},
+        {"@type": "ListItem", "position": 2, "name": {{ crumb_name | jsonify }}, "item": {{ crumb_url | jsonify }}},
+        {"@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": {{ page_url | jsonify }}}
+      ]}
+    </script>
+  {% endif %}
 {% endif %}
 
 <!-- Atom feed of the blog -->

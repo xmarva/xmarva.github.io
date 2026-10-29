@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 5 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 5 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
 Llama 3.1, Meta's open model family, goes up to 405 billion parameters. Its blueprint is the Transformer of 2017, the one you built in lesson 2, with a handful of details changed.
 

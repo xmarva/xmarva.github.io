@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 3 of 9 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 3 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
 Ask a chatbot the same question twice and you may get two different answers. Ask a translation model twice and you get the same translation both times. The networks inside are close relatives, so the difference isn't in the model.
 
