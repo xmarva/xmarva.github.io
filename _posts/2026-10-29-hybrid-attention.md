@@ -310,7 +310,7 @@ The second is engineering. Recurrent layers need their own kernels, and serving 
 
 Reusing the cache of a shared prompt needs copies of the state saved at chosen positions, and rolling back a rejected speculative token needs the state from a step earlier.
 
-The third is that the field keeps moving. Qwen3.8-Flash-Next replaced the full attention layers of its hybrid with sparse attention, and DeepSeek-V4 combines two kinds of compressed attention instead of adding recurrent layers<sup class="cite">[<a href="#ref-23" id="cite-28" data-ref="23" aria-label="Reference 23: DeepSeek-AI (2026). DeepSeek-V4: towards highly efficient million-token context intelligence. arXiv.">23</a>]</sup>. Both directions go after the same cache.
+The third is that the field keeps moving. Qwen3.8-Flash-Next replaced the full attention layers of its hybrid with sparse attention<sup class="cite">[<a href="#ref-23" id="cite-28" data-ref="23" aria-label="Reference 23: Qwen Team (2026). Qwen3.8-Flash-Next model card. Hugging Face.">23</a>]</sup>, and DeepSeek-V4 combines two kinds of compressed attention instead of adding recurrent layers<sup class="cite">[<a href="#ref-24" id="cite-29" data-ref="24" aria-label="Reference 24: DeepSeek-AI (2026). DeepSeek-V4: towards highly efficient million-token context intelligence. arXiv.">24</a>]</sup>. Both directions go after the same cache.
 
 A hybrid's way is to give most layers a memory of fixed size and to keep a few that can still read every token.
 
@@ -338,7 +338,8 @@ A hybrid's way is to give most layers a memory of fixed size and to keep a few t
 20. {:#ref-20} Gemma Team (2025). [Gemma 3 technical report](https://arxiv.org/abs/2503.19786). arXiv. <a class="ref-back" href="#cite-24" aria-label="Back to the text">&#8617;</a>
 21. {:#ref-21} MiniMax (2025). [Why did MiniMax M2 end up as a full attention model?](https://huggingface.co/blog/MiniMax-AI/why-did-m2-end-up-as-a-full-attention-model) Hugging Face blog. <a class="ref-back" href="#cite-25" aria-label="Back to the text">&#8617;</a>
 22. {:#ref-22} DeepSeek-AI (2024). [DeepSeek-V2: a strong, economical, and efficient mixture-of-experts language model](https://arxiv.org/abs/2405.04434). arXiv. <a class="ref-back" href="#cite-26" aria-label="Back to the text">&#8617;</a>
-23. {:#ref-23} DeepSeek-AI (2026). [DeepSeek-V4: towards highly efficient million-token context intelligence](https://arxiv.org/abs/2606.19348). arXiv. <a class="ref-back" href="#cite-28" aria-label="Back to the text">&#8617;</a>
+23. {:#ref-23} Qwen Team (2026). [Qwen3.8-Flash-Next model card](https://huggingface.co/Qwen/Qwen3.8-Flash-Next). Hugging Face. <a class="ref-back" href="#cite-28" aria-label="Back to the text">&#8617;</a>
+24. {:#ref-24} DeepSeek-AI (2026). [DeepSeek-V4: towards highly efficient million-token context intelligence](https://arxiv.org/abs/2606.19348). arXiv. <a class="ref-back" href="#cite-29" aria-label="Back to the text">&#8617;</a>
 {: .tfs-refs}
 
 {% endraw %}
