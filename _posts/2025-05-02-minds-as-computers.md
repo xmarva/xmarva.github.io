@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Is the Mind a Computer?
+title: "Is the mind a computer? The computational theory of mind"
 date: 2025-05-01 15:00:00
 description: "Symbols, rules and meaning: the computational theory of mind from McCulloch and Pitts to the Chinese Room, and what language models add to an old argument"
 tags: [cognitive-science, philosophy-of-mind, symbolic-systems, language-of-thought]
-categories: cognitive-science
+categories: [cognitive-science, philosophy]
 featured: false
 thumbnail: /assets/posts/minds-as-computers/cover.png
 og_image: https://xmarva.github.io/assets/posts/minds-as-computers/cover.png

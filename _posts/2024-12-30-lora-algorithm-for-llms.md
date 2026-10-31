@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Algebra of LoRA"
+title: "The algebra of LoRA: how low-rank adaptation works"
 date: 2024-12-30 15:09:00
 description: "Why a fine-tuning update can be the product of two thin matrices: rank, the singular value decomposition and the Eckart–Young theorem, then LoRA's initialization, gradients and scale, derived by hand and checked on BERT"
 tags: [nlp, llm, lora, linear-algebra, fine-tuning]

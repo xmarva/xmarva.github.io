@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Understanding Byte-Pair Encoding Algorithm
+title: "Byte-pair encoding: writing a BPE tokenizer in Python"
 date: 2025-04-01 15:00:00
-description: Implement one of the most popular tokenization algorithms and learn how to use ready-made solutions.
+description: "Byte-pair encoding written in Python step by step, trained on English–Russian sentences from Tatoeba and compared with the tokenizers of Hugging Face."
 tags: [tokenization, bpe, algorithms, nlp]
 categories: machine-learning
 featured: false

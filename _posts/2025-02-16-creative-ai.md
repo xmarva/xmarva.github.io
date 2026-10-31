@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Can AI Be Creative?
+title: "Can AI be creative?"
 date: 2025-02-13 15:00:00
 description: "What happens in a brain that has a new idea, where recombination stops, and what the measurements of machine creativity show, from AlphaGo's move 37 to GPT-4 on the Alternate Uses Task"
 tags: [ai, neuroscience, creativity]
-categories: cognitive-science
+categories: [cognitive-science, machine-learning]
 featured: true
 thumbnail: /assets/posts/creative-ai/cover.png
 og_image: https://xmarva.github.io/assets/posts/creative-ai/cover.png

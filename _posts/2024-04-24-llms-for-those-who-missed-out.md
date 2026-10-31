@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "LLMs for Those Who Missed Out"
+title: "How large language models work, for those who missed out"
 date: 2024-04-24 15:09:00
-description: "What a large language model is, how it is made in three stages, and what it could and could not do in spring 2024: a tour after Andrej Karpathy's talk, with the claims checked against their sources and measured on small open models"
+description: "What a large language model is, how it is trained in three stages, and what it could and could not do in spring 2024: a tour after Andrej Karpathy's talk, with the claims checked against their sources and measured on small open models"
 tags: [nlp, llm]
-categories: machine-learning
+categories: [machine-learning, cybersecurity]
 featured: false
 thumbnail: /assets/posts/llms-for-those-who-missed-out/cover.png
 og_image: https://xmarva.github.io/assets/posts/llms-for-those-who-missed-out/cover.png

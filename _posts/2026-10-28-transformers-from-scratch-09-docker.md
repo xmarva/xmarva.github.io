@@ -4,7 +4,7 @@ title: "It works on my laptop: a reproducible Docker image of a model"
 date: 2026-10-28 18:00:00
 description: "Ship a model so that it runs the same next year: a lock file with hashes, an image pinned by digest, builds that give the same bytes twice, GitHub Actions publishing to GHCR, the image pulled and run without Docker, and the model exported to ONNX for a free in-browser demo."
 tags: [transformers-from-scratch, docker, reproducibility, onnx, mlops]
-categories: machine-learning
+categories: [machine-learning, system-design]
 thumbnail: /assets/posts/tfs/09/cover.png
 og_image: https://xmarva.github.io/assets/posts/tfs/09/cover.png
 stylesheets: [/assets/css/tfs-course.css]

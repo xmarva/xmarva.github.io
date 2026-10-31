@@ -1,8 +1,8 @@
 ---
 layout: post
-title: How to Write Good Python Code
+title: "How to write clean Python code"
 date: 2023-02-07 15:09:00
-description: Let's look at the basic rules for writing great Python code
+description: "Naming, comments, modules, tests, docstrings, exceptions and keyword arguments: the basic habits that keep Python code readable and easy to change"
 tags: [python, coding]
 categories: [code]
 featured: false
@@ -14,7 +14,7 @@ It can be used for many things, like building websites, exploring data, and teac
 
 If you already know Python or are just beginning, writing code that is strong, easy to read, and easy to keep up with is important. 
 
-In this bogpost, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.
+In this blog post, we’ll look at the basic rules for writing great Python code and share some tips to help you make your programs even better.
 
 ## 📚 Use Meaningful Naming Conventions
 
