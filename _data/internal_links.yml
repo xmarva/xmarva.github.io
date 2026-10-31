@@ -43,3 +43,5 @@
   url: /blog/2025/minds-as-computers/
 - pattern: '\bAlternate Uses Task\b|\bmove 37\b'
   url: /blog/2025/creative-ai/
+- pattern: '\bbacktest overfitting\b|\blook-ahead bias\b|\bAI trading bots?\b|\bcrypto trading\b'
+  url: /blog/2026/ai-crypto-trading/
