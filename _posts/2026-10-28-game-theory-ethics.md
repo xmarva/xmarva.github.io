@@ -3,8 +3,9 @@ layout: post
 title: "Is it rational to be good? Game theory and the ethics of cooperation"
 date: 2026-10-28 12:00:00
 description: "Glaucon's challenge, Hobbes's Foole and Hume's farmers read through the prisoner's dilemma: when cooperation is rational, which virtues the models select, how much forgiveness reason allows, and what game theory cannot settle"
+seo_description: "Plato, Hobbes and Hume read through the prisoner's dilemma: when cooperation is rational, which virtues pay, and what game theory cannot settle."
 tags: [game-theory, ethics, philosophy, cooperation, prisoners-dilemma]
-categories: cognitive-science
+categories: philosophy
 featured: false
 thumbnail: /assets/posts/game-theory-ethics/cover.png
 og_image: https://xmarva.github.io/assets/posts/game-theory-ethics/cover.png
