@@ -4,7 +4,7 @@ title: "Serving a Transformer with FastAPI and Gradio: latency under load"
 date: 2026-10-27 17:00:00
 description: "Put a Transformer behind an HTTP API and measure it the way users meet it: a KV cache in beam search, int8 quantization that doesn't pay off, FastAPI and asyncio, open-loop load tests, queueing theory checked against the measurements, dynamic batching, and a Gradio page."
 tags: [transformers-from-scratch, fastapi, inference, load-testing, queueing-theory]
-categories: machine-learning
+categories: [machine-learning, system-design]
 thumbnail: /assets/posts/tfs/08/cover.png
 og_image: https://xmarva.github.io/assets/posts/tfs/08/cover.png
 stylesheets: [/assets/css/tfs-course.css]

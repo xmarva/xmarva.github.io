@@ -1,10 +1,10 @@
 ---
 layout: post
-title: LLM Inference Optimization
+title: "LLM inference optimization: where the time and memory go"
 date: 2025-06-19 10:00:00
-description: "Where the time and the memory go when a language model serves users, measured on a real GPU, and what serving engines do about it"
+description: "Why generating text is limited by memory rather than arithmetic, measured on a free GPU, and what serving engines like vLLM do about it: the KV cache, continuous batching, quantization and speculative decoding"
 tags: [machine-learning, transformers, production, optimization, high-load]
-categories: system-design
+categories: [system-design, machine-learning]
 featured: false
 thumbnail: /assets/posts/inference-optimization/cover.png
 og_image: https://xmarva.github.io/assets/posts/inference-optimization/cover.png

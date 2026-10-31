@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Building a Transformer (Cross-Attention and MHA Explained)
+title: "Building a Transformer in PyTorch, layer by layer"
 date: 2025-04-16 15:00:00
-description: Learn and implement the most iconic architecture in modern deep learning.
+description: "Positional encoding, self-attention, multi-head attention and cross-attention, then the encoder and decoder layers, written in PyTorch one module at a time."
 tags: [machine-learning, transformers, multihead-attention, positional-encoding, nlp]
 categories: machine-learning
 featured: false

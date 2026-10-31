@@ -1,15 +1,25 @@
 {% comment %}
   The blog's list, shared by the home page and /blog/ so that the two are the same page: the pinned post (front
   matter `featured: true`) large above the category chips, then the posts as rows, the cover on the left and the
-  title on the right, level with the cover's top edge. Lessons of the course get a small badge. The chips filter the
-  rows in the page (plain ES2017 at the end: the production build minifies it with Uglifier). The chips' categories
-  are in _data/blog.yml.
+  title on the right, level with the cover's top edge. Lessons of the course get a small badge. The chips' categories
+  are in _data/blog.yml; a post can have several categories, and the first one is shown under its title.
+
+  Every page of the blog carries all the posts: those of other pages are hidden until a chip is pressed, so that a
+  chip shows every post of its category, not only those on the current page (plain ES2017 at the end: the production
+  build minifies it with Uglifier). A chip's category can be linked to as #category, e.g. /#crypto.
 
   Parameters: posts (the rows of this page), pinned (show the pinned post: the first page only), newer, older (links
-  to the neighbouring pages, if any).
+  to the neighbouring pages, if any), mode: "category" on a category's page (only the posts given, no chips, and no
+  hidden heading, since the page has its own).
 {% endcomment %}
 {% assign course = site.data.courses | where: 'id', 'tfs' | first %}
 {% assign pin = site.posts | where: 'featured', true | first %}
+{% if include.mode == 'category' %}
+  {% assign rows = include.posts %}
+{% else %}
+  {% assign rows = site.posts %}
+{% endif %}
+{% capture on_page %}|{% for post in include.posts %}{{ post.url }}|{% endfor %}{% endcapture %}
 
 <style>
   .bh { --bh-border: var(--global-divider-color); --bh-muted: var(--global-text-color-light); margin: 2.4rem 0 1rem; }
@@ -167,12 +177,12 @@
 </style>
 
 <div class="bh">
-  <h1 class="sr-only">Eva Koroleva's blog</h1>
+  {% unless include.mode == 'category' %}<h1 class="sr-only">Eva Koroleva's blog</h1>{% endunless %}
 
   {% if include.pinned and pin %}
     {% assign category = pin.categories | first %}
     {% assign read_time = pin.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    <article class="bh-pin" data-category="{{ category }}">
+    <article class="bh-pin" data-categories="{{ pin.categories | join: ' ' }}">
       <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if pin.thumbnail %}
           <img src="{{ pin.thumbnail | relative_url }}" alt="" width="1200" height="630" decoding="async">
@@ -197,19 +207,25 @@
     </article>
   {% endif %}
 
-  <ul class="bh-chips" aria-label="Filter posts by topic">
-    <li><button type="button" class="bh-chip" data-filter="all" aria-pressed="true">All</button></li>
-    {% for chip in site.data.blog.chips %}
-      <li><button type="button" class="bh-chip" data-filter="{{ chip.category }}" aria-pressed="false">{{ chip.label }}</button></li>
-    {% endfor %}
-  </ul>
+  {% unless include.mode == 'category' %}
+    <ul class="bh-chips" aria-label="Filter posts by topic">
+      <li><button type="button" class="bh-chip" data-filter="all" aria-pressed="true">All</button></li>
+      {% for chip in site.data.blog.chips %}
+        {% comment %} a category without posts gets no chip {% endcomment %}
+        {% if site.categories[chip.category].size > 0 %}
+          <li><button type="button" class="bh-chip" data-filter="{{ chip.category }}" aria-pressed="false">{{ chip.label }}</button></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endunless %}
 
-  {% for post in include.posts %}
+  {% for post in rows %}
     {% if include.pinned and pin and post.url == pin.url %}{% continue %}{% endif %}
+    {% capture key %}|{{ post.url }}|{% endcapture %}
     {% assign category = post.categories | first %}
     {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
     {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
-    <article class="bh-row" data-category="{{ category }}">
+    <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}"{% unless on_page contains key %} data-other-page hidden{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
           <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
@@ -245,19 +261,39 @@
 <script>
   (function () {
     var chips = document.querySelectorAll(".bh-chip");
-    var items = document.querySelectorAll(".bh [data-category]");
+    if (!chips.length) return;
+    var items = document.querySelectorAll(".bh [data-categories]");
+    var pager = document.querySelector(".bh-pager");
     function show(filter) {
       for (var i = 0; i < chips.length; i++) {
         chips[i].setAttribute("aria-pressed", chips[i].getAttribute("data-filter") === filter ? "true" : "false");
       }
       for (var j = 0; j < items.length; j++) {
-        items[j].hidden = filter !== "all" && items[j].getAttribute("data-category") !== filter;
+        var categories = " " + items[j].getAttribute("data-categories") + " ";
+        if (filter === "all") {
+          items[j].hidden = items[j].hasAttribute("data-other-page");
+        } else {
+          items[j].hidden = categories.indexOf(" " + filter + " ") < 0;
+        }
       }
+      // every page holds all the posts, so a filtered list is already complete and needs no pages
+      if (pager) pager.hidden = filter !== "all";
+    }
+    function chip(filter) {
+      for (var i = 0; i < chips.length; i++) {
+        if (chips[i].getAttribute("data-filter") === filter) return chips[i];
+      }
+      return null;
     }
     for (var k = 0; k < chips.length; k++) {
       chips[k].addEventListener("click", function (event) {
-        show(event.currentTarget.getAttribute("data-filter"));
+        var filter = event.currentTarget.getAttribute("data-filter");
+        show(filter);
+        var address = location.pathname + location.search + (filter === "all" ? "" : "#" + filter);
+        if (history.replaceState) history.replaceState(null, "", address);
       });
     }
+    var linked = decodeURIComponent(location.hash.slice(1));
+    if (linked && chip(linked)) show(linked);
   })();
 </script>

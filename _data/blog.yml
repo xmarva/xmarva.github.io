@@ -1,6 +1,11 @@
-# The category chips above the posts on the home page and /blog/, in this order. Add a line when a new category
-# gets posts; `category` is the slug in the posts' front matter.
+# The category chips above the posts on the home page and /blog/, in this order; a category without posts gets no
+# chip. `category` is the slug in the posts' front matter (a post can list several, the main one first), `label` is
+# also the name of the category's page.
 chips:
   - { category: machine-learning, label: Machine Learning }
   - { category: cognitive-science, label: Cognitive Science }
   - { category: system-design, label: System Design }
+  - { category: crypto, label: Crypto }
+  - { category: cybersecurity, label: Cybersecurity }
+  - { category: finance, label: Finance }
+  - { category: philosophy, label: Philosophy }

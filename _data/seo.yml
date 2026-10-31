@@ -2,13 +2,14 @@
 # (search engines show about 155 characters) or too vague. The visible description on the site stays as it is.
 
 /blog/2023/python-code/: "Rules for readable, maintainable Python: naming, comments, modules, tests, docstrings, exceptions, keyword arguments, the Zen of Python and refactoring."
-/blog/2024/llms-for-those-who-missed-out/: "What a large language model is and how it is built in three stages, after Andrej Karpathy's talk, with each claim checked and measured on small open models."
+/blog/2024/llms-for-those-who-missed-out/: "How large language models are trained, from pretraining to RLHF, after Andrej Karpathy's talk, with each claim checked on small open models."
 /blog/2024/lora-algorithm-for-llms/: "Why a fine-tuning update fits in two thin matrices: rank, SVD and the Eckart–Young theorem, then LoRA's initialization, gradients and scale, checked on BERT."
 /blog/2025/creative-ai/: "What happens in a brain that has a new idea, and what measurements of machine creativity show, from AlphaGo's move 37 to GPT-4 on the Alternate Uses Task."
 /blog/2025/attention/: "Attention from RNN translation models to self-attention and multi-head attention in PyTorch, step by step, and how it is made faster and lighter on memory."
 /blog/2025/tokenization/: "Byte-pair encoding explained and implemented step by step in Python, then trained on real text and compared with Hugging Face tokenizers."
 /blog/2025/building-a-transformer/: "Positional encoding, self-attention, multi-head attention and cross-attention explained and implemented in PyTorch, building a Transformer layer by layer."
-/blog/2025/adapters/: "Adapters, LoRA, prefix and prompt tuning, BitFit, (IA)³ and Compacter: parameter-efficient fine-tuning of a transformer, written in PyTorch and measured."
+/blog/2025/adapters/: "Adapters, LoRA, prefix and prompt tuning, BitFit, (IA)³ and Compacter: parameter-efficient fine-tuning (PEFT) in PyTorch, measured on one task."
+/blog/2025/inference-optimization/: "Why LLM decoding is memory-bound, measured on a free GPU, and what vLLM does about it: KV cache, continuous batching, quantization, speculative decoding."
 /blog/2025/antonio-damasio/: "Damasio's somatic marker hypothesis: a patient who could reason but not decide, the Iowa Gambling Task, and the evidence for and against the theory."
 /blog/2026/transformers-from-scratch-04-evaluation/: "Evaluate English–Russian machine translation with BLEU, chrF and COMET written from scratch: references, agreement with translators, significance tests."
 /blog/2026/transformers-from-scratch-05-llama/: "Pre-norm, RMSNorm, SwiGLU and RoPE: what Llama changed in the 2017 Transformer, written in PyTorch and measured one change at a time against seed noise."

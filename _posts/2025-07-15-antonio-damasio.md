@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Somatic Marker Hypothesis by Antonio Damasio"
+title: "Damasio's somatic marker hypothesis: the body in decision-making"
 date: 2025-07-15 10:00:00
 description: "A patient who could reason about everything and decide nothing, a card game whose decks are rigged, and a theory that puts the body inside decisions: Damasio's somatic markers, the evidence for them and the evidence against"
 tags: [neuroscience, decision-making, emotions, cognition, psychology]
