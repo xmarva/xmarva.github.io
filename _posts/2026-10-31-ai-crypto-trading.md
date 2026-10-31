@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "AI and LLMs in crypto trading: what the models can and cannot do"
+title: "AI crypto trading bots: what machine learning and LLMs can and can't do"
 date: 2026-10-31 09:00:00
-description: "Gradient boosting, volatility models and seven open LLMs tested on six years of Binance data: what predicts, what costs eat, and where AI agents fail"
+description: "AI trading bots and LLM agents tested on six years of Binance data: what machine learning predicts, what trading fees eat, and why LLM backtests lie"
 tags: [machine-learning, llm, crypto, trading, ai-agents]
 categories: machine-learning
 featured: false
