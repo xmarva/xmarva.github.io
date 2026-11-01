@@ -30,9 +30,9 @@ The famous accuracy figures say less than they seem, because most questions reso
 
 On the last evening of October I opened Polymarket to look at one number. The US midterm elections were three days away, and the market on which party would control the Senate had taken &#36;13.5 million of bets.
 
-A share that pays a dollar if Democrats win the Senate cost 71.5 cents. The House was hardly a contest by the market's account: 94.5 cents for Democrats.
+A share that pays a dollar if Democrats win the Senate cost <b>71.5 cents</b>. The House was hardly a contest by the market's account: 94.5 cents for Democrats.
 
-A week earlier the same kind of number had been wrong in public. Going into Brazil's presidential runoff on 25 October, Polymarket and Kalshi gave Flávio Bolsonaro about an 80% chance of beating Lula, and Lula won<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: CNBC (2026). Lula wins Brazil election despite prediction markets favoring Bolsonaro. 26 October 2026.">1</a>]</sup>. Semafor's headline that week was that prediction markets had "blown three big elections"<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Semafor (2026). Prediction markets flop on recent elections. 30 October 2026.">2</a>]</sup>.
+A week earlier the same kind of number had been wrong in public. Going into Brazil's presidential runoff on 25 October, Polymarket and Kalshi gave Flávio Bolsonaro about an <b>80%</b> chance of beating Lula, and Lula won<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: CNBC (2026). Lula wins Brazil election despite prediction markets favoring Bolsonaro. 26 October 2026.">1</a>]</sup>. Semafor's headline that week was that prediction markets had "blown three big elections"<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Semafor (2026). Prediction markets flop on recent elections. 30 October 2026.">2</a>]</sup>.
 
 By the time you read this you probably know how the Senate went, and I don't. Suppose Republicans keep it. Was 71.5 wrong?
 
@@ -40,7 +40,9 @@ Suppose they lose it. Was it right? Neither follows, and Brazil does not prove t
 
 A forecast of 71.5% claims something only about <mark>many situations like this one</mark>: that roughly seven in ten of them end the way the market leaned, and three in ten don't.
 
-So the question in the title cannot be settled by any one market, however famous. It can be settled by many. I downloaded the record of every market Polymarket resolved from 2024 on, almost three million of them, took the price histories of about 150,000 and checked what the prices said against what then happened.
+So the question in the title cannot be settled by any one market, however famous. It can be settled by many.
+
+I downloaded the record of every market Polymarket resolved from 2024 on, <b>almost three million</b> of them, took the price histories of about 150,000 and checked what the prices said against what then happened.
 
 This post is about what came out: how good the prices are as probabilities, where they are systematically off, a trap in the most natural way to slice the data, what the "accuracy" figures in the press leave out, and what a trader can and cannot do with any of it.
 
@@ -65,7 +67,7 @@ You buy when $$q > p$$ and sell when $$q < p$$. The price stops moving where nob
 
 That argument has holes, and economists have spent twenty years mapping them. The price is a compromise between traders, not anyone's belief.
 
-With logarithmic utility it equals the traders' average belief, and for other reasonable preferences it stays close to it between about 20 and 80 cents<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Wolfers, J., &amp; Zitzewitz, E. (2006). Interpreting prediction market prices as probabilities. NBER Working Paper 12200.">5</a>]</sup>; for risk-neutral traders with different beliefs, a price of 75 cents is compatible with an average belief anywhere from 56% to 94%<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Manski, C. F. (2006). Interpreting the predictions of prediction markets. Economics Letters, 91(3), 425–429.">6</a>]</sup>.
+With logarithmic utility it equals the traders' average belief, and for other reasonable preferences it stays close to it between about 20 and 80 cents<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Wolfers, J., &amp; Zitzewitz, E. (2006). Interpreting prediction market prices as probabilities. NBER Working Paper 12200.">5</a>]</sup>; for risk-neutral traders with different beliefs, a price of 75 cents is compatible with an average belief anywhere from <b>56% to 94%</b><sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Manski, C. F. (2006). Interpreting the predictions of prediction markets. Economics Letters, 91(3), 425–429.">6</a>]</sup>.
 
 Money tied up in a bet until December could have earned interest. Since March 2026 most categories charge the taker a fee<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Polymarket (2026). Trading fees. Documentation.">7</a>]</sup>. And the dollar arrives only if the event is resolved the way you expect, by a process with its own failures.
 
@@ -83,7 +85,7 @@ The picture that shows calibration is the *reliability diagram*. Take all the fo
 
 If you have ever trained a classifier and checked whether its predicted probabilities can be trusted, you have drawn this picture already; modern neural networks are famously overconfident on it<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017). On calibration of modern neural networks. ICML 2017.">8</a>]</sup>, and how to bin the forecasts is a small science of its own<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Dimitriadis, T., Gneiting, T., &amp; Jordan, A. I. (2021). Stable reliability diagrams for probabilistic classifiers. PNAS, 118(8), e2016191118.">9</a>]</sup>.
 
-Calibration is not enough. A forecaster who always announces the base rate, the share of all events that happen, is perfectly calibrated and perfectly useless. About 34% of Polymarket's markets resolve Yes, so saying "34%" about every market is calibrated: of all the markets you said it about, 34% happened.
+Calibration is not enough. A forecaster who always announces the base rate, the share of all events that happen, is perfectly calibrated and perfectly useless. About <b>34%</b> of Polymarket's markets resolve Yes, so saying "34%" about every market is calibrated: of all the markets you said it about, 34% happened.
 
 What a good forecaster adds is *resolution*, forecasts that move away from the base rate in the right direction, high for the events that happen and low for those that don't.
 
@@ -120,20 +122,20 @@ The second is a bolder copy that doubles the prices' log-odds, so that 70% becom
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/forecasters-light.png" width="760" alt="Three reliability diagrams for the same markets a week before they closed. Polymarket&#x27;s own prices lie close to the diagonal, Brier score 0.079. A bolder copy, with the log-odds doubled, bends away from it, Brier 0.084; a timid copy, with them halved, bends the other way, Brier 0.089. A forecaster who always says the base rate, 25%, is a single point on the diagonal, Brier 0.186" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/forecasters-dark.png" width="760" alt="Three reliability diagrams for the same markets a week before they closed. Polymarket&#x27;s own prices lie close to the diagonal, Brier score 0.079. A bolder copy, with the log-odds doubled, bends away from it, Brier 0.084; a timid copy, with them halved, bends the other way, Brier 0.089. A forecaster who always says the base rate, 25%, is a single point on the diagonal, Brier 0.186" loading="lazy">
 
-The market's own prices score 0.079. Both copies score worse, 0.084 for the bold one and 0.089 for the timid one, and they fail in opposite ways.
+The market's own prices score <b>0.079</b>. Both copies score worse, 0.084 for the bold one and 0.089 for the timid one, and they fail in opposite ways.
 
 The bold copy's points lie above the diagonal on the left and below it on the right: when it says 5%, the event happens more often than that, because it took a modest forecast and inflated its confidence.
 
-The timid copy bends the other way. Neither copy knows anything the market didn't, and that is the point of the exercise: **distorting a calibrated forecaster in either direction only makes its score worse.** The base-rate forecaster says 25% about everything, the share of these markets that resolved Yes, and scores 0.186, more than twice the market's error.
+The timid copy bends the other way. Neither copy knows anything the market didn't, and that is the point of the exercise: **distorting a calibrated forecaster in either direction only makes its score worse.** The base-rate forecaster says 25% about everything, the share of these markets that resolved Yes, and scores <b>0.186</b>, more than twice the market's error.
 
 ## Why one election proves nothing
 
-The case people quote as proof is the 2024 US presidential election. On the eve of the vote Polymarket priced a Trump win at 59 cents, while 538's final model gave Kamala Harris 50 chances in 100<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: 538 (2024). 538&#x27;s final forecasts for the 2024 presidential election. Republished by 6abc, 5 November 2024.">12</a>]</sup>. Trump won all seven swing states.
+The case people quote as proof is the 2024 US presidential election. On the eve of the vote Polymarket priced a Trump win at <b>59 cents</b>, while 538's final model gave Kamala Harris <b>50 chances in 100</b><sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: 538 (2024). 538&#x27;s final forecasts for the 2024 presidential election. Republished by 6abc, 5 November 2024.">12</a>]</sup>. Trump won all seven swing states.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/election-light.png" width="760" alt="Polymarket&#x27;s price for Donald Trump winning the 2024 US presidential election over 2024: near 50 cents in spring, up after the first debate, down to about even after Biden withdrew and Harris entered, rising again in October; 1.53 billion dollars traded" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/election-dark.png" width="760" alt="Polymarket&#x27;s price for Donald Trump winning the 2024 US presidential election over 2024: near 50 cents in spring, up after the first debate, down to about even after Biden withdrew and Harris entered, rising again in October; 1.53 billion dollars traded" loading="lazy">
 
-The market's best-known trader that year, a Frenchman the press called Théo, had bet more than &#36;30 million on Trump across several accounts.
+The market's best-known trader that year, a Frenchman the press called Théo, had bet <b>more than &#36;30 million</b> on Trump across several accounts.
 
 He told the Wall Street Journal he had "absolutely no political agenda"<sup class="cite">[<a href="#ref-13" id="cite-13" data-ref="13" aria-label="Reference 13: The Wall Street Journal (2024). The Trump betting whale speaks out: &quot;I have absolutely no political agenda&quot;. Republished by To Vima, 1 November 2024.">13</a>]</sup>, and later turned out to have commissioned his own polls, asking people not whom they would vote for but whom their neighbours would<sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: CBS News (2025). French whale made over &amp;#36;80 million on Polymarket betting on Trump&#x27;s election win. 60 Minutes, 30 November 2025.">14</a>]</sup>. He made tens of millions of dollars, and he was right.
 
@@ -147,7 +149,7 @@ Thousands can.
 
 Polymarket publishes everything needed to check it. Its Gamma API lists every event and market with its question, its tags, the dollars traded and the final outcome; its order-book API returns the price history of every outcome token.
 
-I took every event that closed from 2024 to the end of October 2026 with at least &#36;1,000 traded: 2,959,534 binary markets that resolved cleanly to Yes or No. (The API records only a few thousand markets before 2024, and I leave them out of the counts.)
+I took every event that closed from 2024 to the end of October 2026 with at least &#36;1,000 traded: <b>2,959,534</b> binary markets that resolved cleanly to Yes or No. (The API records only a few thousand markets before 2024, and I leave them out of the counts.)
 
 About 0.4% of markets with more than &#36;10,000 traded resolved 50-50, the platform's answer to a question that turned out ambiguous, and I set those aside.
 
@@ -156,9 +158,9 @@ About 0.4% of markets with more than &#36;10,000 traded resolved 50-50, the plat
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/population-light.png" width="760" alt="Stacked bars of resolved Polymarket markets by the year they closed and topic: 2024: 12,964, 2025: 193,734, 2026: 2,752,836. 34% of all of them resolved Yes" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/population-dark.png" width="760" alt="Stacked bars of resolved Polymarket markets by the year they closed and topic: 2024: 12,964, 2025: 193,734, 2026: 2,752,836. 34% of all of them resolved Yes" loading="lazy">
 
-Polymarket in 2026 is mostly a sports book. One football match can carry a dozen markets (the winner, the handicap, the total goals), and sports make up 73% of all the markets that closed this year.
+Polymarket in 2026 is mostly a sports book. One football match can carry a dozen markets (the winner, the handicap, the total goals), and sports make up <b class="pct" style="--p:73">73%</b> of all the markets that closed this year.
 
-Next come the short crypto markets that ask whether Bitcoin will be higher at the end of the next fifteen minutes, hour or day, 11%, and science and weather questions, 6%. Politics, the subject of nearly every article about prediction markets, is 2% of the count.
+Next come the short crypto markets that ask whether Bitcoin will be higher at the end of the next fifteen minutes, hour or day, 11%, and science and weather questions, 6%. Politics, the subject of nearly every article about prediction markets, is <b class="pct" style="--p:2">2%</b> of the count.
 
 Downloading the price history of three million markets is not practical, so I sampled about 150,000 of them, and how to sample turned out to matter more than anything else in this study.
 
@@ -186,7 +188,7 @@ The close comes after the outcome is known, typically hours after a match ends o
 
 **A market counts as a forecast only if at least &#36;1,000 had been traded in it in the week before.** This matters more than it sounds. Most markets on Polymarket are created, barely traded and resolved, and the price history of such a market is the middle of an almost empty order book.
 
-One football market in my sample, on whether a Bundesliga match would have five goals or more, stood at 48 cents a week before the game; most matches end with fewer, this one did too, and over its whole life the market traded &#36;134. That price is not a forecast of a high-scoring game.
+One football market in my sample, on whether a Bundesliga match would have five goals or more, stood at 48 cents a week before the game; most matches end with fewer, this one did too, and over its whole life the market traded <b>&#36;134</b>. That price is not a forecast of a high-scoring game.
 
 A bid at one cent and an ask at 95 cents would give it. The test uses only what was known at the time, the trades of that week, which I took from Polymarket's public trades API.
 
@@ -199,34 +201,36 @@ Here is the main result.
 
 The points sit close to the diagonal. Of the 18,157 markets with real trading a week before the close, those priced around 25 cents resolved Yes 28% of the time and those around 75 cents 82%.
 
-The average gap between price and frequency is 1.8 percentage points, and the reliability term of the Brier score is 0.001, a hundredth of the resolution term, 0.108. A weather service would be pleased with that.
+The average gap between price and frequency is <b>1.8 percentage points</b>, and the reliability term of the Brier score is 0.001, a hundredth of the resolution term, 0.108. A weather service would be pleased with that.
 
 <p class="takeaway" markdown="1">When a liquid market says 70%, read it as about 70%, and remember that 70 means it fails three times in ten.</p>
 
-The small deviations have a shape. Between 55 and 85 cents events happened a little more often than priced (60% of the markets at 55 cents, 82% of those at 75), while contracts at 2 to 5 cents happened less often than priced, 2.3% of the time against a price of 3.2. The prices are slightly compressed toward the middle: favourites a little too cheap, longshots a little too dear.
+The small deviations have a shape. Between 55 and 85 cents events happened a little more often than priced (60% of the markets at 55 cents, 82% of those at 75), while contracts at 2 to 5 cents happened less often than priced, <b>2.3%</b> of the time against a price of <b>3.2</b>.
 
-That is the pattern economic theory predicts for traders who like long shots or dislike tying up money, and it is what a Princeton thesis on 188,509 Polymarket markets found too<sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Walker, A. (2026). The price is (almost) right: a calibration analysis of Polymarket pricing data. Senior thesis, Princeton University.">16</a>]</sup>.
+The prices are slightly compressed toward the middle: favourites a little too cheap, longshots a little too dear. That is the pattern economic theory predicts for traders who like long shots or dislike tying up money, and it is what a Princeton thesis on 188,509 Polymarket markets found too<sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Walker, A. (2026). The price is (almost) right: a calibration analysis of Polymarket pricing data. Senior thesis, Princeton University.">16</a>]</sup>.
 
-The right panel shows something just as important: where the forecasts are. Almost half of these markets are priced below 5 cents a week before they close.
+The right panel shows something just as important: where the forecasts are. <b>Almost half</b> of these markets are priced below 5 cents a week before they close.
 
 Most questions on Polymarket are of the form "will this specific thing happen", most of them don't happen, and the market knows. Those confident, correct and uninteresting forecasts are a large part of every headline accuracy figure.
 
 ## Accuracy against a forecaster who always says no
 
-Polymarket advertises its record on a page titled "How accurate is Polymarket?": 98.7% accurate four hours before resolution, 90.3% a month before<sup class="cite">[<a href="#ref-17" id="cite-17" data-ref="17" aria-label="Reference 17: Polymarket (2026). How accurate is Polymarket? Accessed 31 October 2026.">17</a>]</sup>. Accuracy there means the share of markets where the leading outcome won.
+Polymarket advertises its record on a page titled "How accurate is Polymarket?": <b>98.7%</b> accurate four hours before resolution, <b>90.3%</b> a month before<sup class="cite">[<a href="#ref-17" id="cite-17" data-ref="17" aria-label="Reference 17: Polymarket (2026). How accurate is Polymarket? Accessed 31 October 2026.">17</a>]</sup>. Accuracy there means the share of markets where the leading outcome won.
 
-It sounds like a hard bar to clear. The same page notes that 78.3% of its markets resolve No, and explains why: "There are usually more ways for something not to happen than to happen in one exact way".
+It sounds like a hard bar to clear. The same page notes that <b class="pct" style="--p:78.3">78.3%</b> of its markets resolve No, and explains why: "There are usually more ways for something not to happen than to happen in one exact way".
 
-A forecaster who answers "No" to every question without reading it is therefore 78% accurate on Polymarket's own sample. The left half of the next chart shows what that does to the comparison on mine.
+A forecaster who answers "No" to every question without reading it is therefore <b>78%</b> accurate on Polymarket's own sample. The left half of the next chart shows what that does to the comparison on mine.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/accuracy-light.png" width="760" alt="The same 5,420 markets a month, a week and a day before they closed. Left: share where the side priced above 50 cents won, against the share a forecaster who always says No gets right: 1 month before 87% against 77%; 1 week before 93% against 77%; 1 day before 96% against 77%. Right: Brier skill over the base rate: 1 month 48% for all, 40% for those priced 2 to 98 cents; 1 week 70% for all, 54% for those priced 2 to 98 cents; 1 day 82% for all, 57% for those priced 2 to 98 cents" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/accuracy-dark.png" width="760" alt="The same 5,420 markets a month, a week and a day before they closed. Left: share where the side priced above 50 cents won, against the share a forecaster who always says No gets right: 1 month before 87% against 77%; 1 week before 93% against 77%; 1 day before 96% against 77%. Right: Brier skill over the base rate: 1 month 48% for all, 40% for those priced 2 to 98 cents; 1 week 70% for all, 54% for those priced 2 to 98 cents; 1 day 82% for all, 57% for those priced 2 to 98 cents" loading="lazy">
 
 The chart uses the 5,420 markets that had real trading a month, a week and a day before they closed, so the same questions are scored at every horizon.
 
-The favourite won 87% of them a month before the close, 93% a week before and 96% a day before. A forecaster who says No to everything gets 77% right on these markets at every horizon, since only 23% of them resolved Yes.
+The favourite won 87% of them a month before the close, 93% a week before and 96% a day before. A forecaster who says No to everything gets <b>77%</b> right on these markets at every horizon, since only 23% of them resolved Yes.
 
-The honest comparison is skill: the market removes 48% of the base-rate forecaster's Brier score a month out, 70% a week out and 82% a day out. On the questions still in doubt at the time, priced between 2 and 98 cents, it removes 40%, 54% and 57%. <div class="callout callout-key" markdown="1">
+The honest comparison is skill: the market removes <b class="pct" style="--p:48">48%</b> of the base-rate forecaster's Brier score a month out, <b class="pct" style="--p:70">70%</b> a week out and <b class="pct" style="--p:82">82%</b> a day out. On the questions still in doubt at the time, priced between 2 and 98 cents, it removes 40%, 54% and 57%.
+
+<div class="callout callout-key" markdown="1">
 <p class="callout-label">Key point</p>
 
 Accuracy flatters any forecaster whose questions mostly resolve one way. Ask for skill: the share of the base-rate forecaster's error that is gone. On Polymarket it is 70% a week before the close, and 54% on the questions still in doubt.
@@ -241,7 +245,7 @@ Information arrives over time. The Brier score of markets that lived at least tw
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/convergence-light.png" width="760" alt="Brier score of 3,492 markets, each open for at least 60 days, by days before the close: 0.084 at 60 days, 0.056 at 30, 0.033 at 7 and 0.021 at half a day, against 0.150 for always saying the base rate. The share priced below 1 cent or above 99 rises from 26% to 75%" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/convergence-dark.png" width="760" alt="Brier score of 3,492 markets, each open for at least 60 days, by days before the close: 0.084 at 60 days, 0.056 at 30, 0.033 at 7 and 0.021 at half a day, against 0.150 for always saying the base rate. The share priced below 1 cent or above 99 rises from 26% to 75%" loading="lazy">
 
-Sixty days before the close, the 3,492 markets that lived that long and were traded a month out already score 0.084, well below the base rate's 0.150.
+Sixty days before the close, the 3,492 markets that lived that long and were traded a month out already score <b>0.084</b>, well below the base rate's <b>0.150</b>.
 
 The score falls steadily, to 0.056 a month out and 0.033 a week out, and drops again in the last days, when scheduled events (a vote, a match, a data release) take place.
 
@@ -253,16 +257,16 @@ The obvious next question is whether big markets forecast better than small ones
 
 My first sample took every market with more than &#36;100,000 traded and a share of those between &#36;10,000 and &#36;100,000, the way one naturally filters out dead markets.
 
-In that sample, contracts priced between 10 and 20 cents a week before the close returned 25% on average, and the bigger the market, the more the longshots won.
+In that sample, contracts priced between 10 and 20 cents a week before the close returned <b>25%</b> on average, and the bigger the market, the more the longshots won.
 
 It looked like the reverse of everything the racetrack literature says, and a trading strategy in one line. Here are the longshots of the sample drawn by topic, grouped two ways.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/trap-light.png" width="760" alt="Contracts priced 2 to 20 cents a week before the close: how often they won divided by their price, grouped by the market&#x27;s total volume and by the dollars traded in it in the week before. By total volume: under $$1K 0.49; $$1K–10K 0.60; $$10K–100K 1.13; $$100K–1M 1.34; $$1M–10M 2.14. By the week before: under $$100 0.72; $$100–1K 0.87; $$1K–10K 0.96; $$10K–100K 0.81" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/trap-dark.png" width="760" alt="Contracts priced 2 to 20 cents a week before the close: how often they won divided by their price, grouped by the market&#x27;s total volume and by the dollars traded in it in the week before. By total volume: under $$1K 0.49; $$1K–10K 0.60; $$10K–100K 1.13; $$100K–1M 1.34; $$1M–10M 2.14. By the week before: under $$100 0.72; $$100–1K 0.87; $$1K–10K 0.96; $$10K–100K 0.81" loading="lazy">
 
-On the left, grouped by the dollars a market traded over its whole life, contracts priced 2 to 20 cents won about half as often as priced in markets under &#36;1,000 (a ratio of 0.49) and twice as often in markets of &#36;1–10 million (2.14).
+On the left, grouped by the dollars a market traded over its whole life, contracts priced 2 to 20 cents won <b>about half as often</b> as priced in markets under &#36;1,000 (a ratio of 0.49) and <b>twice as often</b> in markets of &#36;1–10 million (2.14).
 
-On the right, the same contracts grouped by the dollars traded in the week before the forecast show nothing of the kind: 0.72 in the thinnest markets, 0.87 and 0.96 as trading grows. Favourites mirror it, from 1.05 to 0.88 on the left and flat at about 1.0 on the right.
+On the right, the same contracts grouped by the dollars traded in the week before the forecast show <em>nothing of the kind</em>: 0.72 in the thinnest markets, 0.87 and 0.96 as trading grows. Favourites mirror it, from 1.05 to 0.88 on the left and flat at about 1.0 on the right.
 
 The left panel is an artefact, and the reason is in what volume counts. A market's total volume includes all the trading after the forecast, and nothing makes people trade like a surprise.
 
@@ -286,18 +290,20 @@ It says something useful: <mark>in thin markets longshots are overpriced, and th
 
 Calibration is an average, and averages hide the tails. The tails are where traders make or lose money, and economists have known for seventy years where to look: at the racetrack, bettors overpay for longshots and underpay for favourites<sup class="cite">[<a href="#ref-18" id="cite-18" data-ref="18" aria-label="Reference 18: Griffith, R. M. (1949). Odds adjustments by American horse-race bettors. American Journal of Psychology, 62(2), 290–294.">18</a>]</sup>.
 
-In six million American horse races, betting on horses at 100 to 1 or longer lost about 61% of the stake, while betting on the favourite in every race lost only 5.5%<sup class="cite">[<a href="#ref-19" id="cite-19" data-ref="19" aria-label="Reference 19: Snowberg, E., &amp; Wolfers, J. (2010). Explaining the favorite–long shot bias: is it risk-love or misperceptions? Journal of Political Economy, 118(4), 723–746.">19</a>]</sup>. On Kalshi, contracts bought below 10 cents lost over 60% of the money put into them<sup class="cite">[<a href="#ref-20" id="cite-20" data-ref="20" aria-label="Reference 20: Bürgi, C., Deng, W., &amp; Whelan, K. (2026). Makers and takers: the economics of the Kalshi prediction market. GWU Center for Economic Research Working Paper 2026-001.">20</a>]</sup>.
+In six million American horse races, betting on horses at 100 to 1 or longer lost about <b>61%</b> of the stake, while betting on the favourite in every race lost only <b>5.5%</b><sup class="cite">[<a href="#ref-19" id="cite-19" data-ref="19" aria-label="Reference 19: Snowberg, E., &amp; Wolfers, J. (2010). Explaining the favorite–long shot bias: is it risk-love or misperceptions? Journal of Political Economy, 118(4), 723–746.">19</a>]</sup>.
+
+On Kalshi, contracts bought below 10 cents lost <b>over 60%</b> of the money put into them<sup class="cite">[<a href="#ref-20" id="cite-20" data-ref="20" aria-label="Reference 20: Bürgi, C., Deng, W., &amp; Whelan, K. (2026). Makers and takers: the economics of the Kalshi prediction market. GWU Center for Economic Research Working Paper 2026-001.">20</a>]</sup>.
 
 To look for it on Polymarket, I treated both sides of every market as a contract: a Yes at the price $$p$$ and a No at $$1 - p$$. Buying a contract at price $$p$$ that pays $$y \in \{0, 1\}$$ returns $$y / p - 1$$ on the stake. If prices were exact probabilities, the average return in every price band would be zero.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/returns-light.png" width="760" alt="Average return of buying a contract a week before the close, by price band: 0.5–2¢ -22.5%; 2–5¢ -38.8%; 5–10¢ +19.4%; 10–20¢ -2.5%; 20–30¢ -4.1%; 30–40¢ -3.8%; 40–50¢ -3.9%; 50–60¢ +3.3%; 60–70¢ +2.9%; 70–80¢ +0.3%; 80–90¢ +0.0%; 90–95¢ -1.4%; 95–98¢ +1.1%; 98–99.5¢ +0.3%" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/returns-dark.png" width="760" alt="Average return of buying a contract a week before the close, by price band: 0.5–2¢ -22.5%; 2–5¢ -38.8%; 5–10¢ +19.4%; 10–20¢ -2.5%; 20–30¢ -4.1%; 30–40¢ -3.8%; 40–50¢ -3.9%; 50–60¢ +3.3%; 60–70¢ +2.9%; 70–80¢ +0.3%; 80–90¢ +0.0%; 90–95¢ -1.4%; 95–98¢ +1.1%; 98–99.5¢ +0.3%" loading="lazy">
 
-The bias is there, and it lives at the extremes. Contracts priced between 2 and 5 cents a week before the close won 2.1% of the time while costing 3.2 cents on average, so buying them lost 39% of the stake, with a 95% interval from −53% to −22%.
+The bias is there, and it lives at the extremes. Contracts priced between 2 and 5 cents a week before the close won 2.1% of the time while costing 3.2 cents on average, so buying them lost <b>39%</b> of the stake, with a 95% interval from −53% to −22%.
 
 The cheapest band, under 2 cents, lost 22%, with an interval wide enough to include zero.
 
-At the other end, contracts at 95 to 98 cents won 97.8% of the time and returned 1.15% in the week, and those at 98 to 99.5 cents returned 0.35%; both intervals stay above zero. Between 5 and 95 cents the averages cannot be told apart from zero.
+At the other end, contracts at 95 to 98 cents won 97.8% of the time and returned <b>1.15%</b> in the week, and those at 98 to 99.5 cents returned 0.35%; both intervals stay above zero. Between 5 and 95 cents the averages cannot be told apart from zero.
 
 <p class="takeaway" markdown="1">Longshots under 5 cents lose a quarter to two fifths of the stake; favourites above 95 cents earn a fraction of a percent a week, before costs.</p>
 
@@ -322,7 +328,7 @@ The price shown is the middle of the order book, but a buyer pays the ask. On th
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/spread-light.png" width="760" alt="Median cost of buying at the ask instead of the middle of the book, as a share of the price, by contract price: 0.5–2¢ 66.7%; 2–5¢ 66.1%; 5–10¢ 29.4%; 10–20¢ 13.0%; 20–30¢ 6.7%; 30–40¢ 4.8%; 40–50¢ 2.5%; 50–60¢ 2.0%; 60–70¢ 2.4%; 70–80¢ 2.1%; 80–90¢ 2.3%; 90–95¢ 2.2%; 95–98¢ 2.1%; 98–99.5¢ 0.6%" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/spread-dark.png" width="760" alt="Median cost of buying at the ask instead of the middle of the book, as a share of the price, by contract price: 0.5–2¢ 66.7%; 2–5¢ 66.1%; 5–10¢ 29.4%; 10–20¢ 13.0%; 20–30¢ 6.7%; 30–40¢ 4.8%; 40–50¢ 2.5%; 50–60¢ 2.0%; 60–70¢ 2.4%; 70–80¢ 2.1%; 80–90¢ 2.3%; 90–95¢ 2.2%; 95–98¢ 2.1%; 98–99.5¢ 0.6%" loading="lazy">
 
-For contracts between 40 and 95 cents the median cost is about 2% of the price. Below 20 cents it explodes: 13% for contracts at 10 to 20 cents, 29% at 5 to 10, and about two thirds of the price under 5 cents.
+For contracts between 40 and 95 cents the median cost is <b>about 2%</b> of the price. Below 20 cents it explodes: 13% for contracts at 10 to 20 cents, 29% at 5 to 10, and <b>about two thirds</b> of the price under 5 cents.
 
 A two-cent contract with a bid at one cent and an ask at three costs a full cent above its middle, half of what it is worth on paper. At the other end, near-certain contracts above 98 cents are cheap to buy, 0.6% of the price.
 
@@ -334,7 +340,7 @@ Many of the busiest markets ran with the fee switched off on the day I looked, s
 
 Put together, a longshot buyer who crosses the spread gives up between a tenth and two thirds of the stake before the event even happens.
 
-A favourite buyer gives up a couple of percent, more than the whole edge the previous chart found: after half the spread the 95–98 cent band goes from +1.15% to −0.9% a week, and the 98–99.5 cent band from +0.35% to −0.3%. The diamonds on that chart show it.
+A favourite buyer gives up a couple of percent, more than the whole edge the previous chart found: after half the spread the 95–98 cent band goes <span class="shift"><s>+1.15%</s><b>−0.9%</b></span> a week, and the 98–99.5 cent band <span class="shift"><s>+0.35%</s><b>−0.3%</b></span>. The diamonds on that chart show it.
 
 <div class="callout" markdown="1">
 <p class="callout-label">For traders</p>
@@ -349,7 +355,7 @@ The longshot discount and the favourite premium are real, but they are about the
 
 A week before the close, markets with real trading are skilled in every topic, from about 53% of the base rate's error removed in sports and crypto to 70% in science and weather.
 
-Politics, with 8,929 markets the largest group, is also the best calibrated, with an average gap of 1.9 points; sports and science have the largest gaps, 4.4 and 4.1, with crypto close behind at 3.9. Sports here means the markets traded a week before the close, mostly season futures (who wins the league, who wins the award) rather than single games, which are listed only days before kick-off.
+Politics, with 8,929 markets the largest group, is also the best calibrated, with an average gap of <b>1.9 points</b>; sports and science have the largest gaps, 4.4 and 4.1, with crypto close behind at 3.9. Sports here means the markets traded a week before the close, mostly season futures (who wins the league, who wins the award) rather than single games, which are listed only days before kick-off.
 
 ### Crypto markets resolve together
 
@@ -360,7 +366,9 @@ Crypto deserves a chart of its own, because its errors have a cause that has not
 
 Most crypto markets ask about one number, the price of Bitcoin or Ether on a date. Take the close calls, markets priced between 30 and 70 cents a week out, and orient each so that Yes means the price went up.
 
-In the months when Bitcoin rose, the bet on rising prices won 63% of the time; in the months when it fell, 32%. Its price a week before was about 50 cents in both. Across fifteen months, the share of winning bullish bets and Bitcoin's monthly return have a correlation of 0.78.
+In the months when Bitcoin rose, the bet on rising prices won <b>63%</b> of the time; in the months when it fell, <b>32%</b>. Its price a week before was about 50 cents in both.
+
+Across fifteen months, the share of winning bullish bets and Bitcoin's monthly return have a correlation of <b>0.78</b>.
 
 The market was not wrong in any useful sense: a week before the close nobody knew which way Bitcoin would go, and 50 cents was a fair price for a coin toss. But a dozen such markets in one month are not a dozen tosses.
 
@@ -368,7 +376,9 @@ The market was not wrong in any useful sense: a week before the close nobody kne
 
 ## Long-dated favourites and the price of waiting
 
-A market that resolves in six months has to pay its traders for waiting. A No share at 95 cents on a question that will almost certainly resolve No pays 5 cents on 95 after half a year, about 10.8% a year, if it pays at all; three-month US Treasury bills paid 4.07% on average in 2025 and 3.71% so far in 2026<sup class="cite">[<a href="#ref-22" id="cite-23" data-ref="22" aria-label="Reference 22: Federal Reserve Bank of St. Louis (2026). 3-month Treasury bill secondary market rate (DTB3). FRED.">22</a>]</sup>.
+A market that resolves in six months has to pay its traders for waiting.
+
+A No share at 95 cents on a question that will almost certainly resolve No pays 5 cents on 95 after half a year, <b>about 10.8% a year</b>, if it pays at all; three-month US Treasury bills paid 4.07% on average in 2025 and 3.71% so far in 2026<sup class="cite">[<a href="#ref-22" id="cite-23" data-ref="22" aria-label="Reference 22: Federal Reserve Bank of St. Louis (2026). 3-month Treasury bill secondary market rate (DTB3). FRED.">22</a>]</sup>.
 
 Traders who could earn interest elsewhere will not bid near-certain long-dated contracts all the way to a dollar, and the people with the most money to commit, favourite buyers, drop out first.
 
@@ -376,14 +386,14 @@ Page and Clemen found the result on the old Intrade exchange: markets far from e
 
 Polymarket noticed. Since September 2025 it has paid interest on positions in a short list of long-dated markets "to keep long-term pricing accurate", 4% a year at launch and 3.25% since June 2026<sup class="cite">[<a href="#ref-24" id="cite-25" data-ref="24" aria-label="Reference 24: Polymarket (2026). Holding rewards. Help center, 1 June 2026.">24</a>]</sup>.
 
-The list holds about eighteen events, the 2028 presidential race and the midterms among them. Every other market pays nothing for waiting.
+The list holds <b>about eighteen events</b>, the 2028 presidential race and the midterms among them. Every other market pays nothing for waiting.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/long-light.png" width="760" alt="Contracts priced above 90 cents one, three and six months before the close: their price, how often they won and what holding them to the end returned per year: 1 month 90–95¢: price 92.6%, won 94.3%, +25.0% a year; 1 month 95–98¢: price 96.6%, won 98.4%, +23.9% a year; 1 month 98–99.5¢: price 98.8%, won 99.3%, +6.4% a year; 3 months 90–95¢: price 92.6%, won 94.7%, +9.3% a year; 3 months 95–98¢: price 96.7%, won 98.1%, +6.2% a year; 3 months 98–99.5¢: price 98.9%, won 97.7%, -4.9% a year; 6 months 90–95¢: price 92.7%, won 97.0%, +9.3% a year; 6 months 95–98¢: price 96.6%, won 93.3%, -6.8% a year; 6 months 98–99.5¢: price 98.9%, won 98.7%, -0.4% a year" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/long-dark.png" width="760" alt="Contracts priced above 90 cents one, three and six months before the close: their price, how often they won and what holding them to the end returned per year: 1 month 90–95¢: price 92.6%, won 94.3%, +25.0% a year; 1 month 95–98¢: price 96.6%, won 98.4%, +23.9% a year; 1 month 98–99.5¢: price 98.8%, won 99.3%, +6.4% a year; 3 months 90–95¢: price 92.6%, won 94.7%, +9.3% a year; 3 months 95–98¢: price 96.7%, won 98.1%, +6.2% a year; 3 months 98–99.5¢: price 98.9%, won 97.7%, -4.9% a year; 6 months 90–95¢: price 92.7%, won 97.0%, +9.3% a year; 6 months 95–98¢: price 96.6%, won 93.3%, -6.8% a year; 6 months 98–99.5¢: price 98.9%, won 98.7%, -0.4% a year" loading="lazy">
 
 Polymarket shows the same thing. Contracts priced between 90 and 95 cents a month before the close won 94.3% of the time against a price of 92.6, and those at 95 to 98 cents won 98.4% against 96.6.
 
-Held to the end, both earned about 1.8% in a month, which compounds to roughly 25% a year, six times what a Treasury bill paid.
+Held to the end, both earned about 1.8% in a month, which compounds to <b>roughly 25% a year</b>, six times what a Treasury bill paid.
 
 Three months out, the same two bands earned 6 to 9% a year and the most expensive band lost money; six months out the samples are small and the results noisy.
 
@@ -410,9 +420,9 @@ The interesting question is whether such a correction helps on markets it has no
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/recalibration-light.png" width="760" alt="The fitted correction from Polymarket&#x27;s price to a probability, against the diagonal, for one week and one month before the close: 1 week: slope 1.12, Brier on later markets 0.0796 before and 0.0797 after; 1 month: slope 1.18, Brier on later markets 0.0758 before and 0.0761 after" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/recalibration-dark.png" width="760" alt="The fitted correction from Polymarket&#x27;s price to a probability, against the diagonal, for one week and one month before the close: 1 week: slope 1.12, Brier on later markets 0.0796 before and 0.0797 after; 1 month: slope 1.18, Brier on later markets 0.0758 before and 0.0761 after" loading="lazy">
 
-Fitted on the markets that closed before July 2025, the correction has a slope of 1.12 a week before the close and 1.18 a month before: the prices should have been a little bolder, the same compression the calibration chart showed, and close to Walker's 1.112.
+Fitted on the markets that closed before July 2025, the correction has a slope of <b>1.12</b> a week before the close and 1.18 a month before: the prices should have been a little bolder, the same compression the calibration chart showed, and close to Walker's 1.112.
 
-Applied to the 13,618 markets that closed later, it changes the Brier score a week out by −0.0001, with a 95% interval from −0.0009 to +0.0008, and a month out by −0.0003. In other words, nothing.
+Applied to the 13,618 markets that closed later, it changes the Brier score a week out by <b>−0.0001</b>, with a 95% interval from −0.0009 to +0.0008, and a month out by −0.0003. In other words, <em>nothing</em>.
 
 The bias is real on average, but too small and too unstable over time for a formula to turn it into a better forecast, let alone a profit after the spread.
 
@@ -431,21 +441,23 @@ The most impressive forecasts on Polymarket are sometimes not forecasts at all.
 <img class="tfs-figure tfs-light" src="/assets/posts/polymarket-accuracy/nobel-light.png" width="760" alt="Prices of the leading candidates for the 2025 Nobel Peace Prize on Polymarket from midday on 8 October to the announcement on 10 October. María Corina Machado&#x27;s price is near the bottom until late on 9 October, then rises within hours to about two thirds of a dollar before the announcement at 09:00 UTC" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/polymarket-accuracy/nobel-dark.png" width="760" alt="Prices of the leading candidates for the 2025 Nobel Peace Prize on Polymarket from midday on 8 October to the announcement on 10 October. María Corina Machado&#x27;s price is near the bottom until late on 9 October, then rises within hours to about two thirds of a dollar before the announcement at 09:00 UTC" loading="lazy">
 
-The Norwegian Nobel Committee announced the 2025 Peace Prize at 09:00 UTC on 10 October. For months María Corina Machado had traded at a cent or two. Shortly after midnight in Oslo her price started to climb, passed 43 cents before one in the morning and reached 73 by two<sup class="cite">[<a href="#ref-27" id="cite-29" data-ref="27" aria-label="Reference 27: Decrypt (2025). Nobel Peace Prize organizers investigating Polymarket insider trades. 10 October 2025.">27</a>]</sup>.
+The Norwegian Nobel Committee announced the 2025 Peace Prize at 09:00 UTC on 10 October. For months María Corina Machado had traded at a cent or two.
 
-In the price history I downloaded she was still at 67 cents five minutes before the announcement. An account created days earlier bought early and made tens of thousands of dollars.
+Shortly after midnight in Oslo her price started to climb, passed <b>43 cents</b> before one in the morning and reached <b>73</b> by two<sup class="cite">[<a href="#ref-27" id="cite-29" data-ref="27" aria-label="Reference 27: Decrypt (2025). Nobel Peace Prize organizers investigating Polymarket insider trades. 10 October 2025.">27</a>]</sup>.
+
+In the price history I downloaded she was still at <b>67 cents</b> five minutes before the announcement. An account created days earlier bought early and made tens of thousands of dollars.
 
 The director of the Norwegian Nobel Institute said, "We take this very seriously"<sup class="cite">[<a href="#ref-28" id="cite-30" data-ref="28" aria-label="Reference 28: Bloomberg (2025). Unusual Polymarket bets on Peace Prize winner spur probe. Via Bloomberg Law, 10 October 2025.">28</a>]</sup>. In January the institute concluded that the winner's name had most likely leaked through "the digital domain" and that it could not say who was behind it<sup class="cite">[<a href="#ref-29" id="cite-31" data-ref="29" aria-label="Reference 29: Reuters (2026). Nobel committee says Peace Prize winner likely revealed early by digital spying. Via CP24, 30 January 2026.">29</a>]</sup>.
 
-### Maduro, Google and the Iran strikes
+### Maduro, the Iran strikes and Google
 
-That was not the only case. On the night of 2 January 2026, hours before Donald Trump announced the capture of Nicolás Maduro, a weeks-old account bet about &#36;33,000 that Maduro would be out by the end of the month and made about &#36;400,000.
+<span class="kicker">Maduro</span> That was not the only case. On the night of 2 January 2026, hours before Donald Trump announced the capture of Nicolás Maduro, a weeks-old account bet about &#36;33,000 that Maduro would be out by the end of the month and made <b>about &#36;400,000</b>.
 
 In April the Justice Department charged a Special Forces master sergeant who had helped plan the operation, and the CFTC called it the first insider-trading case it had ever brought over event contracts<sup class="cite">[<a href="#ref-30" id="cite-32" data-ref="30" aria-label="Reference 30: U.S. Department of Justice (2026). U.S. soldier charged with using classified information to profit from prediction market bets. 23 April 2026.">30</a>, <a href="#ref-31" id="cite-33" data-ref="31" aria-label="Reference 31: Commodity Futures Trading Commission (2026). Press release 9217-26. 23 April 2026.">31</a>]</sup>. He has pleaded not guilty.
 
-In May a Google engineer was charged over about &#36;1.2 million made on markets about Google's "Year in Search" lists, using, according to Google, marketing material he could see at work<sup class="cite">[<a href="#ref-32" id="cite-34" data-ref="32" aria-label="Reference 32: CBS News (2026). Google employee charged with insider trading on Polymarket. 28 May 2026.">32</a>]</sup>.
+<span class="kicker">Iran strikes</span> Hours before the US strikes on Iran on 28 February, six freshly funded wallets bought Yes on the strike market and made <b>about a million dollars</b><sup class="cite">[<a href="#ref-32" id="cite-34" data-ref="32" aria-label="Reference 32: The Block (2026). Fresh accounts netted &amp;#36;1 million on Polymarket hours before US airstrikes on Iran. 28 February 2026.">32</a>]</sup>.
 
-Hours before the US strikes on Iran on 28 February, six freshly funded wallets bought Yes on the strike market and made about a million dollars<sup class="cite">[<a href="#ref-33" id="cite-35" data-ref="33" aria-label="Reference 33: The Block (2026). Fresh accounts netted &amp;#36;1 million on Polymarket hours before US airstrikes on Iran. 28 February 2026.">33</a>]</sup>.
+<span class="kicker">Year in Search</span> In May a Google engineer was charged over <b>about &#36;1.2 million</b> made on markets about Google's "Year in Search" lists, using, according to Google, marketing material he could see at work<sup class="cite">[<a href="#ref-33" id="cite-35" data-ref="33" aria-label="Reference 33: CBS News (2026). Google employee charged with insider trading on Polymarket. 28 May 2026.">33</a>]</sup>.
 
 Polymarket's chief executive once put it plainly to CBS<sup class="cite">[<a href="#ref-34" id="cite-36" data-ref="34" aria-label="Reference 34: CBS News (2026). Polymarket trader made &amp;#36;400,000 on Maduro&#x27;s capture. 6 January 2026.">34</a>]</sup>:
 
@@ -461,19 +473,19 @@ The company now says it referred the Maduro trader to the Justice Department its
 
 ## Resolution: when the truth is decided by a vote
 
-A share pays a dollar if the event happens, but someone has to say whether it happened. On Polymarket that someone is usually UMA's optimistic oracle.
+A share pays a dollar if the event happens, but someone has to say whether it happened. On Polymarket that someone is usually UMA's optimistic oracle. A proposer posts an outcome with a bond, typically &#36;750, and from there it is a chain of deadlines<sup class="cite">[<a href="#ref-37" id="cite-39" data-ref="37" aria-label="Reference 37: Polymarket (2026). Resolution. Documentation.">37</a>]</sup>:
 
-A proposer posts an outcome with a bond, typically &#36;750; anyone can dispute it within two hours; after a second dispute the question goes to a vote of UMA token holders, which takes about two days<sup class="cite">[<a href="#ref-37" id="cite-39" data-ref="37" aria-label="Reference 37: Polymarket (2026). Resolution. Documentation.">37</a>]</sup>.
+<p class="flow"><span>a proposal</span><span>two hours to dispute it</span><span>a second dispute</span><span>a vote of UMA holders, two days</span></p>
 
 Most markets resolve in two hours without a dispute. The ones that don't are where prediction becomes a governance problem.
 
-In March 2025 a &#36;7 million market on whether Ukraine would agree to a minerals deal with the US before April resolved Yes, although Ukraine had not agreed; a single large token holder was accused of swinging the vote, and Polymarket called the situation "unprecedented" but paid no refunds, since "this wasn't a market failure"<sup class="cite">[<a href="#ref-38" id="cite-40" data-ref="38" aria-label="Reference 38: The Block (2025). Polymarket says governance attack by UMA whale to hijack a bet&#x27;s resolution is &quot;unprecedented&quot;. 26 March 2025.">38</a>]</sup>.
+<span class="kicker">Minerals deal</span> In March 2025 a <b>&#36;7 million</b> market on whether Ukraine would agree to a minerals deal with the US before April resolved Yes, although Ukraine had not agreed; a single large token holder was accused of swinging the vote, and Polymarket called the situation "unprecedented" but paid no refunds, since "this wasn't a market failure"<sup class="cite">[<a href="#ref-38" id="cite-40" data-ref="38" aria-label="Reference 38: The Block (2025). Polymarket says governance attack by UMA whale to hijack a bet&#x27;s resolution is &quot;unprecedented&quot;. 26 March 2025.">38</a>]</sup>.
 
-That summer a market with hundreds of millions of dollars traded asked whether Volodymyr Zelensky would be photographed in a suit; he appeared at a NATO summit in a black jacket and matching trousers that many outlets called a suit, and UMA's voters decided it was not<sup class="cite">[<a href="#ref-39" id="cite-41" data-ref="39" aria-label="Reference 39: DL News (2025). Polymarket bettors clash over Zelenskyy suit dispute. 30 June 2025.">39</a>]</sup>.
+<span class="kicker">Zelensky's suit</span> That summer a market with hundreds of millions of dollars traded asked whether Volodymyr Zelensky would be photographed in a suit; he appeared at a NATO summit in a black jacket and matching trousers that many outlets called a suit, and UMA's voters decided it was not<sup class="cite">[<a href="#ref-39" id="cite-41" data-ref="39" aria-label="Reference 39: DL News (2025). Polymarket bettors clash over Zelenskyy suit dispute. 30 June 2025.">39</a>]</sup>.
 
-In May 2026 Bloomberg found that nine wallets held about half of the UMA votes cast in Polymarket disputes over three years<sup class="cite">[<a href="#ref-40" id="cite-42" data-ref="40" aria-label="Reference 40: Bloomberg (2026). Las disputas en Polymarket exponen el lado oscuro de los mercados de predicción. Via Bloomberg Línea, 29 May 2026.">40</a>]</sup>.
+<span class="kicker">Nine wallets</span> In May 2026 Bloomberg found that <b>nine wallets</b> held <b>about half</b> of the UMA votes cast in Polymarket disputes over three years<sup class="cite">[<a href="#ref-40" id="cite-42" data-ref="40" aria-label="Reference 40: Bloomberg (2026). Las disputas en Polymarket exponen el lado oscuro de los mercados de predicción. Via Bloomberg Línea, 29 May 2026.">40</a>]</sup>.
 
-The platform has been narrowing the problem: since September 2025 only whitelisted proposers can propose outcomes, which cut disputes by two thirds in the first month<sup class="cite">[<a href="#ref-41" id="cite-43" data-ref="41" aria-label="Reference 41: UMA (2025). Managed proposers: an update. Blog, 8 November 2025.">41</a>]</sup>, crypto price markets now settle from Chainlink prices without a vote, and a new contract system that can combine several oracles is due to switch on for new markets this week<sup class="cite">[<a href="#ref-42" id="cite-44" data-ref="42" aria-label="Reference 42: The Block (2026). Polymarket rolls out V2 upgrade. 6 October 2026.">42</a>]</sup>.
+The platform has been narrowing the problem: since September 2025 only whitelisted proposers can propose outcomes, which cut disputes by <b>two thirds</b> in the first month<sup class="cite">[<a href="#ref-41" id="cite-43" data-ref="41" aria-label="Reference 41: UMA (2025). Managed proposers: an update. Blog, 8 November 2025.">41</a>]</sup>, crypto price markets now settle from Chainlink prices without a vote, and a new contract system that can combine several oracles is due to switch on for new markets this week<sup class="cite">[<a href="#ref-42" id="cite-44" data-ref="42" aria-label="Reference 42: The Block (2026). Polymarket rolls out V2 upgrade. 6 October 2026.">42</a>]</sup>.
 
 For a trader, **resolution risk is a cost like the spread**, small on most markets and large on exactly the ones with ambiguous wording.
 
@@ -481,9 +493,9 @@ For a trader, **resolution risk is a cost like the spread**, small on most marke
 
 Volume is the number every article about Polymarket leads with, and it is the least reliable number on the platform.
 
-Researchers at Columbia classified nearly 25% of Polymarket's historical volume as consistent with wash trading, traders buying from and selling to themselves without changing their position; it peaked at nearly 60% of weekly volume in December 2024, and in sports markets it reached 45% of all-time volume<sup class="cite">[<a href="#ref-43" id="cite-45" data-ref="43" aria-label="Reference 43: Sirolly, A., Ma, H., Kanoria, Y., &amp; Sethi, R. (2025). Network-based detection of wash trading. SSRN Working Paper 5714122.">43</a>]</sup>.
+<span class="kicker">Wash trades</span> Researchers at Columbia classified nearly <b class="pct" style="--p:25">25%</b> of Polymarket's historical volume as consistent with wash trading, traders buying from and selling to themselves without changing their position; it peaked at nearly <b class="pct" style="--p:60">60%</b> of weekly volume in December 2024, and in sports markets it reached <b class="pct" style="--p:45">45%</b> of all-time volume<sup class="cite">[<a href="#ref-43" id="cite-45" data-ref="43" aria-label="Reference 43: Sirolly, A., Ma, H., Kanoria, Y., &amp; Sethi, R. (2025). Network-based detection of wash trading. SSRN Working Paper 5714122.">43</a>]</sup>.
 
-Separately, Paradigm showed in December 2025 that most dashboards counted every trade twice, once for each side<sup class="cite">[<a href="#ref-44" id="cite-46" data-ref="44" aria-label="Reference 44: Paradigm (2025). Polymarket volume is being double-counted. 8 December 2025.">44</a>]</sup>.
+<span class="kicker">Double counting</span> Separately, Paradigm showed in December 2025 that most dashboards counted <b>every trade twice</b>, once for each side<sup class="cite">[<a href="#ref-44" id="cite-46" data-ref="44" aria-label="Reference 44: Paradigm (2025). Polymarket volume is being double-counted. 8 December 2025.">44</a>]</sup>.
 
 Neither changes the prices this post studies: a wash trade moves money in a circle, not the price. But together with the trap above, they are good reasons not to read a market's volume as a measure of how much it knows.
 
@@ -491,23 +503,25 @@ Neither changes the prices this post studies: a wash trade moves money in a circ
 
 As a probability, a Polymarket price on a market people actually trade is about as good as public forecasts get.
 
-A week before the close the prices were calibrated to within 1.8 percentage points on average, and on the markets open for at least a month they removed 70% of the base-rate forecaster's error a week out and 82% a day out.
+A week before the close the prices were calibrated to within <b>1.8 percentage points</b> on average, and on the markets open for at least a month they removed 70% of the base-rate forecaster's error a week out and 82% a day out.
 
 When a liquid market says 70%, the honest reading is "about 70%", give or take a few points.
 
 That is a statement about many markets, not about one. The Senate at 71.5 cents is a single draw, and so was Brazil at 80. A calibrated price is still wrong three times in ten when it says 70, which is what 70 means.
 
-The weak spots are where theory and the data agree they should be. Thin markets are not forecasts at all, and in them longshots are overpriced. Prices months before the close drift toward 50 cents, because waiting costs money and Polymarket pays for the wait on only a handful of markets.
+The weak spots are where theory and the data agree they should be. <b>Thin markets</b> are not forecasts at all, and in them longshots are overpriced.
 
-Crypto price markets share one driver and resolve together, so a bad month for Bitcoin looks like miscalibration. Insiders sometimes move prices before the news, which makes the forecast right and the trade unfair. And the dollar arrives only if the oracle agrees that the event happened.
+<b>Prices months before the close</b> drift toward 50 cents, because waiting costs money and Polymarket pays for the wait on only a handful of markets. <b>Crypto price markets</b> share one driver and resolve together, so a bad month for Bitcoin looks like miscalibration.
 
-For a trader the useful findings are modest and specific. The mispricing that survives is at the tails: contracts under 5 cents lose a quarter to two fifths of the stake on average, and near-certain favourites earn a fraction of a percent a week, more when they are bought a month or more before the close.
+<b>Insiders</b> sometimes move prices before the news, which makes the forecast <em>right</em> and the trade <em>unfair</em>. And the dollar arrives only if <b>the oracle</b> agrees that the event happened.
+
+<span class="kicker">For traders</span> The useful findings are modest and specific. The mispricing that survives is at the tails: contracts under 5 cents lose a quarter to two fifths of the stake on average, and near-certain favourites earn a fraction of a percent a week, more when they are bought a month or more before the close.
 
 It is about the size of the spread and the fee, which is why it survives. Nothing in the data suggests a general bias that a formula could exploit, and a two-number correction fitted on the past made the future no better.
 
-The people who make money on Polymarket, according to a study of 588 million trades, are mostly the ones who post limit orders and let others cross the spread; the top 1% of profitable accounts took 76.5% of the profits<sup class="cite">[<a href="#ref-45" id="cite-47" data-ref="45" aria-label="Reference 45: Akey, P., Grégoire, V., Harvie, N., &amp; Martineau, C. (2026). Who wins and who loses in prediction markets? Evidence from Polymarket. CEPR Discussion Paper 21615.">45</a>]</sup>.
+The people who make money on Polymarket, according to a study of 588 million trades, are mostly the ones who post limit orders and let others cross the spread; the top 1% of profitable accounts took <b class="pct" style="--p:76.5">76.5%</b> of the profits<sup class="cite">[<a href="#ref-45" id="cite-47" data-ref="45" aria-label="Reference 45: Akey, P., Grégoire, V., Harvie, N., &amp; Martineau, C. (2026). Who wins and who loses in prediction markets? Evidence from Polymarket. CEPR Discussion Paper 21615.">45</a>]</sup>.
 
-For an engineer the lessons are the ones from evaluating any model, sharpened by a market's habits. Accuracy flatters when the classes are unbalanced, and most questions resolve No. Comparisons across horizons are confounded by which questions exist at each horizon, so they have to be made on the same questions.
+<span class="kicker">For engineers</span> The lessons are the ones from evaluating any model, sharpened by a market's habits. Accuracy flatters when the classes are unbalanced, and most questions resolve No. Comparisons across horizons are confounded by which questions exist at each horizon, so they have to be made on the same questions.
 
 And **a filter on anything that depends on the outcome, a market's total volume included, manufactures effects that aren't there.** The trap that caught my first sample is the most transferable thing in this post.
 
@@ -544,8 +558,8 @@ And **a filter on anything that depends on the outcome, a market's total volume 
 29. {:#ref-29} Reuters (2026). [Nobel committee says Peace Prize winner likely revealed early by digital spying](https://www.cp24.com/news/world/2026/01/30/nobel-committee-says-peace-prize-winner-likely-revealed-early-by-digital-spying/). Via CP24, 30 January 2026. <a class="ref-back" href="#cite-31" aria-label="Back to the text">&#8617;</a>
 30. {:#ref-30} U.S. Department of Justice (2026). [U.S. soldier charged with using classified information to profit from prediction market bets](https://www.justice.gov/opa/pr/us-soldier-charged-using-classified-information-profit-prediction-market-bets). 23 April 2026. <a class="ref-back" href="#cite-32" aria-label="Back to the text">&#8617;</a>
 31. {:#ref-31} Commodity Futures Trading Commission (2026). [Press release 9217-26](https://www.cftc.gov/PressRoom/PressReleases/9217-26). 23 April 2026. <a class="ref-back" href="#cite-33" aria-label="Back to the text">&#8617;</a>
-32. {:#ref-32} CBS News (2026). [Google employee charged with insider trading on Polymarket](https://www.cbsnews.com/news/polymarket-google-employee-insider-trading-charges-spagnuolo-d4vd/). 28 May 2026. <a class="ref-back" href="#cite-34" aria-label="Back to the text">&#8617;</a>
-33. {:#ref-33} The Block (2026). [Fresh accounts netted &#36;1 million on Polymarket hours before US airstrikes on Iran](https://www.theblock.co/post/391650/fresh-accounts-netted-1-million-on-polymarket-hours-before-us-airstrikes-on-iran-bubblemaps). 28 February 2026. <a class="ref-back" href="#cite-35" aria-label="Back to the text">&#8617;</a>
+32. {:#ref-32} The Block (2026). [Fresh accounts netted &#36;1 million on Polymarket hours before US airstrikes on Iran](https://www.theblock.co/post/391650/fresh-accounts-netted-1-million-on-polymarket-hours-before-us-airstrikes-on-iran-bubblemaps). 28 February 2026. <a class="ref-back" href="#cite-34" aria-label="Back to the text">&#8617;</a>
+33. {:#ref-33} CBS News (2026). [Google employee charged with insider trading on Polymarket](https://www.cbsnews.com/news/polymarket-google-employee-insider-trading-charges-spagnuolo-d4vd/). 28 May 2026. <a class="ref-back" href="#cite-35" aria-label="Back to the text">&#8617;</a>
 34. {:#ref-34} CBS News (2026). [Polymarket trader made &#36;400,000 on Maduro's capture](https://www.cbsnews.com/news/polymarket-maduro-capture-bet-400000). 6 January 2026. <a class="ref-back" href="#cite-36" aria-label="Back to the text">&#8617;</a>
 35. {:#ref-35} Torres, R. (2026). [Rep. Ritchie Torres introduces legislation to crack down on insider trading on prediction markets](https://ritchietorres.house.gov/posts/in-response-to-suspicious-polymarket-trade-preceding-maduro-operation-rep-ritchie-torres-introduces-legislation-to-crack-down-on-insider-trading-on-prediction-markets). Press release. <a class="ref-back" href="#cite-37" aria-label="Back to the text">&#8617;</a>
 36. {:#ref-36} Raskin, J. (2026). [Raskin, Merkley legislation would ban prediction market gambling on elections, sports, war and government activity](https://raskin.house.gov/2026/3/raskin-merkley-legislation-would-ban-prediction-market-gambling-on-elections-sports-war-and-government-activity). Press release, 26 March 2026. <a class="ref-back" href="#cite-38" aria-label="Back to the text">&#8617;</a>

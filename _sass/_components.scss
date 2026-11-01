@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------- components for long posts
 // Blocks that give a long text a shape: a summary at the top, key numbers, points to remember, folded method
-// sections, one-line conclusions, chains of causes, quotations set apart and marked phrases. A post writes them as
+// sections, one-line conclusions, chains of causes, quotations set apart, and inside a sentence marked phrases,
+// key figures, small bars for shares, before-and-after values and the names of cases. A post writes them as
 // plain HTML; markdown="1" lets kramdown render the markdown inside. The page /components/ shows each one with its
 // markup and when to use it.
 //
@@ -17,6 +18,7 @@
   --c-mark: color-mix(in srgb, var(--global-theme-color) 13%, transparent);
   --c-warn: #b86e00;
   --c-warn-tint: color-mix(in srgb, #c27a0e 7%, var(--global-bg-color));
+  --c-track: color-mix(in srgb, var(--global-text-color) 14%, transparent);
   --c-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   // the hand-drawn underline is an image, so it carries its colour: the theme's red, light and dark
   --c-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='7' viewBox='0 0 44 7'%3E%3Cpath d='M0 4.6c5.5-2.6 11-2.6 16.5-.4S27.5 6.4 33 4c4-1.7 7.5-1.8 11-.6' fill='none' stroke='%23b71c1c' stroke-width='1.5' stroke-linecap='round' stroke-opacity='.75'/%3E%3C/svg%3E");
@@ -388,6 +390,61 @@ html[data-theme="dark"] #markdown-content {
         transform: translateX(3px);
       }
     }
+  }
+
+  // ---- inside a sentence: what a skimming eye should catch, smaller than any block
+
+  // a figure or a name the paragraph is about, in medium weight against the light text; <strong> stays for a sentence
+  b {
+    font-weight: 500;
+  }
+
+  // a share of a whole, with a word-sized bar after it: <b class="pct" style="--p:25">25%</b>
+  b.pct {
+    white-space: nowrap;
+
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 1.9em;
+      height: 0.42em;
+      margin-left: 0.32em;
+      border-radius: 1px;
+      vertical-align: 0.12em;
+      background: linear-gradient(to right, var(--c-accent) calc(var(--p, 0) * 1%), var(--c-track) 0);
+    }
+  }
+
+  // a value before and after: <span class="shift"><s>+1.15%</s><b>−0.9%</b></span>, the old one struck through
+  .shift {
+    white-space: nowrap;
+
+    s {
+      color: var(--c-muted);
+      text-decoration-thickness: 1px;
+
+      &::after {
+        content: "";
+        display: inline-block;
+        width: 0.95em;
+        height: 0.55em;
+        margin: 0 0.28em 0 0.3em;
+        background: var(--c-accent);
+        -webkit-mask: var(--c-arrow) no-repeat center / contain;
+        mask: var(--c-arrow) no-repeat center / contain;
+      }
+    }
+  }
+
+  // the name of a case, like a newspaper's dateline, at the start of a paragraph that opens one
+  .kicker {
+    margin-right: 0.2em;
+    font-family: var(--c-mono);
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-accent);
   }
 }
 

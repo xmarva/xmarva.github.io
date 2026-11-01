@@ -160,6 +160,30 @@ Inside a sentence, `<mark>` puts a highlighter stroke under <mark>the phrase tha
 <mark>the key phrase</mark>   <span class="underline">a term or a contrast</span>
 ```
 
+## Figures and names
+
+A skimming eye stops on numbers and names, so give it the ones that matter. `<b>` sets a figure or a name in medium weight against the light text: the market traded <b>&#36;134</b> in its whole life, and <b>thin markets</b> are not forecasts at all. One or two in a paragraph, and only the ones the paragraph is about; a number that every sentence has is no longer a signal.
+
+A share of a whole can carry a bar the size of a word: wash trading was nearly <b class="pct" style="--p:25">25%</b> of the volume and peaked at <b class="pct" style="--p:60">60%</b> of a week's. A value that changes shows both sides: after the spread the band goes <span class="shift"><s>+1.15%</s><b>−0.9%</b></span> a week.
+
+```html
+<b>&#36;134</b>
+<b class="pct" style="--p:25">25%</b>             only for a share of a whole
+<span class="shift"><s>+1.15%</s><b>−0.9%</b></span>
+```
+
+## The name of a case
+
+When a section runs through several cases, examples or steps, each paragraph can open with its name, the way a newspaper opens a story with its dateline. The reader sees the list without the text turning into one.
+
+<span class="kicker">Wash trades</span> Researchers at Columbia classified nearly a quarter of Polymarket's volume as consistent with wash trading.
+
+<span class="kicker">Double counting</span> Paradigm showed that most dashboards counted every trade twice, once for each side.
+
+```html
+<span class="kicker">Wash trades</span> The paragraph, which still reads whole without its name.
+```
+
 ## A pointer
 
 A link to another section or post that the reader is invited to follow: <a class="arrow-link" href="#a-chain-of-causes">the chain of causes above</a>.
