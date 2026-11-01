@@ -103,8 +103,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a02_modernbert.ipynb
       cover: assets/img/teaching/arch-02.png
       topics: "RoBERTa's recipe, DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's local and global attention, three generations on one task"
-    - title: "Text embeddings and search: Sentence-BERT, cross-encoders, ColBERT"
-      topics: "Contrastive learning and InfoNCE, bi-encoders against cross-encoders, late interaction, a semantic search engine over arXiv with a reranker"
+    - title: "Embeddings and search: Sentence-BERT, cross-encoders and ColBERT"
+      short: "Embeddings and search"
+      url: /blog/2026/transformer-architectures-03-search/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-03-embeddings-search
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a03_search.ipynb
+      cover: assets/img/teaching/arch-03.png
+      topics: "BM25 from scratch, why an encoder's own vectors can't search, in-batch negatives and InfoNCE, a model adapted to its corpus in ten minutes, a cross-encoder reranker, ColBERT's MaxSim, a hybrid search over 58,000 ML papers"
     - title: "GPT from scratch: next-token prediction and a model that learns chess"
       topics: "GPT-1 to GPT-3, the GPT-2 block and its weights in our code, the KV cache, the logit lens, a small GPT trained on Lichess games and the board found inside it"
     - title: "T5 and BART: the encoder–decoder, and text-to-SQL"
