@@ -17,3 +17,4 @@
 /blog/2026/transformers-from-scratch-07-package/: "Turn a notebook model into a Python package: src layout, pyproject.toml, a command line, tests checked by mutation testing, GitHub Actions, a model card."
 /blog/2026/transformers-from-scratch-08-serving/: "Serve a Transformer with FastAPI and Gradio and measure latency under load: KV cache, int8 quantization, load tests, queueing theory, dynamic batching."
 /blog/2026/transformers-from-scratch-09-docker/: "A reproducible Docker image of an ML model: lock files with hashes, images pinned by digest, bit-identical builds, GHCR from CI, and ONNX in the browser."
+/blog/2026/polymarket-accuracy/: "How accurate is Polymarket? Prices of resolved markets checked against outcomes: calibration, longshot bias, a volume trap, insiders and trading costs."

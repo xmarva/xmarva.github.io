@@ -45,3 +45,5 @@
   url: /blog/2025/creative-ai/
 - pattern: '\bbacktest overfitting\b|\blook-ahead bias\b|\bAI trading bots?\b|\bcrypto trading\b'
   url: /blog/2026/ai-crypto-trading/
+- pattern: '\bprediction markets?\b|\bPolymarket\b|\bfavou?rite-longshot bias\b'
+  url: /blog/2026/polymarket-accuracy/
