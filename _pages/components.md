@@ -11,9 +11,9 @@ robots: noindex, follow
 <!-- the posts' container, so that the blocks look exactly as they do in a post -->
 <div id="markdown-content" markdown="1">
 
-A long post is read in two passes: a quick one through the summary, the headings, the charts and the bold sentences, and a slow one through everything else. These blocks serve the quick pass without getting in the way of the slow one. Each is plain HTML in a post's markdown; `markdown="1"` lets the markdown inside it render. Their styles are in `_sass/_components.scss`.
+A long post is read in two passes: a quick one through the summary, the headings, the charts and the takeaways, and a slow one through everything else. These blocks serve the quick pass without getting in the way of the slow one. Each is plain HTML in a post's markdown; `markdown="1"` lets the markdown inside it render. Their styles are in `_sass/_components.scss`.
 
-The rule for all of them is scarcity. A summary at the top, one point to remember or one takeaway per section at most, rarely more than one bold sentence per section. A page where everything is highlighted has nothing highlighted.
+The rule for all of them is scarcity. A summary at the top, one point to remember or one takeaway per section at most. A page where everything is highlighted has nothing highlighted.
 
 ## Summary at the top
 
@@ -152,14 +152,9 @@ The quotation.
 </blockquote>
 ```
 
-## Bold and italics
+## Italics
 
-Inside a sentence there is nothing but bold and italics. **Bold is a whole sentence: the one in a section that a reader who only skims should not miss.** Not a phrase cut out of a sentence and not a number on its own, and rarely more than one per section. Italics are for a *new term* the first time it is defined and for the word that carries the stress, as in a forecast that is *right* and a trade that is *unfair*. Names of layers, functions, files and APIs go in code: `RMSNorm`, `prices-history`, `torch.compile`.
-
-```markdown
-**The one sentence of the section a skimming reader must not miss.**
-A *new term*, a *stressed* word.
-```
+Inside a sentence the only mark is italics: a *new term* the first time it is defined, and the word that carries the stress, as in a forecast that is *right* and a trade that is *unfair*. No bold, highlighter or coloured words in the text. Names of layers, functions, files and APIs go in code: `RMSNorm`, `prices-history`, `torch.compile`.
 
 ## A pointer
 

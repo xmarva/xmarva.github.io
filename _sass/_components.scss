@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------- components for long posts
 // Blocks that give a long text a shape: a summary at the top, key numbers, points to remember, folded method
-// sections, one-line conclusions, chains of causes and quotations set apart; inside a sentence there is only bold
-// and italics. A post writes the blocks as plain HTML; markdown="1" lets kramdown render the markdown inside. The
+// sections, one-line conclusions, chains of causes and quotations set apart; inside a sentence there is only
+// italics. A post writes the blocks as plain HTML; markdown="1" lets kramdown render the markdown inside. The
 // page /components/ shows each one with its markup and when to use it.
 //
 // Every colour comes from the theme's variables, so the dark theme needs almost nothing of its own. The red dot and
@@ -16,14 +16,12 @@
   --c-panel: color-mix(in srgb, var(--global-text-color) 2.5%, var(--global-bg-color));
   --c-warn: #b86e00;
   --c-warn-tint: color-mix(in srgb, #c27a0e 7%, var(--global-bg-color));
-  --c-strong: var(--global-text-color);
   --c-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   // a thin arrow, used as a mask so that it takes the colour of the element
   --c-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 12'%3E%3Cpath d='M1 6h18.5M14.5 1.5 19.5 6l-5 4.5' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
 html[data-theme="dark"] #markdown-content {
-  --c-strong: #fff;
   --c-tint: color-mix(in srgb, var(--global-theme-color) 5%, var(--global-bg-color));
   --c-panel: color-mix(in srgb, var(--global-text-color) 4%, var(--global-bg-color));
   --c-warn: #e6a23c;
@@ -344,15 +342,6 @@ html[data-theme="dark"] #markdown-content {
       text-transform: uppercase;
       color: var(--c-muted);
     }
-  }
-
-  // ---- emphasis: bold for the one sentence of a section a skimming reader must not miss, italics for a new term
-  // or a stressed word. Bold is medium Roboto against the light text, a touch brighter in the dark theme; italics
-  // are the true light italics loaded with the fonts, not a slanted upright.
-  strong,
-  b {
-    font-weight: 500;
-    color: var(--c-strong);
   }
 
   // ---- a pointer to another section or post: an arrow that moves on hover
