@@ -1,6 +1,6 @@
 # Courses on /teaching/, in this order. A course with `show: false` stays off the page.
 # A lesson with a `url` is published; one without is listed as coming soon.
-# `short` names the newest lesson in the course's "New" pill. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
+# `short` names the newest lesson in the course's "New" pill; `badge` names the course on the blog's lesson rows. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
 
 - id: tfs
   show: true
@@ -80,6 +80,7 @@
 
 - id: arch
   show: true
+  badge: "Architectures"
   title: "Transformer architectures: from BERT to diffusion"
   summary: "Fifteen models built on the Transformer, one lesson each: what it changed and why, its key parts written from scratch and checked against the real weights, its history, and a practical task it does well."
   facts:
@@ -89,6 +90,11 @@
   github: https://github.com/xmarva/transformers-from-scratch/tree/main/architectures
   lessons:
     - title: "BERT from scratch: masked language modelling and fine-tuning"
+      short: "BERT"
+      url: /blog/2026/transformer-architectures-01-bert/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-01-bert
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a01_bert.ipynb
+      cover: assets/img/teaching/arch-01.png
       topics: "Why bidirectional needed a mask, WordPiece, the 80/10/10 mask, BERT-base's weights in our own encoder, what it knows and what its heads look at, a personal-data detector for long documents"
     - title: "From RoBERTa to ModernBERT: what seven years did to BERT"
       topics: "RoBERTa's recipe, DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's local and global attention, three generations on one task"

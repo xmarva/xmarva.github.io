@@ -12,7 +12,6 @@
   to the neighbouring pages, if any), mode: "category" on a category's page (only the posts given, no chips, and no
   hidden heading, since the page has its own).
 {% endcomment %}
-{% assign course = site.data.courses | where: 'id', 'tfs' | first %}
 {% assign pin = site.posts | where: 'featured', true | first %}
 {% if include.mode == 'category' %}
   {% assign rows = include.posts %}
@@ -224,7 +223,7 @@
     {% capture key %}|{{ post.url }}|{% endcapture %}
     {% assign category = post.categories | first %}
     {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    {% assign lesson = nil %}{% for l in course.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% endif %}{% endfor %}
+    {% assign lesson = nil %}{% assign badge = nil %}{% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% assign badge = c.badge | default: "Course" %}{% endif %}{% endfor %}{% endfor %}
     <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}"{% unless on_page contains key %} data-other-page hidden{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
@@ -237,7 +236,7 @@
         <h2 class="bh-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         {% if post.description %}<p class="bh-desc">{{ post.description }}</p>{% endif %}
         <p class="bh-meta">
-          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">Course · lesson {{ lesson }}</a>{% endif %}
+          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">{{ badge }} · lesson {{ lesson }}</a>{% endif %}
           <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time>
           <span class="bh-dot" aria-hidden="true">·</span>
           <span>{{ read_time }} min read</span>
