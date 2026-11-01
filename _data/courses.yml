@@ -97,6 +97,11 @@
       cover: assets/img/teaching/arch-01.png
       topics: "Why bidirectional needed a mask, WordPiece, the 80/10/10 mask, BERT-base's weights in our own encoder, what it knows and what its heads look at, a personal-data detector for long documents"
     - title: "From RoBERTa to ModernBERT: what seven years did to BERT"
+      short: "RoBERTa to ModernBERT"
+      url: /blog/2026/transformer-architectures-02-modernbert/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-02-roberta-modernbert
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a02_modernbert.ipynb
+      cover: assets/img/teaching/arch-02.png
       topics: "RoBERTa's recipe, DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's local and global attention, three generations on one task"
     - title: "Text embeddings and search: Sentence-BERT, cross-encoders, ColBERT"
       topics: "Contrastive learning and InfoNCE, bi-encoders against cross-encoders, late interaction, a semantic search engine over arXiv with a reranker"
