@@ -1,6 +1,6 @@
 # Courses on /teaching/, in this order. A course with `show: false` stays off the page.
 # A lesson with a `url` is published; one without is listed as coming soon.
-# `short` names the newest lesson in the course's "New" pill. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
+# `short` names the newest lesson in the course's "New" pill; `badge` names the course on the blog's lesson rows. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
 
 - id: tfs
   show: true
@@ -77,3 +77,50 @@
       cover: assets/img/teaching/tfs-09.png
     - title: "Knowledge distillation, data and scale: what makes a translator better"
       topics: "Sequence-level distillation from opus-mt, synthetic in-domain data, a bigger student, checkpoint averaging and ensembles, NLLB and LLMs as reference points"
+
+- id: arch
+  show: true
+  badge: "Architectures"
+  title: "Transformer architectures: from BERT to diffusion"
+  summary: "Fifteen models built on the Transformer, one lesson each: what it changed and why, its key parts written from scratch and checked against the real weights, its history, and a practical task it does well."
+  facts:
+    - "Free GPU on Kaggle or Colab"
+    - "every lesson runs on its own"
+    - "open source"
+  github: https://github.com/xmarva/transformers-from-scratch/tree/main/architectures
+  lessons:
+    - title: "BERT from scratch: masked language modelling and fine-tuning"
+      short: "BERT"
+      url: /blog/2026/transformer-architectures-01-bert/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-01-bert
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a01_bert.ipynb
+      cover: assets/img/teaching/arch-01.png
+      topics: "Why bidirectional needed a mask, WordPiece, the 80/10/10 mask, BERT-base's weights in our own encoder, what it knows and what its heads look at, a personal-data detector for long documents"
+    - title: "From RoBERTa to ModernBERT: what seven years did to BERT"
+      topics: "RoBERTa's recipe, DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's local and global attention, three generations on one task"
+    - title: "Text embeddings and search: Sentence-BERT, cross-encoders, ColBERT"
+      topics: "Contrastive learning and InfoNCE, bi-encoders against cross-encoders, late interaction, a semantic search engine over arXiv with a reranker"
+    - title: "GPT from scratch: next-token prediction and a model that learns chess"
+      topics: "GPT-1 to GPT-3, the GPT-2 block and its weights in our code, the KV cache, the logit lens, a small GPT trained on Lichess games and the board found inside it"
+    - title: "T5 and BART: the encoder–decoder, and text-to-SQL"
+      topics: "Text-to-text, span corruption, relative position buckets, t5-small in our code, why decoder-only models won, a text-to-SQL model checked by running its queries"
+    - title: "Inside modern LLMs: what Llama, Mistral, Gemma and Qwen do differently"
+      topics: "Grouped-query attention, sliding windows, local and global layers, QK-norm, soft-capping, Qwen3's weights in our code, a dozen models compared from their configs, LoRA"
+    - title: "Mixture of experts: from Switch Transformer to DeepSeek-V3"
+      topics: "Top-k routing, load balancing, shared and fine-grained experts, a real MoE's weights in our code, which experts fire for code, maths and Russian"
+    - title: "The KV cache budget: MQA, GQA and DeepSeek's latent attention"
+      topics: "Why decoding is memory-bound, multi-query and grouped-query attention, MLA with decoupled RoPE, how many chats fit on a T4"
+    - title: "Long context: RoPE scaling, YaRN and FlashAttention"
+      topics: "From Longformer to YaRN, position interpolation, NTK scaling, attention sinks, FlashAttention as tiled online softmax, a needle in a long haystack"
+    - title: "Beyond attention: Mamba, state space models and hybrids"
+      topics: "Linear recurrences, the selective scan, mamba-130m in our code, associative recall, Jamba and Gated DeltaNet, Mamba on DNA"
+    - title: "Vision Transformer: images as sequences of patches"
+      topics: "Patch embeddings, the class token, why ViT needs data, DeiT's distillation token, DINOv2, ViT against a CNN on satellite images"
+    - title: "CLIP and SigLIP: one space for images and text"
+      topics: "Contrastive and sigmoid losses, zero-shot classification, image search, typographic attacks"
+    - title: "Vision-language models: from LLaVA to Qwen-VL"
+      topics: "The projector, visual tokens and what they cost, dynamic resolution, a small model reading charts and receipts"
+    - title: "Whisper: speech recognition as an encoder–decoder"
+      topics: "The log-mel spectrogram from scratch, task tokens, timestamps, whisper-tiny in our code, word error rate in English and Russian, hallucinations on silence"
+    - title: "Diffusion Transformers: DiT and Stable Diffusion 3"
+      topics: "Denoising diffusion and flow matching, adaLN-Zero, a small DiT trained on butterflies, MM-DiT"

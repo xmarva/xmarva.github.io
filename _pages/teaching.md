@@ -26,6 +26,8 @@ hide_header: true
     background: var(--global-card-bg-color);
     overflow: hidden;
   }
+  /* a course with no lesson out yet has no covers to fan out: its text takes the whole card */
+  .tc-hero.is-new { grid-template-columns: minmax(0, 1fr); }
   .tc-hero-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-width: 0; }
 
   .tc-new {
@@ -166,6 +168,8 @@ hide_header: true
     .tc-title { font-size: 1.7rem; }
   }
   @media (max-width: 600px) {
+    .tc-progress { flex-wrap: wrap; row-gap: 0.45rem; }
+    .tc-progress-label { white-space: normal; }
     .tc-lesson { grid-template-columns: 2.1rem minmax(0, 1fr); row-gap: 0.65rem; }
     .tc-links { grid-column: 2; }
   }
@@ -181,7 +185,7 @@ hide_header: true
 {% assign latest = recent | first %}
 {% assign first_lesson = published | first %}
 <section class="tc-course" aria-labelledby="tc-{{ course.id }}">
-  <div class="tc-hero">
+  <div class="tc-hero{% unless latest %} is-new{% endunless %}">
     <div class="tc-hero-text">
       {% if latest %}
       <a class="tc-new" href="{{ latest.url | relative_url }}"><span class="tc-new-tag">New</span><span class="tc-new-text">Lesson {{ done }}: {{ latest.short | default: latest.title }}</span><span aria-hidden="true">→</span></a>
@@ -191,7 +195,7 @@ hide_header: true
       <p class="tc-facts">{{ course.facts | join: " · " }}</p>
       <div class="tc-progress">
         <span class="tc-bar" aria-hidden="true">{% for lesson in course.lessons %}<span{% if lesson.url %} class="on"{% endif %}></span>{% endfor %}</span>
-        <span class="tc-progress-label">{{ done }} of {{ total }} lessons out</span>
+        <span class="tc-progress-label">{% if done > 0 %}{{ done }} of {{ total }} lessons out{% else %}{{ total }} lessons planned, the first one coming soon{% endif %}</span>
       </div>
       <div class="tc-actions">
         {% if first_lesson %}<a class="tc-start" href="{{ first_lesson.url | relative_url }}">Start with lesson 1 <span aria-hidden="true">→</span></a>{% endif %}
