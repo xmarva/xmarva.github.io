@@ -492,7 +492,7 @@ third_party_libraries:
     version: "5.5.0"
   google_fonts:
     url:
-      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|IBM+Plex+Mono:400,400i,500|Material+Icons&display=swap"
+      fonts: "https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700|Roboto+Slab:100,300,400,500,700|IBM+Plex+Mono:400,400i,500|Material+Icons&display=swap"
   highlightjs:
     integrity:
       css:

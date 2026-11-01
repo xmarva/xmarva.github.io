@@ -11,9 +11,9 @@ robots: noindex, follow
 <!-- the posts' container, so that the blocks look exactly as they do in a post -->
 <div id="markdown-content" markdown="1">
 
-A long post is read in two passes: a quick one through the summary, the headings, the charts and the marked lines, and a slow one through everything else. These blocks serve the quick pass without getting in the way of the slow one. Each is plain HTML in a post's markdown; `markdown="1"` lets the markdown inside it render. Their styles are in `_sass/_components.scss`.
+A long post is read in two passes: a quick one through the summary, the headings, the charts and the bold sentences, and a slow one through everything else. These blocks serve the quick pass without getting in the way of the slow one. Each is plain HTML in a post's markdown; `markdown="1"` lets the markdown inside it render. Their styles are in `_sass/_components.scss`.
 
-The rule for all of them is scarcity. A summary at the top, one point to remember or one takeaway per section at most, a marked phrase every few screens. A page where everything is highlighted has nothing highlighted.
+The rule for all of them is scarcity. A summary at the top, one point to remember or one takeaway per section at most, rarely more than one bold sentence per section. A page where everything is highlighted has nothing highlighted.
 
 ## Summary at the top
 
@@ -152,36 +152,13 @@ The quotation.
 </blockquote>
 ```
 
-## Marking a phrase
+## Bold and italics
 
-Inside a sentence, `<mark>` puts a highlighter stroke under <mark>the phrase that carries the paragraph</mark>, and a hand-drawn line marks <span class="underline">a term defined here</span> or a contrast. Bold is for the one sentence a skimming reader should not miss; italics are for a *new term* the first time it appears and for stress. Names of layers, functions, files and APIs go in code: `RMSNorm`, `prices-history`, `torch.compile`.
+Inside a sentence there is nothing but bold and italics. **Bold is a whole sentence: the one in a section that a reader who only skims should not miss.** Not a phrase cut out of a sentence and not a number on its own, and rarely more than one per section. Italics are for a *new term* the first time it is defined and for the word that carries the stress, as in a forecast that is *right* and a trade that is *unfair*. Names of layers, functions, files and APIs go in code: `RMSNorm`, `prices-history`, `torch.compile`.
 
-```html
-<mark>the key phrase</mark>   <span class="underline">a term or a contrast</span>
-```
-
-## Figures and names
-
-A skimming eye stops on numbers and names, so give it the ones that matter. `<b>` sets a figure or a name in medium weight against the light text: the market traded <b>&#36;134</b> in its whole life, and <b>thin markets</b> are not forecasts at all. One or two in a paragraph, and only the ones the paragraph is about; a number that every sentence has is no longer a signal.
-
-A share of a whole can carry a bar the size of a word: wash trading was nearly <b class="pct" style="--p:25">25%</b> of the volume and peaked at <b class="pct" style="--p:60">60%</b> of a week's. A value that changes shows both sides: after the spread the band goes <span class="shift"><s>+1.15%</s><b>−0.9%</b></span> a week.
-
-```html
-<b>&#36;134</b>
-<b class="pct" style="--p:25">25%</b>             only for a share of a whole
-<span class="shift"><s>+1.15%</s><b>−0.9%</b></span>
-```
-
-## The name of a case
-
-When a section runs through several cases, examples or steps, each paragraph can open with its name, the way a newspaper opens a story with its dateline. The reader sees the list without the text turning into one.
-
-<span class="kicker">Wash trades</span> Researchers at Columbia classified nearly a quarter of Polymarket's volume as consistent with wash trading.
-
-<span class="kicker">Double counting</span> Paradigm showed that most dashboards counted every trade twice, once for each side.
-
-```html
-<span class="kicker">Wash trades</span> The paragraph, which still reads whole without its name.
+```markdown
+**The one sentence of the section a skimming reader must not miss.**
+A *new term*, a *stressed* word.
 ```
 
 ## A pointer
