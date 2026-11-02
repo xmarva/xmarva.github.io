@@ -3,7 +3,8 @@ layout: page
 permalink: /teaching/
 title: teaching
 description: Courses I teach, as notebooks that run on a free GPU and posts to read here
-seo_description: "Transformers: from scratch to production, a free course: build an English to Russian translator with a Transformer written from scratch."
+seo_title: Free courses on Transformers
+seo_description: "Two free courses by Eva Koroleva: a Transformer translator from scratch to production, then the architectures from BERT to diffusion, on Kaggle and Colab."
 nav: true
 nav_order: 6
 hide_header: true

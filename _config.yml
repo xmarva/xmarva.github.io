@@ -9,7 +9,13 @@ last_name: Koroleva
 email: eva.v.koroleva@gmail.com
 description: >- # ">-" folds the lines below into one and drops the trailing newline (which broke the Schema.org JSON)
   Eva Koroleva, ML engineer and researcher in NLP, computer vision and generative models: projects, a Transformers course, and posts on ML and cognitive science.
-home_title: ML Engineer & Researcher # shown after the name in the home page's title and used as the job title in search results
+home_title: Machine learning, LLMs and cognitive science # shown after the name in the home page's title
+# who the site is about, for search engines: the Person in the structured data of every page (_includes/metadata.liquid)
+job_title: ML Engineer & Researcher
+person_description: >-
+  ML engineer and researcher in NLP, computer vision and generative models, who writes about LLMs, Transformers and
+  cognitive science and teaches free courses on Transformers.
+knows_about: [Machine learning, Large language models, Transformers, Natural language processing, Computer vision, Generative models, Cognitive science, Philosophy of mind]
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
@@ -66,6 +72,8 @@ max_width: 930px
 serve_og_meta: true # Include Open Graph meta tags in the HTML head
 serve_schema_org: true # Include Schema.org in the HTML head
 og_image: https://xmarva.github.io/assets/img/eva_koroleva.jpg # The site-wide (default for all links) Open Graph preview image (absolute URL)
+og_image_size: 640 # the photo is square, this many pixels a side
+og_image_alt: Eva Koroleva
 
 # -----------------------------------------------------------------------------
 # Social integration

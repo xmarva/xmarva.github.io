@@ -3,7 +3,8 @@ layout: about
 title: about
 permalink: /about/
 seo_title: About
-seo_description: "Eva Koroleva, ML engineer and researcher in NLP, computer vision and generative models: about me, news and selected publications."
+full_title: About Eva Koroleva, ML engineer and researcher
+seo_description: "Eva Koroleva is an ML engineer and researcher in NLP, computer vision and generative models, drawn to cognitive science. Background, resume and portfolio."
 nav: true
 nav_order: 10
 # in the menu "about" opens this page and shows these on hover

@@ -3,7 +3,8 @@ layout: page
 title: portfolio
 permalink: /portfolio/
 description: Computer vision and ML systems I have built, from the first prototype to production
-seo_description: "Projects by Eva Koroleva: virtual try-on with diffusion and 3D bodies, floor plans to 3D, multi-camera tracking, medical NLP and more."
+seo_title: "Portfolio: ML and computer vision projects"
+seo_description: "ML systems built by Eva Koroleva: virtual try-on with diffusion and 3D bodies, floor plans to 3D, multi-camera tracking, medical NLP and Kaggle work."
 nav: false # in the menu under about
 hide_header: true
 display_categories: [work, personal]
