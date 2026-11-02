@@ -110,8 +110,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a03_search.ipynb
       cover: assets/img/teaching/arch-03.png
       topics: "BM25 from scratch, why an encoder's own vectors can't search, in-batch negatives and InfoNCE, a model adapted to its corpus in ten minutes, a cross-encoder reranker, ColBERT's MaxSim, a hybrid search over 58,000 ML papers"
-    - title: "GPT from scratch: next-token prediction and a model that learns chess"
-      topics: "GPT-1 to GPT-3, the GPT-2 block and its weights in our code, the KV cache, the logit lens, a small GPT trained on Lichess games and the board found inside it"
+    - title: "GPT from scratch: GPT-2, the KV cache and a model that learns chess"
+      short: "GPT and chess"
+      url: /blog/2026/transformer-architectures-04-gpt/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-04-gpt-chess
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a04_gpt.ipynb
+      cover: assets/img/teaching/arch-04.png
+      topics: "GPT-1 to GPT-3, the GPT-2 block and OpenAI's weights in our code, the KV cache, the logit lens, a chess GPT trained on Lichess games, a 72-hour model transplanted, and the board found inside with a linear probe"
     - title: "T5 and BART: the encoder–decoder, and text-to-SQL"
       topics: "Text-to-text, span corruption, relative position buckets, t5-small in our code, why decoder-only models won, a text-to-SQL model checked by running its queries"
     - title: "Inside modern LLMs: what Llama, Mistral, Gemma and Qwen do differently"

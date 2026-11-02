@@ -1246,6 +1246,6 @@ Sentence-BERT's passport, and the family tree with this lesson's branch:
 
 
 
-<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-02-modernbert/">← Lesson 2: RoBERTa→ModernBERT</a></p>
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-02-modernbert/">← Lesson 2: RoBERTa→ModernBERT</a> <a href="/blog/2026/transformer-architectures-04-gpt/">Lesson 4: GPT & chess →</a></p>
 
 {% endraw %}
