@@ -14,6 +14,22 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+LoRA freezes a weight matrix and trains its change as the product of two thin matrices, which can write into at most $$r$$ directions; the Eckart–Young theorem says how much of a full matrix that can hold.
+
+The scale $$\alpha / r$$, which looks like bookkeeping, slows every higher rank down: on BERT and SST-2 every rank from 4 to 256 ends at the same training loss under it, while under $$\alpha' / \sqrt{r}$$ the loss keeps falling with rank and accuracy reaches full fine-tuning's 91.4%.
+
+The update full fine-tuning makes is not low-rank; the change a task needs is often close to it, and how close depends on the task.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">6,144×</span><span class="stat-label">fewer numbers in a rank-1 update of a GPT-3 query matrix than in a full one</span></div>
+<div class="stat"><span class="stat-value">15×</span><span class="stat-label">smaller update at rank 256 than at rank 1 after ten steps under α/r</span></div>
+<div class="stat"><span class="stat-value">193</span><span class="stat-label">directions that hold 90% of the energy of BERT's full fine-tuning update</span></div>
+</div>
+</aside>
+
 In section 7 of the paper that introduced LoRA there is a table its authors present with the words "To our surprise". Edward Hu and colleagues at Microsoft had adapted GPT-3, all 175 billion parameters of it, by adding a trainable low-rank matrix to the query and value projections in each of its 96 layers, and they varied the rank.
 
 At rank 1 the change to each $$12{,}288 \times 12{,}288$$ matrix is the product of one column and one row: 24,576 numbers standing in for 151 million.
@@ -41,15 +57,15 @@ Matrices that size are impossible to picture, but a $$2 \times 2$$ matrix can be
 
 Whatever the matrix, the circle becomes an ellipse, possibly a flat one. That is a general fact, and the most useful one in this post.
 
-Every matrix, of any shape, does three things in a row: it turns the input, stretches it along perpendicular axes, and turns the result. This is the **singular value decomposition** (SVD):
+Every matrix, of any shape, does three things in a row: it turns the input, stretches it along perpendicular axes, and turns the result. This is the *singular value decomposition* (SVD):
 
 $$
 W = U \Sigma V^\top = \sum_{i=1}^{\min(m,n)} \sigma_i \, u_i v_i^\top .
 $$
 
-The columns $$v_i$$ of $$V$$ are perpendicular unit vectors in the input space (the grey arrows), and the columns $$u_i$$ of $$U$$ are perpendicular unit vectors in the output space. The **singular values** $$\sigma_1 \ge \sigma_2 \ge \dots \ge 0$$ are the stretch factors: $$W v_i = \sigma_i u_i$$, the rose arrows. In the left panel the input axes are stretched by 1.67 and 0.75.
+The columns $$v_i$$ of $$V$$ are perpendicular unit vectors in the input space (the grey arrows), and the columns $$u_i$$ of $$U$$ are perpendicular unit vectors in the output space. The *singular values* $$\sigma_1 \ge \sigma_2 \ge \dots \ge 0$$ are the stretch factors: $$W v_i = \sigma_i u_i$$, the rose arrows. In the left panel the input axes are stretched by 1.67 and 0.75.
 
-The **rank** of $$W$$ is the number of singular values that are not zero: the number of independent directions the matrix can write into. In the right panel $$\sigma_2 = 0$$, and the circle collapses into a segment. Whatever the input, the output lies on one line, and pairs of points that differ only along $$v_2$$ land on the same spot.
+The *rank* of $$W$$ is the number of singular values that are not zero: the number of independent directions the matrix can write into. In the right panel $$\sigma_2 = 0$$, and the circle collapses into a segment. Whatever the input, the output lies on one line, and pairs of points that differ only along $$v_2$$ land on the same spot.
 
 The rank is also the dimension of the space spanned by the columns of $$W$$, and, less obviously, of the space spanned by its rows. The SVD shows why the two agree: the columns are combinations of $$u_1, \dots, u_r$$ and the rows are combinations of $$v_1, \dots, v_r$$, the same number $$r$$ of vectors in both cases.
 
@@ -84,7 +100,7 @@ To see what a sum of rank-one layers looks like, take a matrix that is easy to l
 
 Rank 1 is a plaid: one pattern of columns times one pattern of rows, which is all a single read–write pair can draw. It still holds 79% of the photo's "energy", $$\sum_i \sigma_i^2$$, mostly the average brightness. Each further term adds one more pair.
 
-By rank 16 there is a face, and at rank 64, stored in a quarter of the numbers, the error is 7%.
+<p class="takeaway" markdown="1">By rank 16 there is a face, and at rank 64, stored in a quarter of the numbers, the error is 7%.</p>
 
 ## The best you can do with r directions
 
@@ -115,15 +131,17 @@ The squares matter. The plain sum $$\sigma_{k+1} + \sigma_{k+2} + \dots$$ is the
 
 The dots are errors measured by subtracting $$M_k$$ from the photograph; the line is computed from the singular values alone, without looking at the approximation. They coincide, as the theorem says. The squares show what is lost by choosing the directions badly: keep 64 random directions instead of the best 64, and the error is 93%, not 7%.
 
-This is the whole linear-algebra case for LoRA. If the change a task needs, $$\Delta W$$, has singular values that fall quickly, a matrix of rank $$r$$ can hold most of it, and the theorem says exactly how much is missed.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
 
-Whether real updates have quickly falling singular values is not a question linear algebra can answer. It is a question about training.
+If the change a task needs, $$\Delta W$$, has singular values that fall quickly, a matrix of rank $$r$$ can hold most of it, and the theorem says exactly how much is missed. That is the whole linear-algebra case for LoRA. Whether real updates have quickly falling singular values is a question about training, which linear algebra cannot answer.
+</div>
 
 ## LoRA's bet
 
 The bet has a history. In 2018 Chunyuan Li and colleagues trained networks while letting the optimizer move only inside a random low-dimensional slice of the parameter space.
 
-They called the smallest dimension that still reached 90% of the full solution the problem's **intrinsic dimension**, and found it far smaller than the number of parameters: a small fully connected network for MNIST with 199,210 weights needed 750<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Li et al., 2018. arxiv.org.">7</a>]</sup>.
+They called the smallest dimension that still reached 90% of the full solution the problem's *intrinsic dimension*, and found it far smaller than the number of parameters: a small fully connected network for MNIST with 199,210 weights needed 750<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Li et al., 2018. arxiv.org.">7</a>]</sup>.
 
 In 2020 Armen Aghajanyan, Luke Zettlemoyer and Sonal Gupta did the same with fine-tuning. RoBERTa-Large, with 355 million parameters, reached 90% of its full fine-tuning result on the paraphrase task MRPC by training about 200 numbers in such a slice<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Aghajanyan et al., 2021. arxiv.org.">8</a>]</sup>.
 
@@ -167,7 +185,11 @@ $$
 \nabla_B L = \gamma \, G A^\top , \qquad \nabla_A L = \gamma \, B^\top G .
 $$
 
-LoRA does not compute a different gradient. It computes the same $$G$$ and lets each factor see it through the other: $$B$$ sees $$G$$ through the $$r$$ directions $$A$$ reads, $$A$$ sees it through the $$r$$ directions $$B$$ writes.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+LoRA computes the same gradient $$G$$ as full fine-tuning and lets each factor see it through the other: $$B$$ sees $$G$$ through the $$r$$ directions $$A$$ reads, $$A$$ sees it through the $$r$$ directions $$B$$ writes.
+</div>
 
 Formulas like these are easy to get wrong by a transpose, so here they are checked against PyTorch's autograd:
 
@@ -246,6 +268,8 @@ This is the argument of Damjan Kalajdzievski's rsLoRA<sup class="cite">[<a href=
 
 And it draws the conclusion that brings us back to the start. The $$\alpha / r$$ rule "slows the learning such that LoRA fine-tuning using larger ranks performs no different than that with very small ranks", and this "may have led the authors of (Hu et al., 2022) to inaccurately conclude that very low ranks (e.g. 4,8,16) 'suffice'".
 
+<p class="flow"><span>a higher rank</span><span>a smaller scale α/r</span><span>a slower start</span><span>higher ranks look no better</span></p>
+
 Almost nobody trains LoRA with plain gradient descent, though. The usual optimizer is Adam, which divides every coordinate's gradient by a running estimate of its size, so that each parameter moves by about $$\eta$$ per step whatever the scale of its gradient. That changes the arithmetic.
 
 Now every entry of $$B$$ moves by about $$\eta$$, and every entry of $$\Delta W = \gamma B A$$ is a sum of $$r$$ such moves multiplied by entries of $$A$$, with signs that mostly do not line up.
@@ -256,9 +280,7 @@ It also explains a remark of Hu et al.: "When optimizing with Adam, tuning α is
 
 ## Measuring it
 
-All of this can be checked on a real model. I fine-tuned `bert-base-uncased` on SST-2, sentences from film reviews labelled positive or negative<sup class="cite">[<a href="#ref-9" id="cite-11" data-ref="9" aria-label="Reference 9: Socher et al., 2013. aclanthology.org.">9</a>]</sup>, with LoRA on the query and value projections of all 12 layers.
-
-The setting is that of the adapters post: 10,000 training sentences, three epochs, AdamW at a learning rate of $$5 \times 10^{-4}$$, batches of 32, three seeds per configuration, accuracy on the 872 validation sentences. For reference, full fine-tuning of all 110 million parameters reaches 91.4%.
+All of this can be checked on a real model. I fine-tuned `bert-base-uncased` on SST-2, sentences from film reviews labelled positive or negative<sup class="cite">[<a href="#ref-9" id="cite-11" data-ref="9" aria-label="Reference 9: Socher et al., 2013. aclanthology.org.">9</a>]</sup>, with LoRA on the query and value projections of all 12 layers. For reference, full fine-tuning of all 110 million parameters reaches 91.4%.
 
 The runs differ only in the algebra:
 
@@ -266,7 +288,13 @@ The runs differ only in the algebra:
 - the scale, $$\alpha / r$$ with $$\alpha = 16$$ as in the paper, or $$\alpha' / \sqrt{r}$$ with $$\alpha'$$ chosen so that the two agree at $$r = 8$$;
 - which factor learns, and how fast.
 
+<details class="method" markdown="1">
+<summary>The training setup: data, optimizer, seeds and the code</summary>
+
+The setting is that of the adapters post: 10,000 training sentences, three epochs, AdamW at a learning rate of $$5 \times 10^{-4}$$, batches of 32, three seeds per configuration, accuracy on the 872 validation sentences.
+
 The 48 runs took 40 minutes of training on a Kaggle T4 ([experiment.py](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/lora/experiment.py)).
+</details>
 
 ### Rank under the two scales
 
@@ -292,7 +320,13 @@ The gap is small: three seeds per point, and a single validation sentence is wor
 
 So both papers are right about different things. On this task a low rank does suffice, as Hu et al. found; and the $$\alpha / r$$ rule does hide what higher ranks could add, as Kalajdzievski argued.
 
-In Hugging Face's `peft` the corrected scale is one flag. The lesson for practice: if you raise the rank, either switch the scale or raise $$\alpha$$ with it.
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+If you raise the rank, either switch the scale or raise $$\alpha$$ with it.
+</div>
+
+In Hugging Face's `peft` the corrected scale is one flag.
 
 ```python
 from peft import LoraConfig
@@ -361,9 +395,9 @@ Finally, the singular values, where the rank inequality from the beginning becom
 
 The rank-8 update has eight singular values and then a cliff to $$10^{-9}$$, rounding error: $$\operatorname{rank}(BA) \le 8$$, measured.
 
-The update full fine-tuning makes has no cliff. Its top 8 directions hold 37% of its energy $$\sum_i \sigma_i^2$$, its top 64 hold 70%, and reaching 90% takes 193 directions, the same numbers as in the adapters post's separate run.
+<p class="takeaway" markdown="1">The update full fine-tuning makes has no cliff: its top 8 directions hold 37% of its energy, its top 64 hold 70%, and reaching 90% takes 193 directions.</p>
 
-It is also small: its norm is a sixth of LoRA's (0.31 against 1.9 on average), since LoRA trains with a 25 times larger learning rate and packs the change into fewer directions.
+These are the same numbers as in the adapters post's separate run. The full update is also small: its norm is a sixth of LoRA's (0.31 against 1.9 on average), since LoRA trains with a 25 times larger learning rate and packs the change into fewer directions.
 
 And the two updates mostly point to different places: only 16% of full fine-tuning's update (by norm) lies in the subspaces the rank-8 LoRA chose, against 1% for random subspaces of that size.
 
@@ -412,17 +446,17 @@ Most of LoRA's many descendants change one piece of the algebra above. A short m
 
 The first two were measured above. The others, in a few words each.
 
-**AdaLoRA** writes the update in the shape of an SVD, $$P \Lambda Q$$, with a penalty that keeps $$P$$ and $$Q$$ close to orthogonal. During training it zeroes the "singular values" in $$\Lambda$$ whose removal would hurt the loss least, so that important matrices end up with a higher rank<sup class="cite">[<a href="#ref-16" id="cite-25" data-ref="16" aria-label="Reference 16: 2023. arxiv.org.">16</a>]</sup>.
+*AdaLoRA* writes the update in the shape of an SVD, $$P \Lambda Q$$, with a penalty that keeps $$P$$ and $$Q$$ close to orthogonal. During training it zeroes the "singular values" in $$\Lambda$$ whose removal would hurt the loss least, so that important matrices end up with a higher rank<sup class="cite">[<a href="#ref-16" id="cite-25" data-ref="16" aria-label="Reference 16: 2023. arxiv.org.">16</a>]</sup>.
 
-**DoRA** splits each column of the weight matrix into a length $$m$$ and a direction ($$\lVert \cdot \rVert_c$$ is the length of each column). It trains the lengths directly and the directions with LoRA<sup class="cite">[<a href="#ref-17" id="cite-26" data-ref="17" aria-label="Reference 17: 2024. arxiv.org.">17</a>]</sup>.
+*DoRA* splits each column of the weight matrix into a length $$m$$ and a direction ($$\lVert \cdot \rVert_c$$ is the length of each column). It trains the lengths directly and the directions with LoRA<sup class="cite">[<a href="#ref-17" id="cite-26" data-ref="17" aria-label="Reference 17: 2024. arxiv.org.">17</a>]</sup>.
 
-**VeRA** goes further than "only B": both factors are random, frozen and shared by all layers, and each layer trains two vectors that scale their rows and columns. A layer then costs $$d + r$$ numbers instead of $$2dr$$<sup class="cite">[<a href="#ref-18" id="cite-27" data-ref="18" aria-label="Reference 18: 2024. arxiv.org.">18</a>]</sup>.
+*VeRA* goes further than "only B": both factors are random, frozen and shared by all layers, and each layer trains two vectors that scale their rows and columns. A layer then costs $$d + r$$ numbers instead of $$2dr$$<sup class="cite">[<a href="#ref-18" id="cite-27" data-ref="18" aria-label="Reference 18: 2024. arxiv.org.">18</a>]</sup>.
 
-**PiSSA** is Eckart–Young put to work. It starts $$B$$ and $$A$$ from the top $$r$$ singular directions of $$W_0$$ itself and freezes the remainder, the error matrix of the best rank-$$r$$ approximation, so that training starts on the directions in which $$W_0$$ is largest<sup class="cite">[<a href="#ref-19" id="cite-28" data-ref="19" aria-label="Reference 19: 2024. arxiv.org.">19</a>]</sup>.
+*PiSSA* is Eckart–Young put to work. It starts $$B$$ and $$A$$ from the top $$r$$ singular directions of $$W_0$$ itself and freezes the remainder, the error matrix of the best rank-$$r$$ approximation, so that training starts on the directions in which $$W_0$$ is largest<sup class="cite">[<a href="#ref-19" id="cite-28" data-ref="19" aria-label="Reference 19: 2024. arxiv.org.">19</a>]</sup>.
 
 LoftQ uses the same theorem to choose $$B$$ and $$A$$ so that they compensate for the error of quantizing $$W_0$$<sup class="cite">[<a href="#ref-21" id="cite-29" data-ref="21" aria-label="Reference 21: Li et al., 2024. arxiv.org.">21</a>]</sup>.
 
-**QLoRA** leaves the algebra alone and changes the storage: the frozen $$W_0$$ is kept in 4 bits, the factors in 16, so a 65-billion-parameter model can be fine-tuned on one 48 GB GPU<sup class="cite">[<a href="#ref-20" id="cite-30" data-ref="20" aria-label="Reference 20: 2023. arxiv.org.">20</a>]</sup>.
+*QLoRA* leaves the algebra alone and changes the storage: the frozen $$W_0$$ is kept in 4 bits, the factors in 16, so a 65-billion-parameter model can be fine-tuned on one 48 GB GPU<sup class="cite">[<a href="#ref-20" id="cite-30" data-ref="20" aria-label="Reference 20: 2023. arxiv.org.">20</a>]</sup>.
 
 ## Summing up
 

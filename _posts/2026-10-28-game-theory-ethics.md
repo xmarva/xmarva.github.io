@@ -15,6 +15,17 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+Glaucon's challenge in the *Republic*, that people are just only for fear of being wronged and that a ring of invisibility would make anyone unjust, has the structure of the prisoner's dilemma: whatever the other player does, defecting pays more. Game theory answers him in part.
+
+For people who expect to meet again, who are watched by others and who cannot be sure that their rings will keep working, justice is very often the rational choice, and the models even say which kind: nice, firm, forgiving within limits, and clear.
+
+They do not answer the question Glaucon actually asked, whether justice is good in itself for someone whose ring never fails.
+
+</aside>
+
 In the second book of Plato's *Republic*, Glaucon offers Socrates a challenge that moral philosophy has been answering ever since. People, he says, praise justice not for itself but for its consequences.
 
 Left to ourselves we would all prefer to wrong others and get away with it; we settle for justice because we fear being wronged more than we enjoy wronging.
@@ -37,20 +48,22 @@ Two people can each do something for the other at a cost to themselves: keep a p
 
 If one does and the other doesn't, the one who didn't is best off of all and the one who did is worst off. If neither does, both lose what they could have had together.
 
-Game theory calls this structure the **prisoner's dilemma**, after a story Albert Tucker told in 1950 to illustrate a game that Merrill Flood and Melvin Dresher had invented a few months earlier at the RAND Corporation<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Flood, M. M. (1952). Some Experimental Games. RAND Research Memorandum RM-789-1.">2</a>]</sup>.
+Game theory calls this structure the *prisoner's dilemma*, after a story Albert Tucker told in 1950 to illustrate a game that Merrill Flood and Melvin Dresher had invented a few months earlier at the RAND Corporation<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Flood, M. M. (1952). Some Experimental Games. RAND Research Memorandum RM-789-1.">2</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/dilemma-light.png" width="760" alt="The prisoner&#x27;s dilemma with Axelrod&#x27;s payoffs. Both cooperate: 3 points each. You cooperate and they defect: 0 for you, 5 for them. You defect and they cooperate: 5 for you, 0 for them. Both defect: 1 each. Whatever the other does, defecting gives you more, and two players who reason this way get 1 each" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/dilemma-dark.png" width="760" alt="The prisoner&#x27;s dilemma with Axelrod&#x27;s payoffs. Both cooperate: 3 points each. You cooperate and they defect: 0 for you, 5 for them. You defect and they cooperate: 5 for you, 0 for them. Both defect: 1 each. Whatever the other does, defecting gives you more, and two players who reason this way get 1 each" loading="lazy">
 
-Only the order of the four outcomes matters. The **temptation** to exploit beats the **reward** for mutual cooperation, which beats the **punishment** for mutual defection, which beats the **sucker's payoff**:
+Only the order of the four outcomes matters. The *temptation* to exploit beats the *reward* for mutual cooperation, which beats the *punishment* for mutual defection, which beats the *sucker's payoff*:
 
 $$T > R > P > S, \qquad 2R > T + S.$$
 
 The second condition says that taking turns at exploiting each other is worse than cooperating, so that cooperation, not alternation, is what the two players lose. The numbers in the table, $$T = 5$$, $$R = 3$$, $$P = 1$$, $$S = 0$$, are the ones Robert Axelrod used, and the rest of this essay uses them too.
 
-The reasoning that follows is short and, within its assumptions, impeccable. Whatever the other player does, you do better by defecting: $$5 > 3$$ if they cooperate, $$1 > 0$$ if they don't. Defection is a **dominant strategy**, and two players who see this end up with 1 point each, while 3 each was on the table.
+The reasoning that follows is short and, within its assumptions, impeccable. Whatever the other player does, you do better by defecting: $$5 > 3$$ if they cooperate, $$1 > 0$$ if they don't. Defection is a *dominant strategy*, and two players who see this end up with 1 point each, while 3 each was on the table.
 
 The outcome is a Nash equilibrium, since neither can gain by changing alone, and it is worse for both than another outcome they could have reached. Individual rationality, applied correctly by both, produces a result that both regard as a failure.
+
+<p class="flow"><span>defecting pays whatever the other does</span><span>both players defect</span><span>1 point each instead of 3</span></p>
 
 This is Glaucon's compromise in miniature. Each would most like to wrong the other with impunity; each fears most to be wronged; and justice, mutual cooperation, is an agreement they would both welcome and neither has a reason to keep.
 
@@ -68,7 +81,13 @@ A man who breaks his covenant, and declares that he may with reason do so, "cann
 
 The Foole's defection is a single move, but it tells everyone what kind of player he is, and the rest of the game is played against that knowledge.
 
-Hobbes's remedy for the war of all against all, though, is not an argument but an institution: "Covenants, without the Sword, are but Words, and of no strength to secure a man at all" (ch. 17).
+Hobbes's remedy for the war of all against all, though, is not an argument but an institution:
+
+<blockquote class="pull" markdown="1">
+Covenants, without the Sword, are but Words, and of no strength to secure a man at all.
+
+<cite>Thomas Hobbes, *Leviathan*, ch. 17</cite>
+</blockquote>
 
 The sovereign does not persuade the players to cooperate; he changes their payoffs, so that defection no longer pays. In the language of game theory, Hobbes's solution is to make the game stop being a prisoner's dilemma.
 
@@ -86,23 +105,23 @@ If everyone acted on that maxim, "the promise itself would become impossible, as
 
 The defector's maxim, accept the cooperation of others and give none back, has the same shape. It works only as an exception, and made universal it destroys the cooperation it lives on.
 
-In 1983 the cognitive scientist Douglas Hofstadter turned a related thought into an argument about the game itself. His **superrational** thinkers, "by recursive definition, include in their calculations the fact that they are in a group of superrational thinkers"<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Hofstadter, D. R. (1983). Dilemmas for superrational thinkers, leading up to a luring lottery. Scientific American, 248(6), 14–28. Reprinted in Metamagical Themas (1985), ch. 30.">5</a>]</sup>.
+In 1983 the cognitive scientist Douglas Hofstadter turned a related thought into an argument about the game itself. His *superrational* thinkers, "by recursive definition, include in their calculations the fact that they are in a group of superrational thinkers"<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Hofstadter, D. R. (1983). Dilemmas for superrational thinkers, leading up to a luring lottery. Scientific American, 248(6), 14–28. Reprinted in Metamagical Themas (1985), ch. 30.">5</a>]</sup>.
 
 Two such players know that they will reach the same conclusion, so the only outcomes really open to them are the two on the diagonal, and of those mutual cooperation is better.
 
 David Lewis showed that this is a special case of a deeper split in decision theory: "Prisoners' Dilemma is a Newcomb Problem—or rather, two Newcomb Problems side by side, one per prisoner"<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Lewis, D. (1979). Prisoners&#x27; dilemma is a Newcomb problem. Philosophy &amp; Public Affairs, 8(3), 235–240.">6</a>]</sup>.
 
-In **Newcomb's problem**, a very reliable predictor has put a million dollars into an opaque box if it predicted that you would take only that box, and nothing if it predicted that you would also take a transparent box with a thousand dollars in it.
+In *Newcomb's problem*, a very reliable predictor has put a million dollars into an opaque box if it predicted that you would take only that box, and nothing if it predicted that you would also take a transparent box with a thousand dollars in it.
 
 Against a player who reasons as you do, the other player's choice is like the predictor's: your choice does not cause it, but it is very good evidence about it.
 
-**Evidential decision theory**, which chooses the act that is the best news about the outcome, recommends taking one box, and cooperating. **Causal decision theory**, which chooses the act with the best causal consequences, recommends taking both boxes, and defecting, because nothing you do now changes what is in the box or what the other player does.
+*Evidential decision theory*, which chooses the act that is the best news about the outcome, recommends taking one box, and cooperating.
 
-Philosophers have not agreed which theory is right, and the disagreement is now half a century old.
+*Causal decision theory*, which chooses the act with the best causal consequences, recommends taking both boxes, and defecting, because nothing you do now changes what is in the box or what the other player does. Philosophers have not agreed which theory is right, and the disagreement is now half a century old.
 
-David Gauthier took a different route<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Gauthier, D. (1986). Morals by Agreement. Clarendon Press. Chapter VI.">7</a>]</sup>. Rather than ask which act is rational, he asked which **disposition** it is rational to have. A *straightforward maximizer* always chooses the act with the best expected outcome; a *constrained maximizer* cooperates with others who are disposed to cooperate, and defects otherwise.
+David Gauthier took a different route<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Gauthier, D. (1986). Morals by Agreement. Clarendon Press. Chapter VI.">7</a>]</sup>. Rather than ask which act is rational, he asked which *disposition* it is rational to have. A *straightforward maximizer* always chooses the act with the best expected outcome; a *constrained maximizer* cooperates with others who are disposed to cooperate, and defects otherwise.
 
-If dispositions are **translucent**, if others can tell, at least sometimes, what kind of person you are, constrained maximizers are offered cooperation and straightforward maximizers are not, and the constrained ones do better. The rational choice of a disposition can then require acts that, taken one at a time, are not rational.
+If dispositions are *translucent*, if others can tell, at least sometimes, what kind of person you are, constrained maximizers are offered cooperation and straightforward maximizers are not, and the constrained ones do better. The rational choice of a disposition can then require acts that, taken one at a time, are not rational.
 
 Critics have pointed out that the argument works only to the extent that dispositions really are visible, which brings Gauthier close to the next idea: that what makes cooperation rational is that the encounter is not, in fact, single.
 
@@ -120,11 +139,11 @@ The promise, on Hume's account, is a convention that makes this expectation publ
 
 Game theory makes this precise. Suppose that after each round there is another with probability $$w$$, so that a relationship lasts $$1/(1 - w)$$ rounds on average. Now a strategy can depend on what the other player did.
 
-The simplest such strategy, **tit for tat**, cooperates first and then copies the other player's previous move. Against it, a defection buys $$T$$ today and costs a punishment tomorrow, and it pays to cooperate if and only if
+The simplest such strategy, *tit for tat*, cooperates first and then copies the other player's previous move. Against it, a defection buys $$T$$ today and costs a punishment tomorrow, and it pays to cooperate if and only if
 
 $$w \;\ge\; \max\!\left(\frac{T - R}{T - P},\; \frac{T - R}{R - S}\right) = \frac{2}{3}.$$
 
-The first term guards against always defecting, the second against defecting and making up in turns<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Axelrod, R., &amp; Hamilton, W. D. (1981). The evolution of cooperation. Science, 211(4489), 1390–1396.">9</a>]</sup>. Axelrod called $$w$$ the **shadow of the future**<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Axelrod, R. (1984). The Evolution of Cooperation. Basic Books. Chapter 4, The live-and-let-live system in trench warfare in World War I, pp. 73–87.">10</a>]</sup>.
+The first term guards against always defecting, the second against defecting and making up in turns<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Axelrod, R., &amp; Hamilton, W. D. (1981). The evolution of cooperation. Science, 211(4489), 1390–1396.">9</a>]</sup>. Axelrod called $$w$$ the *shadow of the future*<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Axelrod, R. (1984). The Evolution of Cooperation. Basic Books. Chapter 4, The live-and-let-live system in trench warfare in World War I, pp. 73–87.">10</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/shadow-light.png" width="760" alt="Points per round against tit for tat as a function of w, the probability of another round. Cooperating earns 3. Always defecting earns 5 - 4w and wins below w = 1/2; defecting and making up in turns earns 5/(1 + w) and wins below w = 2/3. Above 2/3 cooperating is the best reply" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/shadow-dark.png" width="760" alt="Points per round against tit for tat as a function of w, the probability of another round. Cooperating earns 3. Always defecting earns 5 - 4w and wins below w = 1/2; defecting and making up in turns earns 5/(1 + w) and wins below w = 2/3. Above 2/3 cooperating is the best reply" loading="lazy">
@@ -141,7 +160,11 @@ Two philosophical lessons follow, and the second is less comfortable than the fi
 
 The second is that the repeated game does not *select* cooperation; it only *permits* it. The theorems that show cooperation can be an equilibrium of a repeated game, known collectively as the folk theorem, also show that almost any pattern of behaviour can be one, including mutual defection forever and many unequal arrangements in between.
 
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
 Rationality alone underdetermines what rational people will do together. Something else, a convention, a norm, a shared history, has to pick one equilibrium among many, and that something is where much of morality lives.
+</div>
 
 ## 5. Which character is rational?
 
@@ -154,9 +177,11 @@ A rerun of that second tournament from Axelrod's original code with 25,000 rando
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/tournament-light.png" width="760" alt="Matches won against mean points per round for twelve strategies. Generous ZD scores highest, 2.50, winning 0 matches; the nice strategies take the top places without winning any. Always defect wins 9 of 11 matches and scores 2.05; Joss is last with 1.87" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/tournament-dark.png" width="760" alt="Matches won against mean points per round for twelve strategies. Generous ZD scores highest, 2.50, winning 0 matches; the nice strategies take the top places without winning any. Always defect wins 9 of 11 matches and scores 2.05; Joss is last with 1.87" loading="lazy">
 
-The six strategies that never defect first take the top six places, and between them they win almost no individual matches. Always defect wins nine of its eleven matches and finishes ninth.
+<p class="takeaway" markdown="1">The six strategies that never defect first take the top six places, while always defect wins nine of its eleven matches and finishes ninth.</p>
 
-The **Extortioner**, one of the zero-determinant strategies that William Press and Freeman Dyson found in 2012, is built never to earn less than its partner<sup class="cite">[<a href="#ref-15" id="cite-17" data-ref="15" aria-label="Reference 15: Press, W. H., &amp; Dyson, F. J. (2012). Iterated Prisoner&#x27;s Dilemma contains strategies that dominate any evolutionary opponent. PNAS, 109(26), 10409–10413.">15</a>]</sup>. It loses no match and finishes eleventh. Its generous twin, built never to earn more than its partner, wins no match and finishes first<sup class="cite">[<a href="#ref-16" id="cite-18" data-ref="16" aria-label="Reference 16: Stewart, A. J., &amp; Plotkin, J. B. (2013). From extortion to generosity, evolution in the Iterated Prisoner&#x27;s Dilemma. PNAS, 110(38), 15348–15353.">16</a>]</sup>.
+Between them, those six win almost no individual matches. The *Extortioner*, one of the zero-determinant strategies that William Press and Freeman Dyson found in 2012, is built never to earn less than its partner<sup class="cite">[<a href="#ref-15" id="cite-17" data-ref="15" aria-label="Reference 15: Press, W. H., &amp; Dyson, F. J. (2012). Iterated Prisoner&#x27;s Dilemma contains strategies that dominate any evolutionary opponent. PNAS, 109(26), 10409–10413.">15</a>]</sup>.
+
+It loses no match and finishes eleventh. Its generous twin, built never to earn more than its partner, wins no match and finishes first<sup class="cite">[<a href="#ref-16" id="cite-18" data-ref="16" aria-label="Reference 16: Stewart, A. J., &amp; Plotkin, J. B. (2013). From extortion to generosity, evolution in the Iterated Prisoner&#x27;s Dilemma. PNAS, 110(38), 15348–15353.">16</a>]</sup>.
 
 Axelrod's explanation is that a nice strategy can never get more than its partner in a single game, since it only defects in answer to a defection; it wins the tournament by doing reasonably well with everyone.
 
@@ -171,7 +196,7 @@ The feud is easy to see once mistakes are allowed, as they always are in life:
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/echo-light.png" width="760" alt="Sixteen rounds between two players of the same strategy, with one mistake in round 4: player one means to cooperate and defects. Two tit for tat players then punish each other in turns for the rest of the game. Two generous tit for tat players stop the echo when one of them forgives, here after 2 rounds. Two win-stay, lose-shift players defect together once and are back to cooperating in round 6" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/echo-dark.png" width="760" alt="Sixteen rounds between two players of the same strategy, with one mistake in round 4: player one means to cooperate and defects. Two tit for tat players then punish each other in turns for the rest of the game. Two generous tit for tat players stop the echo when one of them forgives, here after 2 rounds. Two win-stay, lose-shift players defect together once and are back to cooperating in round 6" loading="lazy">
 
-Between two tit for tat players, one misread gesture starts an exchange of punishments that never ends, each side certain that it is only responding. A **generous** version of tit for tat, which forgives a defection with some probability $$q$$, stops the echo after a few rounds<sup class="cite">[<a href="#ref-17" id="cite-20" data-ref="17" aria-label="Reference 17: Nowak, M., &amp; Sigmund, K. (1992). Tit for tat in heterogeneous populations. Nature, 355, 250–253.">17</a>]</sup>.
+Between two tit for tat players, one misread gesture starts an exchange of punishments that never ends, each side certain that it is only responding. A *generous* version of tit for tat, which forgives a defection with some probability $$q$$, stops the echo after a few rounds<sup class="cite">[<a href="#ref-17" id="cite-20" data-ref="17" aria-label="Reference 17: Nowak, M., &amp; Sigmund, K. (1992). Tit for tat in heterogeneous populations. Nature, 355, 250–253.">17</a>]</sup>.
 
 How large should $$q$$ be? Forgive too rarely, and mistakes turn into feuds; forgive too often, and a player who alternates defection and apology earns more than honest cooperators. The largest forgiveness that no exploiter can profit from is
 
@@ -203,9 +228,9 @@ With only always defect, tit for tat and unconditional cooperation available, th
 
 Lorens Imhof, Drew Fudenberg and Martin Nowak described this cycle in finite populations<sup class="cite">[<a href="#ref-21" id="cite-25" data-ref="21" aria-label="Reference 21: Imhof, L. A., Fudenberg, D., &amp; Nowak, M. A. (2005). Evolutionary cycles of cooperation and defection. PNAS, 102(31), 10797–10800.">21</a>]</sup>. Over twenty runs of the simulation, defectors held the majority 49% of the time.
 
-When generous tit for tat is available, it takes over and holds the population: defectors held the majority 18% of the time, and the average payoff rose from 1.94 to 2.58 points per round.
-
 Unconditional kindness, on this picture, is not a stable state of a society but a phase of it, and what protects a cooperative society is a willingness to punish that erodes exactly when it seems least necessary.
+
+<p class="takeaway" markdown="1">When generous tit for tat is available, it takes over and holds the population: defectors held the majority 18% of the time, and the average payoff rose from 1.94 to 2.58 points per round.</p>
 
 The evolutionary story raises an old worry in a new form. If our moral dispositions exist because they paid, are they really moral?
 
@@ -215,7 +240,7 @@ Another answer comes from the way cooperation among strangers actually works. Ri
 
 Reputation then does the work that repetition does between two people, and it requires judging others, which brings normative questions back in. Martin Nowak and Karl Sigmund showed that cooperation can be sustained by a public "image score" that rises when you help and falls when you refuse<sup class="cite">[<a href="#ref-23" id="cite-27" data-ref="23" aria-label="Reference 23: Nowak, M. A., &amp; Sigmund, K. (1998). Evolution of indirect reciprocity by image scoring. Nature, 393, 573–577.">23</a>]</sup>.
 
-But a player who refuses to help a known cheat then loses reputation for enforcing the norm, so a rule called **standing**, which looks at whom you refused, works much better<sup class="cite">[<a href="#ref-24" id="cite-28" data-ref="24" aria-label="Reference 24: Leimar, O., &amp; Hammerstein, P. (2001). Evolution of cooperation through indirect reciprocity. Proceedings of the Royal Society B, 268, 745–753.">24</a>]</sup>:
+But a player who refuses to help a known cheat then loses reputation for enforcing the norm, so a rule called *standing*, which looks at whom you refused, works much better<sup class="cite">[<a href="#ref-24" id="cite-28" data-ref="24" aria-label="Reference 24: Leimar, O., &amp; Hammerstein, P. (2001). Evolution of cooperation through indirect reciprocity. Proceedings of the Royal Society B, 268, 745–753.">24</a>]</sup>:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/reputation-light.png" width="760" alt="How an observer updates a donor&#x27;s reputation. Image scoring looks only at the act: helping makes the donor good, refusing makes the donor bad. Standing also looks at whom the donor refused: refusing someone with a bad reputation keeps the donor good. The two rules differ only in that one case" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/reputation-dark.png" width="760" alt="How an observer updates a donor&#x27;s reputation. Image scoring looks only at the act: helping makes the donor good, refusing makes the donor bad. Standing also looks at whom the donor refused: refusing someone with a bad reputation keeps the donor good. The two rules differ only in that one case" loading="lazy">
@@ -224,7 +249,7 @@ When Hisashi Ohtsuki and Yoh Iwasa checked all 4096 rules of this kind, only eig
 
 The evolution of cooperation selects not only for helping but for a particular moral judgement: that punishing the guilty is just and punishing the punisher is not.
 
-Indirect reciprocity also gives an answer to Hume's **sensible knave**, who reasons: "That honesty is the best policy, may be a good general rule; but is liable to many exceptions: And he, it may, perhaps, be thought, conducts himself with most wisdom, who observes the general rule, and takes advantage of all the exceptions" (*Enquiry* 9.22)<sup class="cite">[<a href="#ref-26" id="cite-30" data-ref="26" aria-label="Reference 26: Hume, D. (1751). An Enquiry concerning the Principles of Morals, section 9, part 2. Hume Texts Online.">26</a>]</sup>.
+Indirect reciprocity also gives an answer to Hume's *sensible knave*, who reasons: "That honesty is the best policy, may be a good general rule; but is liable to many exceptions: And he, it may, perhaps, be thought, conducts himself with most wisdom, who observes the general rule, and takes advantage of all the exceptions" (*Enquiry* 9.22)<sup class="cite">[<a href="#ref-26" id="cite-30" data-ref="26" aria-label="Reference 26: Hume, D. (1751). An Enquiry concerning the Principles of Morals, section 9, part 2. Hume Texts Online.">26</a>]</sup>.
 
 Hume admitted that if a man thinks this reasoning requires an answer, "it will be a little difficult to find any, which will to him appear satisfactory and convincing" (9.23).
 
@@ -241,7 +266,7 @@ Brian Skyrms argued that this game deserves at least as much attention as the pr
 <img class="tfs-figure tfs-light" src="/assets/posts/game-theory-ethics/stag-light.png" width="760" alt="Expected catch of hunting the stag (4 times the share p of others who hunt it) and of hunting hare (3). Hunting the stag pays when more than three quarters of the others hunt it; below that the share of stag hunters falls, above it it rises" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/game-theory-ethics/stag-dark.png" width="760" alt="Expected catch of hunting the stag (4 times the share p of others who hunt it) and of hunting hare (3). Hunting the stag pays when more than three quarters of the others hunt it; below that the share of stag hunters falls, above it it rises" loading="lazy">
 
-In the stag hunt, mutual cooperation is an equilibrium: nobody wants to leave a successful hunt. But mutual distrust is an equilibrium too, and it is the safer one, what John Harsanyi and Reinhard Selten called **risk-dominant**<sup class="cite">[<a href="#ref-29" id="cite-33" data-ref="29" aria-label="Reference 29: Harsanyi, J. C., &amp; Selten, R. (1988). A General Theory of Equilibrium Selection in Games. MIT Press.">29</a>]</sup>.
+In the stag hunt, mutual cooperation is an equilibrium: nobody wants to leave a successful hunt. But mutual distrust is an equilibrium too, and it is the safer one, what John Harsanyi and Reinhard Selten called *risk-dominant*<sup class="cite">[<a href="#ref-29" id="cite-33" data-ref="29" aria-label="Reference 29: Harsanyi, J. C., &amp; Selten, R. (1988). A General Theory of Equilibrium Selection in Games. MIT Press.">29</a>]</sup>.
 
 With a stag worth 4 to each hunter, a hare worth 3 and nothing for hunting the stag alone, hunting the stag pays only if more than three quarters of the others will hunt it too.
 
@@ -267,9 +292,13 @@ Across fifteen small-scale societies, mean offers ranged from 26 to 58 percent, 
 
 Even the trench truce has been questioned as an example: Andrew Gelman argued that not shooting simply lowered each side's own risk, so the soldiers may not have faced a prisoner's dilemma at all<sup class="cite">[<a href="#ref-34" id="cite-39" data-ref="34" aria-label="Reference 34: Gelman, A. (2008). Methodology as ideology: some comments on Robert Axelrod&#x27;s The Evolution of Cooperation. QA Rivista dell&#x27;Associazione Rossi-Doria, 2/2008, 167–176.">34</a>]</sup>.
 
-This sets the limit of the whole approach. Game theory can show that, given what people want, certain dispositions are rational: niceness, retaliation, a measured forgiveness, attention to reputation, a readiness to trust when trust is likely to be returned. It cannot show what people should want.
+This sets the limit of the whole approach. Game theory can show that, given what people want, certain dispositions are rational: niceness, retaliation, a measured forgiveness, attention to reputation, a readiness to trust when trust is likely to be returned.
 
-The payoffs are inputs, and the question of what is worth wanting, which is most of ethics, comes before the first row of the table.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Game theory cannot show what people should want. The payoffs are inputs, and the question of what is worth wanting, which is most of ethics, comes before the first row of the table.
+</div>
 
 What, then, of Glaucon? Game theory answers him in part. For people who expect to meet again, who are watched by others, and who cannot be sure that their rings will keep working, justice is very often the rational choice, and the models even say which kind of justice: nice, firm, forgiving within limits, and clear.
 

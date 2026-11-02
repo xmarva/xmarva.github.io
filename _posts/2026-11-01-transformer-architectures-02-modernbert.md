@@ -593,7 +593,12 @@ Fine-tuning on few labels is where pre-training shows. The masked language model
 
 The paper's smallest ELECTRA trained for four days on a GPU, some seven hundred times our budget, with a generator narrower than its discriminator, while ours is one layer of the same width; its advantage is measured there.
 
-A race this short says what happens in the first eight minutes, and in them the simpler task won. It is RoBERTa's lesson again: an idea is only as good as the recipe it is trained with, and ours is a sketch.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+A race this short says what happens in the first eight minutes, and in them the simpler task won.
+It is RoBERTa's lesson again: an idea is only as good as the recipe it is trained with, and ours is a sketch.
+</div>
 
 ## 3. DeBERTa: positions as vectors of their own
 
@@ -737,9 +742,16 @@ float64: largest difference 3.1e-07, largest activation 9.5</code></pre>
 In float32 the two implementations agree to four or five decimal places, the rounding of summing the same numbers
 in a different order; in float64, to seven. Our forty lines are DeBERTa's attention.
 
-The explicit `.to(dtype)` in that loop is there for a reason we found the hard way while writing this lesson. Microsoft stored DeBERTa-v3's weights in float16, and recent versions of `transformers` load a model in the precision of its checkpoint.
+The explicit `.to(dtype)` in that loop is there for a reason we found the hard way while writing this lesson.
 
-Compared without the cast, the reference quietly runs in half precision, and the two models disagree in the second decimal place, which looks exactly like a bug in the attention. Running both in float64 is the quickest way to tell a bug from rounding: a bug survives it, rounding doesn't.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+Microsoft stored DeBERTa-v3's weights in float16, and recent versions of `transformers` load a model in
+the precision of its checkpoint. Compared without the cast, the reference quietly runs in half precision, and the
+two models disagree in the second decimal place, which looks exactly like a bug in the attention. Running both in
+float64 is the quickest way to tell a bug from rounding: a bug survives it, rounding doesn't.
+</div>
 
 ## 4. ModernBERT: an encoder rebuilt from LLM parts
 
@@ -874,9 +886,11 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">tokens</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">attended pairs</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">share of an all-global model</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">512</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">3M</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">52%</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2,048</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">37M</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">40%</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">8,192</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">552M</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">37%</td></tr></tbody></table></div>
 
-The local layers get almost free as inputs grow, and the cost settles at that of the eight global layers: a little over a third of an all-global model at 8,192 tokens, the length ModernBERT was trained for.
+<p class="takeaway" markdown="1">The local layers get almost free as inputs grow, and the cost settles at that of the eight global layers: 37% of
+an all-global model at 8,192 tokens, the length ModernBERT was trained for.</p>
 
-On GPUs with FlashAttention the saving is real time; the T4 has no kernel for windows, so here the mask only hides scores that are still computed.
+On GPUs with FlashAttention the saving is real time; the T4 has no kernel for windows, so here the mask only hides
+scores that are still computed.
 
 ## 5. Triage for projects the model has never seen
 
@@ -1029,9 +1043,12 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/02/output-04.png" alt="Output of the code above" loading="lazy">
 
-Reading four times more of each issue changed nothing. ModernBERT trained four times longer and classified four times slower for the same score: the title and the first paragraph decide what an issue is, and the stack trace below them adds nothing to that decision.
+<p class="takeaway" markdown="1">Reading four times more of each issue changed nothing: ModernBERT trained four times longer and classified four
+times slower for the same macro F1, 0.73.</p>
 
-Long context earns its price where the answer is spread through a document, like the personal data of lesson 1's bank documents, not here.
+The title and the first paragraph decide what an issue is, and the stack trace below them adds nothing to that
+decision. Long context earns its price where the answer is spread through a document, like the personal data of
+lesson 1's bank documents, not here.
 
 The errors that remain gather in one place: almost a third of the bugs were taken for questions. A bug report often
 is a question, "is this expected?", and the projects' own labels don't agree on where one ends and the other
@@ -1044,7 +1061,12 @@ Hugging Face Hub were small BERT-style encoders that turn text into vectors for 
 a hundred million times in a month<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Hugging Face, 2026. huggingface.co.">7</a>]</sup>. The next
 lesson is about exactly those.
 
-For a new project that needs an encoder, ModernBERT is a good default: it reads long inputs, it was trained on code as well as prose, and it is fast where FlashAttention is available.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+For a new project that needs an encoder, ModernBERT is a good default: it reads long inputs, it
+was trained on code as well as prose, and it is fast where FlashAttention is available.
+</div>
 
 DeBERTa-v3 remains a strong choice for short English text when the last point of accuracy matters more than speed, and years of Kaggle competitions have worn smooth every way of fine-tuning it.
 
@@ -1079,6 +1101,6 @@ ModernBERT's passport, and the family tree with this lesson's branch:
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-01-bert/">← Lesson 1: BERT</a> <a href="/blog/2026/transformer-architectures-03-search/">Lesson 3: Embeddings & search →</a></p>
 
 {% endraw %}

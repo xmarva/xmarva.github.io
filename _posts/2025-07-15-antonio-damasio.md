@@ -14,13 +14,19 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+After surgery on the lower, middle part of his frontal lobes, Elliot kept a superior IQ and a flawless memory and could no longer run his life; Damasio summed it up as "to know but not to feel". His somatic marker hypothesis puts the missing piece in the body: bodily states that similar situations produced before mark options as bad or good, sometimes below awareness. The Iowa Gambling Task seemed to show such signals guiding healthy players before they knew the rules; later studies found that players knew more than they had been asked, and that people without bodily feedback played normally. The deficit after damage to the ventromedial prefrontal cortex is real; whether the missing ingredient is a signal from, or about, the body is the open question.
+</aside>
+
 Elliot had been, in Antonio Damasio's words, "a good husband and father, had a job with a business firm, and had been a role model for younger siblings and colleagues." Then a tumour the size of a small orange grew above his eye sockets and pressed on both frontal lobes from below.
 
 Surgeons removed it together with the damaged tissue of the lower, middle part of the frontal lobes. Elliot recovered. His IQ was "in the superior range", his scores on a standard personality inventory were normal, and he had "a flawless memory for his life story" ([Damasio, 1994](https://archive.org/details/descarteserrorem00dama), pp. 35–44).
 
-And he could no longer run his life. At work, given documents to sort, "he might spend a whole afternoon deliberating on which principle of categorization should be applied: Should it be date, size of document, pertinence to the case, or another?
+And he could no longer run his life. At work, given documents to sort, "he might spend a whole afternoon deliberating on which principle of categorization should be applied: Should it be date, size of document, pertinence to the case, or another? The flow of work was stopped" (p. 36).
 
-The flow of work was stopped" (p. 36). He lost his job, then his savings in a doomed business venture, then his marriage; a second marriage, which his family opposed, also ended in divorce (p. 37).
+He lost his job, then his savings in a doomed business venture, then his marriage; a second marriage, which his family opposed, also ended in divorce (p. 37).
 
 In one test, a psychologist on Damasio's team asked him to come up with ways to act in social dilemmas. Elliot produced a long list of reasonable options, smiled, and added: "And after all this, I still wouldn't know what to do!" (p. 49).
 
@@ -46,29 +52,33 @@ Later reconstructions from CT scans of the skull itself found the damage limited
 
 Elliot is better documented. In the research literature he is patient EVR, an accountant at a home-building firm, whose "'measurable' intelligence was superior, and he was therefore considered a 'malingerer'" before anyone understood what had happened to him<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Eslinger, P. J., &amp; Damasio, A. R. (1985). Severe disturbance of higher cognition after bilateral frontal lobe ablation: patient EVR. Neurology, 35(12), 1731–1741.">7</a>]</sup>.
 
-The region at the centre of the story is the **ventromedial prefrontal cortex** (vmPFC), the lower, inner surface of the frontal lobes, just above the eyes:
+The region at the centre of the story is the *ventromedial prefrontal cortex* (vmPFC), the lower, inner surface of the frontal lobes, just above the eyes:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/antonio-damasio/regions-light.png" width="760" alt="The left hemisphere from the side and from the middle, with the ventromedial prefrontal and orbital cortex, the insula and the somatosensory cortex of the postcentral gyrus coloured; and a coronal slice at y = -4 mm showing both amygdalae and the insulae" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/antonio-damasio/regions-dark.png" width="760" alt="The left hemisphere from the side and from the middle, with the ventromedial prefrontal and orbital cortex, the insula and the somatosensory cortex of the postcentral gyrus coloured; and a coronal slice at y = -4 mm showing both amygdalae and the insulae" loading="lazy">
 
 ## The hypothesis
 
-Damasio's question was what the vmPFC contributes that IQ tests do not measure. His answer is the **somatic marker hypothesis**<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Damasio, A. R. (1996). The somatic marker hypothesis and the possible functions of the prefrontal cortex. Philosophical Transactions of the Royal Society B, 351, 1413–1420.">8</a>]</sup>.
+Damasio's question was what the vmPFC contributes that IQ tests do not measure. His answer is the *somatic marker hypothesis*<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Damasio, A. R. (1996). The somatic marker hypothesis and the possible functions of the prefrontal cortex. Philosophical Transactions of the Royal Society B, 351, 1413–1420.">8</a>]</sup>.
 
 When we consider an option, the brain does not only compute its consequences. It also re-evokes the bodily state that similar situations produced in the past: a tightening, a flicker of something like fear or relief. That state *marks* the option.
 
 A bad marker works as "an alarm signal", a good one as "an incentive signal", and when the process runs below awareness it is a "biasing signal" that tilts the choice before reasoning finishes.
 
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
 The vmPFC, on this view, stores the links between kinds of situations and the bodily states they led to, and without it a person can still reason about options but nothing makes one of them feel worse than another. Elliot's afternoon spent choosing a filing principle is what deciding looks like when every option weighs the same.
+</div>
 
 The word *somatic*, from the Greek *sōma*, body, is literal, but not in the way it is often retold. The signals do not have to travel to the body and back. Damasio describes two routes:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/antonio-damasio/loops-light.png" width="760" alt="Damasio&#x27;s two loops. In the body loop, a situation evokes, through the ventromedial prefrontal cortex and the amygdala, a change in the body, which the somatosensory cortices and the insula register, biasing the decision. In the as-if body loop, the prefrontal cortex signals the somatosensory cortices directly, the body being bypassed" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/antonio-damasio/loops-dark.png" width="760" alt="Damasio&#x27;s two loops. In the body loop, a situation evokes, through the ventromedial prefrontal cortex and the amygdala, a change in the body, which the somatosensory cortices and the insula register, biasing the decision. In the as-if body loop, the prefrontal cortex signals the somatosensory cortices directly, the body being bypassed" loading="lazy">
 
-In the **body loop**, the situation changes the state of the body, heart rate, breathing, the gut, the skin's sweating, and the somatosensory cortex and the insula register the change.
+In the *body loop*, the situation changes the state of the body, heart rate, breathing, the gut, the skin's sweating, and the somatosensory cortex and the insula register the change.
 
-In the **as-if body loop**, the vmPFC signals those cortical maps directly and they adopt the pattern the body would have produced, "the body being bypassed".
+In the *as-if body loop*, the vmPFC signals those cortical maps directly and they adopt the pattern the body would have produced, "the body being bypassed".
 
 Damasio thought the second route is the usual one: "in most circumstances an 'as if' body loop is engaged instead, and the body, that is the periphery, is bypassed entirely."
 
@@ -76,11 +86,13 @@ The idea has an ancestor. In 1884 William James argued that "we feel sorry becau
 
 Walter Cannon objected in 1927 that bodily changes are too slow and too much alike across emotions to be the source of feelings, and that animals whose viscera were cut off from the brain still showed emotional behaviour<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Cannon, W. B. (1927). The James-Lange theory of emotions: a critical examination and an alternative theory. American Journal of Psychology, 39, 106–124.">10</a>]</sup>.
 
-Damasio's version keeps James's insight and answers part of Cannon's objection with the as-if loop. It also separates two words that everyday language mixes. **Emotions** are action programs, chains of bodily responses triggered by a situation. **Feelings** are the experience of those changes, "mental experiences, closely connected to activity in certain brain regions capable of mapping body states"<sup class="cite">[<a href="#ref-11" id="cite-11" data-ref="11" aria-label="Reference 11: Habibi, A., &amp; Damasio, A. (2014). Music, feelings, and the human brain. Psychomusicology, 24(1), 92–102.">11</a>]</sup>.
+Damasio's version keeps James's insight and answers part of Cannon's objection with the as-if loop. It also separates two words that everyday language mixes.
+
+*Emotions* are action programs, chains of bodily responses triggered by a situation. *Feelings* are the experience of those changes, "mental experiences, closely connected to activity in certain brain regions capable of mapping body states"<sup class="cite">[<a href="#ref-11" id="cite-11" data-ref="11" aria-label="Reference 11: Habibi, A., &amp; Damasio, A. (2014). Music, feelings, and the human brain. Psychomusicology, 24(1), 92–102.">11</a>]</sup>.
 
 ## The card game
 
-To test the hypothesis, Antoine Bechara, working in Damasio's lab at the University of Iowa, built what is now called the **Iowa Gambling Task**<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: Bechara, A., Damasio, A. R., Damasio, H., &amp; Anderson, S. W. (1994). Insensitivity to future consequences following damage to human prefrontal cortex. Cognition, 50, 7–15.">12</a>]</sup>. The player gets a loan of &#36;2,000 in play money and four decks of cards.
+To test the hypothesis, Antoine Bechara, working in Damasio's lab at the University of Iowa, built what is now called the *Iowa Gambling Task*<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: Bechara, A., Damasio, A. R., Damasio, H., &amp; Anderson, S. W. (1994). Insensitivity to future consequences following damage to human prefrontal cortex. Cognition, 50, 7–15.">12</a>]</sup>. The player gets a loan of &#36;2,000 in play money and four decks of cards.
 
 Each card pays a reward; some cards also take a penalty. The player is not told the rules and does not know the game stops after 100 cards. The decks are rigged:
 
@@ -104,9 +116,11 @@ After the 20th card, and every ten cards after that, the game was paused and the
 
 The healthy players went through four periods. After the first losses their skin began to respond *before* they picked a card from a bad deck, an anticipatory reaction that the patients never developed. Yet "by card 20, all indicated that they did not have a clue about what was going on."
 
-Around card 50 they reported a hunch, a feeling that some decks were riskier. Around card 80, seven of the ten could say which decks were bad and why. The patients' results were stranger.
+Around card 50 they reported a hunch, a feeling that some decks were riskier. Around card 80, seven of the ten could say which decks were bad and why.
 
-Three of the six worked out which decks were good and which bad, and still chose badly: "The patients failed to act according to their correct conceptual knowledge." The abstract concluded that "in normal individuals, nonconscious biases guide behavior before conscious knowledge does."
+The patients' results were stranger. Three of the six worked out which decks were good and which bad, and still chose badly: "The patients failed to act according to their correct conceptual knowledge."
+
+<p class="takeaway" markdown="1">The paper's abstract concluded that "in normal individuals, nonconscious biases guide behavior before conscious knowledge does."</p>
 
 It is a beautiful result, and the paper itself contains its first caveat. During the pre-hunch period, the healthy players did choose more often from the good decks, but in a footnote the authors note that "the difference was not statistically significant."
 
@@ -114,19 +128,19 @@ It is a beautiful result, and the paper itself contains its first caveat. During
 
 Over the next decade the hypothesis drew careful criticism, most of it about the gambling task.
 
-**People knew more than they were asked.** Tiago Maia and James McClelland replayed the experiment with a more detailed questionnaire and found that "participants report knowledge of the advantageous strategy more reliably than they behave advantageously"<sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Maia, T. V., &amp; McClelland, J. L. (2004). A reexamination of the evidence for the somatic marker hypothesis. PNAS, 101(45), 16075–16080.">14</a>]</sup>.
+*People knew more than they were asked.* Tiago Maia and James McClelland replayed the experiment with a more detailed questionnaire and found that "participants report knowledge of the advantageous strategy more reliably than they behave advantageously"<sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Maia, T. V., &amp; McClelland, J. L. (2004). A reexamination of the evidence for the somatic marker hypothesis. PNAS, 101(45), 16075–16080.">14</a>]</sup>.
 
 Conscious knowledge appeared at least as early as good choices, so there was no need to invoke unconscious bodily biases to explain them, though they did not show that such biases are absent.
 
-**The sweating may track risk, not badness.** In the standard game the bad decks are also the ones with the largest swings. Ian Tomb and colleagues built a version in which the good decks had the largest swings, and anticipatory skin responses followed the swings, not the outcome<sup class="cite">[<a href="#ref-15" id="cite-15" data-ref="15" aria-label="Reference 15: Tomb, I., Hauser, M., Deldin, P., &amp; Caramazza, A. (2002). Do somatic markers mediate decisions on the gambling task? Nature Neuroscience, 5, 1103–1104.">15</a>]</sup>.
+*The sweating may track risk, not badness.* In the standard game the bad decks are also the ones with the largest swings. Ian Tomb and colleagues built a version in which the good decks had the largest swings, and anticipatory skin responses followed the swings, not the outcome<sup class="cite">[<a href="#ref-15" id="cite-15" data-ref="15" aria-label="Reference 15: Tomb, I., Hauser, M., Deldin, P., &amp; Caramazza, A. (2002). Do somatic markers mediate decisions on the gambling task? Nature Neuroscience, 5, 1103–1104.">15</a>]</sup>.
 
-**People without bodily feedback play normally.** Patients with pure autonomic failure, whose nervous system no longer produces the bodily changes the body loop needs, "were unimpaired" on the gambling task; they did slightly better than controls<sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Heims, H. C., Critchley, H. D., Dolan, R., Mathias, C. J., &amp; Cipolotti, L. (2004). Social and motivational functioning is not critically dependent on feedback of autonomic responses. Neuropsychologia, 42, 1979–1988.">16</a>]</sup>. The as-if loop can absorb this result, but it then becomes hard to say what observation could count against the theory.
+*People without bodily feedback play normally.* Patients with pure autonomic failure, whose nervous system no longer produces the bodily changes the body loop needs, "were unimpaired" on the gambling task; they did slightly better than controls<sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Heims, H. C., Critchley, H. D., Dolan, R., Mathias, C. J., &amp; Cipolotti, L. (2004). Social and motivational functioning is not critically dependent on feedback of autonomic responses. Neuropsychologia, 42, 1979–1988.">16</a>]</sup>. The as-if loop can absorb this result, but it then becomes hard to say what observation could count against the theory.
 
-**The patients' problem may be more specific.** In the standard schedule the bad decks look good at first, so a player must reverse an early preference.
+*The patients' problem may be more specific.* In the standard schedule the bad decks look good at first, so a player must reverse an early preference.
 
 Lesley Fellows and Martha Farah found that vmPFC patients' impairment "seems to be largely explained by an underlying reversal learning deficit"; with the cards shuffled so that the bad decks did not look good at first, the patients played like everyone else<sup class="cite">[<a href="#ref-17" id="cite-17" data-ref="17" aria-label="Reference 17: Fellows, L. K., &amp; Farah, M. J. (2005). Different underlying impairments in decision-making following ventromedial and dorsolateral frontal lobe damage in humans. Cerebral Cortex, 15(1), 58–63.">17</a>]</sup>.
 
-**Healthy people are not as good as the story assumes.** Many healthy players prefer deck B, attracted by its rare losses<sup class="cite">[<a href="#ref-18" id="cite-18" data-ref="18" aria-label="Reference 18: Lin, C.-H., Chiu, Y.-C., Lee, P.-L., &amp; Hsieh, J.-C. (2007). Is deck B a disadvantageous deck in the Iowa Gambling Task? Behavioral and Brain Functions, 3, 16.">18</a>]</sup>; their choices are idiosyncratic and do not settle down over the game<sup class="cite">[<a href="#ref-19" id="cite-19" data-ref="19" aria-label="Reference 19: Steingroever, H., Wetzels, R., Horstmann, A., Neumann, J., &amp; Wagenmakers, E.-J. (2013). Performance of healthy participants on the Iowa Gambling Task. Psychological Assessment, 25(1), 180–193.">19</a>]</sup>.
+*Healthy people are not as good as the story assumes.* Many healthy players prefer deck B, attracted by its rare losses<sup class="cite">[<a href="#ref-18" id="cite-18" data-ref="18" aria-label="Reference 18: Lin, C.-H., Chiu, Y.-C., Lee, P.-L., &amp; Hsieh, J.-C. (2007). Is deck B a disadvantageous deck in the Iowa Gambling Task? Behavioral and Brain Functions, 3, 16.">18</a>]</sup>; their choices are idiosyncratic and do not settle down over the game<sup class="cite">[<a href="#ref-19" id="cite-19" data-ref="19" aria-label="Reference 19: Steingroever, H., Wetzels, R., Horstmann, A., Neumann, J., &amp; Wagenmakers, E.-J. (2013). Performance of healthy participants on the Iowa Gambling Task. Psychological Assessment, 25(1), 180–193.">19</a>]</sup>.
 
 A meta-analysis of anticipatory skin responses across studies found "a significant, small difference" between good and bad decks, r = 0.10, and a likely publication bias<sup class="cite">[<a href="#ref-20" id="cite-20" data-ref="20" aria-label="Reference 20: Simonovic, B., Stupple, E., Gale, M., &amp; Sheffield, D. (2019). Sweating the small stuff: a meta-analysis of skin conductance on the Iowa Gambling Task. Cognitive, Affective, &amp; Behavioral Neuroscience, 19, 1097–1112.">20</a>]</sup>.
 
@@ -138,7 +152,7 @@ The criticism hit the mechanism, not the observation. Damage to the vmPFC really
 
 What is disputed is the claim that the missing ingredient is a signal from, or about, the body, and that it works below awareness. Elliot's phrase still describes his condition; whether "feel" there means a bodily state, an expectation of value, or the ability to update one, is the open question.
 
-Damasio's own work moved on to that question. In his later books, *Self Comes to Mind* (2010), *The Strange Order of Things* (2018) and *Feeling & Knowing* (2021), feelings are the mind's view of **homeostasis**, the body's work of keeping itself within the range where it can live: "Feelings are mental experiences of body states"<sup class="cite">[<a href="#ref-22" id="cite-22" data-ref="22" aria-label="Reference 22: Damasio, A., &amp; Carvalho, G. B. (2013). The nature of feelings: evolutionary and neurobiological origins. Nature Reviews Neuroscience, 14, 143–152.">22</a>]</sup>.
+Damasio's own work moved on to that question. In his later books, *Self Comes to Mind* (2010), *The Strange Order of Things* (2018) and *Feeling & Knowing* (2021), feelings are the mind's view of *homeostasis*, the body's work of keeping itself within the range where it can live: "Feelings are mental experiences of body states"<sup class="cite">[<a href="#ref-22" id="cite-22" data-ref="22" aria-label="Reference 22: Damasio, A., &amp; Carvalho, G. B. (2013). The nature of feelings: evolutionary and neurobiological origins. Nature Reviews Neuroscience, 14, 143–152.">22</a>]</sup>.
 
 Other researchers locate that view in the insula, which A. D. Craig described as building a representation of "the material me"<sup class="cite">[<a href="#ref-23" id="cite-23" data-ref="23" aria-label="Reference 23: Craig, A. D. (2002). How do you feel? Interoception: the sense of the physiological condition of the body. Nature Reviews Neuroscience, 3, 655–666.">23</a>]</sup>; Damasio and colleagues answered with a patient whose insulae were destroyed on both sides and whose feelings were intact, and argued that feelings arise first in the brainstem<sup class="cite">[<a href="#ref-24" id="cite-24" data-ref="24" aria-label="Reference 24: Damasio, A., Damasio, H., &amp; Tranel, D. (2013). Persistence of feelings and sentience after bilateral damage of the insula. Cerebral Cortex, 23(4), 833–846.">24</a>]</sup>.
 
@@ -146,9 +160,15 @@ Lisa Feldman Barrett proposes a different picture altogether, in which "emotions
 
 Measuring how well people perceive their own bodies turns out to be hard in its own right: in the common heartbeat-counting test, accuracy scores mostly reflect people under-reporting, and actual and reported heartbeats correlate at only r = 0.16<sup class="cite">[<a href="#ref-26" id="cite-26" data-ref="26" aria-label="Reference 26: Zamariola, G., Maurage, P., Luminet, O., &amp; Corneille, O. (2018). Interoceptive accuracy scores from the heartbeat counting task are problematic. Biological Psychology, 137, 12–17.">26</a>]</sup>.
 
-The theory has also reached machines. In 2019 Kingson Man and Damasio asked what the field of AI rarely asks: "Attempts to create machines that behave intelligently often conceptualize intelligence as the ability to achieve goals, leaving unanswered a crucial question: whose goals?"<sup class="cite">[<a href="#ref-27" id="cite-27" data-ref="27" aria-label="Reference 27: Man, K., &amp; Damasio, A. (2019). Homeostasis and soft robotics in the design of feeling machines. Nature Machine Intelligence, 1, 446–452.">27</a>]</sup>. A reinforcement-learning agent maximizes a reward someone wrote down for it.
+The theory has also reached machines. In 2019 Kingson Man and Damasio asked what the field of AI rarely asks<sup class="cite">[<a href="#ref-27" id="cite-27" data-ref="27" aria-label="Reference 27: Man, K., &amp; Damasio, A. (2019). Homeostasis and soft robotics in the design of feeling machines. Nature Machine Intelligence, 1, 446–452.">27</a>]</sup>:
 
-A living thing has something at stake, its own continued existence, and Man and Damasio suggest that machines which maintain an internal state of their own, as bodies do, "might also acquire a source of motivation and a new means to evaluate behaviour, akin to that of feelings".
+<blockquote class="pull" markdown="1">
+Attempts to create machines that behave intelligently often conceptualize intelligence as the ability to achieve goals, leaving unanswered a crucial question: whose goals?
+
+<cite>Kingson Man and Antonio Damasio</cite>
+</blockquote>
+
+A reinforcement-learning agent maximizes a reward someone wrote down for it. A living thing has something at stake, its own continued existence, and Man and Damasio suggest that machines which maintain an internal state of their own, as bodies do, "might also acquire a source of motivation and a new means to evaluate behaviour, akin to that of feelings".
 
 Elliot, with his intact intelligence and his lists of options, is a fair picture of an agent that can compute everything and has no reason to prefer anything.
 

@@ -26,11 +26,9 @@ versions of NumPy, modules must be compiled with NumPy 2.0.
 Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
 ```
 
-Nothing in those projects had changed. Their requirements said `numpy`, or `numpy>=1.24`, and on that Sunday the
-newest NumPy that matched became a different program. NumPy had warned about it in its release notes: packages
-"built against a NumPy 1.xx release will not work with NumPy 2.0"
-<sup class="cite">[<a href="#ref-1" id="cite-2" data-ref="1" aria-label="Reference 1: NumPy 2.0.0 release notes, and the error in practice: PyTorch issue #129310.">1</a>]</sup>. PyTorch caught up five
-weeks later, in 2.4.0. Everyone who reinstalled in between learned what their model was really made of.
+Nothing in those projects had changed. Their requirements said `numpy`, or `numpy>=1.24`, and on that Sunday the newest NumPy that matched became a different program.
+
+NumPy had warned about it in its release notes: packages "built against a NumPy 1.xx release will not work with NumPy 2.0" <sup class="cite">[<a href="#ref-1" id="cite-2" data-ref="1" aria-label="Reference 1: NumPy 2.0.0 release notes, and the error in practice: PyTorch issue #129310.">1</a>]</sup>. PyTorch caught up five weeks later, in 2.4.0. Everyone who reinstalled in between learned what their model was really made of.
 
 It is made of more than weights. When perevod translates a sentence, its 38 MB of weights are one part of what runs: around them are the package's code, three dozen Python packages, Python itself, the system libraries that Python and PyTorch load, and a processor.
 
@@ -215,15 +213,26 @@ print("new: ", sorted(set(last) - set(first)))
 gone: [&#x27;certifi&#x27;, &#x27;charset-normalizer&#x27;, &#x27;requests&#x27;, &#x27;sniffio&#x27;, &#x27;urllib3&#x27;]
 new:  [&#x27;httpcore2&#x27;, &#x27;httpx2&#x27;, &#x27;opentelemetry-api&#x27;, &#x27;truststore&#x27;]</code></pre>
 
-Same `pyproject.toml`, three programs. PyTorch moves by several releases, and each of them changes kernels, defaults and warnings. huggingface-hub, which downloads the model, jumps two major versions.
+<p class="takeaway" markdown="1">Same `pyproject.toml`, three programs: of the packages installed both a year ago and on the release day, 24
+are at different versions.</p>
+
+PyTorch moves by several releases, and each of them changes kernels, defaults and warnings. huggingface-hub, which downloads the model, jumps two major versions.
 
 And these are only the packages perevod names: behind them, nearly every package it pulls in changed version too, and some were replaced outright, an HTTP library by another. None of this is a bug. It's what a range asks for.
 
-For a library, that's the deal. For a service, it's a gamble: the server you test today and the one that restarts next month install different code.
+For a library, that's the deal. For a service, it's a gamble: the server you test today and the one that
+restarts next month install different code. Donald Stufft, who maintained pip and PyPI for years, drew the line
+in 2013<sup class="cite">[<a href="#ref-3" id="cite-4" data-ref="3" aria-label="Reference 3: Stufft, D. (2013). setup.py vs requirements.txt. Abstract and concrete dependencies.">3</a>]</sup>:
 
-Donald Stufft, who maintained pip and PyPI for years, drew the line in 2013: "While a library tends to want to have wide open ended version specifiers an application wants very specific dependencies"<sup class="cite">[<a href="#ref-3" id="cite-4" data-ref="3" aria-label="Reference 3: Stufft, D. (2013). setup.py vs requirements.txt. Abstract and concrete dependencies.">3</a>]</sup>. perevod is both.
+<blockquote class="pull" markdown="1">
+While a library tends to want to have wide open ended version specifiers an application wants very specific
+dependencies.
 
-It keeps the ranges in `pyproject.toml` for people who install it as a library, and the service is deployed from a second file that pins every package: a **lock file**.
+<cite>Donald Stufft</cite>
+</blockquote>
+
+perevod is both. It keeps the ranges in `pyproject.toml` for people who install it as a library, and the
+service is deployed from a second file that pins every package: a **lock file**.
 
 ## 2. A lock file, with hashes
 
@@ -279,11 +288,9 @@ torch==2.14.1+cpu ; sys_platform != &#x27;darwin&#x27;</code></pre>
 PyTorch gets two lines. On macOS, PyPI's wheel is already CPU-only and the PyTorch index has no `+cpu` build,
 so the lock takes the plain one there and the `+cpu` build everywhere else.
 
-The hashes are what make the lock more than a list of versions. A version is a name: whoever controls the
-index, a mirror, or a proxy between you and it, decides which bytes stand behind it. A hash is the bytes
-themselves. With a hash on every line, pip switches to hash-checking mode, in which "Hashes are required for
-*all* requirements" and every downloaded file must match one of them
-<sup class="cite">[<a href="#ref-4" id="cite-5" data-ref="4" aria-label="Reference 4: pip: secure installs and hash-checking mode; uv: uv pip compile and using uv with PyTorch.">4</a>]</sup>.
+The hashes are what make the lock more than a list of versions. A version is a name: whoever controls the index, a mirror, or a proxy between you and it, decides which bytes stand behind it.
+
+A hash is the bytes themselves. With a hash on every line, pip switches to hash-checking mode, in which "Hashes are required for *all* requirements" and every downloaded file must match one of them <sup class="cite">[<a href="#ref-4" id="cite-5" data-ref="4" aria-label="Reference 4: pip: secure installs and hash-checking mode; uv: uv pip compile and using uv with PyTorch.">4</a>]</sup>.
 
 Try it on one small package from the lock, h11, an HTTP/1.1 library the server uses. First as locked:
 
@@ -498,9 +505,18 @@ A **layer** is a gzipped tar archive of the files one step of a Dockerfile added
 
 The **manifest** lists the config and the layers by digest, and the **index** lists the manifests. Every level names the next one by its hash, so the digest at the top fixes every byte below it. `FROM python:3.12-slim@sha256:…` pins the whole base image down to the last file.
 
-`FROM python:3.12-slim` pins nothing. A tag is a pointer, and Docker says so plainly: "Image tags are mutable, meaning a publisher can update a tag to point to a new image" ([Docker: build best practices](https://docs.docker.com/build/building/best-practices/#pin-base-image-versions)).
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
 
-The official images are rebuilt whenever Debian or Python ships a fix; the maintainers "strive to publish updated images at least monthly for Debian"<sup class="cite">[<a href="#ref-5" id="cite-6" data-ref="5" aria-label="Reference 5: docker-library FAQ and Docker&#x27;s build best practices, on tags and digests.">5</a>]</sup>. Compare today's tag with the digest perevod's Dockerfile pins, which was the tag's target the day the Dockerfile was written:
+`FROM python:3.12-slim` pins nothing. A tag is a pointer, and Docker says so plainly: "Image tags are
+mutable, meaning a publisher can update a tag to point to a new image"
+([Docker: build best practices](https://docs.docker.com/build/building/best-practices/#pin-base-image-versions)).
+</div>
+
+The official images are rebuilt whenever Debian or Python ships a fix; the maintainers "strive to publish
+updated images at least monthly for Debian"<sup class="cite">[<a href="#ref-5" id="cite-6" data-ref="5" aria-label="Reference 5: docker-library FAQ and Docker&#x27;s build best practices, on tags and digests.">5</a>]</sup>.
+Compare today's tag with the digest perevod's Dockerfile pins, which was the tag's target the day the
+Dockerfile was written:
 
 ```python
 PINNED = "sha256:12316debbfb86890f6b2d825820612741ba527ad5a44e3902759141d572bfe8f"
@@ -571,11 +587,9 @@ print("normalized:", normalized[:23], "->", layer_digest(SOURCE, normalize=True)
 <pre class="tfs-printed" markdown="0"><code>as on disk: sha256:9e9b126813cbaec2 -&gt; sha256:e673f23034cdb19a
 normalized: sha256:c25edb033761b87c -&gt; sha256:c25edb033761b87c</code></pre>
 
-Same bytes in every file, a new digest. Clamping every time to the commit's time, and dropping the owner's
-name, fixes it. BuildKit, the engine behind `docker build`, does exactly this when asked: it takes the time
-from the `SOURCE_DATE_EPOCH` variable, a convention of the reproducible-builds project, and with the exporter
-option `rewrite-timestamp=true` it clamps the time of every file in every layer to it
-<sup class="cite">[<a href="#ref-7" id="cite-8" data-ref="7" aria-label="Reference 7: BuildKit: reproducible builds; Docker: image exporter options.">7</a>]</sup>.
+Same bytes in every file, a new digest. Clamping every time to the commit's time, and dropping the owner's name, fixes it.
+
+BuildKit, the engine behind `docker build`, does exactly this when asked: it takes the time from the `SOURCE_DATE_EPOCH` variable, a convention of the reproducible-builds project, and with the exporter option `rewrite-timestamp=true` it clamps the time of every file in every layer to it <sup class="cite">[<a href="#ref-7" id="cite-8" data-ref="7" aria-label="Reference 7: BuildKit: reproducible builds; Docker: image exporter options.">7</a>]</sup>.
 
 The second cause hides inside the files. pip compiles every `.py` file it installs to bytecode, a `.pyc`, and a
 `.pyc` starts with a 16-byte header that tells Python whether the cache is still valid. By default the header
@@ -808,20 +822,25 @@ fight over the two CPUs' worth of time. Tell it explicitly, with `-e OMP_NUM_THR
 
 ## 6. Build twice, publish once
 
-Reproducibility that nobody checks decays: one day a step starts writing a timestamp, and nobody notices until the day it matters. So the CI job that publishes the image also checks it.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
 
-On every pull request that touches the package it builds the image twice, the second time without any cache, and compares the two digests. On a release tag it does the same and pushes the first build to the GitHub Container Registry, `ghcr.io`, as `ghcr.io/xmarva/perevod:<version>`.
+Reproducibility that nobody checks decays: one day a step starts writing a timestamp, and nobody
+notices until the day it matters. So the CI job that publishes the image also checks it.
+</div>
+
+On every pull request that touches the package it builds the image twice, the second time without any cache, and
+compares the two digests. On a release tag it does the same and pushes the first build to the GitHub Container
+Registry, `ghcr.io`, as `ghcr.io/xmarva/perevod:<version>`.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/09/ci-light.png" width="760" alt="The image job in GitHub Actions. A pull request or a release tag starts it. It builds the image for x86-64 and ARM, then builds it again from scratch, and compares the two digests; if they differ, the job fails. On a release tag, the first build is pushed to ghcr.io/xmarva/perevod with the package&#x27;s version as its tag" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/09/ci-dark.png" width="760" alt="The image job in GitHub Actions. A pull request or a release tag starts it. It builds the image for x86-64 and ARM, then builds it again from scratch, and compares the two digests; if they differ, the job fails. On a release tag, the first build is pushed to ghcr.io/xmarva/perevod with the package&#x27;s version as its tag" loading="lazy">
 
-Some details of the workflow below. `SOURCE_DATE_EPOCH` is the time of the commit, so a rebuild of the same
-commit next year uses the same time. QEMU, an emulator, lets the x86 runner build the ARM image too, for
-people on Apple silicon and ARM servers. The builder is pinned, `moby/buildkit:v0.34.1`, because another
-version of BuildKit may pack the same files into different bytes. Attestations are switched off: they record
-when and where a build ran, so no two builds have the same ones. The job logs in to the registry with the
-token GitHub gives every workflow run, and needs the `packages: write` permission for it
-<sup class="cite">[<a href="#ref-9" id="cite-10" data-ref="9" aria-label="Reference 9: GitHub: publishing Docker images and the Container registry.">9</a>]</sup>.
+Some details of the workflow below. `SOURCE_DATE_EPOCH` is the time of the commit, so a rebuild of the same commit next year uses the same time.
+
+QEMU, an emulator, lets the x86 runner build the ARM image too, for people on Apple silicon and ARM servers. The builder is pinned, `moby/buildkit:v0.34.1`, because another version of BuildKit may pack the same files into different bytes.
+
+Attestations are switched off: they record when and where a build ran, so no two builds have the same ones. The job logs in to the registry with the token GitHub gives every workflow run, and needs the `packages: write` permission for it <sup class="cite">[<a href="#ref-9" id="cite-10" data-ref="9" aria-label="Reference 9: GitHub: publishing Docker images and the Container registry.">9</a>]</sup>.
 
 ```python
 write(".github/workflows/image.yml", """
@@ -990,14 +1009,11 @@ On a builder that had built earlier versions, one directory in one layer came ou
 
 ## 7. The image, without Docker
 
-The notebook can't run Docker, but it can do what Docker does when it pulls an image: download the layers,
-check each against its digest, and unpack them on top of each other into one folder. That folder is the
-image's filesystem. One detail matters while unpacking. A layer can't change an earlier layer, so when a step
-deletes a file, its layer carries an empty marker named `.wh.<name>`, a **whiteout**, and the file must be
-removed from what's been unpacked so far. And a tar archive from the internet deserves suspicion: Python's
-`data` filter refuses entries that would land outside the folder, including links to absolute paths, which
-would point into this machine's own system instead of the image's
-<sup class="cite">[<a href="#ref-10" id="cite-11" data-ref="10" aria-label="Reference 10: Python: tarfile extraction filters; the dynamic loader: ld.so(8).">10</a>]</sup>.
+The notebook can't run Docker, but it can do what Docker does when it pulls an image: download the layers, check each against its digest, and unpack them on top of each other into one folder. That folder is the image's filesystem.
+
+One detail matters while unpacking. A layer can't change an earlier layer, so when a step deletes a file, its layer carries an empty marker named `.wh.<name>`, a **whiteout**, and the file must be removed from what's been unpacked so far.
+
+And a tar archive from the internet deserves suspicion: Python's `data` filter refuses entries that would land outside the folder, including links to absolute paths, which would point into this machine's own system instead of the image's <sup class="cite">[<a href="#ref-10" id="cite-11" data-ref="10" aria-label="Reference 10: Python: tarfile extraction filters; the dynamic loader: ld.so(8).">10</a>]</sup>.
 
 ```python
 MACHINES = {"x86_64": ("amd64", "x86_64-linux-gnu", "ld-linux-x86-64.so.2"),
@@ -1117,8 +1133,12 @@ The list lives on the Hub's server and changes when the Hub adds an agent. So th
 
 Nothing pins a file the build downloads from a server, except the build itself. perevod 0.3.1 keeps the model in a folder of its own and deletes everything else under `~/.cache` in the same step, which is the line you saw in the Dockerfile.
 
-The lesson in it is general: a step that runs a program records everything that program writes, not only what
-you asked for. Look inside a layer at least once.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The lesson in it is general: a step that runs a program records everything that program writes,
+not only what you asked for. Look inside a layer at least once.
+</div>
 
 Now run the image. A container is, at heart, a process that sees the image's folder as its whole filesystem.
 
@@ -1442,9 +1462,16 @@ Word for word. The page itself is three small files in the course repository's [
 
 `translate.js` is the function above in JavaScript. `tokenizer.js` rewrites the tokenizer of lesson 1, whose `tokenizer.json` the page loads as it is, and it had one trap worth knowing.
 
-The tokenizer splits text into words with the regular expression `\w+`, and in the Rust library behind Hugging Face's `tokenizers`, `\w` matches letters of every alphabet. In JavaScript it matches only `[A-Za-z0-9_]`, even with the Unicode flag, so a word like "naïve" or "Москва" would come apart.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
 
-The JavaScript version spells the classes out, `[\p{Alphabetic}\p{M}\p{Nd}\p{Pc}\p{Join_Control}]`, and a script in the same folder checks it against the original on every English sentence of the test set, id for id.
+The tokenizer splits text into words with the regular expression `\w+`, and in the Rust library
+behind Hugging Face's `tokenizers`, `\w` matches letters of every alphabet. In JavaScript it matches only
+`[A-Za-z0-9_]`, even with the Unicode flag, so a word like "naïve" or "Москва" would come apart.
+</div>
+
+The JavaScript version spells the classes out, `[\p{Alphabetic}\p{M}\p{Nd}\p{Pc}\p{Join_Control}]`, and a script
+in the same folder checks it against the original on every English sentence of the test set, id for id.
 
 The rest is a static Space: a `README.md` whose header says `sdk: static`, uploaded with the two graphs:
 
@@ -1544,6 +1571,6 @@ machine that runs Docker, with or without a network. That was the point of the l
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-08-serving/">← Lesson 8: Serving under load</a></p>
 
 {% endraw %}

@@ -386,7 +386,11 @@ output:  tensor([[0.1400, 0.2840, 0.5760]])</code></pre>
 The dot products are $$1$$, $$2$$ and $$3$$; divided by $$\sqrt 2$$ they become the scores, and softmax turns those into
 weights that sum to 1. The third key matches the query best and gets the largest share, but not all of it.
 
-> Attention mixes; it doesn't pick.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Attention mixes; it doesn't pick.
+</div>
 
 The general function is the formula, line for line. Its inputs can have any number of leading dimensions (a batch
 of sentences, several heads); the last two are always positions and vector entries, which is why the transpose
@@ -507,16 +511,18 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">d_k</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">variance of q·k</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">top weight, raw</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">top weight, ÷ √d_k</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">3.96</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.43</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.23</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">16</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">16.35</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.69</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.25</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">64</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">63.05</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.85</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.25</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">256</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">253.85</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.92</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.24</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1,024</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">998.28</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.96</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.24</td></tr></tbody></table></div>
 
-The variance follows $$d_k$$, as derived, and only the scaled weights stay put. Our heads have $$d_k = 64$$, the same
-as in the 2017 paper.
+<p class="takeaway" markdown="1">As $$d_k$$ grows from 4 to 1 024, the variance of the scores follows it, as derived, and the raw top weight climbs
+from 0.43 to 0.96, while the scaled one stays between 0.23 and 0.25.</p>
+
+Our heads have $$d_k = 64$$, the same as in the 2017 paper.
 
 ## 6. Masks
 
 Attention lets every position look at every other. Two kinds of looking must be forbidden.
 
-**Padding.** Sentences in a batch have different lengths, and a tensor must be rectangular, so shorter sentences
-are filled up with the `<pad>` token. Padding isn't part of the text, and nobody should attend to it. Make a batch
-of three sentences of different lengths:
+**Padding.** Sentences in a batch have different lengths, and a tensor must be rectangular, so shorter sentences are filled up with the `<pad>` token.
+
+Padding isn't part of the text, and nobody should attend to it. Make a batch of three sentences of different lengths:
 
 ```python
 def pad_batch(sequences):
@@ -669,8 +675,12 @@ $$\operatorname{head}_i = \operatorname{Attention}(X W_i^Q,\ X W_i^K,\ X W_i^V),
 - $$W_i^Q, W_i^K, W_i^V$$, each $$(d_{\text{model}}, d_k)$$: what head $$i$$ asks for, offers and hands over.
 - $$W^O$$, $$(d_{\text{model}}, d_{\text{model}})$$: mixes the heads' results back into one vector per position.
 
-Each head works in a smaller space, $$d_k = d_{\text{model}} / h$$ entries, so all heads together cost about as
-much as one attention at full width: the model gets several patterns for the price of one.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Each head works in a smaller space, $$d_k = d_{\text{model}} / h$$ entries, so all heads together
+cost about as much as one attention at full width: the model gets several patterns for the price of one.
+</div>
 
 In code, nobody keeps $$h$$ separate small matrices. One big projection computes the queries of all heads at once,
 and the result is cut into $$h$$ slices of $$d_k$$ entries:
@@ -865,12 +875,9 @@ what each position has gathered, every position separately and with the same wei
 
 $$\operatorname{FFN}(\mathbf{x}) = \max(0,\ \mathbf{x} W_1 + \mathbf{b}_1)\, W_2 + \mathbf{b}_2,$$
 
-with $$W_1$$ of shape $$(d_{\text{model}}, d_{\text{ff}})$$ and $$W_2$$ of shape $$(d_{\text{ff}}, d_{\text{model}})$$:
-the vector is widened four times, passed through ReLU, $$\max(0, \cdot)$$, which zeroes the negative entries, and
-narrowed back. The ReLU is what makes it more than a matrix multiplication: without it, $$W_1 W_2$$ would collapse
-into a single matrix. Studies of trained models suggest these layers act as a kind of memory: their first matrix
-recognizes patterns in the vector and the second adds what is associated with them
-<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Geva, M., Schuster, R., Berant, J., Levy, O. (2021). Transformer Feed-Forward Layers Are Key-Value Memories. EMNLP.">1</a>]</sup>.
+with $$W_1$$ of shape $$(d_{\text{model}}, d_{\text{ff}})$$ and $$W_2$$ of shape $$(d_{\text{ff}}, d_{\text{model}})$$: the vector is widened four times, passed through ReLU, $$\max(0, \cdot)$$, which zeroes the negative entries, and narrowed back. The ReLU is what makes it more than a matrix multiplication: without it, $$W_1 W_2$$ would collapse into a single matrix.
+
+Studies of trained models suggest these layers act as a kind of memory: their first matrix recognizes patterns in the vector and the second adds what is associated with them <sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Geva, M., Schuster, R., Berant, J., Levy, O. (2021). Transformer Feed-Forward Layers Are Key-Value Memories. EMNLP.">1</a>]</sup>.
 
 ```python
 class FeedForward(nn.Module):
@@ -891,7 +898,7 @@ print("attention:   ", sum(p.numel() for p in ours.parameters()), "parameters")
 <pre class="tfs-printed" markdown="0"><code>feed-forward: 525568 parameters
 attention:    263168 parameters</code></pre>
 
-Two thirds of an encoder layer's parameters sit in the feed-forward network, not in attention.
+<p class="takeaway" markdown="1">Two thirds of an encoder layer's parameters sit in the feed-forward network, not in attention.</p>
 
 **Residual connection.** Every sub-layer's output is *added* to its input,
 $$\mathbf{x} + \operatorname{Sublayer}(\mathbf{x})$$<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: He, K., Zhang, X., Ren, S., Sun, J. (2016). Deep Residual Learning for Image Recognition. CVPR.">2</a>]</sup>. A
@@ -994,12 +1001,9 @@ its answer.
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/02/shift-right-light.png" width="760" alt="Teacher forcing: the decoder reads &lt;bos&gt; followed by the Russian tokens and is trained to predict, at every position, the next token, ending with &lt;eos&gt;" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/02/shift-right-dark.png" width="760" alt="Teacher forcing: the decoder reads &lt;bos&gt; followed by the Russian tokens and is trained to predict, at every position, the next token, ending with &lt;eos&gt;" loading="lazy">
 
-The full model puts it together. One matrix $$E$$ serves three times: as the source embedding, as the target
-embedding (lesson 1 built one shared vocabulary for both languages) and as the output layer. Besides saving
-parameters, tying the output layer to the embedding tends to improve language models
-<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Press, O., Wolf, L. (2017). Using the Output Embedding to Improve Language Models. EACL.">5</a>]</sup>. The class has three methods besides `forward`:
-`embed` turns ids into vectors with positions, `encode` runs the encoder, and `decode` runs the decoder and returns
-the scores. Keeping them separate lets us call the encoder once and the decoder many times when translating.
+The full model puts it together. One matrix $$E$$ serves three times: as the source embedding, as the target embedding (lesson 1 built one shared vocabulary for both languages) and as the output layer. Besides saving parameters, tying the output layer to the embedding tends to improve language models <sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Press, O., Wolf, L. (2017). Using the Output Embedding to Improve Language Models. EACL.">5</a>]</sup>.
+
+The class has three methods besides `forward`: `embed` turns ids into vectors with positions, `encode` runs the encoder, and `decode` runs the decoder and returns the scores. Keeping them separate lets us call the encoder once and the decoder many times when translating.
 
 ```python
 class Transformer(nn.Module):
@@ -1225,7 +1229,11 @@ The untrained model is a parrot: at every position it predicts the token it has 
 the explanation joins two sections of this lesson. The residual stream carries the input embedding
 $$\sqrt{d_{\text{model}}}\,\mathbf{e}_t$$ up through every layer, so the final vector still points partly along
 $$\mathbf{e}_t$$. And the output layer is the same matrix $$E$$, so the score of token $$t$$ is the dot product of that
-vector with $$\mathbf{e}_t$$ itself. Here are all sixteen thousand scores at one position:
+vector with $$\mathbf{e}_t$$ itself.
+
+<p class="flow"><span>the residual stream carries the embedding up</span><span>the output layer is the same matrix</span><span>the token just read wins</span></p>
+
+Here are all sixteen thousand scores at one position:
 
 ```python
 position = 3  # the fourth position of the first sentence
@@ -1291,9 +1299,15 @@ The parrot is the big effect, and the first steps of training break the habit, b
 
 ## 12. Can it learn?
 
-Before spending an hour of GPU time on training (lesson 3), make sure the model can learn at all. The cheapest
-test is to teach it a handful of sentence pairs by heart: a model that can't memorize sixteen pairs has a bug
-somewhere. [Karpathy (2019)](https://karpathy.github.io/2019/04/25/recipe/) calls this step "overfit one batch".
+Before spending an hour of GPU time on training (lesson 3), make sure the model can learn at all.
+
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+The cheapest test is to teach the model a handful of sentence pairs by heart: a model that
+can't memorize sixteen pairs has a bug somewhere. [Karpathy (2019)](https://karpathy.github.io/2019/04/25/recipe/)
+calls this step "overfit one batch".
+</div>
 
 One detail: lesson 1 kept groups of linked pairs together, so the validation set holds several translations of some English sentences. Nobody can memorize two answers to one question, so we take one pair per English sentence, plus our own sentence.
 
@@ -1458,8 +1472,9 @@ print(f"left over: {left_over} bytes, {left_over / file_size:.3%} of the file")
 our parameters and extras:  306938072 bytes
 left over: 53821 bytes, 0.018% of the file</code></pre>
 
-What is left over is the file format itself: the tensors' names and headers. The translator we will compete with
-is, number for number, the model you just wrote, at several times our size.
+What is left over is the file format itself: the tensors' names and headers.
+
+<p class="takeaway" markdown="1">The translator we will compete with is, number for number, the model you just wrote, at 7.9 times our size.</p>
 
 The model's code is also in the course package, `tfs.model`, so that later lessons can import it instead of
 repeating it. Check that it is the same model, weight for weight:

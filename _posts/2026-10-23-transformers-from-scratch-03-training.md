@@ -331,9 +331,12 @@ del unsorted  # only needed for the comparison
 <pre class="tfs-printed" markdown="0"><code>padding in random batches: 70.6%
 random batches: 2733 bucketed: 814</code></pre>
 
-Random batches waste a large share of every step on padding, and need more steps to cover the same data.
+<p class="takeaway" markdown="1">Random batches waste 70.6% of their positions on padding, against 1.8% in bucketed ones, and need 2 733 steps
+instead of 814 to cover the same data.</p>
 
-One trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less representative of the whole data than a random batch's. Shuffling the batch order every epoch keeps that harmless in practice, and the paper's authors batched the same way.
+One trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less
+representative of the whole data than a random batch's. Shuffling the batch order every epoch keeps that
+harmless in practice, and the paper's authors batched the same way.
 
 ## 4. The loss, smoothed
 
@@ -845,11 +848,12 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/03/output-08.png" alt="The same peak learning rate, with and without warm-up" loading="lazy">
 
-Same model, same data, same peak learning rate; only the first thousand steps differ. With the warm-up, the loss falls steadily.
+<p class="takeaway" markdown="1">With the warm-up the loss falls steadily; without it, the loss sticks near the dashed line at 6.96, where a
+model knows little more than which tokens are frequent.</p>
 
-Without it, the first steps at full speed throw the weights somewhere the model doesn't recover from: the loss sticks near the dashed line, where a model knows little more than which tokens are frequent.
-
-In the real run the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
+Same model, same data, same peak learning rate; only the first thousand steps differ. Without the warm-up, the
+first steps at full speed throw the weights somewhere the model doesn't recover from. In the real run the warm-up
+lasts longer and the peak is lower, but the reason for it is the one you just saw.
 
 The last protection is **gradient clipping**, the `clip_grad_norm_` line: if the length of the whole gradient
 vector, over all the model's weights, exceeds a limit $$c$$, the vector is scaled down to that length,
@@ -932,9 +936,10 @@ print(f"rounded to 0 after scaling by 65 536:  {after_scaling:.4%}")
 gradients where float16 loses precision: 74.2%
 rounded to 0 after scaling by 65 536:  0.0016%</code></pre>
 
-A few percent of the gradients would vanish outright, and most of them would lose precision. Multiplying the
-loss by $$2^{16}$$ multiplies every gradient by the same factor (the chain rule is linear), shifts the whole
-histogram to the right and brings almost all of them into range.
+<p class="takeaway" markdown="1">In float16, 4.23% of the gradients would vanish outright and 74.2% would lose precision.</p>
+
+Multiplying the loss by $$2^{16}$$ multiplies every gradient by the same factor (the chain rule is linear), shifts
+the whole histogram to the right and brings almost all of them into range.
 
 That is **mixed precision**<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Micikevicius, P. et al. (2018). Mixed Precision Training. ICLR.">6</a>]</sup>: matrix products run in float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in float32; and **loss scaling**: multiply the loss by a large factor before backpropagation, then divide the gradients back before the optimizer uses them.
 
@@ -1113,7 +1118,11 @@ The training curve lies *above* the validation one, which looks backwards and is
 
 Only the validation curve is plain cross-entropy, so the floor doesn't apply to it, and late in the run it passes below the line.
 
-> The loss you train on and the number you judge by are different numbers. Compare like with like.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The loss you train on and the number you judge by are different numbers. Compare like with like.
+</div>
 
 The probe sentences at a few points of the run:
 
@@ -1200,9 +1209,16 @@ $$k = 1$$ it is greedy decoding; with $$k$$ as large as the number of possible s
 probable translation exactly, at an impossible cost. In between, a handful of beams already catches most of the
 cases where greedy goes wrong.
 
-One correction is needed. Every token multiplies the probability by a number below 1, so longer sentences always
-have lower scores, and a plain beam search prefers translations that stop early. The usual fix divides the score
-by a **length penalty**<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Wu, Y. et al. (2016). Google&#x27;s Neural Machine Translation System. The length penalty.">7</a>]</sup>,
+One correction is needed.
+
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+Every token multiplies the probability by a number below 1, so longer sentences always have lower
+scores, and a plain beam search prefers translations that stop early.
+</div>
+
+The usual fix divides the score by a **length penalty**<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Wu, Y. et al. (2016). Google&#x27;s Neural Machine Translation System. The length penalty.">7</a>]</sup>,
 
 $$\operatorname{lp}(\mathbf{y}) = \left(\frac{5 + \lvert\mathbf{y}\rvert}{6}\right)^{\alpha},$$
 
@@ -1335,9 +1351,11 @@ average score, beam:   -2.551</code></pre>
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">reference</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">greedy</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">beam</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">But father, what if something happens to you?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Но, отец, а если с тобой что-то случится?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">А отец, что с тобой происходит?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Но отец, что с тобой происходит?</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Tom sang and Mary danced.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том пел, а Мария танцевала.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том пел, а Мэри танцевала.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том пел и Мэри танцевали.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Do you have a Twitter account?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У тебя есть аккаунт в Твиттере?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У тебя есть аккаунт в Твитте?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У тебя есть аккаунт в Твиттере?</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Tom is only bluffing.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том всего лишь блефует.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том всего лишь блефует.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Том лишь блефует.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">He took off his coat and put it on again.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Он снял своё пальто и снова надел его.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Он снял пальто и снова его надел.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Он снял пальто и снова надел его.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">We do need you.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты нам очень нужен.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты нам действительно нужен.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Вы нам действительно нужны.</td></tr></tbody></table></div>
 
-Beam search changes some of the translations, and the ones it picks score higher under the model on average, which
-is what it searches for. Whether they are also better *translations* is a separate question, sentence by
-sentence; lesson 4 answers it with metrics that compare outputs with the references.
+<p class="takeaway" markdown="1">Beam search changes 35 of 150 translations and raises the average score under the model from −2.965 to −2.551,
+which is what it searches for.</p>
+
+Whether its choices are also better *translations* is a separate question, sentence by sentence; lesson 4 answers
+it with metrics that compare outputs with the references.
 
 ## 9. Decoding by sampling
 
@@ -1432,9 +1450,16 @@ table(pd.DataFrame(rows))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">settings</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">translation</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователь сказал, что она изможённа.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Утрои Прис попробуем Откуда-то измо нарушён.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследованная тяжалась передо приезжающаясь have.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она изможена.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она измота.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 0.6, top-p 0.9</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Исследователи сказали, что она изможена.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ижарselvestestairs лекарства атkingthплее просить. psy.ением вегетариа stateинys согласна. неё какаяхи запас присобе носит.ерк ногтиucleри ктостьghediansсси piecesсер Р brought rescued бо but diamonduteченвидноck написано гряставили carr тупой наружу. handwrit относительно</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Искатка зарпла nature попросишь fish Ваши бercвания пусты studied mat.врознаваются.сь пара contain кровьжный begin узнает маме учё умный удостожденияologistбой Дождь improve странныйationоружении шкаф diary Two</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">temperature 1.5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ваешьсяпет ЖальТы встрече cup cupранцмучен hope ровно привет попросилапечаткли напуга mu юмораум фанановый билеты заплачет сом chat шутишьейчас visitingegялась instead менееamidubeдерж great ху breadнтересоваться процерик Ещёшка подтвержд great поте M Кто asked</td></tr></tbody></table></div>
 
-At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the tail includes English tokens, because lesson 1 built one vocabulary for both languages. At 1.5 the output falls apart.
+At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the tail includes English tokens, because lesson 1 built one vocabulary for both languages.
 
-A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the greedy translation and varies a little from draw to draw. For a translation that variety is no virtue: we want the one best reading, and that's why translators search.
+At 1.5 the output falls apart. A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the greedy translation and varies a little from draw to draw.
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+For a translation that variety is no virtue: we want the one best reading, and that's why
+translators search.
+</div>
 
 ## 10. Inside the trained model
 
@@ -1588,7 +1613,11 @@ Often *she* is someone else (*Ann apologized to her teacher…*). And when the w
 
 So the data teaches the model, correctly, that *учитель* is the usual word, and only rarely shows it a sentence where *she* forces *учительница* and a feminine verb. For *исследовательница* it never shows one at all.
 
-> A model learns the distribution of its data. Rare constructions are learned last, or not at all.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+A model learns the distribution of its data. Rare constructions are learned last, or not at all.
+</div>
 
 That isn't a flaw of our small model alone, as the next section shows.
 

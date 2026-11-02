@@ -14,6 +14,22 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+Machine learning finds a real edge in crypto prices, but a small one: gradient boosting calls the direction of Bitcoin's next hour right 53.9% of the time, and an ordinary trader's fees eat all of it.
+
+What it forecasts well is volatility, which sizes positions and keeps the risk of a strategy predictable, and that is where professional firms use it.
+
+Language models have shown no trading skill in any test long and clean enough to tell, and in backtests on history they remember what came next. An agent that holds keys is a security problem before it is a trading strategy.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">63%</span><span class="stat-label">hit rate an hourly Bitcoin strategy needs to cover a 10 bp round trip</span></div>
+<div class="stat"><span class="stat-value">1.56</span><span class="stat-label">Sharpe ratio of the best of 20,000 random strategies that know nothing</span></div>
+<div class="stat"><span class="stat-value">60.0%</span><span class="stat-label">right on Bitcoin's monthly direction a year or more before the models' release; 46.8% after</span></div>
+</div>
+</aside>
+
 In October 2025 a small lab called Nof1 gave six of the strongest language models &#36;10,000 each and let them trade crypto perpetual futures on Hyperliquid with real money.
 
 Every two or three minutes each model received the same prompt with prices and indicators for six coins and answered with a trade: the coin, long or short, the size, the leverage and a plan for getting out<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Nof1 (2025). Exploring the limits of large language models as quant traders. Blog post, archived copy.">1</a>]</sup>.
@@ -92,7 +108,11 @@ The result is better than I expected. The model calls the direction of Bitcoin's
 
 The area under the ROC curve is 0.555 for Bitcoin. Over 42,142 hours a hit rate this far from a coin toss is not luck: its standard error is a quarter of a percentage point.
 
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
 A result like this deserves suspicion before celebration. The usual cause of a good backtest is a leak, a feature that quietly contains the future. Here the hourly closes rebuilt from 5-minute candles match Binance's own hourly candles to the cent, and the pattern the model found, described next, survives when the last five minutes before each forecast are skipped.
+</div>
 
 The feature that carries most of the signal is the simplest: the return of the last couple of hours, with a negative sign. Crypto hourly returns tend to be partly taken back in the next hour.
 
@@ -157,7 +177,11 @@ With a band of ±0.05 the Bitcoin strategy trades 6 times a day instead of 16 an
 
 At 1 bp per side 35% remains, at 2 bp 13%, at 5 bp it loses 53%. A wider band loses the edge before it saves enough on fees. Solana, with larger moves, keeps some profit at 2 bp per side, and none at 5.
 
-So the edge is real, and it belongs to whoever pays the least for trading. A market maker who earns a rebate for resting orders, sits next to the exchange and pays a fraction of a basis point can harvest it; a retail trader paying 5 bp per side through an API cannot, however good the model.
+<div class="callout" markdown="1">
+<p class="callout-label">For traders</p>
+
+The edge is real, and it belongs to whoever pays the least for trading. A market maker who earns a rebate for resting orders, sits next to the exchange and pays a fraction of a basis point can harvest it; a retail trader paying 5 bp per side through an API cannot, however good the model.
+</div>
 
 This backtest is also generous: it assumes trades at the exact closing price of the hour, with no delay and no slippage beyond the fee. The real numbers would be worse.
 
@@ -180,7 +204,7 @@ The score is the out-of-sample $$R^2$$, the share of the variation of the target
 <img class="tfs-figure tfs-light" src="/assets/posts/ai-crypto-trading/volatility-light.png" width="760" alt="Left: Bitcoin&#x27;s realized daily volatility since July 2025 and the HAR forecast made a day earlier, which follows it closely. Right: out-of-sample R squared, volatility against return: BTC 0.54 against -0.003; ETH 0.57 against -0.006; SOL 0.63 against -0.008" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/ai-crypto-trading/volatility-dark.png" width="760" alt="Left: Bitcoin&#x27;s realized daily volatility since July 2025 and the HAR forecast made a day earlier, which follows it closely. Right: out-of-sample R squared, volatility against return: BTC 0.54 against -0.003; ETH 0.57 against -0.006; SOL 0.63 against -0.008" loading="lazy">
 
-For volatility $$R^2$$ is 0.54 for Bitcoin, 0.57 for Ether and 0.63 for Solana. For returns it is below zero for all three: the forecast does worse than saying "zero" every day.
+<p class="takeaway" markdown="1">For volatility $$R^2$$ is 0.54 for Bitcoin, 0.57 for Ether and 0.63 for Solana; for returns it is below zero for all three, a forecast worse than saying "zero" every day.</p>
 
 A volatility forecast is not a trading signal by itself, but it decides how large a position should be. A position scaled by the inverse of forecast volatility keeps its risk roughly constant, small when the market is wild and larger when it is calm:
 
@@ -206,9 +230,9 @@ Sixty-six rules on twelve coins make 792 strategies. Each was scored by its Shar
 <img class="tfs-figure tfs-light" src="/assets/posts/ai-crypto-trading/overfitting-light.png" width="760" alt="Scatter of 792 strategies, Sharpe ratio in 2021-2023 against 2024-2026. The cloud is flatter than the diagonal; the 20 best in the first period, highlighted, average 1.56 then and 0.19 later. Rank correlation 0.45" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/ai-crypto-trading/overfitting-dark.png" width="760" alt="Scatter of 792 strategies, Sharpe ratio in 2021-2023 against 2024-2026. The cloud is flatter than the diagonal; the 20 best in the first period, highlighted, average 1.56 then and 0.19 later. Rank correlation 0.45" loading="lazy">
 
-The ranking in the first period was not useless: its rank correlation with the second is 0.45, mostly because it identifies the rules that trade too often and lose to fees in any period. Mean reversion with RSI and Bollinger bands lost money in both.
+The ranking in the first period was not useless: its rank correlation with the second is 0.45, mostly because it identifies the rules that trade too often and lose to fees in any period. Mean reversion with RSI and Bollinger bands lost money in both. The winners are another matter.
 
-The winners are another matter. The 20 best strategies of 2021-2023 had an average Sharpe ratio of 1.56; from 2024 on, their average was 0.19, and 6 of the 20 lost money. They kept about an eighth of what the backtest promised.
+<p class="takeaway" markdown="1">The 20 best strategies of 2021-2023 kept about an eighth of what the backtest promised: an average Sharpe ratio of 0.19 from 2024 on, against 1.56, and 6 of the 20 lost money.</p>
 
 The second experiment removes any doubt about what is skill. Each of 20,000 strategies holds a random position, long or short, and flips it at random about once a day; none of them knows anything. Among $$N$$ of them, the best one still looks good, and the more of them one tries, the better the best looks:
 
@@ -290,9 +314,9 @@ Now suppose someone builds a trading strategy on these answers and backtests it 
 <img class="tfs-figure tfs-light" src="/assets/posts/ai-crypto-trading/memory-strategy-light.png" width="760" alt="A dollar traded monthly on OLMo 2 7B&#x27;s answers grows to 245 dollars before the model&#x27;s release in 2024-12, against 7 for holding Bitcoin, and then goes to 198, a change of -19% after the release" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/ai-crypto-trading/memory-strategy-dark.png" width="760" alt="A dollar traded monthly on OLMo 2 7B&#x27;s answers grows to 245 dollars before the model&#x27;s release in 2024-12, against 7 for holding Bitcoin, and then goes to 198, a change of -19% after the release" loading="lazy">
 
-Trading OLMo 2's monthly answers turns a dollar into 245 between January 2018 and November 2024, while holding Bitcoin turns it into 7. After the model's release in December 2024 the same strategy loses 19% over 22 months.
+Trading OLMo 2's monthly answers turns a dollar into 245 between January 2018 and November 2024, while holding Bitcoin turns it into 7. After the model's release in December 2024 the same strategy loses 19% over 22 months. Nothing in the backtest is wrong except the one thing that matters: the model had read the answers.
 
-Nothing in the backtest is wrong except the one thing that matters: the model had read the answers. Across the seven models, the strategy multiplied money by 8 to 245 before each model's release and by 0.54 to 1.31 after it.
+<p class="takeaway" markdown="1">Across the seven models, the strategy multiplied money by 8 to 245 before each model's release and by 0.54 to 1.31 after it.</p>
 
 This is not a curiosity. Lopez-Lira, Tang and Zhu asked GPT-4o for daily levels of the S&P 500: before its training cutoff the error was 0.61%, after it 16.87%.
 
@@ -314,7 +338,7 @@ None of this makes language models useless to a trader. They are weak at the job
 
 The clearest case is research. Man Group, one of the largest quantitative hedge funds, describes a pipeline of LLM agents in which one proposes hypotheses, another writes the code to test them on the firm's data and a third runs the statistical tests; in their words, "whether generated by human or AI, every strategy entering live trading must pass identical thresholds"<sup class="cite">[<a href="#ref-18" id="cite-18" data-ref="18" aria-label="Reference 18: Man Group (2025). What AI can (and can&#x27;t yet) do for alpha. Man Group insights.">18</a>]</sup>.
 
-The thresholds matter because a model that writes a hundred strategies an hour is the fastest way yet to make $$N$$ in the overfitting formula large.
+The thresholds matter because a model that writes a hundred strategies an hour is the fastest way yet to make $$N$$ in <a class="arrow-link" href="#the-backtest-that-flatters">the overfitting formula</a> large.
 
 Code is the second case. Coinbase says that between 95% and 100% of its code is now written by or with LLMs<sup class="cite">[<a href="#ref-19" id="cite-19" data-ref="19" aria-label="Reference 19: Cointelegraph (2026). Over 95% of Coinbase&#x27;s code is written with AI: Rob Witoff.">19</a>]</sup>.
 
@@ -384,15 +408,21 @@ The exchanges' agent toolkits of 2026 have converged on the same defence. Binanc
 
 OKX signs orders on the user's machine, so that "the AI client sends only trading intent", and offers a mode with simulated funds<sup class="cite">[<a href="#ref-41" id="cite-41" data-ref="41" aria-label="Reference 41: OKX (2026). Connecting agentic trading to OKX exchange with Agent Trade Kit.">41</a>]</sup>; Kraken's command-line tool has a local paper-trading engine<sup class="cite">[<a href="#ref-42" id="cite-42" data-ref="42" aria-label="Reference 42: Kraken (2026). Announcing the Kraken CLI. Kraken blog.">42</a>]</sup>. A key that cannot withdraw prevents theft. It does nothing against an agent that loses money by trading.
 
-The design that follows from all this is old-fashioned. The model reads untrusted text and proposes; ordinary code decides, with limits on position size, leverage and daily loss that the model cannot change.
+<div class="callout" markdown="1">
+<p class="callout-label">For engineers</p>
 
-Memory is per user and is treated as untrusted input too. Tools come from sources one has read. And the model never holds a key that can send funds anywhere.
+The design that follows from all this is old-fashioned. The model reads untrusted text and proposes; ordinary code decides, with limits on position size, leverage and daily loss that the model cannot change. Memory is per user and is treated as untrusted input too. Tools come from sources one has read. And the model never holds a key that can send funds anywhere.
+</div>
 
 ## Bots that sell returns
 
-Every claim in the previous sections can be checked against data. The market for "AI trading bots" mostly cannot, and regulators have been warning about it for years.
+Every claim in the previous sections can be checked against data. The market for "AI trading bots" mostly cannot, and regulators have been warning about it for years. In January 2024 the US Commodity Futures Trading Commission published an advisory titled "AI Won't Turn Trading Bots into Money Machines", with a sentence that could close this post<sup class="cite">[<a href="#ref-43" id="cite-43" data-ref="43" aria-label="Reference 43: Commodity Futures Trading Commission (2024). Customer advisory: AI won&#x27;t turn trading bots into money machines.">43</a>]</sup>:
 
-In January 2024 the US Commodity Futures Trading Commission published an advisory titled "AI Won't Turn Trading Bots into Money Machines", with a sentence that could close this post: "AI technology can't predict the future or sudden market changes"<sup class="cite">[<a href="#ref-43" id="cite-43" data-ref="43" aria-label="Reference 43: Commodity Futures Trading Commission (2024). Customer advisory: AI won&#x27;t turn trading bots into money machines.">43</a>]</sup>.
+<blockquote class="pull" markdown="1">
+AI technology can't predict the future or sudden market changes.
+
+<cite>US Commodity Futures Trading Commission, customer advisory</cite>
+</blockquote>
 
 Its main example was Mirror Trading International, which collected at least 29,421 bitcoin, worth &#36;1.7 billion, from about 23,000 Americans for a trading "bot"<sup class="cite">[<a href="#ref-44" id="cite-44" data-ref="44" aria-label="Reference 44: Commodity Futures Trading Commission (2022). CFTC charges South African pool operator and CEO with &amp;#36;1.7 billion fraud involving bitcoin. Press release 8549-22.">44</a>]</sup>. In the advisory's words, "in reality, very little money was actually traded." The schemes of 2026 have updated the vocabulary, not the method.
 
@@ -428,6 +458,8 @@ Market-neutral is not risk-free. On the evening of 10 October 2025, after an ann
 Where insurance funds could not absorb the losses, exchanges closed profitable positions of other traders to cover them, a mechanism called auto-deleveraging, and among the positions closed were the short hedges of market makers<sup class="cite">[<a href="#ref-50" id="cite-51" data-ref="50" aria-label="Reference 50: CoinGlass (2026). CoinGlass 2025 crypto derivatives market annual report.">50</a>]</sup>.
 
 On Hyperliquid alone it closed &#36;2.1 billion of positions in twelve minutes<sup class="cite">[<a href="#ref-51" id="cite-52" data-ref="51" aria-label="Reference 51: Chitra, T. (2025). Autodeleveraging: impossibilities and optimization. arXiv.">51</a>]</sup>. A hedged trader whose hedge is closed by the exchange is no longer hedged.
+
+<p class="flow"><span>Bitcoin falls 12.6% in eighty minutes</span><span>losses beyond the insurance funds</span><span>exchanges close the hedges of market makers</span><span>a hedged trader is no longer hedged</span></p>
 
 The other risk is the exchange itself. A carry position lives on an exchange, and while I was writing this post the largest one stopped withdrawals after the hack mentioned above. A position that is neutral to the price of Bitcoin is not neutral to the solvency of the venue that holds it.
 
