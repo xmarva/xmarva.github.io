@@ -276,9 +276,18 @@ The first decision is where the code goes. There are two common layouts. In the 
 
 In the **src layout** it sits one level down, `perevod/src/perevod/`. The extra folder looks like bureaucracy, and it is there to stop one specific accident.
 
-Python looks for modules in the folders of `sys.path`, in order, and the current folder comes first. Run the tests with `python -m pytest` from the project folder of a flat layout, and `import perevod` finds the source folder right there, never the copy pip installed.
+Python looks for modules in the folders of `sys.path`, in order, and the current folder comes first.
 
-Your tests pass; the package your users install may be missing a file, a module, or a dependency, and nothing tells you. The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/) puts it as "the src layout helps prevent accidental usage of the in-development copy of the code".
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+Run the tests with `python -m pytest` from the project folder of a flat layout, and `import perevod`
+finds the source folder right there, never the copy pip installed. Your tests pass; the package your users
+install may be missing a file, a module, or a dependency, and nothing tells you.
+</div>
+
+The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
+puts it as "the src layout helps prevent accidental usage of the in-development copy of the code".
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/07/import-path-light.png" width="760" alt="How Python finds import perevod when pytest runs in the project folder. The current folder comes first in the search path. In a flat layout the folder holds perevod/ itself, so the tests import the source and never the installed copy. In the src layout the source sits in src/, not on the path, so the tests import what pip installed" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/07/import-path-dark.png" width="760" alt="How Python finds import perevod when pytest runs in the project folder. The current folder comes first in the search path. In a flat layout the folder holds perevod/ itself, so the tests import the source and never the installed copy. In the src layout the source sits in src/, not on the path, so the tests import what pip installed" loading="lazy">
@@ -761,11 +770,13 @@ display(table(pd.DataFrame({
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">English</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">&quot;pos&quot;: &quot;rope&quot;</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">&quot;pos&quot;: &quot;RoPE&quot;</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Do you dream in color?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Ты видишь сны в цвету?</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Вы в цветуете? В цветужете во сне? В цветужете во сне?</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Mary has two brothers and a sister.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У Мэри два брата и сестра.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">У Мэри два брата и две сестры.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">We don&#x27;t remember days, we remember moments.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мы не помним несколько дней, а помним мы помним.</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мы не помним дни, как только дни.</td></tr></tbody></table></div>
 
-The notebooks' model checks `pos == "rope"` to decide whether to rotate queries and keys, and `"RoPE"` is not `"rope"`. So it runs with no idea of word order at all.
+The notebooks' model checks `pos == "rope"` to decide whether to rotate queries and keys, and `"RoPE"` is not
+`"rope"`. So it runs with no idea of word order at all. Some of its sentences fall apart; others are fluent
+Russian that says something else, like the sister who became two.
 
-Some of its sentences fall apart; others are fluent Russian that says something else, like the sister who became two. That's the worst kind of failure: no error, plausible output.
+<p class="flow"><span>"RoPE" instead of "rope"</span><span>queries and keys never rotated</span><span>no idea of word order</span><span>no error, plausible output</span></p>
 
-Removing the switches removes this bug, and the config adds a second line of defence. A package checks its config when it reads it, and stops with a message in the terms the user wrote.
+That's the worst kind of failure. Removing the switches removes this bug, and the config adds a second line of defence. A package checks its config when it reads it, and stops with a message in the terms the user wrote.
 
 A frozen dataclass does that in a few lines: it lists the allowed fields, refuses unknown ones, and checks the values in `__post_init__`, which runs right after the fields are set:
 
@@ -877,12 +888,11 @@ translator = Translator.from_pretrained()
 translator("I think, therefore I am.")
 ```
 
-Behind those two lines are the decisions this section makes. First, where the model comes from. The package
-downloads it from a repository on the Hub, and it asks for a specific **revision**, a commit of that repository.
-Without a revision you get whatever is on `main` today, and the day someone uploads better weights, every user
-of the package silently starts getting different translations. With one, a new model reaches users only with a
-new version of the package, tested against it. Hugging Face wants the full 40-character hash for that
-<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Hugging Face: model cards and their metadata, downloading at a revision.">2</a>]</sup>.
+Behind those two lines are the decisions this section makes. First, where the model comes from. The package downloads it from a repository on the Hub, and it asks for a specific **revision**, a commit of that repository.
+
+Without a revision you get whatever is on `main` today, and the day someone uploads better weights, every user of the package silently starts getting different translations.
+
+With one, a new model reaches users only with a new version of the package, tested against it. Hugging Face wants the full 40-character hash for that <sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Hugging Face: model cards and their metadata, downloading at a revision.">2</a>]</sup>.
 
 ```python
 %%writefile perevod/src/perevod/translator.py
@@ -951,8 +961,13 @@ model on disk and load it through exactly the code users run, with no network at
 
 <pre class="tfs-printed" markdown="0"><code>Appending to perevod/src/perevod/translator.py</code></pre>
 
-`model.eval()` turns dropout off. Forgetting it is the most common bug in inference code, and it makes a model
-translate the same sentence differently every time; section 11 plants exactly this bug to see who notices.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+`model.eval()` turns dropout off. Forgetting it is the most common bug in inference code, and it
+makes a model translate the same sentence differently every time; section 11 plants exactly this bug to see who
+notices.
+</div>
 
 Now the translation itself. It accepts a string or a list and returns the same, and it has an opinion about one
 special input. Watch what the notebooks' decoding does with an empty string, first alone:
@@ -1191,9 +1206,11 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/tfs/07/output-01.png" alt="Where a command spends its time" loading="lazy">
 
-Importing PyTorch is the expensive part on its own. `perevod --version` and `perevod --help` don't need it, so they answer in about the time it takes Python to start.
+<p class="takeaway" markdown="1">Importing PyTorch is the expensive part on its own: 2.24 s of the 3.01 s a one-sentence translation takes.</p>
 
-A translation pays for PyTorch, then for loading the model, and the difference between the last two bars is all the translating itself costs. Every process pays the first two again, which is the argument for the next lesson's server: it loads the model once and keeps it.
+`perevod --version` and `perevod --help` don't need it, so they answer in about the time it takes Python to start. A translation pays for PyTorch, then for loading the model, and the difference between the last two bars is all the translating itself costs.
+
+Every process pays the first two again, which is the argument for the next lesson's server: it loads the model once and keeps it.
 
 The command at work, on a file with an empty line in the middle:
 
@@ -1921,9 +1938,13 @@ A model that has learned four sentences by heart is too sure of itself for dropo
 
 A test that compares outputs can lose its power when the model under it changes, and nothing announces it. Lesson 8 adds the direct check, that the translator's model is not in training mode.
 
-That's the division of labour the four kinds of tests promised: the fast ones catch what breaks the structure,
-the slow ones what breaks the quality. Mutation testing is how you find out which is which, and which test only
-looked like it was working.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The two grids show the division of labour the four kinds of tests promised: the fast ones catch
+what breaks the structure, the slow ones what breaks the quality. Mutation testing is how you find out which is
+which, and which test only looked like it was working.
+</div>
 
 ## 12. Continuous integration
 
@@ -2180,7 +2201,10 @@ display(table(gender[gender.pronoun == "she"][["profession", "perevod"]]))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">profession</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">perevod</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">doctor</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой врач сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">teacher</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой учитель сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">lawyer</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой адвокат сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">engineer</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой инженер сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">nurse</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Моя медсестра сказала, что устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">scientist</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой учёный сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">programmer</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой программист сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">translator</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой переводчик сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">neighbor</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой сосед сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">boss</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой начальник сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">director</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой директор сказал, что она устала.</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">student</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Мой студент сказал, что она устала.</td></tr></tbody></table></div>
 
-The pronoun doesn't steer the verb: with "he", the verb is feminine in two translations of twelve, more often than with "she". The verb follows the profession instead, masculine for a doctor or an engineer whatever the sentence says, feminine for a nurse, because медсестра is a feminine noun.
+<p class="takeaway" markdown="1">The pronoun doesn't steer the verb: with "he", the verb is feminine in two translations of twelve, more often
+than with "she".</p>
+
+The verb follows the profession instead, masculine for a doctor or an engineer whatever the sentence says, feminine for a nurse, because медсестра is a feminine noun.
 
 The Russian is grammatical, and that's the trouble: "Мой врач сказал, что она устала" means that a male doctor said some other woman was tired, a reading the English hardly suggests.
 
@@ -2406,9 +2430,17 @@ else:
 <pre class="tfs-printed" markdown="0"><code>[&#x27;README.md&#x27;, &#x27;config.json&#x27;, &#x27;generation_config.json&#x27;, &#x27;model.safetensors&#x27;, &#x27;tokenizer.json&#x27;]
 not publishing; the course&#x27;s copy is xmarva/perevod-en-ru</code></pre>
 
-The package side is a version number. perevod follows [semantic versioning](https://semver.org/spec/v2.0.0.html): MAJOR.MINOR.PATCH, where a bug fix raises the patch, a new feature the minor version, and a change that breaks what users rely on the major one.
+The package side is a version number. perevod follows [semantic versioning](https://semver.org/spec/v2.0.0.html):
+MAJOR.MINOR.PATCH, where a bug fix raises the patch, a new feature the minor version, and a change that breaks
+what users rely on the major one.
 
-For a translator, the question is what "breaks" means, and our answer is opinionated: a new default model is a major release. Nothing in the API changes, but anyone who stored translations, or tuned a pipeline around them, gets different output, and that's what breaking means to them.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+For a translator, the question is what "breaks" means, and our answer is opinionated: a new
+default model is a major release. Nothing in the API changes, but anyone who stored translations, or tuned a
+pipeline around them, gets different output, and that's what breaking means to them.
+</div>
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/07/versions-light.png" width="760" alt="Two version numbers move separately. The package version follows semantic versioning: a bug fix is a patch, a new option a minor release, and a new default model, which changes the translations users get, a major one. The model is pinned by the commit of its repository, so a corrected model card changes no one&#x27;s translations" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/07/versions-dark.png" width="760" alt="Two version numbers move separately. The package version follows semantic versioning: a bug fix is a patch, a new option a minor release, and a new default model, which changes the translations users get, a major one. The model is pinned by the commit of its repository, so a corrected model card changes no one&#x27;s translations" loading="lazy">
@@ -2454,6 +2486,6 @@ times of section 9 already tell part of that story.
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-06-sweeps/">← Lesson 6: W&B Sweeps tuning</a> <a href="/blog/2026/transformers-from-scratch-08-serving/">Lesson 8: Serving under load →</a></p>
 
 {% endraw %}

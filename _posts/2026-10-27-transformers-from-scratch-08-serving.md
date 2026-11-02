@@ -15,21 +15,15 @@ toc:
 
 <p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 8 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-08-serving-under-load">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
-In November 2006 Greg Linden, who had built Amazon's recommendations, gave a talk at Stanford. One slide said
-"+100 ms → −1% sales @ Amazon" and, next to it, "+500 ms → −20% traffic @ Google"
-<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Linden, G. (2006). Make Data Useful, a talk at Stanford. The slide with Amazon&#x27;s 100 ms and Google&#x27;s 500 ms.">1</a>]</sup>. The two lines have
-been quoted ever since, mostly without the footnotes: the Google experiment also showed thirty results instead
-of ten, so it measured a heavier page, not just a slower one. When Google ran a clean experiment three years
-later, adding 100 to 400 ms to search cost 0.2–0.6% of searches
-<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Brutlag, J. (2009). Speed Matters for Google Web Search. Google.">2</a>]</sup>. The effect is smaller than the
-legend, but it is there.
+In November 2006 Greg Linden, who had built Amazon's recommendations, gave a talk at Stanford. One slide said "+100 ms → −1% sales @ Amazon" and, next to it, "+500 ms → −20% traffic @ Google" <sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Linden, G. (2006). Make Data Useful, a talk at Stanford. The slide with Amazon&#x27;s 100 ms and Google&#x27;s 500 ms.">1</a>]</sup>.
 
-The other half of the story is what happens when many people ask at once. A request that is fast alone can wait
-behind others, and users feel the waiting as much as the computing. The slow requests also matter more than their
-share suggests. Dean and Barroso's paper on Google's serving points out that if answering a user takes a hundred
-servers, and each is slow one time in a hundred, 63% of users wait for a slow one
-<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Dean, J., Barroso, L. A. (2013). The Tail at Scale. Communications of the ACM 56(2).">3</a>]</sup>. That's why this lesson measures the slowest
-requests, not only the average.
+The two lines have been quoted ever since, mostly without the footnotes: the Google experiment also showed thirty results instead of ten, so it measured a heavier page, not just a slower one.
+
+When Google ran a clean experiment three years later, adding 100 to 400 ms to search cost 0.2–0.6% of searches <sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Brutlag, J. (2009). Speed Matters for Google Web Search. Google.">2</a>]</sup>. The effect is smaller than the legend, but it is there.
+
+The other half of the story is what happens when many people ask at once. A request that is fast alone can wait behind others, and users feel the waiting as much as the computing. The slow requests also matter more than their share suggests.
+
+Dean and Barroso's paper on Google's serving points out that if answering a user takes a hundred servers, and each is slow one time in a hundred, 63% of users wait for a slow one <sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Dean, J., Barroso, L. A. (2013). The Tail at Scale. Communications of the ACM 56(2).">3</a>]</sup>. That's why this lesson measures the slowest requests, not only the average.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/08/hero-light.png" width="760" alt="The share of slow requests against the number of servers a request waits for, when each server is slow one time in a hundred: 1% for one server, about 10% for ten, 63% for a hundred. The slowest part of a system decides how often its users wait" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/08/hero-dark.png" width="760" alt="The share of slow requests against the number of servers a request waits for, when each server is slow one time in a hundred: 1% for one server, about 10% for ten, 63% for a hundred. The slowest part of a system decides how often its users wait" loading="lazy">
@@ -573,9 +567,10 @@ display(table(speed))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">test set</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">sentences</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">without the cache, s</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">with it, s</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">faster</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">Tatoeba</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">500</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">22.56</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4.96</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4.54</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">WMT20 news</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">30</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">68.38</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">3.77</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">18.16</td></tr></tbody></table></div>
 
-The same translations, word for word, and faster, by more on the news. That's the $$T^2$$ at work: Tatoeba's
-sentences are short, and a few steps of recomputation are cheap; a news sentence runs for dozens of steps, and the
-recomputation dominates. The step times of section 2 show it directly:
+<p class="takeaway" markdown="1">The same translations, word for word, 4.54 times faster on Tatoeba and 18.16 times faster on the news.</p>
+
+That's the $$T^2$$ at work: Tatoeba's sentences are short, and a few steps of recomputation are cheap; a news
+sentence runs for dozens of steps, and the recomputation dominates. The step times of section 2 show it directly:
 
 ```python
 with torch.inference_mode():
@@ -607,12 +602,9 @@ Without the cache a step gets slower as the translation grows; with it, every st
 
 ## 4. int8 quantization, measured
 
-The next speed-up everyone reaches for is **quantization**: store weights as 8-bit integers instead of 32-bit
-floats, and multiply in integers. Each weight matrix gets a scale $$s$$ so that $$w \approx s \cdot q$$, with $$q$$ an
-integer from −128 to 127. PyTorch's dynamic quantization does it in one call: the weights of every `nn.Linear`
-become int8 once, and at every call the input is measured and scaled the same way, the multiplication runs in
-integers, and the result is scaled back
-<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: PyTorch: dynamic quantization, CPU threading.">4</a>]</sup>.
+The next speed-up everyone reaches for is **quantization**: store weights as 8-bit integers instead of 32-bit floats, and multiply in integers. Each weight matrix gets a scale $$s$$ so that $$w \approx s \cdot q$$, with $$q$$ an integer from −128 to 127.
+
+PyTorch's dynamic quantization does it in one call: the weights of every `nn.Linear` become int8 once, and at every call the input is measured and scaled the same way, the multiplication runs in integers, and the result is scaled back <sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: PyTorch: dynamic quantization, CPU threading.">4</a>]</sup>.
 
 ```python
 from torch.ao.quantization import quantize_dynamic
@@ -646,7 +638,13 @@ goes in our model, layer by layer:
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/08/step-flops-light.png" width="760" alt="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/08/step-flops-dark.png" width="760" alt="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32" loading="lazy">
 
-The output projection onto the 16,000 tokens of the vocabulary does 59% of the multiply-adds of a step, and it isn't an `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches it.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The output projection onto the 16,000 tokens of the vocabulary does 59% of the multiply-adds of
+a step, and it isn't an `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches
+it.
+</div>
 
 Even if int8 made every `nn.Linear` free, more than half of the work would stay in float32. What quantization does touch are 256-wide layers, too small for integer arithmetic to win back the cost of measuring and scaling the input at every call.
 
@@ -673,7 +671,8 @@ display(table(by_batch, digits=1))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">batch</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">sentences per second</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">ms per batch</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">18.4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">54.2</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">28.3</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">70.7</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">43.0</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">93.0</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">8</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">56.3</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">142.2</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">16</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">72.2</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">221.6</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">32</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">82.6</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">387.4</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">64</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">83.4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">767.2</td></tr></tbody></table></div>
 
-From one sentence to sixteen, the throughput grows four times, from 18 sentences a second to 72, and a batch of sixteen takes four times as long as a single sentence, not sixteen times.
+<p class="takeaway" markdown="1">From one sentence to sixteen, the throughput grows four times, from 18 sentences a second to 72, and a batch
+of sixteen takes four times as long as a single sentence, not sixteen times.</p>
 
 That's the fact the second half of this lesson is built on: one translation of sixteen sentences costs about as much as four translations of one. Past sixteen the gain flattens.
 
@@ -695,13 +694,11 @@ display(table(pd.DataFrame(rows)))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">threads</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">seconds</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">3.34</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2.08</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">4</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">2.15</td></tr></tbody></table></div>
 
-Kaggle's free CPU session shows Python four cores, but they are two physical cores running two hardware threads
-each, and two threads that share a core mostly take turns. PyTorch starts one thread per physical core, two here,
-and four buy nothing over two. The default is right on this machine and can be wrong on another: a container run
-with `--cpus=2` still shows the process every core of its host, and PyTorch starts a thread per physical core of
-the host. Check the number on the machine you deploy to, and set it if it's wrong: `torch.set_num_threads(n)` in
-the code, or the `OMP_NUM_THREADS` environment variable before the process starts
-<sup class="cite">[<a href="#ref-4" id="cite-5" data-ref="4" aria-label="Reference 4: PyTorch: dynamic quantization, CPU threading.">4</a>]</sup>.
+Kaggle's free CPU session shows Python four cores, but they are two physical cores running two hardware threads each, and two threads that share a core mostly take turns. PyTorch starts one thread per physical core, two here, and four buy nothing over two.
+
+The default is right on this machine and can be wrong on another: a container run with `--cpus=2` still shows the process every core of its host, and PyTorch starts a thread per physical core of the host.
+
+Check the number on the machine you deploy to, and set it if it's wrong: `torch.set_num_threads(n)` in the code, or the `OMP_NUM_THREADS` environment variable before the process starts <sup class="cite">[<a href="#ref-4" id="cite-5" data-ref="4" aria-label="Reference 4: PyTorch: dynamic quantization, CPU threading.">4</a>]</sup>.
 
 ## 6. A FastAPI service
 
@@ -755,12 +752,9 @@ The flip side is that code which computes without awaiting holds the whole loop:
 
 Last, a **future** is a box for a result that doesn't exist yet: `await answer` pauses until someone calls `answer.set_result(...)`, and then returns that value.
 
-Now the **batcher**. Every request puts its text and a future into the queue and waits for the future. The
-batcher takes requests out of the queue: the first one, whenever it comes, then whatever else arrives within
-`max_wait` seconds (`wait_for` gives up when the time left runs out), up to `max_batch` requests. With
-`max_batch=1` it is a plain queue, one request at a time. NVIDIA's Triton inference server batches with the same
-two settings
-<sup class="cite">[<a href="#ref-5" id="cite-6" data-ref="5" aria-label="Reference 5: NVIDIA Triton: dynamic batcher.">5</a>]</sup>.
+Now the **batcher**. Every request puts its text and a future into the queue and waits for the future. The batcher takes requests out of the queue: the first one, whenever it comes, then whatever else arrives within `max_wait` seconds (`wait_for` gives up when the time left runs out), up to `max_batch` requests.
+
+With `max_batch=1` it is a plain queue, one request at a time. NVIDIA's Triton inference server batches with the same two settings <sup class="cite">[<a href="#ref-5" id="cite-6" data-ref="5" aria-label="Reference 5: NVIDIA Triton: dynamic batcher.">5</a>]</sup>.
 
 ```python
 %%writefile -a perevod/src/perevod/server.py
@@ -1038,16 +1032,19 @@ GET /health - Health</code></pre>
 
 ## 7. Load testing without fooling yourself
 
-Now the question this lesson is about: how fast does the service answer when many people use it? The obvious
-way to find out is a loop that sends a request, waits for the answer, records the time, and sends the next one,
-with a few such loops in parallel. Tools built around "virtual users" that wait for their answers, like Locust or
-JMeter's usual thread groups, work that way, and Gil Tene named what's wrong with it: **coordinated omission**
-<sup class="cite">[<a href="#ref-6" id="cite-7" data-ref="6" aria-label="Reference 6: Tene, G. (2013). Coordinated Omission, on the mechanical-sympathy list; and the talk How NOT to Measure Latency (2015).">6</a>]</sup>.
+Now the question this lesson is about: how fast does the service answer when many people use it? The obvious way to find out is a loop that sends a request, waits for the answer, records the time, and sends the next one, with a few such loops in parallel.
+
+Tools built around "virtual users" that wait for their answers, like Locust or JMeter's usual thread groups, work that way, and Gil Tene named what's wrong with it: **coordinated omission** <sup class="cite">[<a href="#ref-6" id="cite-7" data-ref="6" aria-label="Reference 6: Tene, G. (2013). Coordinated Omission, on the mechanical-sympathy list; and the talk How NOT to Measure Latency (2015).">6</a>]</sup>.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/08/omission-light.png" width="760" alt="A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/08/omission-dark.png" width="760" alt="A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow" loading="lazy">
 
-When the server stalls, a tester that waits for each answer stops sending, so it records one slow request where real users, who don't coordinate with the server, would have produced dozens.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+When the server stalls, a tester that waits for each answer stops sending, so it records one slow
+request where real users, who don't coordinate with the server, would have produced dozens.
+</div>
 
 The fix is an **open-loop** test: decide in advance when every request is sent, independently of the answers, and measure each latency from the moment the request was *supposed* to go.
 
@@ -1156,9 +1153,11 @@ for load in LOADS:
  15.0 requests/s, 90% of capacity: p50    192 ms, p90    719 ms
  15.8 requests/s, 95% of capacity: p50    366 ms, p90    874 ms</code></pre>
 
-At a fifth of its capacity the server answers in about its service time: the median request takes 59 ms. The tail moves first.
+At a fifth of its capacity the server answers in about its service time: the median request takes 59 ms. The
+tail moves first. At 60% the median has grown by 40% and the 90th percentile has doubled.
 
-At 60% the median has grown by 40% and the 90th percentile has doubled; at 95% the median is seven times the median service time, and one request in ten waits nearly a second, though the model works exactly as fast as before. The time went into the queue.
+<p class="takeaway" markdown="1">At 95% the median is seven times the median service time, and one request in ten waits nearly a second, though
+the model works exactly as fast as before: the time went into the queue.</p>
 
 One point is out of line: the test at 80% load came out worse than the one at 90%, with a median of a quarter of
 a second and one request in ten waiting a second and a half. Keep it in mind; the next pages explain it.
@@ -1223,20 +1222,17 @@ display(table(theory, digits=0))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">load, %</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">measured mean, ms</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">M/M/1, ms</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">Kingman, ms</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">20</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">72</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">75</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">74</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">40</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">88</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">100</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">96</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">60</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">122</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">150</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">142</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">70</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">189</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">200</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">188</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">80</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">532</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">300</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">279</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">90</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">311</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">601</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">552</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">95</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">439</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1,201</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1,098</td></tr></tbody></table></div>
 
-Both formulas describe a queue in its **steady state**, after it has run long enough to forget how it started.
-Our tests start from an empty queue, and near capacity a queue forgets slowly. For M/M/1 the time it takes, the
-relaxation time, is $$S/(1 - \sqrt{\rho})^2$$, which grows like $$1/(1 - \rho)^2$$
-<sup class="cite">[<a href="#ref-8" id="cite-9" data-ref="8" aria-label="Reference 8: Morse, P. M. (1955). Stochastic Properties of Waiting Lines. Operations Research 3(3). The relaxation time of a queue.">8</a>]</sup>: about 90 service times at 80% load, 380 at 90% and 1,560
-at 95%. A test that starts empty and ends before its queue has settled measures less than the steady state.
+Both formulas describe a queue in its **steady state**, after it has run long enough to forget how it started. Our tests start from an empty queue, and near capacity a queue forgets slowly.
 
-And a thirty-second test is one draw of a random process. A burst of arrivals early on leaves a backlog that a
-server with little spare capacity clears slowly, and the mean of the whole test goes up with it. How much do such
-tests vary? The queue can tell us itself. A single server that answers in order follows **Lindley's recursion**
-<sup class="cite">[<a href="#ref-9" id="cite-10" data-ref="9" aria-label="Reference 9: Lindley, D. V. (1952). The theory of queues with a single server. Proceedings of the Cambridge Philosophical Society 48(2).">9</a>]</sup>: a request starts when it arrives or when the
-previous one ends, whichever is later. Run it two ways. First, replay each of our tests exactly: the arrival
-times it had, and for request $$k$$ the service time we measured for sentence $$k$$, the sentence it sent. Second,
-two hundred times on fresh arrivals, with service times drawn at random from the five hundred, which shows how
-much thirty-second tests at that load vary:
+For M/M/1 the time it takes, the relaxation time, is $$S/(1 - \sqrt{\rho})^2$$, which grows like $$1/(1 - \rho)^2$$ <sup class="cite">[<a href="#ref-8" id="cite-9" data-ref="8" aria-label="Reference 8: Morse, P. M. (1955). Stochastic Properties of Waiting Lines. Operations Research 3(3). The relaxation time of a queue.">8</a>]</sup>: about 90 service times at 80% load, 380 at 90% and 1,560 at 95%. A test that starts empty and ends before its queue has settled measures less than the steady state.
+
+And a thirty-second test is one draw of a random process. A burst of arrivals early on leaves a backlog that a server with little spare capacity clears slowly, and the mean of the whole test goes up with it.
+
+How much do such tests vary? The queue can tell us itself. A single server that answers in order follows **Lindley's recursion** <sup class="cite">[<a href="#ref-9" id="cite-10" data-ref="9" aria-label="Reference 9: Lindley, D. V. (1952). The theory of queues with a single server. Proceedings of the Cambridge Philosophical Society 48(2).">9</a>]</sup>: a request starts when it arrives or when the previous one ends, whichever is later.
+
+Run it two ways. First, replay each of our tests exactly: the arrival times it had, and for request $$k$$ the service time we measured for sentence $$k$$, the sentence it sent.
+
+Second, two hundred times on fresh arrivals, with service times drawn at random from the five hundred, which shows how much thirty-second tests at that load vary:
 
 ```python
 def simulated_mean(arrivals, service_times):
@@ -1385,15 +1381,20 @@ At 20% of the old capacity the two servers answer alike, the batching one a coup
 
 And the server now takes loads it couldn't take at all: at one and a half times the old capacity the median is 162 ms, at twice 265 ms. At two and a half times the latency climbs, and at three the queue grows for as long as the test lasts.
 
-The capacity grew about two and a half times, inside the forecast and short of section 5's fourfold, because a batch waits for its longest sentence.
+<p class="takeaway" markdown="1">The capacity grew about two and a half times, inside the forecast and short of section 5's fourfold, because a
+batch waits for its longest sentence.</p>
 
 Two settings remain to choose, and the measurements above say how. `max_wait` is added latency when the server is idle, and it hardly matters under load, because the queue fills batches while the model works: keep it a small fraction of the service time.
 
 `max_batch` belongs where section 5's throughput flattens. Past that point a bigger batch adds little throughput, and every request in it waits for all of it.
 
-One thing this server doesn't do. Its queue has no limit, so beyond capacity the latency grows for as long as the
-overload lasts, and the last points of the plot measure the length of the test more than the server. A
-production service caps its queue and answers 503, "try later", to the requests it can't take.
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+One thing this server doesn't do. Its queue has no limit, so beyond capacity the latency grows
+for as long as the overload lasts, and the last points of the plot measure the length of the test more than the
+server. A production service caps its queue and answers 503, "try later", to the requests it can't take.
+</div>
 
 Large language model servers take the same idea further. A request to an LLM generates hundreds of tokens, and waiting for a whole batch to finish would hold short answers behind long ones, so vLLM and its predecessors batch at the level of single decoding steps: a finished sequence leaves the batch after its last token and a new one joins at the next step<sup class="cite">[<a href="#ref-10" id="cite-11" data-ref="10" aria-label="Reference 10: Yu, G.-I. et al. (2022). Orca: A Distributed Serving System for Transformer-Based Generative Models. OSDI. Iteration-level scheduling.">10</a>, <a href="#ref-11" id="cite-12" data-ref="11" aria-label="Reference 11: Kwon, W. et al. (2023). Efficient Memory Management for Large Language Model Serving with PagedAttention. SOSP. vLLM.">11</a>]</sup>.
 
@@ -1717,6 +1718,6 @@ If they don't, something besides the queue is at work: another process taking th
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformers-from-scratch-07-package/">← Lesson 7: Package, tests, CI</a> <a href="/blog/2026/transformers-from-scratch-09-docker/">Lesson 9: Reproducible Docker →</a></p>
 
 {% endraw %}

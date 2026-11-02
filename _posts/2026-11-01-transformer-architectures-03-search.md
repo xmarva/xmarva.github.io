@@ -287,7 +287,9 @@ evaluate("BM25", bm25_scores, time.time() - start, postings * 8)  # int32 id + f
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">method</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@5</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@20</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">ms per question</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">index, MB</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">BM25</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.45</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.60</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1.03</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">34.77</td></tr></tbody></table></div>
 
-With no training, no GPU and two parameters, the right paper is in the top five for almost half the questions.
+<p class="takeaway" markdown="1">With no training, no GPU and two parameters, BM25 puts the right paper in the top five for almost half the
+questions, a recall@5 of 0.45.</p>
+
 That is the number every model below has to beat, and the answer to anyone who says keyword search is dead.
 
 ## 3. An encoder's own vectors: a crowd in a narrow cone
@@ -512,9 +514,17 @@ for paper, count in Counter(top5.flatten().tolist()).most_common(3):
   79 questions get: (no title) We detail methods for entity span identification and entity c
   70 questions get: Can language models capture syntactic associations without surface cues?</code></pre>
 
-Most top fives differ, but a few papers turn up everywhere: *Why Neural Translations are the Right Length* is among the five best answers to 82 of the 593 questions, whatever they ask about. Such points sit near the middle of the crowd and are close to everything; retrieval people call them **hubs**.
+Most top fives differ, but a few papers turn up everywhere: *Why Neural Translations are the Right Length* is among
+the five best answers to 82 of the 593 questions, whatever they ask about. Such points sit near the middle of the
+crowd and are close to everything; retrieval people call them **hubs**.
 
-Nothing in masked language modelling asked the model to put texts with similar meanings close together and the rest far apart; its vectors are good for the next layer, not for being compared with each other. To compare, the encoder has to be trained to compare.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Nothing in masked language modelling asked the model to put texts with similar meanings close
+together and the rest far apart; its vectors are good for the next layer, not for being compared with each other.
+To compare, the encoder has to be trained to compare.
+</div>
 
 ## 4. Sentence-BERT: teaching an encoder to compare
 
@@ -538,9 +548,16 @@ negatives ranking loss, NT-Xent. The scale $$s = 20$$, a temperature
 of 0.05, is what the sentence-transformers library uses by default: cosines live in $$[-1, 1]$$, and without the
 scale the softmax over them would be almost flat.
 
-Our pairs are the titles and abstracts of the corpus itself, and that is the practical point.
+Our pairs are the titles and abstracts of the corpus itself, and that is the practical point. We use no question of
+LitSearch for training, only the papers we are going to search.
 
-A company that wants search over its own documents rarely has thousands of labelled queries, but it always has documents, and documents have structure: titles and bodies, questions and answers in a support system, a function's docstring and its code. We use no question of LitSearch for training, only the papers we are going to search.
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+A company that wants search over its own documents rarely has thousands of labelled queries, but
+it always has documents, and documents have structure: titles and bodies, questions and answers in a support
+system, a function's docstring and its code.
+</div>
 
 ```python
 both = [i for i, (t, a) in enumerate(zip(titles, papers["abstract"])) if t and a.strip()]
@@ -694,8 +711,12 @@ _ = dense_search("all-MiniLM-L6-v2, [CLS] instead of the mean", minilm, "cls")
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">method</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@5</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@20</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">ms per question</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">index, MB</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">all-MiniLM-L6-v2, [CLS] instead of the mean</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.30</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.43</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.25</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">44.53</td></tr></tbody></table></div>
 
-Twelve points gone, without an error or a warning: the vectors look like vectors, and the search still works, only
-worse. A model is its weights and its pooling, and the card says which pooling.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+Twelve points gone, without an error or a warning: the vectors look like vectors, and the search still
+works, only worse. A model is its weights and its pooling, and the card says which pooling.
+</div>
 
 The most practical question of the section is the next one. We have a general model trained on a billion pairs,
 and a corpus with 55,000 pairs of its own. Does a few minutes of the same training on our titles and abstracts,
@@ -715,9 +736,11 @@ adapted_docs, adapted_scores = dense_search("all-MiniLM-L6-v2, adapted here", ad
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">method</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@5</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@20</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">ms per question</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">index, MB</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">all-MiniLM-L6-v2, adapted here</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.51</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.65</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.25</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">44.53</td></tr></tbody></table></div>
 
-From 0.42 to 0.51 in ten minutes of the same training, and now above BM25. The general model brought what a billion pairs teach about language; our pairs showed it what this corpus's titles and abstracts look like.
+<p class="takeaway" markdown="1">Ten minutes of the same training took all-MiniLM-L6-v2 from 0.42 to 0.51, above BM25.</p>
 
-This is the cheapest improvement in the lesson, and it is open to anyone with a corpus: no labels, no questions, one T4.
+The general model brought what a billion pairs teach about language; our pairs showed it what this corpus's titles
+and abstracts look like. This is the cheapest improvement in the lesson, and it is open to anyone with a corpus: no
+labels, no questions, one T4.
 
 **BGE** models from the Beijing Academy of Artificial Intelligence are a newer generation of the same idea <sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Xiao, S., Liu, Z., Zhang, P., Muennighoff, N., Lian, D., &amp; Nie, J.-Y. (2023). C-Pack: packed resources for general Chinese embeddings. SIGIR 2024.">8</a>]</sup>: BERT's architecture again, with pre-training aimed at retrieval, contrastive training on a larger and cleaner collection, and a final round on labelled data.
 
@@ -832,9 +855,11 @@ reranked_minilm = rerank("all-MiniLM-L6-v2 → reranker", minilm_scores.to(devic
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">method</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@5</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">recall@20</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">ms per question</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">index, MB</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">all-MiniLM-L6-v2 → reranker</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.54</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.64</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">131.45</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.00</td></tr></tbody></table></div>
 
-The reranker lifts all-MiniLM-L6-v2 from 0.42 to 0.54: reading each of the 50 candidates together with the
-question, it puts the right paper in the first five for about 70 more questions. It also takes 131 ms per question,
-five hundred times as long as the search that found the candidates. That is the trade a reranker always offers.
+<p class="takeaway" markdown="1">The reranker lifts all-MiniLM-L6-v2 from 0.42 to 0.54: reading each of the 50 candidates together with the
+question, it puts the right paper in the first five for about 70 more questions.</p>
+
+It also takes 131 ms per question, five hundred times as long as the search that found the candidates. That is the
+trade a reranker always offers.
 
 ## 7. ColBERT: a vector for every token
 
@@ -1024,7 +1049,8 @@ Fusion is the best deal in the table. BM25 + all-MiniLM-L6-v2 reaches 0.53, elev
 
 With the adapted MiniLM the hybrid reaches 0.56, as much as bge with BM25. The reranker on top of that hybrid changes nothing at five: on candidates this good, its judgement, learned from Bing queries, is no better than the hybrid's.
 
-Fused with the hybrid's order, the two judgements together give the best result of the lesson, 0.59 at five and 0.73 at twenty.
+<p class="takeaway" markdown="1">Fused with the hybrid's order, the two judgements together give the best result of the lesson, 0.59 at five and
+0.73 at twenty.</p>
 
 Fusion and reranking add no index of their own, so their cost in the table is the cost of their parts. The whole
 picture, quality against the time a question takes and the memory its index needs:
@@ -1220,6 +1246,6 @@ Sentence-BERT's passport, and the family tree with this lesson's branch:
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-02-modernbert/">← Lesson 2: RoBERTa→ModernBERT</a></p>
 
 {% endraw %}

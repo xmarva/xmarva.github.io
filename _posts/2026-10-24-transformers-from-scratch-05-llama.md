@@ -22,12 +22,9 @@ You don't need to download sixteen gigabytes of weights to see which. The config
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/05/hero-light.png" width="760" alt="Our 2017-style Transformer next to Llama 3.1 8B, from their config files: Llama is far bigger, and five design details differ: grouped key/value heads, RMSNorm before each block instead of LayerNorm after it, SwiGLU instead of ReLU, rotary position embeddings instead of added sinusoids, and no biases" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/05/hero-dark.png" width="760" alt="Our 2017-style Transformer next to Llama 3.1 8B, from their config files: Llama is far bigger, and five design details differ: grouped key/value heads, RMSNorm before each block instead of LayerNorm after it, SwiGLU instead of ReLU, rotary position embeddings instead of added sinusoids, and no biases" loading="lazy">
 
-The size differs by a factor of a thousand, and nobody is surprised by that. Meta's paper is frank about the
-rest: Llama 3 "uses a standard, dense Transformer architecture", and its gains are "primarily driven by
-improvements in data quality and diversity as well as by increased training scale"
-<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Llama Team, AI @ Meta (2024). The Llama 3 Herd of Models.">1</a>]</sup>. The five highlighted rows are the more interesting part. Each is a change that survived years of people trying to improve the Transformer, and most such
-attempts didn't survive: when a team at Google reimplemented dozens of published modifications in one codebase,
-most of them made no real difference<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Narang, S. et al. (2021). Do Transformer Modifications Transfer Across Implementations and Applications?. EMNLP.">2</a>]</sup>.
+The size differs by a factor of a thousand, and nobody is surprised by that. Meta's paper is frank about the rest: Llama 3 "uses a standard, dense Transformer architecture", and its gains are "primarily driven by improvements in data quality and diversity as well as by increased training scale" <sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Llama Team, AI @ Meta (2024). The Llama 3 Herd of Models.">1</a>]</sup>.
+
+The five highlighted rows are the more interesting part. Each is a change that survived years of people trying to improve the Transformer, and most such attempts didn't survive: when a team at Google reimplemented dozens of published modifications in one codebase, most of them made no real difference<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Narang, S. et al. (2021). Do Transformer Modifications Transfer Across Implementations and Applications?. EMNLP.">2</a>]</sup>.
 
 So in this lesson we don't take Llama's choices on faith. We make them in our own translator, one at a time, train every version with the same budget, and judge them with the metrics and the bootstrap of lesson 4.
 
@@ -170,9 +167,13 @@ Each rung differs from the one before it by a single change, so a difference bet
 
 RMSNorm comes after pre-norm because Llama uses it in the pre-norm position. Testing every combination would take sixteen models; a free GPU affords six runs.
 
-The sixth run is the most important one, and papers skip it surprisingly often: the 2017 design again, with
-another seed. The two 2017 runs differ by nothing but chance, so their difference is the yardstick for all the
-others.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The sixth run is the most important one, and papers skip it surprisingly often: the 2017 design
+again, with another seed. The two 2017 runs differ by nothing but chance, so their difference is the yardstick
+for all the others.
+</div>
 
 ## 3. Data, and the training loop of lesson 3
 
@@ -284,6 +285,8 @@ Why bother? The gradient travels the same paths backwards. In pre-norm it reache
 
 That is what lesson 3's warm-up was for. Pre-norm, they found, trains without one. Section 10 checks.
 
+<p class="flow"><span>post-norm</span><span>gradients largest near the output</span><span>a large learning rate is unstable</span><span>a warm-up is needed</span></p>
+
 The history is a little funny. Five months after the paper, its authors' own code, [tensor2tensor](https://github.com/tensorflow/tensor2tensor), switched its default to pre-norm.
 
 A comment by Noam Shazeer, one of the authors, still sits in that code: post-norm is "the published version of the transformer", pre-norm "seems better for harder-to-learn models, so it should probably be the default". GPT-2 moved the norm "to the input of each sub-block" in 2019, GPT-3 kept it, and Llama credits GPT-3.
@@ -385,9 +388,16 @@ the identity for large ones. But the activation is the smaller change. In ReLU's
 off depending on one projection of the input; in SwiGLU one projection decides, smoothly, how much of another
 gets through.
 
-Why that should work better, nobody can say exactly, including its author. His paper ends: "We offer no
-explanation as to why these architectures seem to work; we attribute their success, as all else, to divine
-benevolence." It survived Narang et al.'s reimplementation, as one of the few changes that did.
+Why that should work better, nobody can say exactly, including its author. His paper ends:
+
+<blockquote class="pull" markdown="1">
+We offer no explanation as to why these architectures seem to work; we attribute their success, as all else,
+to divine benevolence.
+
+<cite>Noam Shazeer, GLU Variants Improve Transformer (2020)</cite>
+</blockquote>
+
+It survived Narang et al.'s reimplementation, as one of the few changes that did.
 
 Three matrices instead of two would mean more weights. To compare fairly, the hidden width shrinks to two thirds
 of the ReLU layer's, as in the paper and in Llama, rounded here to a multiple of 8, which GPUs like:
@@ -433,9 +443,9 @@ Within a percent of each other: two matrices of the full width against three of 
 
 ## 8. Rotary position embeddings
 
-Lesson 2 told the model where each token stands by adding a vector of sinusoids to its embedding. The position then travels inside the token's vector through every layer, mixed with its meaning. **RoPE**, rotary position embedding<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Su, J. et al. (2021). RoFormer: Enhanced Transformer with Rotary Position Embedding.">7</a>]</sup>, adds nothing to the embeddings.
+Lesson 2 told the model where each token stands by adding a vector of sinusoids to its embedding. The position then travels inside the token's vector through every layer, mixed with its meaning.
 
-It acts inside attention: before the dot product, it rotates each query and each key by an angle that grows with the token's position.
+**RoPE**, rotary position embedding<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Su, J. et al. (2021). RoFormer: Enhanced Transformer with Rotary Position Embedding.">7</a>]</sup>, adds nothing to the embeddings. It acts inside attention: before the dot product, it rotates each query and each key by an angle that grows with the token's position.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/05/rope-light.png" width="760" alt="Rotary position embedding on one pair of dimensions. The query of the token at position m is rotated by m times theta, the key of the token at position n by n times theta. Their dot product depends on the angle between them, which changes by (n − m) times theta: only the distance between the tokens counts, not where the pair sits in the sentence" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/05/rope-dark.png" width="760" alt="Rotary position embedding on one pair of dimensions. The query of the token at position m is rotated by m times theta, the key of the token at position n by n times theta. Their dot product depends on the angle between them, which changes by (n − m) times theta: only the distance between the tokens counts, not where the pair sits in the sentence" loading="lazy">
@@ -453,9 +463,13 @@ R(-\alpha)$$, and rotations add up, so for a query at position $$m$$ and a key a
 $$\big(R(m\theta)\,q\big)^\top \big(R(n\theta)\,k\big) = q^\top R(-m\theta) R(n\theta)\, k = q^\top
 R\big((n - m)\theta\big)\, k.$$
 
-The attention score depends on the positions only through $$n - m$$, the distance between the two tokens. That's
-a **relative** position, given to attention directly, which is what the sinusoids of 2017 only hoped the model
-would work out for itself.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The attention score depends on the positions only through $$n - m$$, the distance between the two
+tokens. That's a **relative** position, given to attention directly, which is what the sinusoids of 2017 only
+hoped the model would work out for itself.
+</div>
 
 Each pair turns at its own speed. With $$b = 10\,000$$, the first pair advances a radian per token and the last
 needs tens of thousands of tokens for one turn; a full turn of pair $$i$$ takes $$2\pi / \theta_i$$ tokens:
@@ -1024,7 +1038,8 @@ table(pd.DataFrame(rows), digits=4)
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">design</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">runs</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">COMET from</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">to</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">validation loss from</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">to </th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">2017</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.8198</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.8297</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1.3085</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1.3374</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">all four changes</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">5</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.8263</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.8322</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1.2605</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">1.2888</td></tr></tbody></table></div>
 
-Five runs of the same design spread over about a hundredth of COMET, as far as the largest step of the ladder.
+<p class="takeaway" markdown="1">Five runs of the same design spread over about a hundredth of COMET, as far as the largest step of the ladder.</p>
+
 One run per change can't rank pre-norm, RMSNorm, SwiGLU and RoPE by COMET on five thousand sentences, however
 sure the bootstrap is.
 
@@ -1076,9 +1091,10 @@ print(f"a full context of 128K tokens: {with_gqa * 128 * 1024 / 2**30:.0f} GiB")
 with a key/value head per query head: 512 KiB per token
 a full context of 128K tokens: 16 GiB</code></pre>
 
-Gigabytes for the cache of a single long conversation, on top of the weights: this is why grouped-query
-attention spread so fast. Our model, with four heads and sentences of a dozen tokens, keeps a few kilobytes per
-token.
+<p class="takeaway" markdown="1">16 GiB for a full context of 128K tokens, gigabytes for the cache of a single long conversation on top of the
+weights: this is why grouped-query attention spread so fast.</p>
+
+Our model, with four heads and sentences of a dozen tokens, keeps a few kilobytes per token.
 
 `Attention` already handles a `cache` dictionary (section 9). The step function gives each decoder layer one,
 and greedy decoding runs on it:
@@ -1268,9 +1284,17 @@ for name in ["2017 s43, 20 epochs", "2017 s44, 20 epochs"]:
 <pre class="tfs-printed" markdown="0"><code>this lesson − 2017 s43: +0.0034, 95% of the draws between +0.0024 and +0.0044
 this lesson − 2017 s44: +0.0042, 95% of the draws between +0.0033 and +0.0052</code></pre>
 
-At twenty epochs the seeds agree far more closely than at five: the three runs of the new design are within a thousandth of COMET of each other. Lesson 3's model is the lowest of the three 2017 runs, so part of the gap above was that run's bad luck.
+At twenty epochs the seeds agree far more closely than at five: the three runs of the new design are within a
+thousandth of COMET of each other. Lesson 3's model is the lowest of the three 2017 runs, so part of the gap
+above was that run's bad luck.
 
-Against the 2017 runs from this lesson's code the gain is smaller, and still there: every run of the new design is above every run of the old one. That's the honest size of what an architecture buys when the data stays the same: a few thousandths of COMET, a fraction of the distance to opus-mt-en-ru.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Against the 2017 runs from this lesson's code the gain is smaller, and still there: every run of
+the new design is above every run of the old one. That's the honest size of what an architecture buys when the
+data stays the same: a few thousandths of COMET, a fraction of the distance to opus-mt-en-ru.
+</div>
 
 Lesson 4 found where lesson 3's model breaks: long sentences. Does the new one hold together longer?
 

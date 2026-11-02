@@ -14,6 +14,19 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+The computational theory of mind says that thinking is computation: the mind is to the brain what a program is to the machine that runs it.
+
+Searle's Chinese Room, its best-known objection, proves less than Searle concluded but still enough to matter now that a machine passes Turing's test: behaviour alone does not settle whether a system understands.
+
+Language models learn from text alone, yet one keeps part of the geometry of colour in its internal states, and a transformer can learn the kind of systematicity Fodor and Pylyshyn doubted a network could have.
+
+The question becomes how much of meaning can come from symbols alone, and unlike Searle's room, a model can be opened to find out.
+
+</aside>
+
 In 1950 Alan Turing made a prediction with numbers in it. In about fifty years, he wrote, computers would "play the imitation game so well that an average interrogator will not have more than 70 per cent chance of making the right identification after five minutes of questioning"<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Turing, A. M. (1950). Computing machinery and intelligence. Mind, 59(236), 433–460.">1</a>]</sup>.
 
 He was a quarter of a century late, and then the machines overshot. In 2025 Cameron Jones and Benjamin Bergen ran Turing's game as he described it: an interrogator chats for five minutes with two witnesses at once, one human and one machine, and has to say which is which.
@@ -24,7 +37,7 @@ The study also included, as a control, ELIZA, Joseph Weizenbaum's program from 1
 
 So a machine passes the test. Does it think? The answer depends on what you take thinking to be, and the most influential answer of the last eighty years is that thinking is computation: the mind is to the brain what a program is to the machine that runs it.
 
-This is the **computational theory of mind**. It gave cognitive science its first research program and artificial intelligence its first name, and it has been attacked from the start on one question that language models have now made practical: can a system that manipulates symbols by their shapes ever mean anything by them?
+This is the *computational theory of mind*. It gave cognitive science its first research program and artificial intelligence its first name, and it has been attacked from the start on one question that language models have now made practical: can a system that manipulates symbols by their shapes ever mean anything by them?
 
 ## Logic in the nervous system
 
@@ -45,9 +58,13 @@ Seven years earlier Turing had described a universal machine that can carry out 
 
 The bet was stated most sharply by Allen Newell and Herbert Simon, whose Logic Theorist proved theorems from *Principia Mathematica* in 1956. Twenty years later, in their Turing Award lecture, they gave it the form of an empirical hypothesis<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Newell, A., &amp; Simon, H. A. (1976). Computer science as empirical inquiry: symbols and search. Communications of the ACM, 19(3), 113–126.">6</a>]</sup>:
 
-> A physical symbol system has the necessary and sufficient means for general intelligent action.
+<blockquote class="pull" markdown="1">
+A physical symbol system has the necessary and sufficient means for general intelligent action.
 
-A **physical symbol system** is a machine that holds physical patterns, symbols, combines them into expressions, and runs processes that create, copy, modify and destroy those expressions. "Necessary" means that anything intelligent is such a system, people included.
+<cite>Allen Newell and Herbert Simon, 1976</cite>
+</blockquote>
+
+A *physical symbol system* is a machine that holds physical patterns, symbols, combines them into expressions, and runs processes that create, copy, modify and destroy those expressions. "Necessary" means that anything intelligent is such a system, people included.
 
 "Sufficient" means that a large enough system of this kind, suitably organized, would be intelligent. Both halves are strong claims, and Newell and Simon offered them the way a physicist offers a law: to be tested against what intelligent systems actually do.
 
@@ -68,7 +85,7 @@ Newell and Simon's claim is that this is not an analogy for what you did when yo
 
 The philosopher Jerry Fodor turned the hypothesis into a theory of the mind as psychology knows it<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Fodor, J. A. (1975). The Language of Thought. Crowell; Harvard University Press.">7</a>]</sup>. We explain behaviour by beliefs and desires: she took the umbrella because she believed it would rain and wanted to stay dry.
 
-Fodor argued that this kind of explanation works because it is literally true. Beliefs and desires are real states of the brain, and they have the structure of sentences in an inner language, a **language of thought**, sometimes called Mentalese.
+Fodor argued that this kind of explanation works because it is literally true. Beliefs and desires are real states of the brain, and they have the structure of sentences in an inner language, a *language of thought*, sometimes called Mentalese.
 
 The hard part is how the content of a belief, what it is about, can cause anything. Fodor's answer came from logic and computers.
 
@@ -89,7 +106,7 @@ A rule that is not sound, such as concluding $$Gb$$ from "someone is tall and re
 
 Fodor and Zenon Pylyshyn later turned this into an argument against the alternative that was then on the rise, neural networks<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Fodor, J. A., &amp; Pylyshyn, Z. W. (1988). Connectionism and cognitive architecture: a critical analysis. Cognition, 28(1–2), 3–71.">9</a>]</sup>.
 
-Thought is **systematic**: "you don't find people who can understand the sentence 'John loves the girl' but not the sentence 'the girl loves John'", and the same holds for thinking those thoughts. It is **productive**: from finite means we can think indefinitely many new thoughts. A language with combinatorial syntax explains both for free.
+Thought is *systematic*: "you don't find people who can understand the sentence 'John loves the girl' but not the sentence 'the girl loves John'", and the same holds for thinking those thoughts. It is *productive*: from finite means we can think indefinitely many new thoughts. A language with combinatorial syntax explains both for free.
 
 A network that learns associations, they argued, either implements such a language, and is then just its hardware ("models of the implementation of a Classical architecture"), or fails to be systematic. Their verdict was blunt: "the mind cannot be, in its general structure, a Connectionist network."
 
@@ -97,14 +114,18 @@ A network that learns associations, they argued, either implements such a langua
 
 Part of the confusion in this debate is that "the mind is a computer" can mean three different things. The vision scientist David Marr separated them<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Marr, D. (1982). Vision. W. H. Freeman.">10</a>]</sup>.
 
-At the level of **computational theory** you say what is computed and why: a cash register computes addition, because combining prices must not depend on their order or grouping.
+At the level of *computational theory* you say what is computed and why: a cash register computes addition, because combining prices must not depend on their order or grouping.
 
-At the level of **representation and algorithm** you say how: decimal digits and carrying, or binary and shifts. At the level of **implementation** you say what physically does it: gears, transistors, neurons.
+At the level of *representation and algorithm* you say how: decimal digits and carrying, or binary and shifts. At the level of *implementation* you say what physically does it: gears, transistors, neurons.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/minds-as-computers/marr-light.png" width="760" alt="Marr&#x27;s three levels of explanation for two systems. Computational theory: a cash register adds because the total must not depend on order or grouping; the river puzzle needs a sequence of crossings that never leaves a dangerous pair alone. Representation and algorithm: decimal digits with carries; arrangements of the banks searched breadth-first. Implementation: gears or transistors; Python on a laptop or a child&#x27;s neurons" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/minds-as-computers/marr-dark.png" width="760" alt="Marr&#x27;s three levels of explanation for two systems. Computational theory: a cash register adds because the total must not depend on order or grouping; the river puzzle needs a sequence of crossings that never leaves a dangerous pair alone. Representation and algorithm: decimal digits with carries; arrangements of the banks searched breadth-first. Implementation: gears or transistors; Python on a laptop or a child&#x27;s neurons" loading="lazy">
 
-The computational theory of mind is a claim about the first two levels. It is perfectly compatible with neurons being nothing like transistors. It is also why "but the brain is not a von Neumann computer" is not an objection: nobody serious claimed that it was.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+The computational theory of mind is a claim about the first two levels. It is perfectly compatible with neurons being nothing like transistors. That is also why "but the brain is not a von Neumann computer" is not an objection: nobody serious claimed that it was.
+</div>
 
 ## The Chinese Room
 
@@ -115,27 +136,31 @@ You look up their shapes in the book, which tells you which shapes to send back,
 <img class="tfs-figure tfs-light" src="/assets/posts/minds-as-computers/chinese-room-light.png" width="760" alt="Searle&#x27;s Chinese Room. A question in Chinese, 你会说中文吗？ (&#x27;Do you speak Chinese?&#x27;), comes in through a slot. Inside, a man who knows no Chinese finds its shape in a rule book written in English and sends back the shapes the book prescribes, 会，说得很流利。 (&#x27;Yes, fluently.&#x27;). Outside, the room seems to understand Chinese" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/minds-as-computers/chinese-room-dark.png" width="760" alt="Searle&#x27;s Chinese Room. A question in Chinese, 你会说中文吗？ (&#x27;Do you speak Chinese?&#x27;), comes in through a slot. Inside, a man who knows no Chinese finds its shape in a rule book written in English and sends back the shapes the book prescribes, 会，说得很流利。 (&#x27;Yes, fluently.&#x27;). Outside, the room seems to understand Chinese" loading="lazy">
 
-The room runs a program for understanding Chinese, Searle says, and nothing in it understands Chinese. So running a program is not sufficient for understanding.
+The room runs a program for understanding Chinese, Searle says, and nothing in it understands Chinese. So running a program is not sufficient for understanding. He called the claim he was attacking *strong AI*: that an appropriately programmed computer literally has a mind.
 
-He called the claim he was attacking **strong AI**: that an appropriately programmed computer literally has a mind. **Weak AI**, the use of computers to model and test theories of the mind, he had no quarrel with.
+*Weak AI*, the use of computers to model and test theories of the mind, he had no quarrel with.
 
 Searle listed the replies he had already heard and answered each one in the same paper:
 
-- **The systems reply**: you do not understand Chinese, but the whole system, you plus the book plus the paper, does. Searle: then memorize the book and do the lookups in your head. Now you are the whole system, and you still understand nothing.
-- **The robot reply**: put the program in a robot with cameras and arms, so its symbols connect to things. Searle: the man in the room now also receives symbols from cameras and sends symbols to motors. Still shapes.
-- **The brain simulator reply**: make the program simulate the firing of a Chinese speaker's neurons. Searle: simulate it with water pipes and valves, operated by the man. The pipes do not understand Chinese either.
+- *The systems reply*: you do not understand Chinese, but the whole system, you plus the book plus the paper, does. Searle: then memorize the book and do the lookups in your head. Now you are the whole system, and you still understand nothing.
+- *The robot reply*: put the program in a robot with cameras and arms, so its symbols connect to things. Searle: the man in the room now also receives symbols from cameras and sends symbols to motors. Still shapes.
+- *The brain simulator reply*: make the program simulate the firing of a Chinese speaker's neurons. Searle: simulate it with water pipes and valves, operated by the man. The pipes do not understand Chinese either.
 
 The argument is still argued about. One line of reply, from Paul and Patricia Churchland, is that intuitions about rooms are a poor guide to large systems: a person waving a magnet in a dark room produces electromagnetic waves too slow to see, and would conclude, wrongly, that light is not electromagnetism<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: Churchland, P. M., &amp; Churchland, P. S. (1990). Could a machine think? Scientific American, 262(1), 32–37.">12</a>]</sup>.
 
 Searle had also anticipated neural networks: replace the room with a "Chinese gym", a hall full of English speakers each doing what a unit does, and still nobody understands Chinese<sup class="cite">[<a href="#ref-13" id="cite-13" data-ref="13" aria-label="Reference 13: Searle, J. R. (1990). Is the brain&#x27;s mind a computer program? Scientific American, 262(1), 26–31.">13</a>]</sup>.
 
-What he established beyond doubt is narrower than his conclusion, and still important: behaviour alone does not settle the question. In 1980 he had already granted that "there could be two 'systems,' both of which pass the Turing test, but only one of which understands".
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+What Searle established beyond doubt is narrower than his conclusion, and still important: behaviour alone does not settle the question. In 1980 he had already granted that "there could be two 'systems,' both of which pass the Turing test, but only one of which understands".
+</div>
 
 ## Where do symbols get their meaning?
 
 Stevan Harnad sharpened Searle's point into a problem that any theory has to solve, not just computational ones<sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Harnad, S. (1990). The symbol grounding problem. Physica D, 42(1–3), 335–346.">14</a>]</sup>. Imagine trying to learn Chinese from a Chinese-Chinese dictionary.
 
-Every word is defined by other words, which are defined by other words, and you go round forever without touching anything. This is the **symbol grounding problem**: how do the symbols of a system come to be about things in the world, rather than only about each other?
+Every word is defined by other words, which are defined by other words, and you go round forever without touching anything. This is the *symbol grounding problem*: how do the symbols of a system come to be about things in the world, rather than only about each other?
 
 Harnad's own answer was that some symbols must be grounded in perception, in the categories that sensory systems learn to pick out.
 
@@ -152,7 +177,9 @@ Place the colours in CIELAB, a space built so that equal distances look equally 
 
 The geometry is far from perfect, but it is there. Blues sit with blues, reds with reds and pinks, teal between green and blue.
 
-The rank correlation between the two sets of distances is 0.38, and none of 2,000 shuffles of the words comes close. It is not an accident of one layer either:
+<p class="takeaway" markdown="1">The rank correlation between the model's distances and the colours' is 0.38, and none of 2,000 shuffles of the words comes close.</p>
+
+It is not an accident of one layer either:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/minds-as-computers/color-layers-light.png" width="760" alt="Spearman&#x27;s rho between the model&#x27;s distances and CIELAB distances, by layer: about 0.1 at the embedding, between 0.3 and 0.4 from layer 6 on, against 0.07 for shuffled words" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/minds-as-computers/color-layers-dark.png" width="760" alt="Spearman&#x27;s rho between the model&#x27;s distances and CIELAB distances, by layer: about 0.1 at the embedding, between 0.3 and 0.4 from layer 6 on, against 0.07 for shuffled words" loading="lazy">
@@ -189,7 +216,7 @@ But it does show that such a network is not only associating surface forms. It b
 
 The computational theory never lacked critics who thought it was looking in the wrong place. Hubert Dreyfus argued from the 1970s that human expertise rests on embodied know-how, not explicit rules<sup class="cite">[<a href="#ref-24" id="cite-24" data-ref="24" aria-label="Reference 24: Dreyfus, H. L. (1972). What Computers Can&#x27;t Do. Harper &amp; Row.">24</a>]</sup>.
 
-The enactive tradition of Francisco Varela, Evan Thompson and Eleanor Rosch put the body and its activity at the centre<sup class="cite">[<a href="#ref-25" id="cite-25" data-ref="25" aria-label="Reference 25: Varela, F. J., Thompson, E., &amp; Rosch, E. (1991). The Embodied Mind. MIT Press.">25</a>]</sup>. More recent **predictive processing** theories describe the brain as a hierarchy that predicts its own sensory input and learns from the errors<sup class="cite">[<a href="#ref-26" id="cite-26" data-ref="26" aria-label="Reference 26: Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. Behavioral and Brain Sciences, 36(3), 181–204.">26</a>, <a href="#ref-27" id="cite-27" data-ref="27" aria-label="Reference 27: Friston, K. (2010). The free-energy principle: a unified brain theory? Nature Reviews Neuroscience, 11(2), 127–138.">27</a>]</sup>.
+The enactive tradition of Francisco Varela, Evan Thompson and Eleanor Rosch put the body and its activity at the centre<sup class="cite">[<a href="#ref-25" id="cite-25" data-ref="25" aria-label="Reference 25: Varela, F. J., Thompson, E., &amp; Rosch, E. (1991). The Embodied Mind. MIT Press.">25</a>]</sup>. More recent *predictive processing* theories describe the brain as a hierarchy that predicts its own sensory input and learns from the errors<sup class="cite">[<a href="#ref-26" id="cite-26" data-ref="26" aria-label="Reference 26: Clark, A. (2013). Whatever next? Predictive brains, situated agents, and the future of cognitive science. Behavioral and Brain Sciences, 36(3), 181–204.">26</a>, <a href="#ref-27" id="cite-27" data-ref="27" aria-label="Reference 27: Friston, K. (2010). The free-energy principle: a unified brain theory? Nature Reviews Neuroscience, 11(2), 127–138.">27</a>]</sup>.
 
 Notice, though, that most of these are still computational at Marr's first two levels. They disagree about what is computed and in what format, not about whether the mind computes.
 

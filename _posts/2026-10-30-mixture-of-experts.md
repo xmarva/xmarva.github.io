@@ -14,6 +14,22 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+A mixture of experts splits each feed-forward network into many smaller ones and lets a router send every token to a few of them, so the newest models hold twenty to thirty times as many parameters as they use for a token.
+
+In my small runs, a mixture with the compute of a small dense model got two thirds of the way to a dense model with as many parameters, once its router was kept from piling the tokens onto a few favourite experts.
+
+Serving is where a mixture is expensive: every expert must sit in memory, and a server's batch reads nearly all of them at every step.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">31%</span><span class="stat-label">longer per training step than a dense model doing the same arithmetic</span></div>
+<div class="stat"><span class="stat-value">94–98%</span><span class="stat-label">of the tokens one expert takes in three of six layers, without any balancing</span></div>
+<div class="stat"><span class="stat-value">87%</span><span class="stat-label">of DeepSeek-V3's routed experts read in one decoding step for 64 sequences</span></div>
+</div>
+</aside>
+
 DeepSeek-V3 has 671 billion parameters and uses 37 billion of them for each token. Kimi K2 has a trillion and uses 32 billion, gpt-oss-120b uses 5.1 billion of its 117, and some names spell the arithmetic out: Qwen3-235B-A22B has 235 billion parameters, 22 billion of them active.
 
 In every layer of these models a small router looks at the token and picks a few feed-forward networks, the experts, out of dozens or hundreds. Only those are computed. The rest of the weights wait in memory for tokens that need them.
@@ -102,11 +118,11 @@ The usual remedy is to sort the token-expert pairs by expert, so that every expe
 <img class="tfs-figure tfs-light" src="/assets/posts/mixture-of-experts/dispatch-light.png" width="760" alt="How a mixture-of-experts layer processes a batch. The first 8 tokens of a held-out English sentence each go to two of the eight experts of layer 3: &#x27;At&#x27; to E6 and E5; &#x27;the&#x27; to E3 and E1; &#x27;beginning&#x27; to E1 and E4; &#x27;of&#x27; to E5 and E3; &#x27;the&#x27; to E1 and E3; &#x27;21&#x27; to E1 and E6; &#x27;st&#x27; to E7 and E6; &#x27;century&#x27; to E6 and E7. Sorted by expert, they form a queue for each expert: E1: 4; E2: 0; E3: 3; E4: 1; E5: 2; E6: 4; E7: 2; E8: 0. The queues are padded to the same length and every expert processes its queue in one batched product" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/mixture-of-experts/dispatch-dark.png" width="760" alt="How a mixture-of-experts layer processes a batch. The first 8 tokens of a held-out English sentence each go to two of the eight experts of layer 3: &#x27;At&#x27; to E6 and E5; &#x27;the&#x27; to E3 and E1; &#x27;beginning&#x27; to E1 and E4; &#x27;of&#x27; to E5 and E3; &#x27;the&#x27; to E1 and E3; &#x27;21&#x27; to E1 and E6; &#x27;st&#x27; to E7 and E6; &#x27;century&#x27; to E6 and E7. Sorted by expert, they form a queue for each expert: E1: 4; E2: 0; E3: 3; E4: 1; E5: 2; E6: 4; E7: 2; E8: 0. The queues are padded to the same length and every expert processes its queue in one batched product" loading="lazy">
 
-My version pads every expert's queue to the length of the longest, rounded up to a multiple of 256 so that the GPU sees few different shapes, and multiplies all of them by the stacked expert weights in one batched product.
+<details class="method" markdown="1">
+<summary>How my version batches the experts, and what production kernels do instead</summary>
 
-It agrees with a reference that runs every expert on every token and multiplies the unchosen ones by zero, to rounding error.
-
-Production kernels avoid even the padding: MegaBlocks writes the layer as a block-sparse matrix product<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Gale, T., Narayanan, D., Young, C., &amp; Zaharia, M. (2023). MegaBlocks: efficient sparse training with mixture-of-experts. MLSys 2023.">4</a>]</sup>, and DeepSeek's DeepGEMM library has grouped products that take the experts' tokens concatenated one after another, each expert's segment padded only to the kernel's block size.
+My version pads every expert's queue to the length of the longest, rounded up to a multiple of 256 so that the GPU sees few different shapes, and multiplies all of them by the stacked expert weights in one batched product. It agrees with a reference that runs every expert on every token and multiplies the unchosen ones by zero, to rounding error. Production kernels avoid even the padding: MegaBlocks writes the layer as a block-sparse matrix product<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Gale, T., Narayanan, D., Young, C., &amp; Zaharia, M. (2023). MegaBlocks: efficient sparse training with mixture-of-experts. MLSys 2023.">4</a>]</sup>, and DeepSeek's DeepGEMM library has grouped products that take the experts' tokens concatenated one after another, each expert's segment padded only to the kernel's block size.
+</details>
 
 ## Same compute, more parameters
 
@@ -118,7 +134,7 @@ The dense model has SwiGLU networks of width 768 and 7.2 million parameters in a
 
 The mixture with 32 experts cuts the same budget finer, 8 of 32 experts of width 96. The fourth model is dense with networks of width 3,072: as many parameters as the mixtures, every one of them used for every token, at about two and a half times the compute.
 
-Each model trained three times, with different seeds, for 3,000 steps of 32 sequences of 256 tokens, about 25 million tokens, on an NVIDIA T4 on Kaggle, with the auxiliary balancing loss described below for the mixtures.
+Each model trained three times, with different seeds, for 3,000 steps of 32 sequences of 256 tokens, about 25 million tokens, on an NVIDIA T4 on Kaggle, with the auxiliary balancing loss <a class="arrow-link" href="#keeping-the-experts-busy">described below</a> for the mixtures.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/mixture-of-experts/loss-light.png" width="760" alt="Validation loss during 3,000 training steps, mean over English, Russian and Python, and the final loss on each: Dense 3.076 (English 3.95, Russian 2.99, Python 2.28); Dense, 4x wider 2.958 (English 3.84, Russian 2.83, Python 2.20); MoE, 8 experts 2.989 (English 3.87, Russian 2.88, Python 2.21); MoE, 32 experts 2.988 (English 3.86, Russian 2.90, Python 2.21)" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/mixture-of-experts/loss-dark.png" width="760" alt="Validation loss during 3,000 training steps, mean over English, Russian and Python, and the final loss on each: Dense 3.076 (English 3.95, Russian 2.99, Python 2.28); Dense, 4x wider 2.958 (English 3.84, Russian 2.83, Python 2.20); MoE, 8 experts 2.989 (English 3.87, Russian 2.88, Python 2.21); MoE, 32 experts 2.988 (English 3.86, Russian 2.90, Python 2.21)" loading="lazy">
@@ -129,7 +145,7 @@ The three seeds of the dense model end within 0.024 of each other and those of t
 
 The dense model with networks four times wider, as many parameters as the mixture and all of them working on every token, reaches 2.948, and until about step 1,750 the mixtures are even ahead of it.
 
-The mixture gets two thirds of the way from the small dense model to the large one while computing as much as the small one.
+<p class="takeaway" markdown="1">The mixture with 8 experts gets two thirds of the way from the small dense model to the large one while computing as much as the small one.</p>
 
 Compute per token is not the same thing as time. Here is how long one training step takes, with the experts run by the loop shown earlier and by the sorted, batched version:
 
@@ -147,6 +163,8 @@ With 8 experts a batch of 8,192 tokens gives each expert about 2,000 of them, an
 Left alone, the router has a bad habit. Early in training some expert happens to be a little better than the others, the router sends it more tokens, it trains on more data and gets better still, and the router sends it even more.
 
 The other experts get few tokens, learn little and stay unattractive. Shazeer and colleagues, who brought mixtures of experts to large networks, observed this "self-reinforcing" imbalance and countered it with an extra loss<sup class="cite">[<a href="#ref-2" id="cite-5" data-ref="2" aria-label="Reference 2: Shazeer, N., Mirhoseini, A., Maziarz, K., Davis, A., Le, Q., Hinton, G., &amp; Dean, J. (2017). Outrageously large neural networks: the sparsely-gated mixture-of-experts layer. ICLR 2017.">2</a>]</sup>.
+
+<p class="flow"><span>one expert starts a little better</span><span>the router sends it more tokens</span><span>it trains on more and gets better still</span><span>the other experts learn little</span></p>
 
 <img class="tfs-figure tfs-light" src="/assets/posts/mixture-of-experts/balance-light.png" width="760" alt="The busiest expert&#x27;s share of the tokens as a multiple of an even share, mean of 6 layers, during training of the model with 8 experts: no balancing 2.48 at the start and 3.10 at the end; auxiliary loss 1.23 at the start and 1.13 at the end; bias, no loss 1.87 at the start and 1.02 at the end" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/mixture-of-experts/balance-dark.png" width="760" alt="The busiest expert&#x27;s share of the tokens as a multiple of an even share, mean of 6 layers, during training of the model with 8 experts: no balancing 2.48 at the start and 3.10 at the end; auxiliary loss 1.23 at the start and 1.13 at the end; bias, no loss 1.87 at the start and 1.02 at the end" loading="lazy">
@@ -245,7 +263,11 @@ In the last layer, 10 of the 13 English tokens, 14 of the 17 Russian ones and 9 
 
 All the others but one go to the two mixed experts of this layer, and most of them are tokens the three kinds of text share: the numbers 3 and 21, the full stops after the initials Д. and Б., and in Python the brackets, colons, the underscore and newlines.
 
-The last layer prepares the prediction of the next token, and what the next token can be depends first of all on the language.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+In the last layer the router sorts tokens by language, because that layer prepares the prediction of the next token, and what the next token can be depends first of all on the language.
+</div>
 
 Specialisation by topic, the kind people usually hope for, is much weaker in large models. Mistral looked for experts on topics in Mixtral and did not find them: "the distribution of expert assignment is very similar for ArXiv papers (written in Latex), for biology (PubMed Abstracts), and for Philosophy (PhilPapers) documents".
 
@@ -318,16 +340,20 @@ My router with 8 of 32 experts sits exactly on its curve: a decoding step needs 
 
 A model with a smaller share per token holds out longer. DeepSeek-V3, with 8 of 256, reads 3% of its routed experts for one sequence, 40% for 16 and 87% for 64, and from about 128 sequences on, nearly all of them.
 
-So the saving in memory traffic that makes a mixture fast at a batch of one disappears at the batch sizes a server runs at. What remains is the saving in arithmetic: each expert multiplies only the tokens that chose it.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
 
-To turn that into speed, a server needs enough tokens per expert to keep each product efficient, and that is what expert parallelism is for: the experts are spread over many GPUs, every GPU holds a few of them, and tokens travel to their experts and back.
+The saving in memory traffic that makes a mixture fast at a batch of one disappears at the batch sizes a server runs at. What remains is the saving in arithmetic: each expert multiplies only the tokens that chose it.
+</div>
+
+To turn this saving into speed, a server needs enough tokens per expert to keep each product efficient, and that is what expert parallelism is for: the experts are spread over many GPUs, every GPU holds a few of them, and tokens travel to their experts and back.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/mixture-of-experts/expert-parallel-light.png" width="760" alt="Expert parallelism on four GPUs, each holding two of the eight experts and a quarter of the tokens. The tokens of GPU 0 are followed: after the router, each is sent to the GPUs that hold its two experts, in an all-to-all exchange in which every GPU sends to every other; the experts process what they received; a second all-to-all brings the results back to GPU 0, where each token&#x27;s two results are added" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/mixture-of-experts/expert-parallel-dark.png" width="760" alt="Expert parallelism on four GPUs, each holding two of the eight experts and a quarter of the tokens. The tokens of GPU 0 are followed: after the router, each is sent to the GPUs that hold its two experts, in an all-to-all exchange in which every GPU sends to every other; the experts process what they received; a second all-to-all brings the results back to GPU 0, where each token&#x27;s two results are added" loading="lazy">
 
-DeepSeek described its production setup for V3 and R1 in early 2025. Its reasoning is the same: "the model’s high sparsity necessitates an extremely large overall batch size. This ensures sufficient batch size per expert, enabling higher throughput and lower latency.
+DeepSeek described its production setup for V3 and R1 in early 2025. Its reasoning is the same: "the model’s high sparsity necessitates an extremely large overall batch size. This ensures sufficient batch size per expert, enabling higher throughput and lower latency. Large-scale cross-node EP is essential."
 
-Large-scale cross-node EP is essential." Reading a prompt, one deployment unit spans 4 nodes with 32-way expert parallelism; decoding, it spans 18 nodes with 144-way expert parallelism, each GPU holding 2 routed experts and the shared one, and each node of 8 GPUs writes about 14,800 tokens per second<sup class="cite">[<a href="#ref-19" id="cite-28" data-ref="19" aria-label="Reference 19: DeepSeek-AI (2025). Day 6: one more thing, DeepSeek-V3/R1 inference system overview. GitHub.">19</a>]</sup>.
+Reading a prompt, one deployment unit spans 4 nodes with 32-way expert parallelism; decoding, it spans 18 nodes with 144-way expert parallelism, each GPU holding 2 routed experts and the shared one, and each node of 8 GPUs writes about 14,800 tokens per second<sup class="cite">[<a href="#ref-19" id="cite-28" data-ref="19" aria-label="Reference 19: DeepSeek-AI (2025). Day 6: one more thing, DeepSeek-V3/R1 inference system overview. GitHub.">19</a>]</sup>.
 
 The price is communication. Every mixture layer sends every token to other GPUs and back, twice per layer and 58 layers per token in DeepSeek-V3, and the exchange has to be hidden behind computation.
 
@@ -343,9 +369,13 @@ The gain in wall-clock time is smaller, because routing and moving tokens cost t
 
 So the trade pays where compute is the bottleneck and memory is plentiful: training large models, and serving them to many users at once on clusters where every expert sees enough tokens to stay busy. It pays less where memory is the bottleneck or traffic is light.
 
-The authors of GLaM, one of the first large mixtures, noted that sparse models "require a larger number of devices", which "increases the serving cost especially when the serving traffic is low"<sup class="cite">[<a href="#ref-20" id="cite-32" data-ref="20" aria-label="Reference 20: Du, N., et al. (2022). GLaM: efficient scaling of language models with mixture-of-experts. ICML 2022.">20</a>]</sup>. Fine-tuning needs care too.
+The authors of GLaM, one of the first large mixtures, noted that sparse models "require a larger number of devices", which "increases the serving cost especially when the serving traffic is low"<sup class="cite">[<a href="#ref-20" id="cite-32" data-ref="20" aria-label="Reference 20: Du, N., et al. (2022). GLaM: efficient scaling of language models with mixture-of-experts. ICML 2022.">20</a>]</sup>.
 
-In the ST-MoE study, sparse models were "prone to overfitting": on a task with 250 training examples the sparse model did worse than the dense one, and sparse models needed their own fine-tuning settings, smaller batches and a higher learning rate<sup class="cite">[<a href="#ref-9" id="cite-33" data-ref="9" aria-label="Reference 9: Zoph, B., Bello, I., Kumar, S., Du, N., Huang, Y., Dean, J., Shazeer, N., &amp; Fedus, W. (2022). ST-MoE: designing stable and transferable sparse expert models. arXiv.">9</a>]</sup>.
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+Fine-tuning needs care too. In the ST-MoE study, sparse models were "prone to overfitting": on a task with 250 training examples the sparse model did worse than the dense one, and sparse models needed their own fine-tuning settings, smaller batches and a higher learning rate<sup class="cite">[<a href="#ref-9" id="cite-33" data-ref="9" aria-label="Reference 9: Zoph, B., Bello, I., Kumar, S., Du, N., Huang, Y., Dean, J., Shazeer, N., &amp; Fedus, W. (2022). ST-MoE: designing stable and transferable sparse expert models. arXiv.">9</a>]</sup>.
+</div>
 
 A laptop with plenty of memory and a modest processor is a case of its own. Its memory can hold all the experts, and at a batch of one each token reads only the few it needs.
 
