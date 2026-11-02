@@ -2,7 +2,7 @@
 layout: default
 permalink: /
 title: blog
-seo_description: "Eva Koroleva's blog: long reads on machine learning, Transformers and LLMs, AI security and cognitive science, with experiments, code and figures drawn from data."
+seo_description: "Eva Koroleva, ML engineer and researcher: long reads on LLMs, Transformers, AI security and cognitive science, with experiments, code and two free courses."
 ---
 
 {% comment %}
