@@ -1481,6 +1481,6 @@ GPT-2's passport, and the family tree with this lesson's branch:
 
 
 
-<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-03-search/">← Lesson 3: Embeddings & search</a></p>
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-03-search/">← Lesson 3: Embeddings & search</a> <a href="/blog/2026/transformer-architectures-05-t5/">Lesson 5: T5 & BART →</a></p>
 
 {% endraw %}
