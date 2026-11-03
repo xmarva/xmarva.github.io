@@ -117,8 +117,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a04_gpt.ipynb
       cover: assets/img/teaching/arch-04.png
       topics: "GPT-1 to GPT-3, the GPT-2 block and OpenAI's weights in our code, the KV cache, the logit lens, a chess GPT trained on Lichess games, a 72-hour model transplanted, and the board found inside with a linear probe"
-    - title: "T5 and BART: the encoder–decoder, and text-to-SQL"
-      topics: "Text-to-text, span corruption, relative position buckets, t5-small in our code, why decoder-only models won, a text-to-SQL model checked by running its queries"
+    - title: "T5 and BART: the encoder–decoder, and a model that writes SQL"
+      short: "T5 and BART"
+      url: /blog/2026/transformer-architectures-05-t5/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-05-t5-bart
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a05_t5.ipynb
+      cover: assets/img/teaching/arch-05.png
+      topics: "Text-to-text, T5 in our code with Google's weights, relative position buckets, cross-attention that aligns German with English, span corruption and BART's infilling, a T5 that writes SQL for 1,034 Spider questions, every query checked on SQLite, and why decoder-only models won"
     - title: "Inside modern LLMs: what Llama, Mistral, Gemma and Qwen do differently"
       topics: "Grouped-query attention, sliding windows, local and global layers, QK-norm, soft-capping, Qwen3's weights in our code, a dozen models compared from their configs, LoRA"
     - title: "Mixture of experts: from Switch Transformer to DeepSeek-V3"
