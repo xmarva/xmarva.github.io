@@ -634,13 +634,17 @@ T5's version is *span corruption*. It drops 15% of the tokens in spans of 3 on a
 
 The targets are short, and that was the point: the choice was "made to reduce the computational cost of pre-training". Across the many variants the paper tried, the details of the corruption mattered little. What mattered was that "denoising objectives outperformed language modeling".
 
-BART, which Facebook AI published the same month, is the same architecture seen from the other side: "a denoising autoencoder for pretraining sequence-to-sequence models", whose bidirectional encoder and left-to-right decoder "can be seen as generalizing BERT […], GPT […], and other recent pretraining schemes" <sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V., &amp; Zettlemoyer, L. (2020). BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ACL 2020.">5</a>]</sup>.
+BART, which Facebook AI published the same month, is the same design seen from the other side: "a denoising autoencoder for pretraining sequence-to-sequence models", whose bidirectional encoder and left-to-right decoder "can be seen as generalizing BERT […], GPT […], and other recent pretraining schemes" <sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V., &amp; Zettlemoyer, L. (2020). BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension. ACL 2020.">5</a>]</sup>.
 
 Its best corruption was *text infilling*: span lengths are drawn from a Poisson distribution with a mean of 3, and each span becomes a single mask token, even a span of length zero, so the model has to "predict how many tokens are missing from a span".
 
 The large model also shuffled the order of the sentences. BART's decoder writes the whole document back, which made it a strong generator: on XSum, a summarisation dataset the BART paper calls highly abstractive, it beat the best earlier model by "roughly 3.5 points on all ROUGE metrics".
 
-T5's recipe takes three numbers: drop 15% of the tokens, in spans of 3 tokens on average, at random places.
+Inside, BART is the Transformer of 2017 with GPT's GELU in place of ReLU, which makes its layers closer to BERT's than to T5's: learned position embeddings for up to 1,024 positions, a LayerNorm with its mean and bias after each part of the layer, biases in every linear layer, and GPT-2's byte-level vocabulary, in which `<` and every other character have a token.
+
+The model we load below, bart-base, has 6 layers on each side and a width of 768.
+
+T5's recipe comes down to two numbers: 15% of the tokens are dropped, in spans of 3 tokens on average, at random places.
 
 Google's code first decides how many tokens to drop and how many spans to cut them into, then splits both the dropped and the kept tokens into that many pieces of random length, and interleaves them. Here it is on the example sentence from the T5 paper:
 
@@ -790,8 +794,8 @@ print("databases in both:", len(train_dbs & dev_dbs))
 development: 1,034 questions on 20 databases
 databases in both: 0</code></pre>
 
-The development databases never appear in training: to answer a question about `concert_singer`, a model has to
-read a schema it has never seen. Here is one example, and the table it asks about:
+Not one database is shared between the two sets, as the last line shows. Here is the first development question,
+about `concert_singer`, and the table it asks about:
 
 ```python
 example = dev_set[0]
@@ -870,9 +874,9 @@ A few training databases have schemas too long for 512 tokens. Cutting them at 5
 
 So for those questions alone the schema keeps only the tables that the reference query uses. Every development schema fits whole, so the evaluation never relies on this.
 
-Note what the input leaves out: which column of one table points to which column of another. Spider's `tables.json`
-lists these foreign keys, and joins need them; writing them in would push hundreds of training inputs and dozens of
-development inputs past 512 tokens, so we leave them out and let the model guess joins from the column names.
+The keys are the costly omission. Spider's `tables.json` lists which column points to which, and a join needs
+exactly that; but writing the keys in would push hundreds of training inputs and dozens of development inputs past
+512 tokens, so we leave them out. Section 9 shows what that costs.
 
 ## 8. A T5 that writes SQL
 
@@ -1058,17 +1062,19 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/05/output-05.png" alt="Output of the code above" loading="lazy">
 
-The loss falls fast: within the first 200 steps the development loss drops to a small fraction of where it started, and after that it barely moves while the training loss keeps going down. From there on the model gets better at the training questions than at SQL in general, the start of overfitting.
-
-The loss isn't the goal, though. It measures how probable the reference query is token by token, and a query can be improbable in that sense and still return the right rows. The only way to know is to run it.
+The loss falls fast: within the first 200 steps the development loss drops to a small fraction of where it started,
+and after that it barely moves while the training loss keeps going down. From there on the model gets better at the
+training questions than at SQL in general, the start of overfitting.
 
 ## 9. Checking by running
 
-A loss says how probable the model finds the correct query. It doesn't say whether the query the model writes is right, and for SQL there is a better judge than comparing text: run it.
+A loss says how probable the model finds the reference query, token by token. It doesn't say whether the query the model writes is right: a query worded differently from the reference can be improbable and still return the right rows.
 
-Spider's databases are real SQLite files, so we run the model's query and the correct one on the same database and compare what comes back. This is *execution accuracy*. It errs in both directions.
+For SQL there is a better judge than comparing text: run it. Spider's databases are real SQLite files, so we run the model's query and the correct one on the same database and compare what comes back.
 
-Two correct queries can differ as strings, `AGE > 34` and `AGE >= 35`, which is why exact matching underrates models. And a wrong query can happen to return the right rows on one particular database, which is why Spider's official metric since 2020 runs every query on a suite of databases built to tell such queries apart<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Zhong, R., Yu, T., &amp; Klein, D. (2020). Semantic evaluation for text-to-SQL with distilled test suites. EMNLP 2020.">9</a>]</sup>. We use the one database Spider ships.
+This is *execution accuracy*. It errs in both directions. Two correct queries can differ as strings, `AGE > 34` and `AGE >= 35`, which is why exact matching underrates models.
+
+And a wrong query can happen to return the right rows on one particular database, which is why Spider's official metric since 2020 runs every query on a suite of databases built to tell such queries apart<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Zhong, R., Yu, T., &amp; Klein, D. (2020). Semantic evaluation for text-to-SQL with distilled test suites. EMNLP 2020.">9</a>]</sup>. We use the one database Spider ships.
 
 <img class="tfs-figure tfs-light" src="/assets/posts/arch/05/execmatch-light.png" width="760" alt="Two ways to grade a predicted query, on an illustrative table of four people aged 41, 29, 35 and 52. The reference is AGE greater than 34. A prediction of AGE at least 35 is a different string, so exact matching calls it wrong, but it returns the same three people and is right. A prediction of AGE greater than 30 also returns the same three people on this table, so execution calls it right although it is wrong; a second table with a person aged 32 tells the two apart, which is what a test suite does" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/arch/05/execmatch-dark.png" width="760" alt="Two ways to grade a predicted query, on an illustrative table of four people aged 41, 29, 35 and 52. The reference is AGE greater than 34. A prediction of AGE at least 35 is a different string, so exact matching calls it wrong, but it returns the same three people and is right. A prediction of AGE greater than 30 also returns the same three people on this table, so execution calls it right although it is wrong; a second table with a person aged 32 tells the two apart, which is what a test suite does" loading="lazy">
@@ -1298,7 +1304,7 @@ table(pd.DataFrame(kinds.most_common(), columns=["SQLite says", "queries"]))
 
 <div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">SQLite says</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">queries</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">no such column</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">343</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">no such table</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">32</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">syntax error</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">19</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ambiguous column</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">7</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">other</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">5</td></tr></tbody></table></div>
 
-Nearly all the failures are of one kind: the query names a column that the table doesn't have. Syntax errors are rare. After 20 minutes the model writes grammatical SQL; what it can't do reliably is read the schema.
+Five failures in six are of one kind: the query names a column that the table doesn't have. Syntax errors are rare. After 20 minutes the model writes grammatical SQL; what it can't do reliably is read the schema.
 
 The text-to-SQL literature calls this *schema linking*, and it is why the best T5 systems on Spider gave the model some of each database's contents as well as its names. Here is one failure drawn against the real schema:
 
@@ -1335,7 +1341,7 @@ The foreign keys we left out would have. The question didn't even need a join: t
 
 A query that doesn't run is the cheapest mistake to catch: SQLite says so in a millisecond, without knowing the right answer. PICARD used this inside the decoder, rejecting any token that would make the query unparseable.
 
-Earlier, Wang et al. ran partly written queries during beam search and dropped the beams whose execution failed, which they called *execution-guided decoding*<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Wang et al., 2018. arxiv.org.">10</a>]</sup>.
+Earlier, Wang et al. ran partly written queries during beam search and dropped the beams whose execution failed, which they called *execution-guided decoding*<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Wang, C., Tatwawadi, K., Brockschmidt, M., Huang, P.-S., Mao, Y., Polozov, O., &amp; Singh, R. (2018). Robust text-to-SQL generation with execution-guided decoding. arXiv:1807.03100.">10</a>]</sup>.
 
 We do the simplest version of the idea: sample four more queries per question at a temperature of 0.7, put the greedy query first, and keep the first one that SQLite runs without an error. The choice looks only at the database, never at the reference answer, so it is a fair test.
 
@@ -1441,17 +1447,17 @@ There is also an engineering argument, which is ours rather than a paper's: one 
 
 A decoder reads it with one KV cache; an encoder–decoder has to decide what counts as input and re-encode it as the conversation grows. Kernels, serving systems and fine-tuning tools were then built for the one shape that won, which made it cheaper still.
 
-The verdict is not final. In 2025 Google turned pre-trained Gemma 2 decoders into encoder–decoders and reported that "under similar inference budget, encoder-decoder LLMs achieve comparable (often better) pretraining performance but substantially better finetuning performance than their decoder-only counterpart".
+The verdict is not final. In 2025 Google turned pre-trained Gemma 2 decoders into encoder–decoders and reported that "under similar inference budget, encoder-decoder LLMs achieve comparable (often better) pretraining performance but substantially better finetuning performance than their decoder-only counterpart" <sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Zhang, B., Moiseev, F., Ainslie, J., et al. (2025). Encoder-decoder Gemma: improving the quality-efficiency trade-off via adaptation. arXiv:2504.06225.">14</a>]</sup>.
 
-Google's announcement adds that a model with a 9B encoder and a 2B decoder runs at nearly the latency of the 2B model <sup class="cite">[<a href="#ref-14" id="cite-14" data-ref="14" aria-label="Reference 14: Google (2025). T5Gemma: a new collection of encoder-decoder Gemma models. Google Developers Blog.">14</a>]</sup>. [T5Gemma 2](https://arxiv.org/abs/2512.14856) followed in December 2025, multimodal, in sizes from 270M-270M to 4B-4B.
+Google's announcement adds that a model with a 9B encoder and a 2B decoder runs at nearly the latency of the 2B model <sup class="cite">[<a href="#ref-15" id="cite-15" data-ref="15" aria-label="Reference 15: Google (2025). T5Gemma: a new collection of encoder-decoder Gemma models. Google Developers Blog.">15</a>]</sup>. [T5Gemma 2](https://arxiv.org/abs/2512.14856) followed in December 2025, multimodal, in sizes from 270M-270M to 4B-4B.
 
 ## 12. Where the encoder–decoder is the right tool today
 
-Wherever the input is long or of a different kind from the output, and the output is short. Speech recognition: Whisper is an encoder–decoder, chosen because "this architecture has been well validated to scale reliably" <sup class="cite">[<a href="#ref-15" id="cite-15" data-ref="15" aria-label="Reference 15: Radford, A., Kim, J. W., Xu, T., Brockman, G., McLeavey, C., &amp; Sutskever, I. (2022). Robust speech recognition via large-scale weak supervision. arXiv:2212.04356.">15</a>]</sup>.
+Wherever the input is long or of a different kind from the output, and the output is short. Speech recognition: Whisper is an encoder–decoder, chosen because "this architecture has been well validated to scale reliably" <sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Radford, A., Kim, J. W., Xu, T., Brockman, G., McLeavey, C., &amp; Sutskever, I. (2022). Robust speech recognition via large-scale weak supervision. arXiv:2212.04356.">16</a>]</sup>.
 
 Translation: Meta's [NLLB-200](https://arxiv.org/abs/2207.04672) and the Helsinki-NLP MarianMT models. Image generation: the frozen encoder half of a T5-XXL turns the prompt into vectors in Imagen, Stable Diffusion 3 and [FLUX.1](https://github.com/black-forest-labs/flux).
 
-Imagen's authors found "scaling the text encoder size to be significantly more impactful than the U-Net size"<sup class="cite">[<a href="#ref-16" id="cite-16" data-ref="16" aria-label="Reference 16: Saharia, C., Chan, W., Saxena, S., et al. (2022). Photorealistic text-to-image diffusion models with deep language understanding. NeurIPS 2022.">16</a>]</sup>, and Stable Diffusion 3's that dropping T5 costs little, except when the prompt asks for written text in the picture <sup class="cite">[<a href="#ref-17" id="cite-17" data-ref="17" aria-label="Reference 17: Esser, P., Kulal, S., Blattmann, A., et al. (2024). Scaling rectified flow transformers for high-resolution image synthesis. ICML 2024.">17</a>]</sup>.
+Imagen's authors found "scaling the text encoder size to be significantly more impactful than the U-Net size"<sup class="cite">[<a href="#ref-17" id="cite-17" data-ref="17" aria-label="Reference 17: Saharia, C., Chan, W., Saxena, S., et al. (2022). Photorealistic text-to-image diffusion models with deep language understanding. NeurIPS 2022.">17</a>]</sup>, and Stable Diffusion 3's that dropping T5 costs little, except when the prompt asks for written text in the picture <sup class="cite">[<a href="#ref-18" id="cite-18" data-ref="18" aria-label="Reference 18: Esser, P., Kulal, S., Blattmann, A., et al. (2024). Scaling rectified flow transformers for high-resolution image synthesis. ICML 2024.">18</a>]</sup>.
 
 And structured jobs like ours: a question to SQL, a document to fields, a ticket to a category with an explanation. For such a job, a small encoder–decoder fine-tuned on a few thousand examples is cheap to run and, in our experience, hard to beat at its size.
 
@@ -1477,16 +1483,16 @@ T5's passport, and the family tree with this lesson's branch:
 7. {:#ref-7} Scholak, T., Schucher, N., & Bahdanau, D. (2021). [PICARD: parsing incrementally for constrained auto-regressive decoding from language models](https://arxiv.org/abs/2109.05093). *EMNLP 2021*. <a class="ref-back" href="#cite-7" aria-label="Back to the text">&#8617;</a>
 8. {:#ref-8} Hugging Face forum (2021). [T5 fp16 issue is fixed](https://discuss.huggingface.co/t/t5-fp16-issue-is-fixed/3139). <a class="ref-back" href="#cite-8" aria-label="Back to the text">&#8617;</a>
 9. {:#ref-9} Zhong, R., Yu, T., & Klein, D. (2020). [Semantic evaluation for text-to-SQL with distilled test suites](https://arxiv.org/abs/2010.02840). *EMNLP 2020*. <a class="ref-back" href="#cite-9" aria-label="Back to the text">&#8617;</a>
-10. {:#ref-10} Wang et al., 2018. [arxiv.org](https://arxiv.org/abs/1807.03100). <a class="ref-back" href="#cite-10" aria-label="Back to the text">&#8617;</a>
+10. {:#ref-10} Wang, C., Tatwawadi, K., Brockschmidt, M., Huang, P.-S., Mao, Y., Polozov, O., & Singh, R. (2018). [Robust text-to-SQL generation with execution-guided decoding](https://arxiv.org/abs/1807.03100). arXiv:1807.03100. <a class="ref-back" href="#cite-10" aria-label="Back to the text">&#8617;</a>
 11. {:#ref-11} Wang, T., Roberts, A., Hesslow, D., Le Scao, T., et al. (2022). [What language model architecture and pretraining objective work best for zero-shot generalization?](https://arxiv.org/abs/2204.05832) *ICML 2022*. <a class="ref-back" href="#cite-11" aria-label="Back to the text">&#8617;</a>
 12. {:#ref-12} BigScience Workshop (2022). [BLOOM: a 176B-parameter open-access multilingual language model](https://arxiv.org/abs/2211.05100). arXiv:2211.05100. <a class="ref-back" href="#cite-12" aria-label="Back to the text">&#8617;</a>
 13. {:#ref-13} Tay, Y. (2024). [What happened to BERT & T5? On Transformer encoders, PrefixLM and denoising objectives](https://www.yitay.net/blog/model-architecture-blogpost-encoders-prefixlm-denoising). <a class="ref-back" href="#cite-13" aria-label="Back to the text">&#8617;</a>
-14. {:#ref-14} Google (2025). [T5Gemma: a new collection of encoder-decoder Gemma models](https://developers.googleblog.com/en/t5gemma/). Google Developers Blog. <a class="ref-back" href="#cite-14" aria-label="Back to the text">&#8617;</a>
-15. {:#ref-15} Radford, A., Kim, J. W., Xu, T., Brockman, G., McLeavey, C., & Sutskever, I. (2022). [Robust speech recognition via large-scale weak supervision](https://arxiv.org/abs/2212.04356). arXiv:2212.04356. <a class="ref-back" href="#cite-15" aria-label="Back to the text">&#8617;</a>
-16. {:#ref-16} Saharia, C., Chan, W., Saxena, S., et al. (2022). [Photorealistic text-to-image diffusion models with deep language understanding](https://arxiv.org/abs/2205.11487). *NeurIPS 2022*. <a class="ref-back" href="#cite-16" aria-label="Back to the text">&#8617;</a>
-17. {:#ref-17} Esser, P., Kulal, S., Blattmann, A., et al. (2024). [Scaling rectified flow transformers for high-resolution image synthesis](https://arxiv.org/abs/2403.03206). *ICML 2024*. <a class="ref-back" href="#cite-17" aria-label="Back to the text">&#8617;</a>
-18. {:#ref-18} Tay, Y., Dehghani, M., Tran, V. Q., et al. (2023). [UL2: unifying language learning paradigms](https://arxiv.org/abs/2205.05131). *ICLR 2023*.
-19. {:#ref-19} Zhang, B., Moiseev, F., Ainslie, J., et al. (2025). [Encoder-decoder Gemma: improving the quality-efficiency trade-off via adaptation](https://arxiv.org/abs/2504.06225). arXiv:2504.06225.
+14. {:#ref-14} Zhang, B., Moiseev, F., Ainslie, J., et al. (2025). [Encoder-decoder Gemma: improving the quality-efficiency trade-off via adaptation](https://arxiv.org/abs/2504.06225). arXiv:2504.06225. <a class="ref-back" href="#cite-14" aria-label="Back to the text">&#8617;</a>
+15. {:#ref-15} Google (2025). [T5Gemma: a new collection of encoder-decoder Gemma models](https://developers.googleblog.com/en/t5gemma/). Google Developers Blog. <a class="ref-back" href="#cite-15" aria-label="Back to the text">&#8617;</a>
+16. {:#ref-16} Radford, A., Kim, J. W., Xu, T., Brockman, G., McLeavey, C., & Sutskever, I. (2022). [Robust speech recognition via large-scale weak supervision](https://arxiv.org/abs/2212.04356). arXiv:2212.04356. <a class="ref-back" href="#cite-16" aria-label="Back to the text">&#8617;</a>
+17. {:#ref-17} Saharia, C., Chan, W., Saxena, S., et al. (2022). [Photorealistic text-to-image diffusion models with deep language understanding](https://arxiv.org/abs/2205.11487). *NeurIPS 2022*. <a class="ref-back" href="#cite-17" aria-label="Back to the text">&#8617;</a>
+18. {:#ref-18} Esser, P., Kulal, S., Blattmann, A., et al. (2024). [Scaling rectified flow transformers for high-resolution image synthesis](https://arxiv.org/abs/2403.03206). *ICML 2024*. <a class="ref-back" href="#cite-18" aria-label="Back to the text">&#8617;</a>
+19. {:#ref-19} Tay, Y., Dehghani, M., Tran, V. Q., et al. (2023). [UL2: unifying language learning paradigms](https://arxiv.org/abs/2205.05131). *ICLR 2023*.
 20. {:#ref-20} Zhang, B., Suganthan, P., Liu, G., et al. (2025). [T5Gemma 2: seeing, reading, and understanding longer](https://arxiv.org/abs/2512.14856). arXiv:2512.14856.
 21. {:#ref-21} NLLB Team (2022). [No language left behind: scaling human-centered machine translation](https://arxiv.org/abs/2207.04672). arXiv:2207.04672.
 {: .tfs-refs}
