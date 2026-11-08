@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "The brain and AI models: where they converge and where they don't"
+title: "How similar is the human brain to AI models?"
 date: 2026-11-08 00:00:00
-description: "Ten years of comparing brains with neural networks: language models and the language network, vision models and the ventral stream, grid cells, dopamine and reinforcement learning, memory, robots, energy and data. What the measurements show, what they don't, and what is still missing"
+description: "A decade of neuroscience has compared brains with neural networks. Language models predict the brain's language network, vision models the visual cortex and reinforcement learning the dopamine signal, while memory, bodies, energy and lifelong learning are where the two still differ most"
+seo_description: "How the human brain compares with AI models in studies of language, vision, memory, grid cells and dopamine, and which of them is more efficient."
 tags: [neuroscience, ai, llm, brain, cognitive-science]
 categories: [cognitive-science, machine-learning]
 thumbnail: /assets/posts/brain-and-ai-models/cover.png
@@ -79,7 +80,7 @@ A 2026 re-analysis found that several of the field's best-known results depend o
 
 </details>
 
-## Language models predict the language network, and mostly its sense of meaning
+## Language models and the brain's language network
 
 The human brain has a set of regions that respond when we read or hear language and barely respond to anything else: not to arithmetic, logic, music or code.
 
@@ -114,7 +115,7 @@ Goldstein's team had warned about this themselves: "These shared computational p
 
 <p class="takeaway" markdown="1">Language models are the best encoding models of the language network we have, and what they mostly capture is word meaning. Whether the brain computes language by predicting the next word is still open.</p>
 
-### Fluency is not thought
+### Language and thought rely on different networks
 
 The language network has a second property that matters more than any correlation. People who lose it, after a stroke that leaves them with global aphasia, unable to understand or produce sentences, can still do arithmetic, solve logic problems and reason about what other people believe<sup class="cite">[<a href="#ref-11" id="cite-14" data-ref="11" aria-label="Reference 11: Fedorenko &amp; Varley, 2016. doi.org.">11</a>]</sup>.
 
@@ -128,7 +129,7 @@ In a family of models trained from scratch, similarity to the language network p
 
 So a large language model is two things at once. Part of it is a good model of the human language network. The rest, the arithmetic, the facts, the code, has to live somewhere else in the brain, and the language network doesn't predict which.
 
-### Reading language from the brain works, with the person's help
+### Decoding language from brain scans
 
 The same models made it possible to decode language from brain activity. Tang, LeBel, Jain and Huth decoded the gist of stories that people heard or imagined, and of silent films they watched, from fMRI alone, using a GPT model to propose candidate word sequences and an encoding model to pick the one that best explained the scan<sup class="cite">[<a href="#ref-15" id="cite-18" data-ref="15" aria-label="Reference 15: Tang et al., 2023. doi.org.">15</a>]</sup>.
 
@@ -138,7 +139,7 @@ The most practical use is in medicine. Electrodes implanted in the speech-motor 
 
 A language model corrects the raw output into likely sentences. The signal is the attempt to move the mouth, not the language network and not thought.
 
-## Vision models matched the visual cortex, then stopped getting closer
+## Vision models and the visual cortex
 
 The visual system was where this whole line of work began, and where it is most mature.
 
@@ -170,7 +171,7 @@ What mattered most was what images a model was trained on. The authors' conclusi
 
 <p class="callout callout-key" markdown="1">Task-trained networks predicted the visual cortex better than any hand-built model. Since then, accuracy has stopped buying similarity, architecture barely matters, and the measuring stick is looser than the scores suggest.</p>
 
-### Where vision differs
+### How human and machine vision differ
 
 The differences show up in behaviour. On images with the shape of one object and the texture of another, a cat's outline filled with elephant skin, people name the shape 95.9% of the time; ImageNet-trained networks mostly name the texture<sup class="cite">[<a href="#ref-22" id="cite-25" data-ref="22" aria-label="Reference 22: Geirhos et al., 2019. arxiv.org.">22</a>]</sup>.
 
@@ -182,7 +183,7 @@ But when the responses of monkey IT neurons were attacked the same way, they tur
 
 People resist because they get to look again; a 63-millisecond glimpse followed by a mask can be nudged by the same perturbations that fool networks<sup class="cite">[<a href="#ref-26" id="cite-29" data-ref="26" aria-label="Reference 26: Elsayed et al., 2018. arxiv.org.">26</a>]</sup>.
 
-### Pictures from the brain are mostly the generator's
+### Reconstructing images from brain activity
 
 If you have seen images "reconstructed from brain scans", they came from the Natural Scenes Dataset: eight people, each lying in a 7-tesla scanner for 30 to 40 sessions over a year and looking at 9,000 to 10,000 photographs<sup class="cite">[<a href="#ref-27" id="cite-30" data-ref="27" aria-label="Reference 27: Allen et al., 2022. doi.org.">27</a>]</sup>.
 
@@ -192,7 +193,7 @@ Retrieval is real. Reconstruction is mostly the generator's. On a dataset built 
 
 The authors call what these methods do "a combination of 'classification' and 'hallucination'"<sup class="cite">[<a href="#ref-29" id="cite-32" data-ref="29" aria-label="Reference 29: Shirakawa et al., 2025. arxiv.org.">29</a>]</sup>. The brain supplies a rough steer, and a model trained on billions of images supplies the picture.
 
-## Space and memory: grid cells, the hippocampus and the context window
+## Place cells, grid cells and the hippocampus
 
 The hippocampus and the entorhinal cortex next to it hold the brain's best-understood map. *Place cells* fire when an animal is in one particular spot; *grid cells* fire at every vertex of a triangular lattice that tiles the whole environment. John O'Keefe and May-Britt and Edvard Moser shared the 2014 Nobel Prize for finding them<sup class="cite">[<a href="#ref-30" id="cite-33" data-ref="30" aria-label="Reference 30: Hafting et al., 2005. doi.org.">30</a>]</sup>.
 
@@ -211,7 +212,7 @@ A model can also look as if it has a map without having one. Transformers traine
 
 Replace 1% of their turns with random detours, and only 69% of their routes stayed valid; replace 10%, and 8% did<sup class="cite">[<a href="#ref-33" id="cite-36" data-ref="33" aria-label="Reference 33: Vafa et al., 2024. arxiv.org.">33</a>]</sup>.
 
-### Three memories and no sleep
+### Memory systems and the context window
 
 The brain has several memory systems, and a language model has several stores, and it is tempting to pair them. The pairing is a useful map if you remember that it is a map.
 
@@ -234,7 +235,7 @@ Suppressing the ripples that carry this replay impairs memory, and prolonging th
 
 Training it further on new facts erases old ones, and standard deep networks trained continually slowly lose the ability to learn at all<sup class="cite">[<a href="#ref-39" id="cite-42" data-ref="39" aria-label="Reference 39: Dohare et al., 2024. doi.org.">39</a>]</sup>. Brains keep learning for a lifetime.
 
-## Reward: the place where AI theory predicted biology
+## Dopamine and reinforcement learning
 
 The cleanest case of a match runs in an unexpected direction. In the 1980s, reinforcement-learning researchers developed *temporal-difference learning*, in which an agent learns to predict future reward from the error between what it predicted and what it got.
 
@@ -259,7 +260,7 @@ The analogy that people draw most often, between dopamine and the reinforcement 
 
 But in RLHF that number comes from a second model trained to guess human preferences, and optimising against it too hard makes answers worse<sup class="cite">[<a href="#ref-45" id="cite-48" data-ref="45" aria-label="Reference 45: Gao et al., 2023. arxiv.org.">45</a>]</sup> and more sycophantic<sup class="cite">[<a href="#ref-46" id="cite-49" data-ref="46" aria-label="Reference 46: Sharma et al., 2023. arxiv.org.">46</a>]</sup>. It also damaged GPT-4's sense of its own reliability: before this training its confidence matched its accuracy almost perfectly, after it, ten times worse<sup class="cite">[<a href="#ref-47" id="cite-50" data-ref="47" aria-label="Reference 47: OpenAI, 2023. arxiv.org.">47</a>]</sup>.
 
-## Bodies and worlds: Moravec's paradox in numbers
+## Intuitive physics, robots and Moravec's paradox
 
 In 1988 the roboticist Hans Moravec noticed that what is hard for people, chess, logic, exams, was easy for computers, and what a one-year-old does without thinking, seeing and moving, was the hardest of all. Nearly forty years of progress have kept the paradox and given it numbers.
 
@@ -278,7 +279,7 @@ V-JEPA 2, used as a world model to plan a robot arm's movements, grasped a cup 6
 
 The brain-model link holds in motor control too, for a body simulated in detail. A network trained to drive a realistic virtual rat, imitating the movements of real rats, produced activity that predicted the neurons of real rats' motor cortex and striatum better than any measured feature of their movements did<sup class="cite">[<a href="#ref-51" id="cite-54" data-ref="51" aria-label="Reference 51: Aldarondo et al., 2024. doi.org.">51</a>]</sup>.
 
-## The map: which parts of the brain have a counterpart
+## Which brain systems have an AI counterpart
 
 Put the evidence together and a map appears. Colour each brain system by how close the best AI counterpart is, judged by the studies above: strong where models predict the system's activity or reproduce its signature, partial where they do some of its job without its properties, and absent where there is nothing to compare.
 
@@ -294,7 +295,7 @@ The strongest matches are the sensory and language systems, and the dopamine tea
 
 The weakest are the systems that run the body, keep track of the self and keep learning over a lifetime.
 
-## Who is more efficient?
+## Is the brain more efficient than AI?
 
 This is the question where the most nonsense is written, so the numbers here come with their units and their uncertainty.
 
@@ -336,7 +337,7 @@ One synapse stores about 4.7 bits<sup class="cite">[<a href="#ref-61" id="cite-6
 
 <p class="takeaway" markdown="1">Per answer, a chatbot costs about a minute of brain time. Per lesson learned, the brain is cheaper by orders of magnitude in data, and probably in energy too.</p>
 
-## What is missing
+## What AI models still lack
 
 A list of what the brain has and AI models don't would be long. Five items on it come up again and again in the evidence.
 
@@ -356,7 +357,7 @@ Whether there is something it is like to be a model, the question of consciousne
 
 The most careful attempt so far, which checked current systems against the signatures that the leading scientific theories of consciousness predict, concluded that no current AI system is conscious and that there is no obvious technical barrier to building one that would meet those signatures<sup class="cite">[<a href="#ref-65" id="cite-70" data-ref="65" aria-label="Reference 65: Butlin et al., 2023. arxiv.org.">65</a>]</sup>.
 
-## What follows
+## What the comparison shows
 
 Five conclusions seem safe.
 
