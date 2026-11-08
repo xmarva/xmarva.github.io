@@ -20,3 +20,4 @@
 /blog/2026/polymarket-accuracy/: "How accurate is Polymarket? Prices of resolved markets checked against outcomes: calibration, longshot bias, a volume trap, insiders and trading costs."
 /blog/2026/transformer-architectures-06-modern/: "Grouped-query attention, sliding windows, attention sinks and QK-norm read from 14 LLM configs, then Qwen3 in PyTorch, fine-tuned with LoRA."
 /blog/2026/transformer-architectures-07-moe/: "Mixture-of-experts LLMs in PyTorch with OLMoE's official weights, which experts English, Python, maths and Russian use, expert pruning and caching."
+/blog/2026/transformer-architectures-08-kv/: "The KV cache budget of LLMs and DeepSeek's multi-head latent attention in PyTorch, with MiniCPM3's weights, a T4 context test and KV cache quantization."

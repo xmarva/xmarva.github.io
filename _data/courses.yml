@@ -138,8 +138,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a07_moe.ipynb
       cover: assets/img/teaching/arch-07.png
       topics: "Nine production mixtures read from their configs, the router written four ways, OLMoE in PyTorch with its official weights on two GPUs, which experts English, Python, maths and Russian use, a model pruned for one kind of text, and an expert cache measured on real routing"
-    - title: "The KV cache budget: MQA, GQA and DeepSeek's latent attention"
-      topics: "Why decoding is memory-bound, multi-query and grouped-query attention, MLA with decoupled RoPE, how many chats fit on a T4"
+    - title: "The KV cache budget and DeepSeek's latent attention"
+      short: "KV cache and MLA"
+      url: /blog/2026/transformer-architectures-08-kv/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-08-kv-cache-and-mla
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a08_kv.ipynb
+      cover: assets/img/teaching/arch-08.png
+      topics: "What a token costs in the cache of ten models, multi-head latent attention written in both forms, why rotary positions need their own dimensions, MiniCPM3-4B with its official weights, a latent cache against a rebuilt one on a T4, Qwen3 compressed without training, and a quantized cache"
     - title: "Long context: RoPE scaling, YaRN and FlashAttention"
       topics: "From Longformer to YaRN, position interpolation, NTK scaling, attention sinks, FlashAttention as tiled online softmax, a needle in a long haystack"
     - title: "Beyond attention: Mamba, state space models and hybrids"
