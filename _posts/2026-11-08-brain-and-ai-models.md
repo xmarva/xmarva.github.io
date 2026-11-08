@@ -367,6 +367,8 @@ Fourth, a language model is a model of one part of the brain. It matches the lan
 
 Fifth, the brain is not a slower GPU. It learns from far less, on less energy, all its life, inside a body, and the systems where models are furthest from it are the ones that make that possible.
 
+The figures, the TD-learning model behind the dopamine chart and the preparation of the language atlas as code: [articles/brain_ai](https://github.com/xmarva/transformers-from-scratch/tree/main/articles/brain_ai).
+
 ## References
 
 1. {:#ref-1} Tuckute et al., 2024. [doi.org](https://doi.org/10.1038/s41562-023-01783-7). <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
