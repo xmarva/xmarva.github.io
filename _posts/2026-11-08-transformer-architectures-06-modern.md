@@ -460,8 +460,9 @@ Two fixes are in the table of section 1. *QK-norm* normalises each query and eac
 
 Qwen3 and Gemma 3 apply it to one head's vector at a time, with one scale shared by the heads of a layer; OLMo 2 normalises the whole projection at once.
 
-$$\hat q = g_q \odot \frac{q}{\text{rms}(q)}, \qquad \hat k = g_k \odot \frac{k}{\text{rms}(k)}, \qquad
-s_{ij} = \frac{\hat q_i \cdot \hat k_j}{\sqrt{d_h}}.$$
+$$\hat q = g_q \odot \frac{q}{\text{rms}(q)}, \qquad \hat k = g_k \odot \frac{k}{\text{rms}(k)},$$
+
+$$s_{ij} = \frac{\hat q_i \cdot \hat k_j}{\sqrt{d_h}}.$$
 
 Now $$\lVert \hat q \rVert = \sqrt{d_h}$$ before the scale, and the score can only grow if training grows $$g_q$$
 and $$g_k$$ themselves, slowly and in plain sight. *Soft-capping*, Gemma 2's fix, leaves the scores alone until
@@ -1572,8 +1573,9 @@ the change fine-tuning makes to a weight matrix has a low "intrinsic rank", and 
 a product of two thin matrices<sup class="cite">[<a href="#ref-12" id="cite-12" data-ref="12" aria-label="Reference 12: Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., &amp; Chen, W. (2021). LoRA: low-rank adaptation of large language models. ICLR 2022.">12</a>]</sup>. A frozen weight
 $$W \in \mathbb{R}^{d_{out} \times d_{in}}$$ becomes
 
-$$W' = W + \frac{\alpha}{r} B A, \qquad A \in \mathbb{R}^{r \times d_{in}}, \quad B \in \mathbb{R}^{d_{out}
-\times r},$$
+$$W' = W + \frac{\alpha}{r} B A,$$
+
+$$A \in \mathbb{R}^{r \times d_{in}}, \qquad B \in \mathbb{R}^{d_{out} \times r},$$
 
 with a rank $$r$$ of 8 or 16 where $$d_{in}$$ and $$d_{out}$$ are in the thousands. $$B$$ starts at zero, so the model starts exactly where it was; the factor $$\alpha / r$$ saves retuning the learning rate when the rank changes.
 
@@ -1892,6 +1894,6 @@ Qwen3's passport, and the family tree with this lesson's branch:
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-05-t5/">← Lesson 5: T5 & BART</a></p>
 
 {% endraw %}
