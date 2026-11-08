@@ -41,6 +41,8 @@
   url: /blog/2025/antonio-damasio/
 - pattern: '\bcomputational theory of mind\b|\bphysical symbol system\b|\bChinese Room\b'
   url: /blog/2025/minds-as-computers/
+- pattern: '\bencoding models?\b|\bBrain-Score\b|\bnoise ceiling\b'
+  url: /blog/2026/brain-and-ai-models/
 - pattern: '\bAlternate Uses Task\b|\bmove 37\b'
   url: /blog/2025/creative-ai/
 - pattern: '\bbacktest overfitting\b|\blook-ahead bias\b|\bAI trading bots?\b|\bcrypto trading\b'
