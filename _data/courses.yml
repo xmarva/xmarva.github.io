@@ -131,8 +131,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a06_modern.ipynb
       cover: assets/img/teaching/arch-06.png
       topics: "Fourteen model configs read side by side, grouped-query attention and the KV cache, small Transformers trained to diverge and saved by QK-norm, Qwen3 in PyTorch with the official weights, sliding windows and attention sinks, and LoRA that turns voice commands into JSON in English and Russian"
-    - title: "Mixture of experts: from Switch Transformer to DeepSeek-V3"
-      topics: "Top-k routing, load balancing, shared and fine-grained experts, a real MoE's weights in our code, which experts fire for code, maths and Russian"
+    - title: "Mixture-of-experts LLMs from scratch with OLMoE"
+      short: "Mixture of experts"
+      url: /blog/2026/transformer-architectures-07-moe/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-07-mixture-of-experts
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a07_moe.ipynb
+      cover: assets/img/teaching/arch-07.png
+      topics: "Nine production mixtures read from their configs, the router written four ways, OLMoE in PyTorch with its official weights on two GPUs, which experts English, Python, maths and Russian use, a model pruned for one kind of text, and an expert cache measured on real routing"
     - title: "The KV cache budget: MQA, GQA and DeepSeek's latent attention"
       topics: "Why decoding is memory-bound, multi-query and grouped-query attention, MLA with decoupled RoPE, how many chats fit on a T4"
     - title: "Long context: RoPE scaling, YaRN and FlashAttention"
