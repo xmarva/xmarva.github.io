@@ -51,3 +51,5 @@
   url: /blog/2026/ai-crypto-trading/
 - pattern: '\bprediction markets?\b|\bPolymarket\b|\bfavou?rite-longshot bias\b'
   url: /blog/2026/polymarket-accuracy/
+- pattern: '\bfree[- ]energy principle\b|\bactive inference\b|\bpredictive (?:coding|processing)\b'
+  url: /blog/2026/free-energy-principle/
