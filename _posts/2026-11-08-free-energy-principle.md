@@ -1,8 +1,10 @@
 ---
 layout: post
-title: "Friston's free energy principle, explained: the maths, the evidence and the critics"
+title: "How Karl Friston's free energy principle works and what its critics say"
+seo_title: "Karl Friston's free energy principle and its critics"
 date: 2026-11-08 00:00:00
-description: "Karl Friston's free energy principle without a physics degree: surprise, variational free energy and its link to the ELBO, predictive coding computed on a worked example, active inference and expected free energy, Markov blankets, what the experiments show and the strongest criticisms"
+description: "Karl Friston's free energy principle with exact formulas and plain words. Surprisal and variational free energy, its link to the ELBO of machine learning, predictive coding on a worked example, active inference, Markov blankets, the experimental evidence and the main criticisms"
+seo_description: "Karl Friston's free energy principle with exact formulas, from variational free energy and predictive coding to active inference, evidence and critics."
 tags: [free-energy-principle, active-inference, predictive-coding, neuroscience, bayesian-brain]
 categories: [cognitive-science, machine-learning]
 thumbnail: /assets/posts/free-energy-principle/cover.png
@@ -40,7 +42,7 @@ In 2016 a ranking of influence in neuroscience by Semantic Scholar put him first
 
 This post tries. It uses the formulas, because the principle is a mathematical statement and loses its meaning without them, but every symbol is explained, and each step comes with what it means in plain words. It ends with what the principle predicts, what has been tested, and the strongest arguments against it.
 
-## The principle in one paragraph
+## What is the free energy principle?
 
 Anything that persists, a cell, a fish, a person, stays within a small range of states: a fish stays in water, your body temperature stays near 37 °C.
 
@@ -48,7 +50,7 @@ In the language of probability, it keeps its sensations *unsurprising*. It can't
 
 There are three ways to make free energy smaller: change your beliefs to fit what you sense, which is perception; change your model over time, which is learning; or change what you sense by acting on the world, which is action. That is the whole principle; the rest is working out what it implies.
 
-## Surprise: how improbable a sensation is under your model
+## Surprisal and why living things keep it low
 
 Start with a definition. If a creature's model of the world assigns probability $$p(o)$$ to an observation $$o$$, the *surprisal* of that observation is
 
@@ -70,7 +72,7 @@ Entropy is average surprisal, and if the system is *ergodic*, if averaging over 
 This entropy is the Shannon entropy of a probability distribution, not the entropy of thermodynamics; living things don't violate the second law, they keep their own states ordered while exporting disorder to their surroundings. And ergodicity is an assumption, not a fact about organisms, which do grow, age and die.
 </div>
 
-## Free energy: a bound you can actually compute
+## Variational free energy and the ELBO
 
 There is a problem. To compute $$p(o)$$ a creature would have to add up the probability of the observation over every possible cause of it, every hidden state $$x$$ of the world that could have produced it:
 
@@ -116,7 +118,7 @@ The idea of a brain doing this goes back to the Helmholtz machine of Dayan, Hint
 The formula has the same shape as the Helmholtz free energy of statistical physics, energy minus temperature times entropy, if you call $$-\ln p(o, x)$$ the energy and set the temperature to 1. The mathematics is shared; there are no joules in it.
 </div>
 
-## Perception: prediction errors, weighted by how much you trust them
+## Predictive coding and precision
 
 Free energy says what perception optimises, not how a brain could do it. To get a mechanism, Friston assumes that the generative model is Gaussian: an observation is a prediction from the hidden cause plus noise, and the cause has a bell-shaped prior.
 
@@ -162,7 +164,7 @@ Turn up the precision of the senses and the guess follows the data; turn up the 
 
 <p class="takeaway" markdown="1">With Gaussian assumptions, minimising free energy is gradient descent on prediction errors weighted by precision. It finds the most probable cause, not a full posterior.</p>
 
-## Action: making the world fit the prediction
+## Active inference and expected free energy
 
 Here the free energy principle departs from ordinary Bayesian perception. Free energy depends on the observation, and a creature can change its observations by acting. If your model predicts that your arm is raised, there are two ways to remove the error: revise the belief, or raise the arm.
 
@@ -193,7 +195,7 @@ Friston's reply is that surprise is always relative to the creature's model, and
 
 Expected free energy adds a second answer: a dark room is maximally ambiguous, so the first thing an active-inference agent does there is switch on the light.
 
-## Markov blankets: what makes a thing a thing
+## Markov blankets
 
 The principle's most ambitious version starts from physics, not brains. It asks: what does it take for anything to exist as something separate from its surroundings?
 
@@ -210,7 +212,7 @@ The 2019 monograph "A free energy principle for a particular physics" claims tha
 
 The assumptions are many and technical: random dynamics of a particular form, a steady state that the system keeps returning to, coupling sparse enough to produce a blanket, and restrictions on how internal and external states can circulate around each other. Several of them have been challenged, as we'll see.
 
-## What the evidence shows
+## Experimental evidence
 
 The principle itself makes no prediction that could fail; we'll come back to that. The process theories built on it do.
 
@@ -241,7 +243,7 @@ Adults with autism were found to be "less surprised than neurotypical adults whe
 
 <p class="takeaway" markdown="1">The brain clearly uses expectations. Whether it computes them by predictive coding is mixed in the evidence, and direct tests of the principle itself are still few.</p>
 
-## The strongest criticisms
+## Criticism of the free energy principle
 
 *It can't be falsified, and its author agrees.* "The free energy principle is what it is—a principle. Like Hamilton's Principle of Stationary Action, it cannot be falsified"<sup class="cite">[<a href="#ref-1" id="cite-31" data-ref="1" aria-label="Reference 1: Fortier &amp; Friedman, 2018. aliusresearch.org.">1</a>]</sup>.
 
@@ -263,7 +265,7 @@ Biehl, Pollock and Kanai showed by counterexample that the original "free energy
 
 The machine-learning connection runs the other way: predictive coding networks, it turns out, can approximate backpropagation, "converges asymptotically (and in practice, rapidly) to exact backprop gradients on arbitrary computation graphs"<sup class="cite">[<a href="#ref-35" id="cite-39" data-ref="35" aria-label="Reference 35: Millidge et al., 2022. doi.org.">35</a>]</sup>.
 
-## What follows
+## How to read the free energy principle
 
 The free energy principle is best read as three things stacked on each other, and most arguments about it come from mixing them up.
 
