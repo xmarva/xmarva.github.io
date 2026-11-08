@@ -124,8 +124,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a05_t5.ipynb
       cover: assets/img/teaching/arch-05.png
       topics: "Text-to-text, T5 in our code with Google's weights, relative position buckets, cross-attention that aligns German with English, span corruption and BART's infilling, a T5 that writes SQL for 1,034 Spider questions, every query checked on SQLite, and why decoder-only models won"
-    - title: "Inside modern LLMs: what Llama, Mistral, Gemma and Qwen do differently"
-      topics: "Grouped-query attention, sliding windows, local and global layers, QK-norm, soft-capping, Qwen3's weights in our code, a dozen models compared from their configs, LoRA"
+    - title: "Modern LLM architecture and Qwen3 from scratch"
+      short: "Modern LLMs"
+      url: /blog/2026/transformer-architectures-06-modern/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-06-modern-llms
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a06_modern.ipynb
+      cover: assets/img/teaching/arch-06.png
+      topics: "Fourteen model configs read side by side, grouped-query attention and the KV cache, small Transformers trained to diverge and saved by QK-norm, Qwen3 in PyTorch with the official weights, sliding windows and attention sinks, and LoRA that turns voice commands into JSON in English and Russian"
     - title: "Mixture of experts: from Switch Transformer to DeepSeek-V3"
       topics: "Top-k routing, load balancing, shared and fine-grained experts, a real MoE's weights in our code, which experts fire for code, maths and Russian"
     - title: "The KV cache budget: MQA, GQA and DeepSeek's latent attention"
