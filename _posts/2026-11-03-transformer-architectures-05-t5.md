@@ -167,7 +167,8 @@ every layer, one part that neither BERT nor GPT had: *cross-attention*. It is or
 queries taken from the decoder's own stream $$Y \in \mathbb{R}^{T \times d}$$ and the keys and values taken from
 the encoder's output:
 
-$$\text{CrossAttention}(Y, H) = \text{softmax}\!\left(\frac{(Y W_Q)(H W_K)^\top}{\sqrt{d_k}}\right) H W_V.$$
+$$\begin{aligned} &\text{CrossAttention}(Y, H) \\ &\quad = \text{softmax}\!\left(\frac{(Y W_Q)(H W_K)^\top}{\sqrt{d_k}}
+\right) H W_V. \end{aligned}$$
 
 The matrix of scores is $$T \times S$$: each of the $$T$$ positions being written looks at all $$S$$ positions of the
 input, and no mask is needed, since the input is complete before the first word is written. Self-attention in the
@@ -230,8 +231,11 @@ Near words get precise positions, far ones only a rough sense of "far". The deco
 Written out for the encoder, with $$n = \lvert j - i \rvert$$ the distance between key and query, the bucket within
 one half is
 
-$$b(n) = \begin{cases} n, & n < 8, \\ \min\!\left(15,\; 8 + \left\lfloor 8 \cdot \dfrac{\ln(n/8)}{\ln(128/8)}
-\right\rfloor\right), & n \ge 8, \end{cases}$$
+$$b(n) = \begin{cases} n, & n < 8, \\ \min\big(15,\; f(n)\big), & n \ge 8, \end{cases}$$
+
+where
+
+$$f(n) = 8 + \left\lfloor 8 \cdot \dfrac{\ln(n/8)}{\ln(128/8)} \right\rfloor,$$
 
 and keys to the right of the query get $$b(n) + 16$$. The logarithm spreads the eight far buckets so that each covers a range about 1.4 times wider than the one before: distances 8 to 11 share a bucket, then 12 to 15, 16 to 22, and the last one starts at 91 and takes everything farther.
 
@@ -1499,6 +1503,6 @@ T5's passport, and the family tree with this lesson's branch:
 
 
 
-
+<p class="tfs-neighbours"><a href="/blog/2026/transformer-architectures-06-modern/">Lesson 6: Modern LLMs →</a></p>
 
 {% endraw %}
