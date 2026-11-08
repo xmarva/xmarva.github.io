@@ -39,6 +39,8 @@
   url: /blog/2025/adapters/
 - pattern: '\bsomatic markers?\b'
   url: /blog/2025/antonio-damasio/
+- pattern: '\bhard problem of consciousness\b|\bphilosophical zombies?\b|\bintegrated information theory\b|\bglobal (?:neuronal )?workspace theory\b'
+  url: /blog/2026/consciousness-for-physicalists/
 - pattern: '\bcomputational theory of mind\b|\bphysical symbol system\b|\bChinese Room\b'
   url: /blog/2025/minds-as-computers/
 - pattern: '\bAlternate Uses Task\b|\bmove 37\b'
