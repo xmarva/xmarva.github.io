@@ -66,9 +66,8 @@ $cover-ratio: 1200 / 630;
   display: block;
   aspect-ratio: $cover-ratio;
   overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid var(--global-divider-color);
-  background-color: var(--global-card-bg-color);
+  border: 1px solid var(--cover-line);
+  background-color: var(--cover-bg);
 
   img {
     display: block;
@@ -188,9 +187,7 @@ $cover-ratio: 1200 / 630;
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: $cover-ratio;
-      border-radius: 12px;
-      border: 1px solid var(--global-divider-color);
+      aspect-ratio: $cover-ratio; // the box around it draws the hairline (_sass/_design.scss)
     }
   }
 

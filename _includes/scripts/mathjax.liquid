@@ -9,7 +9,28 @@
             tags: 'ams',
           },
           chtml: {
-            mtextInheritFont: true, // words inside formulas in the text's own font
+            // words inside formulas in the serif of the text, also in a formula set on its own line
+            mtextFont: '"Source Serif 4", Georgia, serif',
+          },
+          startup: {
+            // a comma or a full stop after a formula stays on the formula's line
+            pageReady: function () {
+              return MathJax.startup.defaultPageReady().then(function () {
+                var formulas = document.querySelectorAll('mjx-container:not([display="true"])');
+                for (var i = 0; i < formulas.length; i++) {
+                  var math = formulas[i];
+                  var next = math.nextSibling;
+                  var mark = next && next.nodeType === 3 ? next.data.match(/^[,.;:!?)\]]+/) : null;
+                  if (!mark) continue;
+                  next.data = next.data.slice(mark[0].length);
+                  var glue = document.createElement('span');
+                  glue.className = 'math-glue';
+                  math.parentNode.insertBefore(glue, math);
+                  glue.appendChild(math);
+                  glue.appendChild(document.createTextNode(mark[0]));
+                }
+              });
+            },
           },
         };
       </script>

@@ -91,6 +91,11 @@ samp {
   --global-newsletter-bg-color: #fbf9f4;
   --global-newsletter-text-color: #1d2430;
 
+  // the box behind a cover takes the cover's own background, so a translucent hairline never shows a dark edge
+  --cover-bg: #f6f3ec;
+  --cover-line: rgba(29, 36, 48, 0.1);
+  --plate-dot: #e8e6e0; // the covers' dot grid
+
   // the course's palette, for categories and accents
   --cat-ml: #6a55d8;
   --cat-cog: #0f8c7e;
@@ -112,6 +117,10 @@ html[data-theme="dark"] {
   --global-code-bg-color: #1a1f26;
   --global-newsletter-bg-color: #1a1f26;
   --global-newsletter-text-color: #e7eaf0;
+
+  --cover-bg: #161618;
+  --cover-line: #2c333d;
+  --plate-dot: #232327;
 
   --cat-ml: #9c8cf5;
   --cat-cog: #3cc2b0;
@@ -233,14 +242,29 @@ footer,
     margin: 0;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 12px;
-    background: #17181c;
+    border: 1px solid var(--cover-line);
+    background: var(--cover-bg);
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: 100% 50%;
+    }
+
+    // the plate's picture is never cropped: the box draws the dot grid, which continues around the picture however
+    // tall the box grows, and the plate's own ground drops out against the same colour
+    &.post-art {
+      aspect-ratio: 5 / 4;
+      background-image: radial-gradient(circle, var(--plate-dot) 0.9px, transparent 1.4px);
+      background-position: center;
+      background-size: 14px 14px;
+
+      img {
+        object-fit: contain;
+        object-position: 50% 50%;
+        mix-blend-mode: darken;
+      }
     }
   }
 }
@@ -249,11 +273,17 @@ footer,
   .post-page .post-header.has-cover {
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
     column-gap: 2.4rem;
 
     > * {
       grid-column: 1;
+    }
+
+    .post-byline {
+      grid-row: 5;
+      align-self: end;
+      margin-bottom: 0;
     }
 
     .post-cover {
@@ -263,12 +293,11 @@ footer,
       aspect-ratio: 600 / 630;
     }
 
+    // a long title makes the text taller than the plate: the plate grows with it, its margins give the room
     .post-cover.post-art {
+      align-self: stretch;
+      width: 100%;
       aspect-ratio: 5 / 4;
-
-      img {
-        object-position: 50% 50%;
-      }
     }
   }
 }
@@ -307,16 +336,25 @@ footer,
 // ---------------------------------------------------------------- figures (assets/js/figures.js) and code cells
 
 .post-content figure.post-figure {
-  margin: 1.8rem 0 2rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.8rem auto 2rem;
 
+  > p {
+    margin: 0;
+  }
+
+  // a drawn figure keeps the width it was drawn for, a notebook's plot its own size
   > img,
   > p > img {
     display: block;
-    width: 100%;
+    max-width: 100%;
     height: auto;
+    margin: 0 auto;
   }
 
   figcaption {
+    contain: inline-size; // the caption wraps at the picture's width instead of widening the figure
     margin-top: 0.55rem;
     font-family: var(--font-sans);
     font-size: 0.84rem;
@@ -332,16 +370,28 @@ footer,
   }
 }
 
-@media (min-width: 1600px) {
-  .post-content figure.post-figure {
-    margin-left: -80px;
-    margin-right: -80px;
+html:not([data-theme="dark"]) .post-content figure.post-figure img {
+  mix-blend-mode: multiply;
+}
 
-    figcaption {
-      margin-left: 80px;
-      margin-right: 80px;
-    }
-  }
+html[data-theme="dark"] .post-page .post-cover.post-art img {
+  mix-blend-mode: lighten;
+}
+
+// one version of a figure per theme
+html:not([data-theme="dark"]) .post-content figure.post-figure .tfs-dark,
+html[data-theme="dark"] .post-content figure.post-figure .tfs-light {
+  display: none;
+}
+
+// a comma or a full stop after a formula stays on the formula's line (_includes/scripts/mathjax.liquid)
+.math-glue {
+  white-space: nowrap;
+}
+
+// with the contents in the margin, the folded copy above the text is not needed (assets/js/side-toc.js)
+.side-toc-shown .post-openers > #table-of-contents {
+  display: none;
 }
 
 // a code cell carries its number, as in a notebook
@@ -411,17 +461,6 @@ footer,
   --chip-color: var(--global-theme-color);
   @include category-colors(--chip-color);
 
-  &[data-filter]:not([data-filter="all"])::before {
-    content: "";
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    margin-right: 0.45rem;
-    border-radius: 50%;
-    background: var(--chip-color);
-    vertical-align: 0.1em;
-  }
-
   &[aria-pressed="true"]:not([data-filter="all"]) {
     border-color: var(--chip-color) !important;
     color: var(--chip-color) !important;
@@ -429,21 +468,6 @@ footer,
   }
 }
 
-.bh-cat {
-  --cat-color: var(--global-text-color-light);
-  @include category-colors(--cat-color);
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    margin-right: 0.35rem;
-    border-radius: 50%;
-    background: var(--cat-color);
-    vertical-align: 0.08em;
-  }
-}
 
 // ---------------------------------------------------------------- tl;dr and contents, folded, in one row (assets/js/openers.js)
 
@@ -533,10 +557,3 @@ html:not([data-theme="dark"]) .theme-dark-only {
   display: none !important;
 }
 
-html:not([data-theme="dark"]) {
-  .post-page .post-cover,
-  .bh-cover,
-  .read-next-thumb {
-    box-shadow: 0 0 0 1px var(--global-divider-color);
-  }
-}

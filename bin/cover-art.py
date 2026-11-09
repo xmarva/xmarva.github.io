@@ -1,7 +1,8 @@
 """Make, next to every post's cover.png:
 
 - cover-art.png, the plate that the post's header shows beside its title: the cover's picture without the cover's own
-  title, centred on a 5:4 plate with the cover's background and dot grid;
+  title, centred on a 5:4 plate with the cover's background; the page draws the dot grid behind it, so the box can
+  grow with a long title while the picture is never cropped;
 - cover-light.png and cover-art-light.png, the same two pictures on a light ground for the light theme.
 
 The covers are drawn from a few flat colours, a dark background, neutral greys and the site's red, so the light
@@ -16,7 +17,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 WIDTH, HEIGHT, PAD = 1200, 960, 0.11
@@ -28,12 +29,6 @@ RED_DARK = np.array([255, 59, 59], float)  # the covers' red
 
 def background(cover):
     return cover.getpixel((cover.width - 4, cover.height - 4))
-
-
-def dots(cover, bg):
-    colors = cover.crop((cover.width // 2, 0, cover.width, cover.height)).getcolors(1 << 20) or []
-    near = [c for c in colors if c[1] != bg and max(abs(a - b) for a, b in zip(c[1], bg)) < 30]
-    return max(near)[1] if near else bg
 
 
 def plate(path):
@@ -48,11 +43,6 @@ def plate(path):
         return None
     motif = panel.crop(box)
     out = Image.new("RGB", (WIDTH, HEIGHT), bg)
-    draw = ImageDraw.Draw(out)
-    grid, step = dots(cover, bg), 48
-    for y in range(step // 2, HEIGHT, step):
-        for x in range(step // 2, WIDTH, step):
-            draw.ellipse((x - 2.4, y - 2.4, x + 2.4, y + 2.4), fill=grid)
     scale = min(WIDTH * (1 - 2 * PAD) / motif.width, HEIGHT * (1 - 2 * PAD) / motif.height, 1.6)
     motif = motif.resize((round(motif.width * scale), round(motif.height * scale)), Image.LANCZOS)
     out.paste(motif, ((WIDTH - motif.width) // 2, (HEIGHT - motif.height) // 2))

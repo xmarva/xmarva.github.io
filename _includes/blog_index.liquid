@@ -23,9 +23,12 @@
 <style>
   .bh { --bh-border: var(--global-divider-color); --bh-muted: var(--global-text-color-light); margin: 2.4rem 0 1rem; }
 
-  .bh-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
+  /* the topics stay in one row; on a narrow screen the row scrolls sideways and fades at the edge */
+  .bh-chips { display: flex; gap: 0.45rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
+  .bh-chips li { flex: none; }
   .bh-chip {
-    padding: 0.3rem 0.9rem;
+    padding: 0.3rem 0.8rem;
+    white-space: nowrap;
     border: 1px solid var(--bh-border);
     border-radius: 999px;
     background: transparent;
@@ -57,10 +60,9 @@
     position: relative;
     display: block;
     aspect-ratio: 1200 / 630;
-    border: 1px solid var(--bh-border);
-    border-radius: 10px;
+    border: 1px solid var(--cover-line);
     overflow: hidden;
-    background: #161618;
+    background: var(--cover-bg);
   }
   .bh-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
   .bh-row:hover .bh-cover img { transform: scale(1.03); }
@@ -71,6 +73,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 7% 7%;
+    background: #161618;
     color: #f2f3f5;
   }
   .bh-cover-text small {
@@ -146,6 +149,17 @@
 
   .bh [hidden] { display: none !important; }
 
+  @media (max-width: 991px) {
+    .bh-chips {
+      overflow-x: auto;
+      margin: 0 -15px 1.1rem;
+      padding: 0 15px;
+      scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 15px, #000 calc(100% - 40px), transparent);
+      mask-image: linear-gradient(to right, transparent, #000 15px, #000 calc(100% - 40px), transparent);
+    }
+    .bh-chips::-webkit-scrollbar { display: none; }
+  }
   @media (max-width: 767px) {
     .bh { margin-top: 1.5rem; }
     .bh-row { grid-template-columns: 12rem minmax(0, 1fr); gap: 1.1rem; }
@@ -159,7 +173,6 @@
 
   /* the pinned post, large, above the chips */
   .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: start; margin: 0 0 2.4rem; }
-  .bh-pin .bh-cover { border-radius: 14px; }
   .bh-pin:hover .bh-cover img { transform: scale(1.02); }
   .bh-pin .bh-text { gap: 0.8rem; }
   .bh-pin .bh-title { margin-top: -0.28em; font-size: 2rem; line-height: 1.22; }
@@ -278,6 +291,13 @@
       // every page holds all the posts, so a filtered list is already complete and needs no pages
       if (pager) pager.hidden = filter !== "all";
     }
+    // in a row that scrolls sideways, the chosen topic moves to the middle
+    function centre(button) {
+      var row = button.parentNode.parentNode;
+      if (row.scrollWidth <= row.clientWidth) return;
+      var offset = button.getBoundingClientRect().left - row.getBoundingClientRect().left;
+      row.scrollLeft += offset - (row.clientWidth - button.offsetWidth) / 2;
+    }
     function chip(filter) {
       for (var i = 0; i < chips.length; i++) {
         if (chips[i].getAttribute("data-filter") === filter) return chips[i];
@@ -288,11 +308,15 @@
       chips[k].addEventListener("click", function (event) {
         var filter = event.currentTarget.getAttribute("data-filter");
         show(filter);
+        centre(event.currentTarget);
         var address = location.pathname + location.search + (filter === "all" ? "" : "#" + filter);
         if (history.replaceState) history.replaceState(null, "", address);
       });
     }
     var linked = decodeURIComponent(location.hash.slice(1));
-    if (linked && chip(linked)) show(linked);
+    if (linked && chip(linked)) {
+      show(linked);
+      centre(chip(linked));
+    }
   })();
 </script>
