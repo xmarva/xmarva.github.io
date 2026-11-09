@@ -1,0 +1,14 @@
+---
+layout: null
+sitemap: false
+permalink: /assets/json/previews.json
+---
+{%- comment -%}
+  Title, description and cover of every post, read by assets/js/link-previews.js when a reader hovers a link to a post.
+{%- endcomment -%}
+{
+{%- for post in site.posts -%}
+  {%- assign description = site.data.seo[post.url] | default: post.seo_description | default: post.description | strip_html | strip_newlines -%}
+  {{ post.url | jsonify }}: {"title": {{ post.title | strip_html | jsonify }}, "description": {{ description | truncate: 220 | jsonify }}, "cover": {{ post.thumbnail | default: "" | relative_url | jsonify }}, "date": {{ post.date | date: "%-d %B %Y" | jsonify }}}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+}
