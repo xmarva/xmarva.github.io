@@ -31,7 +31,7 @@
       {%- endfor -%}
       {
         id: "nav-{{ about_title | slugify }}",
-        title: "{{ about_title | truncatewords: 13 }}",
+        title: {{ about_title | truncatewords: 13 | jsonify }},
         section: "Navigation",
         handler: () => {
           window.location.href = "{{ '/' | relative_url }}";
@@ -44,10 +44,10 @@
             {%- for child in p.children -%}
               {%- unless child.title == 'divider' -%}
                 {
-                  {%- assign title = child.title | escape | strip -%}
+                  {%- assign title = child.title | strip -%}
                   {%- if child.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = child.url -%}{%- endif -%}
                   id: "dropdown-{{ title | slugify }}",
-                  title: "{{ title | truncatewords: 13 }}",
+                  title: {{ title | truncatewords: 13 | jsonify }},
                   description: "{{ child.description | strip_html | strip_newlines | escape | strip }}",
                   section: "Dropdown",
                   handler: () => {
@@ -59,10 +59,10 @@
 
           {%- else -%}
             {
-              {%- assign title = p.title | escape | strip -%}
+              {%- assign title = p.title | strip -%}
               {%- if p.permalink contains "/blog/" -%}{%- assign url = "/blog/" -%} {%- else -%}{%- assign url = p.url -%}{%- endif -%}
               id: "nav-{{ title | slugify }}",
-              title: "{{ title | truncatewords: 13 }}",
+              title: {{ title | truncatewords: 13 | jsonify }},
               description: "{{ p.description | strip_html | strip_newlines | escape | strip }}",
               section: "Navigation",
               handler: () => {
@@ -74,14 +74,14 @@
       {%- endfor -%}
       {%- for post in site.posts -%}
         {
-          {%- assign title = post.title | escape | strip -%}
+          {%- assign title = post.title | strip -%}
           id: "post-{{ title | slugify }}",
           {% if post.redirect == blank %}
-            title: "{{ title | truncatewords: 13 }}",
+            title: {{ title | truncatewords: 13 | jsonify }},
           {% elsif post.redirect contains '://' %}
-            title: '{{ title | truncatewords: 13 }} <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+            title: {{ title | truncatewords: 13 | jsonify }} + ' <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
           {% else %}
-            title: "{{ title | truncatewords: 13 }}",
+            title: {{ title | truncatewords: 13 | jsonify }},
           {% endif %}
           description: "{{ post.description | strip_html | strip_newlines | escape | strip }}",
           section: "Posts",
@@ -106,7 +106,7 @@
                 {%- assign title = item.title | newline_to_br | replace: "<br />", " " | replace: "<br/>", " " | strip_html | strip_newlines | escape | strip -%}
               {%- endif -%}
               id: "{{ collection.label }}-{{ title | slugify }}",
-              title: '{{ title | emojify | truncatewords: 13 }}',
+              title: {{ title | emojify | truncatewords: 13 | replace: ":", "&#58;" | jsonify }},
               description: "{{ item.description | strip_html | strip_newlines | escape | strip }}",
               section: "{{ collection.label | capitalize }}",
               {%- unless item.inline -%}
