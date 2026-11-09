@@ -378,6 +378,32 @@ html[data-theme="dark"] .post-page .post-cover.post-art img {
   mix-blend-mode: lighten;
 }
 
+// a cover's picture alone on a dotted ground (_includes/cover_img.liquid, plate=true): the box around it can take any
+// shape and the picture is never cropped; the picture's own ground drops out against the same colour
+.cover-plate {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--cover-bg);
+  background-image: radial-gradient(circle, var(--plate-dot) 0.9px, transparent 1.4px);
+  background-position: center;
+  background-size: 12px 12px;
+
+  img {
+    position: absolute;
+    inset: -7%; // the picture comes with a margin of its own: most of it is taken back here
+    width: 114%;
+    height: 114%;
+    max-width: none;
+    object-fit: contain;
+    mix-blend-mode: darken;
+  }
+}
+
+html[data-theme="dark"] .cover-plate img {
+  mix-blend-mode: lighten;
+}
+
 // one version of a figure per theme
 html:not([data-theme="dark"]) .post-content figure.post-figure .tfs-dark,
 html[data-theme="dark"] .post-content figure.post-figure .tfs-light {
