@@ -1,0 +1,223 @@
+---
+layout: page
+title: KV cache and GPU memory calculator
+permalink: /tools/kv-cache-calculator/
+description: "How much GPU memory a language model needs for its weights and its KV cache, for any Hugging Face model id: grouped-query attention, DeepSeek's latent attention, sliding windows and hybrid models, counted from the model's own config."
+seo_title: "KV cache and GPU memory calculator for Hugging Face LLMs"
+nav: false
+---
+
+<p class="kvc-lead">Type a model's id from the Hugging Face hub. The page reads the model's <code>config.json</code> in your browser and counts what one token costs in its cache, layer by layer, and how much memory the weights and the cache need together at the context length and number of conversations you choose. The arithmetic is the one written out in <a href="/blog/2026/transformer-architectures-08-kv/">lesson 8 of the architectures course</a>.</p>
+
+<form id="kvc-form" class="kvc-form" autocomplete="off">
+  <label class="kvc-wide">Model id
+    <input id="kvc-model" list="kvc-presets" value="Qwen/Qwen3-8B" spellcheck="false">
+    <datalist id="kvc-presets">
+      <option value="Qwen/Qwen3-8B"></option>
+      <option value="Qwen/Qwen3-30B-A3B"></option>
+      <option value="unsloth/Meta-Llama-3.1-8B"></option>
+      <option value="mistralai/Mistral-7B-v0.1"></option>
+      <option value="unsloth/gemma-3-27b-pt"></option>
+      <option value="openai/gpt-oss-20b"></option>
+      <option value="deepseek-ai/DeepSeek-V3"></option>
+      <option value="openbmb/MiniCPM3-4B"></option>
+      <option value="ibm-granite/granite-4.0-h-tiny"></option>
+      <option value="Qwen/Qwen3-Next-80B-A3B-Instruct"></option>
+      <option value="TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T"></option>
+    </datalist>
+  </label>
+  <label>Context, tokens
+    <select id="kvc-context">
+      <option>2048</option><option>4096</option><option selected>8192</option><option>32768</option>
+      <option>65536</option><option>131072</option><option>262144</option><option>1048576</option>
+    </select>
+  </label>
+  <label>Conversations at once
+    <input id="kvc-batch" type="number" min="1" max="4096" value="1">
+  </label>
+  <label>Cache numbers
+    <select id="kvc-kv">
+      <option value="2" selected>16-bit</option><option value="1">8-bit</option><option value="0.5">4-bit</option>
+    </select>
+  </label>
+  <label>Weights
+    <select id="kvc-w">
+      <option value="2" selected>16-bit</option><option value="1">8-bit</option><option value="0.5">4-bit</option>
+    </select>
+  </label>
+  <button type="submit">Count</button>
+</form>
+
+<div id="kvc-out" class="kvc-out" aria-live="polite"></div>
+
+<h2>How it is counted</h2>
+
+<p>A Transformer keeps a key and a value for every token in every layer that attends over the whole text. Per token and per such layer that is <code>2 × key-value heads × head size</code> numbers; models with grouped-query attention share each key-value head among several query heads, which is why their count of key-value heads, not of query heads, is what matters. DeepSeek's multi-head latent attention keeps one compressed vector and one rotary key per token instead, <code>kv_lora_rank + qk_rope_head_dim</code> numbers per layer, from which every head's key and value are rebuilt.</p>
+
+<p>Layers with a sliding window keep only the last window of tokens, so their cost stops growing at the window's length; the page reads which layers slide from <code>layer_types</code> or from the window pattern in the config. Hybrid models such as Granite 4.0 H, Nemotron-H, Jamba and Qwen3-Next have recurrent layers, Mamba or linear attention, whose state has a fixed size whatever the length: they add a few megabytes per conversation and are not counted here. The weights are the number of parameters the hub reports for the checkpoint, times the bytes per number you choose.</p>
+
+<p>Not counted: activations during a forward pass, the framework's own memory, and the fragmentation that paged caches reduce. Leave a margin of ten to twenty percent. Gated repositories, such as Meta's own Llama, can't be read without signing in; their public copies by Unsloth carry the same config.</p>
+
+<style>
+.kvc-lead { margin-bottom: 1.4rem; }
+.kvc-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.8rem 1rem; align-items: end; margin-bottom: 1.4rem; }
+.kvc-form label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.82rem; color: var(--global-text-color-light); }
+.kvc-form .kvc-wide { grid-column: 1 / -1; }
+.kvc-form input, .kvc-form select { font: inherit; font-size: 0.95rem; color: var(--global-text-color); background: var(--global-card-bg-color); border: 1px solid var(--global-divider-color); border-radius: 6px; padding: 0.45rem 0.55rem; min-width: 0; }
+.kvc-form #kvc-model { font-family: var(--global-code-font, monospace); }
+.kvc-form button { font: inherit; padding: 0.5rem 1rem; border: 0; border-radius: 6px; background: var(--global-theme-color); color: #fff; cursor: pointer; }
+.kvc-out { margin-bottom: 2rem; }
+.kvc-out .kvc-error { color: var(--global-theme-color); }
+.kvc-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.7rem; margin: 0.6rem 0 1.2rem; }
+.kvc-fact { border: 1px solid var(--global-divider-color); border-radius: 8px; padding: 0.6rem 0.75rem; background: var(--global-card-bg-color); }
+.kvc-fact span { display: block; font-size: 0.75rem; color: var(--global-text-color-light); }
+.kvc-fact strong { font-size: 1.15rem; }
+.kvc-gpus { display: flex; flex-direction: column; gap: 0.45rem; }
+.kvc-gpu { display: grid; grid-template-columns: 9.5rem 1fr 5.5rem; align-items: center; gap: 0.6rem; font-size: 0.85rem; }
+.kvc-bar { position: relative; height: 0.85rem; border-radius: 4px; background: var(--global-divider-color); overflow: hidden; }
+.kvc-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+.kvc-bar .kvc-weights { background: var(--global-text-color-light); }
+.kvc-bar .kvc-cache { background: var(--global-theme-color); }
+.kvc-note { font-size: 0.82rem; color: var(--global-text-color-light); margin-top: 0.8rem; }
+@media (max-width: 520px) { .kvc-gpu { grid-template-columns: 6.5rem 1fr 4.5rem; } }
+</style>
+
+<script>
+(function () {
+  const GPUS = [["T4", 16], ["RTX 4090 or L4", 24], ["A100", 40], ["A100 or H100", 80], ["H200", 141]];
+  const form = document.getElementById("kvc-form");
+  const out = document.getElementById("kvc-out");
+
+  function fetchJson(url) {
+    return fetch(url).then(function (response) {
+      if (response.status === 401 || response.status === 403) throw new Error("gated");
+      if (!response.ok) throw new Error("missing");
+      return response.json();
+    });
+  }
+
+  function attentionLayers(c, total) {
+    const span = c.use_sliding_window === false ? 0 : c.sliding_window || 0;
+    if (Array.isArray(c.layer_types)) {
+      let full = 0;
+      let sliding = 0;
+      c.layer_types.forEach(function (t) {
+        if (t === "sliding_attention" || t === "local_attention") sliding += 1;
+        else if (t === "full_attention" || t === "attention" || t === "global_attention") full += 1;
+      });
+      return { full: full, sliding: sliding, window: span, note: total - full - sliding };
+    }
+    if (typeof c.hybrid_override_pattern === "string") {
+      const full = c.hybrid_override_pattern.split("*").length - 1;
+      return { full: full, sliding: 0, window: 0, note: total - full };
+    }
+    if (c.attn_layer_period) {
+      let full = 0;
+      for (let i = 0; i < total; i += 1) if (i % c.attn_layer_period === (c.attn_layer_offset || 0)) full += 1;
+      return { full: full, sliding: 0, window: 0, note: total - full };
+    }
+    if (c.full_attention_interval) {
+      const full = Math.floor(total / c.full_attention_interval);
+      return { full: full, sliding: 0, window: 0, note: total - full };
+    }
+    if (c.linear_attn_config && Array.isArray(c.linear_attn_config.full_attn_layers)) {
+      const full = c.linear_attn_config.full_attn_layers.length;
+      return { full: full, sliding: 0, window: 0, note: total - full };
+    }
+    if (c.sliding_window_pattern && span) {
+      const full = Math.floor(total / c.sliding_window_pattern);
+      return { full: full, sliding: total - full, window: span, note: 0 };
+    }
+    if (span) return { full: 0, sliding: total, window: span, note: 0 };
+    return { full: total, sliding: 0, window: 0, note: 0 };
+  }
+
+  function perLayerNumbers(c) {
+    if (c.kv_lora_rank) return { numbers: c.kv_lora_rank + (c.qk_rope_head_dim || 0), kind: "latent attention" };
+    const heads = c.num_attention_heads;
+    const kv = c.num_key_value_heads || heads;
+    const head = c.head_dim || Math.round(c.hidden_size / heads);
+    const kind = kv === 1 ? "multi-query" : kv < heads ? "grouped-query, " + kv + " key-value heads" : "multi-head";
+    return { numbers: 2 * kv * head, kind: kind };
+  }
+
+  function bytes(n) {
+    if (n >= 1e12) return (n / 1e12).toFixed(2) + " TB";
+    if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e11 ? 0 : 1) + " GB";
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + " MB";
+    return (n / 1e3).toFixed(1) + " KB";
+  }
+
+  function fact(label, value) {
+    return '<div class="kvc-fact"><span>' + label + "</span><strong>" + value + "</strong></div>";
+  }
+
+  function show(id, raw, params) {
+    const c = raw.text_config || raw;
+    const total = c.num_hidden_layers || c.n_layer;
+    const layers = attentionLayers(c, total);
+    const per = perLayerNumbers(c);
+    const context = Number(document.getElementById("kvc-context").value);
+    const batch = Math.max(1, Number(document.getElementById("kvc-batch").value) || 1);
+    const kvBytes = Number(document.getElementById("kvc-kv").value);
+    const wBytes = Number(document.getElementById("kvc-w").value);
+    const slots = layers.full * context + layers.sliding * Math.min(context, layers.window || context);
+    const cachePerConversation = slots * per.numbers * kvBytes;
+    const cache = cachePerConversation * batch;
+    const weights = params ? params * wBytes : 0;
+    const perToken = (layers.full + layers.sliding) * per.numbers * kvBytes;
+    let html = "<p><strong>" + id + "</strong>: " + total + " layers, " + per.kind;
+    if (layers.sliding) html += "; " + layers.sliding + " of them slide over " + layers.window.toLocaleString() + " tokens";
+    if (layers.note) html += "; " + layers.note + " recurrent layers with a fixed state, not counted";
+    html += ".</p><div class=\"kvc-facts\">";
+    html += fact("cache per token, all layers", bytes(perToken));
+    html += fact("cache, one conversation of " + context.toLocaleString(), bytes(cachePerConversation));
+    html += fact("cache, " + batch + (batch === 1 ? " conversation" : " conversations"), bytes(cache));
+    html += fact("weights" + (params ? ", " + (params / 1e9).toFixed(1) + "B parameters" : ""), params ? bytes(weights) : "unknown");
+    html += fact("weights and cache", bytes(weights + cache));
+    html += "</div><div class=\"kvc-gpus\">";
+    GPUS.forEach(function (gpu) {
+      const capacity = gpu[1] * 1e9;
+      const w = Math.min(100, (weights / capacity) * 100);
+      const k = Math.min(100 - w, (cache / capacity) * 100);
+      const fits = weights + cache <= capacity * 0.9;
+      const count = Math.ceil((weights + cache) / (capacity * 0.9));
+      html += '<div class="kvc-gpu"><span>' + gpu[0] + " · " + gpu[1] + ' GB</span><div class="kvc-bar"><i class="kvc-weights" style="width:' + w.toFixed(1) + '%"></i><i class="kvc-cache" style="left:' + w.toFixed(1) + "%;width:" + k.toFixed(1) + '%"></i></div><span>' + (fits ? "fits" : count + " GPUs") + "</span></div>";
+    });
+    html += '</div><p class="kvc-note">Grey: weights; red: the cache. "Fits" leaves a tenth of the card for activations and the framework.</p>';
+    out.innerHTML = html;
+  }
+
+  function run(event) {
+    if (event) event.preventDefault();
+    const id = document.getElementById("kvc-model").value.trim().replace(/^https?:\/\/huggingface\.co\//, "").replace(/\/$/, "");
+    if (!/^[\w.-]+\/[\w.-]+$/.test(id)) {
+      out.innerHTML = '<p class="kvc-error">A model id looks like <code>Qwen/Qwen3-8B</code>.</p>';
+      return;
+    }
+    out.innerHTML = "<p>Reading " + id + "…</p>";
+    const config = fetchJson("https://huggingface.co/" + id + "/resolve/main/config.json");
+    const info = fetchJson("https://huggingface.co/api/models/" + id).catch(function () {
+      return null;
+    });
+    Promise.all([config, info])
+      .then(function (both) {
+        const params = both[1] && both[1].safetensors ? both[1].safetensors.total : null;
+        show(id, both[0], params);
+      })
+      .catch(function (error) {
+        out.innerHTML = '<p class="kvc-error">' + (error.message === "gated"
+          ? "This repository is gated: its config can't be read without signing in. Try a public copy, for example unsloth/Meta-Llama-3.1-8B."
+          : "No config.json found for " + id + ".") + "</p>";
+      });
+  }
+
+  form.addEventListener("submit", run);
+  ["kvc-context", "kvc-batch", "kvc-kv", "kvc-w"].forEach(function (name) {
+    document.getElementById(name).addEventListener("change", function () {
+      run();
+    });
+  });
+  run();
+})();
+</script>
