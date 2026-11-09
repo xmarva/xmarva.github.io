@@ -17,64 +17,33 @@ layout: default
 {% assign read_time = content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
 
 <div class="post post-page">
-  <header class="post-header">
+  <header class="post-header{% if page.thumbnail %} has-cover{% endif %}">
+    {% assign lesson_number = nil %}{% assign lesson_course = nil %}
+    {% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == page.url %}{% assign lesson_number = forloop.index %}{% assign lesson_course = c %}{% endif %}{% endfor %}{% endfor %}
+    {% assign main_category = page.categories | first %}
+    {% if lesson_course %}
+      <p class="post-kicker"><a href="{{ '/teaching/' | relative_url }}">{{ lesson_course.badge | default: 'Course' | downcase }} · lesson {{ lesson_number }} of {{ lesson_course.lessons.size }}</a></p>
+    {% elsif main_category %}
+      <p class="post-kicker"><a href="{{ main_category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ main_category | replace: '-', ' ' }}</a></p>
+    {% endif %}
     <h1 class="post-title">{{ page.title }}</h1>
+    {% assign dek = page.dek | default: page.description | split: '. ' | first | strip %}
+    {% if dek != '' %}
+      {% assign dek_end = dek | slice: -1, 1 %}
+      <p class="post-dek">{{ dek }}{% unless dek_end == '.' or dek_end == '?' or dek_end == '!' %}.{% endunless %}</p>
+    {% endif %}
+    <p class="post-meta post-byline">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
+      {% if page.last_updated %}
+        <span aria-hidden="true">&middot;</span> updated {{ page.last_updated | date: '%B %-d, %Y' }}
+      {% endif %}
+      <span aria-hidden="true">&middot;</span> {{ read_time }} min read
+    </p>
     {% if page.thumbnail %}
       <figure class="post-cover">
         <img src="{{ page.thumbnail | relative_url }}" alt="" width="1200" height="630" fetchpriority="high" decoding="async">
       </figure>
     {% endif %}
-    <p class="post-meta post-byline">
-      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
-      {% if page.author -%}
-        <span aria-hidden="true">&middot;</span> {{ page.author -}}
-      {%- endif %}
-      {% if page.last_updated %}
-        <span aria-hidden="true">&middot;</span> updated {{ page.last_updated | date: '%B %-d, %Y' }}
-      {% endif %}
-      <span aria-hidden="true">&middot;</span> {{ read_time }} min read
-      {% if page.meta -%}
-        <span aria-hidden="true">&middot;</span> {{ page.meta -}}
-      {%- endif %}
-    </p>
-    <p class="post-tags">
-      {% if url_beginning == '/blog/' %}
-        <a href="{{ year | prepend: '/blog/' | append: '/' | relative_url }}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-      {% else %}
-        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-      {% endif %}
-      {% if tags != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for tag in page.tags %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | append: '/' | relative_url }}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag -}}
-            </a>
-          {% else %}
-            <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-
-      {% if categories != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for category in page.categories %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}
-            </a>
-          {% else %}
-            <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-    </p>
   </header>
 
   <article class="post-content">
@@ -90,6 +59,12 @@ layout: default
       {{ content }}
     </div>
   </article>
+
+  {% if tags != '' and url_beginning == '/blog/' %}
+    <p class="post-tags-end">
+      {% for tag in page.tags %}<a href="{{ tag | slugify | prepend: '/blog/tag/' | append: '/' | relative_url }}">#{{ tag }}</a>{% endfor %}
+    </p>
+  {% endif %}
 
   {% if page.citation %}
     {% include citation.liquid %}
@@ -123,3 +98,4 @@ layout: default
 <script defer src="{{ '/assets/js/citations.js' | relative_url | bust_file_cache }}"></script>
 <script defer src="{{ '/assets/js/link-previews.js' | relative_url | bust_file_cache }}"></script>
 <script defer src="{{ '/assets/js/side-toc.js' | relative_url | bust_file_cache }}"></script>
+<script defer src="{{ '/assets/js/figures.js' | relative_url | bust_file_cache }}"></script>

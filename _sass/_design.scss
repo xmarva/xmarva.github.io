@@ -1,0 +1,442 @@
+/*******************************************************************************
+ * The site's own design on top of the theme: one type family with the course's covers and figures (IBM Plex), a warm
+ * paper light theme and a dark "lab" theme in the course's palette, the red dot as the site's mark, an article-like
+ * post header, numbered figures and notebook-like code cells, and a colour per blog category.
+ ******************************************************************************/
+
+// ---------------------------------------------------------------- type
+
+:root {
+  --font-sans: "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --global-code-font: var(--font-mono);
+  --c-mono: var(--font-mono);
+}
+
+body,
+.navbar,
+.btn,
+input,
+select,
+button,
+textarea {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.post-title,
+.bh-title {
+  font-family: var(--font-sans);
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
+}
+
+// long reading in a serif, everything around it in the sans
+.post-page #markdown-content {
+  > p,
+  > ul,
+  > ol,
+  > blockquote,
+  > dl,
+  .callout p:not(.callout-label),
+  .tldr p:not(.tldr-label),
+  .tldr li,
+  details.method p,
+  details.method li {
+    font-family: var(--font-serif);
+    font-size: 1.04rem;
+    line-height: 1.72;
+  }
+
+  h2 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+}
+
+// ---------------------------------------------------------------- themes: paper and lab
+
+:root {
+  --global-bg-color: #fbf9f4;
+  --global-text-color: #1d2430;
+  --global-text-color-light: #5b6575;
+  --global-footer-bg-color: #fbf9f4;
+  --global-footer-text-color: #5b6575;
+  --global-footer-link-color: #1d2430;
+  --global-card-bg-color: #fffefb;
+  --global-divider-color: rgba(29, 36, 48, 0.11);
+  --global-code-bg-color: #f3efe6;
+  --global-newsletter-bg-color: #fbf9f4;
+  --global-newsletter-text-color: #1d2430;
+
+  // the course's palette, for categories and accents
+  --cat-ml: #6a55d8;
+  --cat-cog: #0f8c7e;
+  --cat-money: #b06d0b;
+  --cat-systems: #3c6e9e;
+  --cat-security: #5b6575;
+  --cat-philosophy: #a23d68;
+}
+
+html[data-theme="dark"] {
+  --global-bg-color: #111419;
+  --global-text-color: #e7eaf0;
+  --global-text-color-light: #9aa3b2;
+  --global-footer-bg-color: #111419;
+  --global-footer-text-color: #9aa3b2;
+  --global-footer-link-color: #e7eaf0;
+  --global-card-bg-color: #1a1f26;
+  --global-divider-color: #2c333d;
+  --global-code-bg-color: #1a1f26;
+  --global-newsletter-bg-color: #1a1f26;
+  --global-newsletter-text-color: #e7eaf0;
+
+  --cat-ml: #9c8cf5;
+  --cat-cog: #3cc2b0;
+  --cat-money: #f0b04a;
+  --cat-systems: #7fb0e0;
+  --cat-security: #9aa3b2;
+  --cat-philosophy: #e58ab0;
+}
+
+body,
+.navbar,
+.navbar.fixed-top,
+footer,
+.sticky-bottom {
+  background-color: var(--global-bg-color) !important;
+}
+
+// ---------------------------------------------------------------- the red dot
+
+.brand-dot {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-left: 0.18em;
+  border-radius: 50%;
+  background: var(--global-theme-color);
+  vertical-align: 0.12em;
+}
+
+.navbar-nav .nav-item.active > .nav-link {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0.15rem;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+  }
+}
+
+.side-toc a.active {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -1.22rem;
+    top: 0.42em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+  }
+}
+
+.post-content .callout .callout-label::before,
+.post-content aside.tldr > :first-child::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 0.1em;
+}
+
+// ---------------------------------------------------------------- the post header
+
+.post-page .post-header {
+  margin-bottom: 1.6rem;
+
+  .post-kicker {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1.1rem;
+    padding: 0.28rem 0.7rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--global-text-color-light);
+
+    a {
+      color: inherit;
+    }
+
+    &::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--global-theme-color);
+    }
+  }
+
+  .post-title {
+    margin-bottom: 0.7rem;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .post-dek {
+    max-width: 46rem;
+    margin: 0 0 1rem;
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    line-height: 1.55;
+    color: var(--global-text-color-light);
+  }
+
+  .post-byline {
+    margin: 0 0 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--global-text-color-light);
+  }
+
+  // only the picture half of the cover, beside the title: the cover's own title would repeat it
+  .post-cover {
+    margin: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #17181c;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 100% 50%;
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  .post-page .post-header.has-cover {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto 1fr;
+    column-gap: 2.4rem;
+
+    > * {
+      grid-column: 1;
+    }
+
+    .post-cover {
+      grid-column: 2;
+      grid-row: 1 / span 5;
+      align-self: start;
+      aspect-ratio: 600 / 630;
+    }
+  }
+}
+
+// the lesson's line of links stays in the interface's sans
+.post-page #markdown-content > p.tfs-links {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+}
+
+// tags at the end of the post, quiet
+.post-page .post-tags-end {
+  margin: 2.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--global-divider-color);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 2;
+
+  a {
+    display: inline-block;
+    margin: 0 0.35rem 0.35rem 0;
+    padding: 0.05rem 0.55rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 6px;
+    color: var(--global-text-color-light);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--global-theme-color);
+      border-color: var(--global-theme-color);
+    }
+  }
+}
+
+// ---------------------------------------------------------------- figures (assets/js/figures.js) and code cells
+
+.post-content figure.post-figure {
+  margin: 1.8rem 0 2rem;
+
+  > img,
+  > p > img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 0.55rem;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--global-text-color-light);
+
+    b {
+      margin-right: 0.35rem;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      color: var(--global-text-color);
+    }
+  }
+}
+
+@media (min-width: 1600px) {
+  .post-content figure.post-figure {
+    margin-left: -80px;
+    margin-right: -80px;
+
+    figcaption {
+      margin-left: 80px;
+      margin-right: 80px;
+    }
+  }
+}
+
+// a code cell carries its number, as in a notebook
+.post-page #markdown-content {
+  counter-reset: cell;
+
+  div.language-python.highlighter-rouge {
+    counter-increment: cell;
+    position: relative;
+
+    &::after {
+      content: "In [" counter(cell) "]";
+      position: absolute;
+      top: 0.55rem;
+      right: 0.8rem;
+      z-index: 2;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--global-text-color-light);
+      pointer-events: none;
+    }
+  }
+}
+
+// what a cell printed: the same card as the course's tables, not a grey block
+.post-content pre.tfs-printed {
+  border: 1px solid var(--global-divider-color);
+  border-left: 3px solid var(--global-text-color-light);
+  border-radius: 0 8px 8px 0;
+  background: var(--global-card-bg-color);
+  font-family: var(--font-mono);
+}
+
+// ---------------------------------------------------------------- a colour per category
+
+@mixin category-colors($property) {
+  &[data-filter="machine-learning"],
+  &[data-category="machine-learning"] {
+    #{$property}: var(--cat-ml);
+  }
+  &[data-filter="cognitive-science"],
+  &[data-category="cognitive-science"] {
+    #{$property}: var(--cat-cog);
+  }
+  &[data-filter="crypto"],
+  &[data-category="crypto"],
+  &[data-filter="finance"],
+  &[data-category="finance"] {
+    #{$property}: var(--cat-money);
+  }
+  &[data-filter="system-design"],
+  &[data-category="system-design"],
+  &[data-category="code"] {
+    #{$property}: var(--cat-systems);
+  }
+  &[data-filter="cybersecurity"],
+  &[data-category="cybersecurity"] {
+    #{$property}: var(--cat-security);
+  }
+  &[data-filter="philosophy"],
+  &[data-category="philosophy"] {
+    #{$property}: var(--cat-philosophy);
+  }
+}
+
+.bh-chip {
+  --chip-color: var(--global-theme-color);
+  @include category-colors(--chip-color);
+
+  &[data-filter]:not([data-filter="all"])::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 0.45rem;
+    border-radius: 50%;
+    background: var(--chip-color);
+    vertical-align: 0.1em;
+  }
+
+  &[aria-pressed="true"]:not([data-filter="all"]) {
+    border-color: var(--chip-color) !important;
+    color: var(--chip-color) !important;
+    background: color-mix(in srgb, var(--chip-color) 9%, transparent) !important;
+  }
+}
+
+.bh-cat {
+  --cat-color: var(--global-text-color-light);
+  @include category-colors(--cat-color);
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 0.35rem;
+    border-radius: 50%;
+    background: var(--cat-color);
+    vertical-align: 0.08em;
+  }
+}

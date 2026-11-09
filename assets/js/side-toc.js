@@ -27,11 +27,12 @@
 
   function fit() {
     const box = article.getBoundingClientRect();
-    const room = document.documentElement.clientWidth - box.right - 40;
+    const wide = window.matchMedia("(min-width: 1600px)").matches ? 80 : 0; // figures reach into the margin
+    const room = document.documentElement.clientWidth - box.right - 40 - wide;
     const visible = room >= 190 && window.innerHeight >= 560;
     aside.hidden = !visible;
     if (visible) {
-      aside.style.left = box.right + 32 + "px";
+      aside.style.left = box.right + 32 + wide + "px";
       aside.style.width = Math.min(260, room - 8) + "px";
     }
   }

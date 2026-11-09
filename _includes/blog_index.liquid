@@ -199,7 +199,7 @@
           <span>{{ read_time }} min read</span>
           {% if category %}
             <span class="bh-dot" aria-hidden="true">·</span>
-            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
+            <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
           {% endif %}
         </p>
       </div>
@@ -242,7 +242,7 @@
           <span>{{ read_time }} min read</span>
           {% if category %}
             <span class="bh-dot" aria-hidden="true">·</span>
-            <a href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
+            <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
           {% endif %}
         </p>
       </div>
