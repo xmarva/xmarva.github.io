@@ -30,6 +30,7 @@
     const room = document.documentElement.clientWidth - box.right - 40;
     const visible = room >= 190 && window.innerHeight >= 560;
     aside.hidden = !visible;
+    document.documentElement.classList.toggle("side-toc-shown", visible);
     if (visible) {
       aside.style.left = box.right + 32 + "px";
       aside.style.width = Math.min(260, room - 8) + "px";

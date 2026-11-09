@@ -1,0 +1,14 @@
+{% comment %}
+  A post's cover in the theme's colours: its light version (name-light.png, made by bin/cover-art.py) in the light
+  theme and the cover itself in the dark one; a cover without a light version is shown as it is.
+  include.src: the cover's path; include.width / include.height; include.lazy; include.priority
+{% endcomment %}
+{% assign cover_light = include.src | replace: '.png', '-light.png' %}
+{% assign cover_light_file = site.static_files | where: 'path', cover_light | first %}
+{% capture cover_attrs %}alt="" width="{{ include.width | default: 1200 }}" height="{{ include.height | default: 630 }}"{% if include.lazy %} loading="lazy"{% endif %}{% if include.priority %} fetchpriority="high"{% endif %} decoding="async"{% endcapture %}
+{% if cover_light_file %}
+  <img class="theme-light-only" src="{{ cover_light | relative_url }}" {{ cover_attrs }}>
+  <img class="theme-dark-only" src="{{ include.src | relative_url }}" {{ cover_attrs }}>
+{% else %}
+  <img src="{{ include.src | relative_url }}" {{ cover_attrs }}>
+{% endif %}
