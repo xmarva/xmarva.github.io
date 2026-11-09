@@ -44,11 +44,11 @@ layout: default
       {% assign art = site.static_files | where: 'path', art_path | first %}
       {% if art %}
         <figure class="post-cover post-art">
-          <img src="{{ art_path | relative_url }}" alt="" width="1200" height="960" fetchpriority="high" decoding="async">
+          {% include cover_img.liquid src=art_path width=1200 height=960 priority=true %}
         </figure>
       {% else %}
         <figure class="post-cover">
-          <img src="{{ page.thumbnail | relative_url }}" alt="" width="1200" height="630" fetchpriority="high" decoding="async">
+          {% include cover_img.liquid src=page.thumbnail priority=true %}
         </figure>
       {% endif %}
     {% endif %}

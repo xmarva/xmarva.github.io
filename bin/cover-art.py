@@ -1,18 +1,29 @@
-"""Make the plate that a post's header shows beside its title: the picture of the post's cover, without the cover's
-own title, centred on a 5:4 plate with the cover's background and dot grid. Saved next to the cover as cover-art.png;
-the post layout uses it when it exists and falls back to the cover otherwise.
+"""Make, next to every post's cover.png:
 
-    uv run --with pillow python bin/cover-art.py                 # every cover under assets/posts/
-    uv run --with pillow python bin/cover-art.py assets/posts/<slug>/cover.png
+- cover-art.png, the plate that the post's header shows beside its title: the cover's picture without the cover's own
+  title, centred on a 5:4 plate with the cover's background and dot grid;
+- cover-light.png and cover-art-light.png, the same two pictures on a light ground for the light theme.
+
+The covers are drawn from a few flat colours, a dark background, neutral greys and the site's red, so the light
+version is exact rather than an inversion: every pixel is split into its share of grey and its share of red over the
+background, and rebuilt from paper, ink and red with the same shares, which keeps anti-aliased edges clean.
+
+    uv run --with pillow --with numpy python bin/cover-art.py                 # every cover under assets/posts/
+    uv run --with pillow --with numpy python bin/cover-art.py assets/posts/<slug>/cover.png
 """
 
 import sys
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 WIDTH, HEIGHT, PAD = 1200, 960, 0.11
+PAPER = np.array([246, 243, 236], float)  # a plate on the paper page
+INK = np.array([29, 36, 48], float)  # the course's ink
+RED_LIGHT = np.array([214, 48, 48], float)  # the site's red, a touch deeper on a light ground
+RED_DARK = np.array([255, 59, 59], float)  # the covers' red
 
 
 def background(cover):
@@ -48,6 +59,17 @@ def plate(path):
     return out
 
 
+def lighten(image):
+    img = np.asarray(image.convert("RGB")).astype(float)
+    bg = img[-3, -3]
+    red = np.clip((img[..., 0] - img[..., 1]) / (RED_DARK[0] - RED_DARK[1]), 0, 1)  # share of red
+    grey = img.mean(axis=2) - red * (RED_DARK.mean() - bg.mean())
+    light = np.clip((grey - bg.mean()) / (235 - bg.mean()), 0, 1)  # share of light grey over the background
+    out = PAPER + light[..., None] * (INK - PAPER)
+    out = out * (1 - red[..., None]) + red[..., None] * RED_LIGHT
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
+
+
 def main():
     covers = [Path(p) for p in sys.argv[1:]] or sorted((ROOT / "assets/posts").glob("**/cover.png"))
     for cover in covers:
@@ -56,6 +78,8 @@ def main():
             print("skipped", cover)
             continue
         art.save(cover.with_name("cover-art.png"), optimize=True)
+        lighten(art).save(cover.with_name("cover-art-light.png"), optimize=True)
+        lighten(Image.open(cover)).save(cover.with_name("cover-light.png"), optimize=True)
         print("made", cover.with_name("cover-art.png").relative_to(ROOT) if cover.is_absolute() else cover.with_name("cover-art.png"))
 
 

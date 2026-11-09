@@ -63,7 +63,7 @@
         <a class="read-next-card" href="{{ post.url | relative_url }}">
           <span class="read-next-thumb{% unless post.thumbnail %} post-row-thumb-empty{% endunless %}">
             {% if post.thumbnail %}
-              <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+              {% include cover_img.liquid src=post.thumbnail lazy=true %}
             {% else %}
               <span>{{ post_category | default: 'blog' }}</span>
             {% endif %}

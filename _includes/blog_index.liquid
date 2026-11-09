@@ -184,7 +184,7 @@
     <article class="bh-pin" data-categories="{{ pin.categories | join: ' ' }}">
       <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if pin.thumbnail %}
-          <img src="{{ pin.thumbnail | relative_url }}" alt="" width="1200" height="630" decoding="async">
+          {% include cover_img.liquid src=pin.thumbnail %}
         {% else %}
           <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ pin.title }}</strong></span>
         {% endif %}
@@ -227,7 +227,7 @@
     <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}"{% unless on_page contains key %} data-other-page hidden{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
-          <img src="{{ post.thumbnail | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+          {% include cover_img.liquid src=post.thumbnail lazy=true %}
         {% else %}
           <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ post.title }}</strong></span>
         {% endif %}

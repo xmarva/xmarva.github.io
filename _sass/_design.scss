@@ -522,3 +522,21 @@ footer,
   border-radius: 50%;
   background: var(--global-theme-color);
 }
+
+// ---------------------------------------------------------------- covers in the theme's colours (_includes/cover_img.liquid)
+
+html[data-theme="dark"] .theme-light-only {
+  display: none !important;
+}
+
+html:not([data-theme="dark"]) .theme-dark-only {
+  display: none !important;
+}
+
+html:not([data-theme="dark"]) {
+  .post-page .post-cover,
+  .bh-cover,
+  .read-next-thumb {
+    box-shadow: 0 0 0 1px var(--global-divider-color);
+  }
+}
