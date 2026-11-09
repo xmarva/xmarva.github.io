@@ -1,14 +1,31 @@
 {% comment %}
   A post's cover in the theme's colours: its light version (name-light.png, made by bin/cover-art.py) in the light
   theme and the cover itself in the dark one; a cover without a light version is shown as it is.
-  include.src: the cover's path; include.width / include.height; include.lazy; include.priority
+  With plate=true the cover's picture is shown alone (cover-art.png, also made by bin/cover-art.py), without the
+  cover's own title, on a dotted ground that fills the box around it whatever its shape; a post without that picture
+  gets its whole cover.
+  include.src: the cover's path; include.plate; include.width / include.height; include.lazy; include.priority
 {% endcomment %}
-{% assign cover_light = include.src | replace: '.png', '-light.png' %}
+{% assign cover_src = include.src %}
+{% assign cover_plate = false %}
+{% assign cover_height = include.height | default: 630 %}
+{% if include.plate %}
+  {% assign cover_art = include.src | replace: 'cover.png', 'cover-art.png' %}
+  {% assign cover_art_file = site.static_files | where: 'path', cover_art | first %}
+  {% if cover_art_file %}
+    {% assign cover_src = cover_art %}
+    {% assign cover_plate = true %}
+    {% assign cover_height = 960 %}
+  {% endif %}
+{% endif %}
+{% assign cover_light = cover_src | replace: '.png', '-light.png' %}
 {% assign cover_light_file = site.static_files | where: 'path', cover_light | first %}
-{% capture cover_attrs %}alt="" width="{{ include.width | default: 1200 }}" height="{{ include.height | default: 630 }}"{% if include.lazy %} loading="lazy"{% endif %}{% if include.priority %} fetchpriority="high"{% endif %} decoding="async"{% endcapture %}
+{% capture cover_attrs %}alt="" width="{{ include.width | default: 1200 }}" height="{{ cover_height }}"{% if include.lazy %} loading="lazy"{% endif %}{% if include.priority %} fetchpriority="high"{% endif %} decoding="async"{% endcapture %}
+{% if cover_plate %}<span class="cover-plate">{% endif %}
 {% if cover_light_file %}
   <img class="theme-light-only" src="{{ cover_light | relative_url }}" {{ cover_attrs }}>
-  <img class="theme-dark-only" src="{{ include.src | relative_url }}" {{ cover_attrs }}>
+  <img class="theme-dark-only" src="{{ cover_src | relative_url }}" {{ cover_attrs }}>
 {% else %}
-  <img src="{{ include.src | relative_url }}" {{ cover_attrs }}>
+  <img src="{{ cover_src | relative_url }}" {{ cover_attrs }}>
 {% endif %}
+{% if cover_plate %}</span>{% endif %}

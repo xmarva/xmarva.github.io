@@ -1,7 +1,8 @@
 {% comment %}
   The blog's list, shared by the home page and /blog/ so that the two are the same page: the pinned post (front
-  matter `featured: true`) large above the category chips, then the posts as rows, the cover on the left and the
-  title on the right, level with the cover's top edge. Lessons of the course get a small badge. The chips' categories
+  matter `featured: true`) large above the category chips, then the posts as rows, the cover's picture on the left
+  (without the cover's title, which would repeat the post's) and the text on the right, its first line level with
+  the picture's top edge and its date line with the bottom one. Lessons of a course get a small badge above the title. The chips' categories
   are in _data/blog.yml; a post can have several categories, and the first one is shown under its title.
 
   Every page of the blog carries all the posts: those of other pages are hidden until a chip is pressed, so that a
@@ -48,23 +49,26 @@
   .bh-row {
     position: relative;
     display: grid;
-    grid-template-columns: 17.5rem minmax(0, 1fr);
-    gap: 1.75rem;
-    align-items: start;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2rem;
+    align-items: stretch;
     padding: 1.5rem 0;
     border-top: 1px solid var(--bh-border);
   }
 
-  /* covers keep their 1200x630 shape; a post without one gets a typographic cover in the same dark-and-red style */
+  /* the cover's picture on its dotted ground (_includes/cover_img.liquid, plate=true); a post without a cover gets a
+     typographic one on the same dotted ground */
   .bh-cover {
     position: relative;
     display: block;
-    aspect-ratio: 1200 / 630;
+    width: 100%; /* stretched to a tall text, the box keeps its column's width and grows down */
+    aspect-ratio: 16 / 10;
     border: 1px solid var(--cover-line);
     overflow: hidden;
     background: var(--cover-bg);
   }
-  .bh-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .bh-cover > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .bh-cover img { transition: transform 0.4s ease; }
   .bh-row:hover .bh-cover img { transform: scale(1.03); }
   .bh-cover-text {
     position: absolute;
@@ -73,15 +77,17 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 7% 7%;
-    background: #161618;
-    color: #f2f3f5;
+    background-color: var(--cover-bg);
+    background-image: radial-gradient(circle, var(--plate-dot) 0.9px, transparent 1.4px);
+    background-size: 12px 12px;
+    color: var(--global-text-color);
   }
   .bh-cover-text small {
-    font-family: var(--global-code-font-family, monospace);
+    font-family: var(--font-mono);
     font-size: 0.62rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #9da3ae;
+    color: var(--global-text-color-light);
   }
   .bh-cover-text small::before {
     content: "";
@@ -90,14 +96,15 @@
     height: 0.5em;
     margin-right: 0.5em;
     border-radius: 50%;
-    background: #ff3636;
+    background: var(--global-theme-color);
   }
-  .bh-cover-text strong { font-size: 1.05rem; font-weight: 600; line-height: 1.2; }
+  .bh-cover-text strong { font-size: 1.05rem; font-weight: 600; line-height: 1.2; color: inherit; }
 
   .bh-text { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
   /* the first line of the title sits level with the top edge of the cover: the negative margin takes back the space
-     a line box keeps above the capitals */
+     a line box keeps above the capitals; under a lesson's badge the badge takes that place */
   .bh-title { margin: -0.32em 0 0; font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
+  .bh-lesson + .bh-title, .bh-kicker + .bh-title { margin-top: 0; }
   .bh-title a { color: var(--global-text-color); text-decoration: none; transition: color 0.2s ease; }
   .bh-row:hover .bh-title a { color: var(--global-theme-color); }
   .bh-desc {
@@ -110,12 +117,15 @@
     line-height: 1.55;
     color: var(--bh-muted);
   }
+  /* the date line sits on the cover's bottom edge */
   .bh-meta {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 0.35rem 0.5rem;
-    margin: 0.15rem 0 0;
+    margin: auto 0 0;
+    padding-top: 0.15rem;
+    white-space: nowrap;
     font-size: 0.82rem;
     color: var(--bh-muted);
   }
@@ -124,22 +134,16 @@
   .bh-meta a:hover { color: var(--global-theme-color); }
   .bh-dot { opacity: 0.6; }
 
-  .bh-badge, .bh-lesson {
+  .bh-lesson {
+    position: relative;
+    z-index: 2;
+    align-self: flex-start;
     display: inline-block;
     padding: 0.02rem 0.5rem;
     border-radius: 999px;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.02em;
-  }
-  .bh-badge {
-    background: color-mix(in srgb, var(--global-theme-color) 14%, transparent);
-    color: var(--global-theme-color);
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .bh-lesson {
     border: 1px solid color-mix(in srgb, var(--global-theme-color) 40%, transparent);
     color: var(--global-theme-color) !important;
     text-decoration: none !important;
@@ -162,23 +166,41 @@
   }
   @media (max-width: 767px) {
     .bh { margin-top: 1.5rem; }
-    .bh-row { grid-template-columns: 12rem minmax(0, 1fr); gap: 1.1rem; }
+    .bh-row { grid-template-columns: 11rem minmax(0, 1fr); gap: 1.1rem; }
     .bh-title { font-size: 1.1rem; }
     .bh-desc { -webkit-line-clamp: 3; font-size: 0.9rem; }
   }
   @media (max-width: 575px) {
     .bh-row { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+    .bh-row .bh-cover { aspect-ratio: 16 / 9; }
     .bh-title { margin-top: 0; font-size: 1.15rem; }
+    .bh-meta { flex-wrap: wrap; white-space: normal; }
   }
 
-  /* the pinned post, large, above the chips */
-  .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: start; margin: 0 0 2.4rem; }
+  /* the pinned post, large, above the chips: a label as in a post's header, then the title, and the date line on the
+     picture's bottom edge */
+  .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: stretch; margin: 0 0 2.4rem; }
   .bh-pin:hover .bh-cover img { transform: scale(1.02); }
   .bh-pin .bh-text { gap: 0.8rem; }
-  .bh-pin .bh-title { margin-top: -0.28em; font-size: 2rem; line-height: 1.22; }
+  .bh-pin .bh-title { font-size: 2rem; line-height: 1.22; }
   .bh-pin:hover .bh-title a { color: var(--global-theme-color); }
   .bh-pin .bh-desc { -webkit-line-clamp: 5; font-size: 1.05rem; line-height: 1.6; }
-  .bh-pin .bh-badge i { margin-right: 0.3rem; }
+  .bh-kicker {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.24rem 0.65rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--global-text-color-light);
+  }
+  .bh-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--global-theme-color); }
+  .bh-kicker a { position: relative; z-index: 2; color: inherit; }
+  .bh-kicker a:hover { color: var(--global-theme-color); }
   .bh-pager { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--bh-border); }
   .bh-pager a { font-size: 0.95rem; color: var(--global-text-color); text-decoration: none; }
   .bh-pager a:hover { color: var(--global-theme-color); }
@@ -197,23 +219,19 @@
     <article class="bh-pin" data-categories="{{ pin.categories | join: ' ' }}">
       <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if pin.thumbnail %}
-          {% include cover_img.liquid src=pin.thumbnail %}
+          {% include cover_img.liquid src=pin.thumbnail plate=true %}
         {% else %}
           <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ pin.title }}</strong></span>
         {% endif %}
       </a>
       <div class="bh-text">
+        <p class="bh-kicker">pinned{% if category %} · <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}</p>
         <h2 class="bh-title"><a class="stretched-link" href="{{ pin.url | relative_url }}">{{ pin.title }}</a></h2>
         {% if pin.description %}<p class="bh-desc">{{ pin.description }}</p>{% endif %}
         <p class="bh-meta">
-          <span class="bh-badge"><i class="fa-solid fa-thumbtack fa-xs" aria-hidden="true"></i>Pinned</span>
           <time datetime="{{ pin.date | date_to_xmlschema }}">{{ pin.date | date: '%b %-d, %Y' }}</time>
           <span class="bh-dot" aria-hidden="true">·</span>
           <span>{{ read_time }} min read</span>
-          {% if category %}
-            <span class="bh-dot" aria-hidden="true">·</span>
-            <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>
-          {% endif %}
         </p>
       </div>
     </article>
@@ -240,16 +258,16 @@
     <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}"{% unless on_page contains key %} data-other-page hidden{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
-          {% include cover_img.liquid src=post.thumbnail lazy=true %}
+          {% include cover_img.liquid src=post.thumbnail plate=true lazy=true %}
         {% else %}
           <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ post.title }}</strong></span>
         {% endif %}
       </a>
       <div class="bh-text">
+        {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">{{ badge }} · lesson {{ lesson }}</a>{% endif %}
         <h2 class="bh-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         {% if post.description %}<p class="bh-desc">{{ post.description }}</p>{% endif %}
         <p class="bh-meta">
-          {% if lesson %}<a class="bh-lesson" href="{{ '/teaching/' | relative_url }}">{{ badge }} · lesson {{ lesson }}</a>{% endif %}
           <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time>
           <span class="bh-dot" aria-hidden="true">·</span>
           <span>{{ read_time }} min read</span>
