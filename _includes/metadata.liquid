@@ -58,12 +58,15 @@
 <meta name="description" content="{{ meta_description | escape }}">
 {% comment %}
   Tag and year archives and single news items are lists of links with no text of their own: search engines may follow
-  them but should not show them. Categories stay indexable.
+  them but should not show them. Categories stay indexable. Every other page lets Google show its cover at full width,
+  which Discover needs before it shows a page with a large image.
 {% endcomment %}
 {% if page.robots %}
   <meta name="robots" content="{{ page.robots }}">
 {% elsif page.type == 'tag' or page.type == 'year' or page.collection == 'news' %}
   <meta name="robots" content="noindex, follow">
+{% else %}
+  <meta name="robots" content="max-image-preview:large">
 {% endif %}
 {% if page.keywords or site.keywords %}
   <meta name="keywords" content="{% if page.keywords %}{{ page.keywords }}{% else %}{{ site.keywords }}{% endif %}">
