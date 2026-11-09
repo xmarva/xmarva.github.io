@@ -138,29 +138,6 @@ footer,
   background-color: var(--global-bg-color) !important;
 }
 
-// ---------------------------------------------------------------- the mark after the name: a neuron in red
-
-.brand-mark {
-  display: inline-block;
-  width: 1.05em;
-  height: 1.05em;
-  margin-left: 0.15em;
-  vertical-align: -0.2em;
-  color: var(--global-theme-color);
-
-  path {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 3.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  circle {
-    fill: currentColor;
-  }
-}
-
 .navbar-nav .nav-item.active > .nav-link {
   position: relative;
 
