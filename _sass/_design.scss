@@ -25,8 +25,8 @@ textarea {
   font-family: var(--font-sans);
 }
 
-// the author's profiles (_includes/social_icons.liquid): small muted glyphs, the theme's red on hover; in a post's
-// header a row of their own under the date line, in the footer a centred row above the copyright
+// the author's profiles (_includes/social_icons.liquid) in the footer, a centred row above the copyright: small
+// muted glyphs, the theme's red on hover
 .social-icons {
   display: inline-flex;
   align-items: center;
@@ -51,11 +51,6 @@ textarea {
   }
 }
 
-.post-page .post-header .post-byline .social-icons {
-  display: flex;
-  margin-top: 0.55rem;
-}
-
 footer .social-icons {
   display: flex;
   justify-content: center;
@@ -65,6 +60,67 @@ footer .social-icons {
   svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+// sharing a post (_includes/post_share.liquid, assets/js/share.js): a row under the date line, "Share" and small muted
+// buttons that turn the theme's red on hover; the copy button shows a tick and "Link copied" for two seconds
+.post-page .post-header .post-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.8rem;
+  margin-top: 0.6rem;
+  color: var(--global-text-color-light); // a span, which the theme would give the text colour
+
+  .post-share-label {
+    margin-right: 0.05rem;
+    color: inherit;
+  }
+
+  a,
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--global-text-color-light);
+    opacity: 0.75;
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--global-theme-color);
+      opacity: 1;
+    }
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  [hidden],
+  .icon-done,
+  .is-done .icon-link {
+    display: none;
+  }
+
+  .is-done {
+    color: var(--global-theme-color);
+    opacity: 1;
+
+    .icon-done {
+      display: inline;
+    }
+  }
+
+  .post-share-status {
+    font-size: 0.8rem;
+    color: var(--global-theme-color);
   }
 }
 
