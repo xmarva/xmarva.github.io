@@ -25,6 +25,12 @@ textarea {
   font-family: var(--font-sans);
 }
 
+// thin strokes, as in print: by default macOS thickens every stroke, and the serif of the posts reads as semibold
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 h1,
 h2,
 h3,
@@ -59,6 +65,7 @@ samp {
     font-size: 1.16rem;
     font-weight: 400; // the theme's 300 came from light Roboto; a serif reads at its regular weight
     line-height: 1.66;
+    color: var(--post-ink);
   }
 
   em {
@@ -85,6 +92,7 @@ samp {
   --global-bg-color: #fbf9f4;
   --global-text-color: #1d2430;
   --global-text-color-light: #5b6575;
+  --post-ink: #363d49; // a post's long text, a shade softer than the headings, as on a printed page
   --global-footer-bg-color: #fbf9f4;
   --global-footer-text-color: #5b6575;
   --global-footer-link-color: #1d2430;
@@ -112,6 +120,7 @@ html[data-theme="dark"] {
   --global-bg-color: #111419;
   --global-text-color: #e7eaf0;
   --global-text-color-light: #9aa3b2;
+  --post-ink: #cdd2da;
   --global-footer-bg-color: #111419;
   --global-footer-text-color: #9aa3b2;
   --global-footer-link-color: #e7eaf0;
