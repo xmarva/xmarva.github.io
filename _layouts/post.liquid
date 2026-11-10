@@ -41,6 +41,7 @@ layout: default
         <span aria-hidden="true">&middot;</span> updated {{ page.last_updated | date: '%B %-d, %Y' }}
       {% endif %}
       <span aria-hidden="true">&middot;</span> {{ read_time }} min read
+      {% include social_icons.liquid %}
     </p>
     {% if page.thumbnail %}
       {% assign art_path = page.thumbnail | replace: 'cover.png', 'cover-art.png' %}

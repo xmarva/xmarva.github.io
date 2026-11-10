@@ -25,6 +25,49 @@ textarea {
   font-family: var(--font-sans);
 }
 
+// the author's profiles (_includes/social_icons.liquid): small muted glyphs, the theme's red on hover; in a post's
+// header a row of their own under the date line, in the footer a centred row above the copyright
+.social-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  a {
+    display: inline-flex;
+    color: var(--global-text-color-light);
+    opacity: 0.75;
+    transition: color 0.2s ease, opacity 0.2s ease;
+
+    &:hover {
+      color: var(--global-theme-color);
+      opacity: 1;
+    }
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+}
+
+.post-page .post-header .post-byline .social-icons {
+  display: flex;
+  margin-top: 0.55rem;
+}
+
+footer .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.15rem;
+  margin: 0 0 1rem;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 // thin strokes, as in print: by default macOS thickens every stroke, and the serif of the posts reads as semibold
 body {
   -webkit-font-smoothing: antialiased;
