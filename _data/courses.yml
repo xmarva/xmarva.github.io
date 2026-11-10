@@ -152,8 +152,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a09_long.ipynb
       cover: assets/img/teaching/arch-09.png
       topics: "Eleven models' context windows read from their configs, TinyLlama's cliff at token 2,049 and the rotary pairs behind it, position interpolation, NTK, YaRN and Llama 3.1's scaling written from scratch and raced on books, FlashAttention built from the online softmax, and Qwen3-4B looking for a needle and answering questions about a whole novel"
-    - title: "Beyond attention: Mamba, state space models and hybrids"
-      topics: "Linear recurrences, the selective scan, mamba-130m in our code, associative recall, Jamba and Gated DeltaNet, Mamba on DNA"
+    - title: "Beyond attention with Mamba, state space models and hybrids"
+      short: "Mamba and hybrids"
+      url: /blog/2026/transformer-architectures-10-mamba/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-10-mamba-and-hybrids
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a10_mamba.ipynb
+      cover: assets/img/teaching/arch-10.png
+      topics: "A state space model from its differential equation, Mamba's selective scan written from scratch with mamba-130m's weights, what its steps choose to remember, the parallel scan, generation with a state of fixed size, Mamba-2 as masked attention, Mamba against Pythia, the hybrid layouts of seven models, and selective copying trained from scratch"
     - title: "The Vision Transformer reads images as sequences of patches"
       short: "Vision Transformer"
       url: /blog/2026/transformer-architectures-11-vit/
