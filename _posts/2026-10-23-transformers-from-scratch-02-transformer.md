@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Implementing the Transformer in PyTorch: why attention divides by √d_k"
-date: 2026-10-23 11:00:00
+date: 2025-07-03 11:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-02-transformer/
 description: "Attention, masks, heads, positions and the full encoder-decoder of the 2017 paper, written line by line in PyTorch and checked against real models."
 tags: [transformers-from-scratch, attention, pytorch, nlp, deep-learning]
 categories: machine-learning

@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Evaluating machine translation with chrF and COMET"
-date: 2026-10-24 13:00:00
+date: 2025-08-11 13:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-04-evaluation/
 description: "Evaluate English–Russian translation with BLEU, chrF and COMET written from scratch: multiple references, agreement with professional translators, significance tests and a contaminated test set."
 tags: [transformers-from-scratch, machine-translation, evaluation, bleu, comet]
 categories: machine-learning

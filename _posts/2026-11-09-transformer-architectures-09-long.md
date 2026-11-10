@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Long context with RoPE scaling, YaRN and FlashAttention"
-date: 2026-11-09 18:00:00
+date: 2026-09-30 18:00:00
+last_updated: 2026-11-10
 description: "Why a language model breaks past the length it was trained on, and how RoPE scaling fixes it. Position interpolation, NTK scaling, YaRN and Llama 3.1's scaling written from scratch and checked against transformers, raced on TinyLlama; FlashAttention built from the online softmax; Qwen3 finding a needle in a novel up to 64k tokens."
 tags: [transformer-architectures, long-context, rope, yarn, flashattention, position-interpolation, qwen3, llm]
 categories: machine-learning

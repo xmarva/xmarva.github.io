@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Beyond attention with Mamba, state space models and hybrids"
-date: 2026-11-09 19:00:00
+date: 2026-10-19 19:00:00
+last_updated: 2026-11-10
 description: "State space models from the continuous equation up: discretisation, Mamba's selective scan written from scratch and checked against mamba-130m, what its time steps choose to remember, generation with a state of fixed size, Mamba-2 as masked attention, Mamba against Pythia on the same data, hybrids, and what selectivity buys, learned from scratch on selective copying."
 tags: [transformer-architectures, mamba, state-space-models, ssm, selective-scan, mamba-2, hybrids, llm]
 categories: machine-learning

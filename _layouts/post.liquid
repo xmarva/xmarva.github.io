@@ -34,7 +34,10 @@ layout: default
     {% endif %}
     <p class="post-meta post-byline">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%B %-d, %Y' }}</time>
-      {% if page.last_updated %}
+      {% comment %} an update on the day of publication says nothing new {% endcomment %}
+      {% assign published_day = page.date | date: '%Y-%m-%d' %}
+      {% assign updated_day = page.last_updated | date: '%Y-%m-%d' %}
+      {% if page.last_updated and updated_day != published_day %}
         <span aria-hidden="true">&middot;</span> updated {{ page.last_updated | date: '%B %-d, %Y' }}
       {% endif %}
       <span aria-hidden="true">&middot;</span> {{ read_time }} min read

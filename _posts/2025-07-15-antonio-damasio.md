@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Damasio's somatic marker hypothesis: the body in decision-making"
-date: 2025-07-15 10:00:00
+date: 2025-05-30 10:00:00
+last_updated: 2026-11-02
 description: "A patient who could reason about everything and decide nothing, a card game whose decks are rigged, and a theory that puts the body inside decisions: Damasio's somatic markers, the evidence for them and the evidence against"
 tags: [neuroscience, decision-making, emotions, cognition, psychology]
 categories: cognitive-science

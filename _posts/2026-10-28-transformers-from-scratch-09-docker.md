@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "It works on my laptop: a reproducible Docker image of a model"
-date: 2026-10-28 18:00:00
+date: 2025-12-31 18:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-09-docker/
 description: "Ship a model so that it runs the same next year: a lock file with hashes, an image pinned by digest, builds that give the same bytes twice, GitHub Actions publishing to GHCR, the image pulled and run without Docker, and the model exported to ONNX for a free in-browser demo."
 tags: [transformers-from-scratch, docker, reproducibility, onnx, mlops]
 categories: [machine-learning, system-design]

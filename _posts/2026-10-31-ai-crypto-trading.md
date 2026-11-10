@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "AI crypto trading bots: what machine learning and LLMs can and can't do"
-date: 2026-10-31 09:00:00
+date: 2026-11-03 09:00:00
+last_updated: 2026-11-03
 description: "AI trading bots and LLM agents tested on six years of Binance data: what machine learning predicts, what trading fees eat, and why LLM backtests lie"
 tags: [machine-learning, llm, crypto, trading, ai-agents]
 categories: [crypto, machine-learning, finance, cybersecurity]

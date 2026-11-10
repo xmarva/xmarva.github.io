@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Serving a Transformer with FastAPI and Gradio: latency under load"
-date: 2026-10-27 17:00:00
+date: 2025-11-21 17:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-08-serving/
 description: "Put a Transformer behind an HTTP API and measure it the way users meet it: a KV cache in beam search, int8 quantization that doesn't pay off, FastAPI and asyncio, open-loop load tests, queueing theory checked against the measurements, dynamic batching, and a Gradio page."
 tags: [transformers-from-scratch, fastapi, inference, load-testing, queueing-theory]
 categories: [machine-learning, system-design]

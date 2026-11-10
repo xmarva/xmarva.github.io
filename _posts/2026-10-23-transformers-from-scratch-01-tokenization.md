@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "How language models read: tokenization and BPE from scratch"
-date: 2026-10-23 10:00:00
+date: 2025-06-19 10:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-01-tokenization/
 description: "What GPT-4o actually receives when you type, why Russian costs more tokens than English, and byte-pair encoding written from scratch."
 tags: [transformers-from-scratch, tokenization, bpe, nlp, llm]
 categories: machine-learning

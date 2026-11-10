@@ -1,19 +1,23 @@
 {% comment %}
-  The blog's list, shared by the home page and /blog/ so that the two are the same page: the pinned post (front
-  matter `featured: true`) large above the category chips, then the posts as rows, the cover's picture on the left
+  The blog's list, shared by the home page and /blog/ so that the two are the same page: the pinned posts (front
+  matter `featured: true`, in the order of `pin_order`) large above the category chips, one at a time in a carousel
+  that turns by itself, then the posts as rows, the cover's picture on the left
   (without the cover's title, which would repeat the post's) and the text on the right, its first line level with
   the picture's top edge and its date line with the bottom one. Lessons of a course get a small badge above the title. The chips' categories
-  are in _data/blog.yml; a post can have several categories, and the first one is shown under its title.
+  are in _data/blog.yml; a post can have several categories, and the first one is shown above its title. On the first
+  page the pinned posts also have rows, hidden until a chip is pressed: a topic then lists all its posts by date, and
+  the carousel hides.
 
   Every page of the blog carries all the posts: those of other pages are hidden until a chip is pressed, so that a
   chip shows every post of its category, not only those on the current page (plain ES2017 at the end: the production
   build minifies it with Uglifier). A chip's category can be linked to as #category, e.g. /#crypto.
 
-  Parameters: posts (the rows of this page), pinned (show the pinned post: the first page only), newer, older (links
+  Parameters: posts (the rows of this page), pinned (show the pinned posts: the first page only), newer, older (links
   to the neighbouring pages, if any), mode: "category" on a category's page (only the posts given, no chips, and no
   hidden heading, since the page has its own).
 {% endcomment %}
-{% assign pin = site.posts | where: 'featured', true | first %}
+{% assign pins = site.posts | where: 'featured', true | sort: 'pin_order' %}
+{% capture pinned_urls %}|{% for pin in pins %}{{ pin.url }}|{% endfor %}{% endcapture %}
 {% if include.mode == 'category' %}
   {% assign rows = include.posts %}
 {% else %}
@@ -180,9 +184,9 @@
     .bh-meta { flex-wrap: wrap; white-space: normal; }
   }
 
-  /* the pinned post, large, above the chips: a label as in a post's header, then the title, and the date line on the
+  /* the pinned posts, large, above the chips: a label as in a post's header, then the title, and the date line on the
      picture's bottom edge */
-  .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: stretch; margin: 0 0 2.4rem; }
+  .bh-pin { position: relative; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2.25rem; align-items: stretch; }
   .bh-pin:hover .bh-cover img { transform: scale(1.02); }
   .bh-pin .bh-text { gap: 0.8rem; }
   .bh-pin .bh-title { font-size: 2.05rem; font-weight: 650; line-height: 1.15; letter-spacing: -0.025em; }
@@ -204,6 +208,56 @@
   .bh-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--global-theme-color); }
   .bh-kicker a { position: relative; z-index: 2; color: inherit; text-decoration: none; }
   .bh-kicker a:hover { color: var(--global-theme-color); }
+  /* the carousel: the slides share one cell of a grid, so that it is as tall as the tallest, and cross-fade; the bar of
+     the current one fills in the time it is shown, and the end of that animation turns to the next (the script below) */
+  .bh-pins { margin: 0 0 2.4rem; }
+  .bh-slides { display: grid; }
+  .bh-slides > .bh-pin { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity 0.6s ease, visibility 0s linear 0.6s; }
+  .bh-slides > .bh-pin.is-current { opacity: 1; visibility: visible; transition: opacity 0.6s ease, visibility 0s; }
+  .bh-pins-nav { display: flex; align-items: center; gap: 0.4rem; margin-top: 1.25rem; }
+  .bh-segs { display: flex; flex: 1; gap: 0.5rem; }
+  .bh-seg { position: relative; flex: none; width: 3rem; height: 1.5rem; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .bh-seg::before, .bh-seg span {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--bh-border);
+  }
+  .bh-seg span { background: var(--global-theme-color); transform: scaleX(0); transform-origin: left; }
+  .bh-seg:hover::before { background: var(--bh-muted); }
+  .bh-seg[aria-current="true"] span { transform: none; }
+  .bh-pins.is-playing .bh-seg[aria-current="true"] span { animation: bh-fill 7s linear forwards; }
+  .bh-pins.is-hovered .bh-seg[aria-current="true"] span,
+  .bh-pins.is-focused .bh-seg[aria-current="true"] span { animation-play-state: paused; }
+  @keyframes bh-fill { from { transform: scaleX(0); } to { transform: none; } }
+  .bh-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--bh-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--global-text-color);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .bh-arrow:hover { border-color: var(--global-theme-color); color: var(--global-theme-color); }
+  .bh-arrow svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .bh-arrow .bh-icon-play { fill: currentColor; stroke: none; }
+  .bh-play { margin-right: 0.35rem; }
+  .bh-play .bh-icon-play, .bh-pins:not(.is-playing) .bh-play .bh-icon-pause { display: none; }
+  .bh-pins:not(.is-playing) .bh-play .bh-icon-play { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    .bh-slides > .bh-pin, .bh-slides > .bh-pin.is-current { transition: none; }
+  }
   .bh-pager { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--bh-border); }
   .bh-pager a { font-size: 0.95rem; color: var(--global-text-color); text-decoration: none; }
   .bh-pager a:hover { color: var(--global-theme-color); }
@@ -216,28 +270,53 @@
 <div class="bh">
   {% unless include.mode == 'category' %}<h1 class="sr-only">Eva Koroleva's blog</h1>{% endunless %}
 
-  {% if include.pinned and pin %}
-    {% assign category = pin.categories | first %}
-    {% assign read_time = pin.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    <article class="bh-pin" data-categories="{{ pin.categories | join: ' ' }}">
-      <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
-        {% if pin.thumbnail %}
-          {% include cover_img.liquid src=pin.thumbnail plate=true %}
-        {% else %}
-          <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ pin.title }}</strong></span>
-        {% endif %}
-      </a>
-      <div class="bh-text">
-        <p class="bh-kicker">pinned{% if category %} · <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}</p>
-        <h2 class="bh-title"><a class="stretched-link" href="{{ pin.url | relative_url }}">{{ pin.title }}</a></h2>
-        {% if pin.description %}<p class="bh-desc">{{ pin.description }}</p>{% endif %}
-        <p class="bh-meta">
-          <time datetime="{{ pin.date | date_to_xmlschema }}">{{ pin.date | date: '%b %-d, %Y' }}</time>
-          <span class="bh-dot" aria-hidden="true">·</span>
-          <span>{{ read_time }} min read</span>
-        </p>
+  {% if include.pinned and pins.size > 0 %}
+    <section class="bh-pins" aria-roledescription="carousel" aria-label="Pinned posts">
+      <div class="bh-slides">
+        {% for pin in pins %}
+          {% assign category = pin.categories | first %}
+          {% assign read_time = pin.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+          <article class="bh-pin{% if forloop.first %} is-current{% endif %}" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ pins.size }}">
+            <a class="bh-cover" href="{{ pin.url | relative_url }}" tabindex="-1" aria-hidden="true">
+              {% if pin.thumbnail %}
+                {% include cover_img.liquid src=pin.thumbnail plate=true priority=forloop.first %}
+              {% else %}
+                <span class="bh-cover-text"><small>{{ category | replace: '-', ' ' }}</small><strong>{{ pin.title }}</strong></span>
+              {% endif %}
+            </a>
+            <div class="bh-text">
+              <p class="bh-kicker">pinned{% if category %} · <a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}</p>
+              <h2 class="bh-title"><a class="stretched-link" href="{{ pin.url | relative_url }}">{{ pin.title }}</a></h2>
+              {% if pin.description %}<p class="bh-desc">{{ pin.description }}</p>{% endif %}
+              <p class="bh-meta">
+                <time datetime="{{ pin.date | date_to_xmlschema }}">{{ pin.date | date: '%b %-d, %Y' }}</time>
+                <span class="bh-dot" aria-hidden="true">·</span>
+                <span>{{ read_time }} min read</span>
+              </p>
+            </div>
+          </article>
+        {% endfor %}
       </div>
-    </article>
+      {% if pins.size > 1 %}
+        <div class="bh-pins-nav">
+          <div class="bh-segs">
+            {% for pin in pins %}
+              <button type="button" class="bh-seg" aria-label="Pinned post {{ forloop.index }}, {{ pin.title | escape }}"{% if forloop.first %} aria-current="true"{% endif %}><span></span></button>
+            {% endfor %}
+          </div>
+          <button type="button" class="bh-arrow bh-play" aria-label="Stop the carousel">
+            <svg class="bh-icon-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9"/></svg>
+            <svg class="bh-icon-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.4 8z"/></svg>
+          </button>
+          <button type="button" class="bh-arrow bh-prev" aria-label="Previous pinned post">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg>
+          </button>
+          <button type="button" class="bh-arrow bh-next" aria-label="Next pinned post">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+          </button>
+        </div>
+      {% endif %}
+    </section>
   {% endif %}
 
   {% unless include.mode == 'category' %}
@@ -254,17 +333,16 @@
 
   {% assign last_month = "" %}
   {% for post in rows %}
-    {% if include.pinned and pin and post.url == pin.url %}{% continue %}{% endif %}
+    {% capture key %}|{{ post.url }}|{% endcapture %}
     {% assign month = post.date | date: "%Y-%m" %}
     {% if month != last_month %}
       <div class="bh-issue" data-month="{{ month }}"><b>{{ post.date | date: "%B %Y" }}</b><span></span></div>
       {% assign last_month = month %}
     {% endif %}
-    {% capture key %}|{{ post.url }}|{% endcapture %}
     {% assign category = post.categories | first %}
     {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
     {% assign lesson = nil %}{% assign badge = nil %}{% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% assign badge = c.badge | default: "Course" %}{% endif %}{% endfor %}{% endfor %}
-    <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}" data-month="{{ month }}"{% unless on_page contains key %} data-other-page hidden{% endunless %}>
+    <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}" data-month="{{ month }}"{% unless on_page contains key %} data-other-page hidden{% else %}{% if include.pinned and pinned_urls contains key %} data-pinned hidden{% endif %}{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
           {% include cover_img.liquid src=post.thumbnail plate=true lazy=true %}
@@ -294,11 +372,74 @@
 </div>
 
 <script>
+  // the carousel of the pinned posts: it turns by itself every 7 s (the end of the current bar's animation), waits
+  // while the pointer or the keyboard's focus is on it, and stops for good once a reader turns it or presses the
+  // pause button; with reduced motion it starts stopped
+  (function () {
+    var box = document.querySelector(".bh-pins");
+    var slides = box ? box.querySelectorAll(".bh-pin") : [];
+    if (slides.length < 2) return;
+    var stage = box.querySelector(".bh-slides");
+    var segs = box.querySelectorAll(".bh-seg");
+    var toggle = box.querySelector(".bh-play");
+    var current = 0;
+    function go(n) {
+      current = (n + slides.length) % slides.length;
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].classList.toggle("is-current", i === current);
+        if (i === current) segs[i].setAttribute("aria-current", "true");
+        else segs[i].removeAttribute("aria-current");
+      }
+    }
+    function play(on) {
+      box.classList.toggle("is-playing", on);
+      toggle.setAttribute("aria-label", on ? "Stop the carousel" : "Start the carousel");
+      // a screen reader announces a new slide only when the reader turned to it
+      stage.setAttribute("aria-live", on ? "off" : "polite");
+    }
+    function turn(n) {
+      play(false);
+      go(n);
+    }
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    play(!still);
+    box.addEventListener("animationend", function (event) {
+      if (event.target.parentNode === segs[current]) go(current + 1);
+    });
+    toggle.addEventListener("click", function () {
+      play(!box.classList.contains("is-playing"));
+    });
+    box.querySelector(".bh-prev").addEventListener("click", function () { turn(current - 1); });
+    box.querySelector(".bh-next").addEventListener("click", function () { turn(current + 1); });
+    for (var k = 0; k < segs.length; k++) {
+      segs[k].addEventListener("click", (function (n) { return function () { turn(n); }; })(k));
+    }
+    box.addEventListener("mouseenter", function () { box.classList.add("is-hovered"); });
+    box.addEventListener("mouseleave", function () { box.classList.remove("is-hovered"); });
+    box.addEventListener("focusin", function () { box.classList.add("is-focused"); });
+    box.addEventListener("focusout", function (event) {
+      if (!box.contains(event.relatedTarget)) box.classList.remove("is-focused");
+    });
+    // a sideways swipe turns it, a vertical one scrolls the page
+    var x0 = null, y0 = null;
+    stage.addEventListener("touchstart", function (event) {
+      x0 = event.touches[0].clientX;
+      y0 = event.touches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener("touchend", function (event) {
+      if (x0 === null) return;
+      var dx = event.changedTouches[0].clientX - x0, dy = event.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) turn(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  })();
+
   (function () {
     var chips = document.querySelectorAll(".bh-chip");
     var items = document.querySelectorAll(".bh [data-categories]");
     var pager = document.querySelector(".bh-pager");
     var issues = document.querySelectorAll(".bh-issue");
+    var pins = document.querySelector(".bh-pins");
     // each month's heading counts the posts shown under it and hides when there are none
     function count() {
       for (var h = 0; h < issues.length; h++) {
@@ -322,13 +463,15 @@
       for (var j = 0; j < items.length; j++) {
         var categories = " " + items[j].getAttribute("data-categories") + " ";
         if (filter === "all") {
-          items[j].hidden = items[j].hasAttribute("data-other-page");
+          items[j].hidden = items[j].hasAttribute("data-other-page") || items[j].hasAttribute("data-pinned");
         } else {
           items[j].hidden = categories.indexOf(" " + filter + " ") < 0;
         }
       }
       // every page holds all the posts, so a filtered list is already complete and needs no pages
       if (pager) pager.hidden = filter !== "all";
+      // under a topic its pinned posts are rows among the others
+      if (pins) pins.hidden = filter !== "all";
       count();
     }
     // in a row that scrolls sideways, the chosen topic moves to the middle

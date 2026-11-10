@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
-date: 2026-10-23 12:00:00
+date: 2025-07-22 12:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-03-training/
 description: "Train a Transformer on half a million sentence pairs on a free GPU, then decode it with greedy search, beam search and sampling."
 tags: [transformers-from-scratch, training, decoding, beam-search, pytorch]
 categories: machine-learning

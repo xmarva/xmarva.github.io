@@ -2,6 +2,7 @@
 layout: post
 title: "The Vision Transformer reads images as sequences of patches"
 date: 2026-11-09 20:00:00
+last_updated: 2026-11-10
 description: "How a Transformer reads a photo: every step from pixels to a sequence of 197 vectors on a real image, written from scratch and checked against Google's ViT-B/16. What the model learned about patches and positions, where its heads look, DINO's heads finding objects without labels, and ViT against a CNN on satellite images when labels are scarce."
 tags: [transformer-architectures, vision-transformer, vit, image-classification, dino, dinov2, eurosat, computer-vision]
 categories: machine-learning

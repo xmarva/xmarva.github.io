@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "How similar is the human brain to AI models?"
-date: 2026-11-08 00:00:00
+date: 2026-06-08 00:00:00
+last_updated: 2026-11-08
 description: "A decade of neuroscience has compared brains with neural networks. Language models predict the brain's language network, vision models the visual cortex and reinforcement learning the dopamine signal, while memory, bodies, energy and lifelong learning are where the two still differ most"
 seo_description: "How the human brain compares with AI models in studies of language, vision, memory, grid cells and dopamine, and which of them is more efficient."
 tags: [neuroscience, ai, llm, brain, cognitive-science]
