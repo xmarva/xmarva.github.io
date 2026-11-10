@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "From RoBERTa to ModernBERT: what seven years did to BERT"
-date: 2026-11-01 11:00:00
+date: 2026-03-20 11:00:00
+last_updated: 2026-11-02
 description: "What seven years did to BERT: RoBERTa's training recipe, ELECTRA's replaced-token detection, DeBERTa's disentangled attention and ModernBERT's LLM-era block, each written in PyTorch and checked against the real weights, and the four compared on triaging GitHub issues of projects they never saw."
 tags: [transformer-architectures, roberta, electra, deberta, modernbert, nlp]
 categories: machine-learning

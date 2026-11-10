@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Theories of consciousness and the hard problem"
-date: 2026-11-08 00:00:00
+date: 2026-07-10 00:00:00
+last_updated: 2026-11-08
 description: "The hard problem of consciousness for readers used to physicalism. Thought experiments from Mary's room to fading qualia, positions from illusionism to panpsychism, the scientific theories, the first experiment that tested two of them against each other, and what they imply for AI"
 seo_description: "The hard problem of consciousness for physicalists, with Mary's room, zombies, panpsychism and the experiment that tested global workspace theory and IIT."
 tags: [consciousness, philosophy-of-mind, neuroscience, hard-problem, ai]

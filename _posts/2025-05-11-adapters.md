@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Parameter-efficient fine-tuning in PyTorch: adapters, LoRA and the rest"
-date: 2025-05-11 10:00:00
+date: 2025-04-17 10:00:00
+last_updated: 2026-11-02
 description: "How to adapt a pretrained transformer by training a fraction of a percent of it: what adapters, LoRA, prefix and prompt tuning, BitFit, (IA)³ and Compacter add to the model, written out in PyTorch and measured on one task"
 tags: [machine-learning, transformers, peft, lora, adapters, fine-tuning]
 categories: machine-learning

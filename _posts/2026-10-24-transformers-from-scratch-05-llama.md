@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
-date: 2026-10-24 14:00:00
+date: 2025-09-01 14:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-05-llama/
 description: "Pre-norm, RMSNorm, SwiGLU and RoPE: the changes Llama made to the 2017 Transformer, written in PyTorch, added to our translator one at a time and measured against what a new random seed does alone, with fused attention and a KV cache."
 tags: [transformers-from-scratch, llama, rope, transformer, pytorch]
 categories: machine-learning

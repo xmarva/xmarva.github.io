@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Mixture of experts: why the largest LLMs use a few percent of their weights per token"
-date: 2026-10-30 09:00:00
+date: 2026-02-06 09:00:00
+last_updated: 2026-11-02
 description: "A mixture-of-experts layer in PyTorch trained next to dense models: the router, load balancing, dropped tokens, what experts learn, and serving"
 tags: [machine-learning, transformers, mixture-of-experts, llm, deepseek]
 categories: machine-learning

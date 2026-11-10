@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
-date: 2026-10-24 15:00:00
+date: 2025-09-19 15:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-06-sweeps/
 description: "Spend an hour of a free GPU on hyperparameters: experiment tracking with Weights & Biases, a learning-rate range test, random search and successive halving from scratch, and W&B Sweeps with Bayesian optimization."
 tags: [transformers-from-scratch, hyperparameter-tuning, wandb, pytorch, deep-learning]
 categories: machine-learning

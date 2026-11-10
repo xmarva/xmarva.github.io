@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Modern LLM architecture and Qwen3 from scratch"
-date: 2026-11-08 15:00:00
+date: 2026-08-06 15:00:00
+last_updated: 2026-11-08
 description: "What Mistral, Gemma and Qwen changed after Llama, read from a dozen configs. Grouped-query attention, sliding windows and attention sinks, QK-norm and soft-capping, Qwen3-0.6B written from scratch with its official weights, and LoRA that turns voice commands into JSON in English and Russian."
 tags: [transformer-architectures, qwen3, gqa, sliding-window-attention, qk-norm, lora, llm, nlp]
 categories: machine-learning

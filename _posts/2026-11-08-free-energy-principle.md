@@ -2,7 +2,8 @@
 layout: post
 title: "How Karl Friston's free energy principle works and what its critics say"
 seo_title: "Karl Friston's free energy principle and its critics"
-date: 2026-11-08 00:00:00
+date: 2026-06-23 00:00:00
+last_updated: 2026-11-08
 description: "Karl Friston's free energy principle with exact formulas and plain words. Surprisal and variational free energy, its link to the ELBO of machine learning, predictive coding on a worked example, active inference, Markov blankets, the experimental evidence and the main criticisms"
 seo_description: "Karl Friston's free energy principle with exact formulas, from variational free energy and predictive coding to active inference, evidence and critics."
 tags: [free-energy-principle, active-inference, predictive-coding, neuroscience, bayesian-brain]

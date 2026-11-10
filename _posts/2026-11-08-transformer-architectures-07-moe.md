@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Mixture-of-experts LLMs from scratch with OLMoE"
-date: 2026-11-08 16:00:00
+date: 2026-08-24 16:00:00
+last_updated: 2026-11-08
 description: "How a dozen production mixtures of experts are built, from Mixtral to gpt-oss. The router written four ways, OLMoE in PyTorch with its official weights, the experts that English, Python, maths and Russian use, a model pruned for one kind of text, and an expert cache measured on real routing."
 tags: [transformer-architectures, mixture-of-experts, moe, olmoe, routing, llm, pruning]
 categories: machine-learning

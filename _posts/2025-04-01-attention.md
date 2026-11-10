@@ -1,7 +1,8 @@
 ---
 layout: post
 title: Attention Mechanism from RNN to FlashAttention
-date: 2025-04-01 15:00:00
+date: 2025-01-28 15:00:00
+last_updated: 2026-10-22
 description: Exploring attention from RNN to FlashAttention
 tags: [transformers, attention, flash-attention]
 categories: featured-posts

@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "Your notebook is not a product: a Python package with tests and CI"
-date: 2026-10-27 16:00:00
+date: 2025-11-04 16:00:00
+last_updated: 2026-11-02
+permalink: /blog/2026/transformers-from-scratch-07-package/
 description: "Turn a model from a notebook into a Python package anyone can install: the src layout, pyproject.toml, a command line, four kinds of tests checked by mutation testing, GitHub Actions, and a model card that measures what the model can't do."
 tags: [transformers-from-scratch, python-packaging, pytest, github-actions, mlops]
 categories: machine-learning

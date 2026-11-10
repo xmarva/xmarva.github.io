@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "T5 and BART: the encoder–decoder, and a model that writes SQL"
-date: 2026-11-03 14:00:00
+date: 2026-05-15 14:00:00
+last_updated: 2026-11-08
 description: "T5 written from scratch and loaded with Google's weights: relative position buckets, cross-attention, span corruption and BART's text infilling, and a T5 fine-tuned on Spider to write SQL, checked by running every query on SQLite."
 tags: [transformer-architectures, t5, bart, encoder-decoder, text-to-sql, spider, nlp]
 categories: machine-learning

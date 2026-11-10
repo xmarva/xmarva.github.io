@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "How large language models work, for those who missed out"
-date: 2024-04-24 15:09:00
+date: 2024-12-02 15:09:00
+last_updated: 2026-11-02
 description: "What a large language model is, how it is trained in three stages, and what it could and could not do in spring 2024: a tour after Andrej Karpathy's talk, with the claims checked against their sources and measured on small open models"
 tags: [nlp, llm]
 categories: [machine-learning, cybersecurity]

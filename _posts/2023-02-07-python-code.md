@@ -1,7 +1,9 @@
 ---
 layout: post
 title: "How to write clean Python code"
-date: 2023-02-07 15:09:00
+date: 2024-11-12 15:09:00
+last_updated: 2026-10-31
+permalink: /blog/2023/python-code/
 description: "Naming, comments, modules, tests, docstrings, exceptions and keyword arguments: the basic habits that keep Python code readable and easy to change"
 tags: [python, coding]
 categories: [code]

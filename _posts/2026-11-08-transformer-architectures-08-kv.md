@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "The KV cache budget and DeepSeek's latent attention"
-date: 2026-11-08 17:00:00
+date: 2026-09-10 17:00:00
+last_updated: 2026-11-08
 description: "What one token costs in the KV cache of ten models, and how DeepSeek's multi-head latent attention cuts it. MLA written from scratch in both its forms, why rotary positions need their own dimensions, MiniCPM3-4B with its official weights, a latent cache against a rebuilt one on a T4, Qwen3 compressed without training, and a quantized cache."
 tags: [transformer-architectures, kv-cache, mla, multi-head-latent-attention, deepseek, gqa, minicpm3, llm]
 categories: machine-learning
