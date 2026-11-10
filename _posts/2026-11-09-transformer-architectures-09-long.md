@@ -84,6 +84,7 @@ import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 import torch
@@ -776,7 +777,7 @@ STRETCHES["YaRN"] = yarn
 STRETCHES["YaRN, no temperature"] = yarn_cold
 ```
 
-Back to the three clocks, now with YaRN's hand in green: the fast pair keeps its angle, the slow pair's hand returns
+Back to the three clocks, now with YaRN's hand in teal: the fast pair keeps its angle, the slow pair's hand returns
 into the arc the model knows.
 
 ```python
@@ -1042,7 +1043,8 @@ for method in ["none", "PI", "NTK", "dynamic NTK", "YaRN"]:
 
 heat = pd.DataFrame(passkey, index=[f"{n:,}" for n in passkey_lengths]).T
 fig, ax = plt.subplots(figsize=(6.6, 3.2))
-ax.imshow(heat.values, cmap="Greens", vmin=0, vmax=1, aspect="auto")
+teal = LinearSegmentedColormap.from_list("teal", [COLORS["card"], COLORS["enc"]])
+ax.imshow(heat.values, cmap=teal, vmin=0, vmax=1, aspect="auto")
 ax.set_xticks(range(len(heat.columns)), heat.columns)
 ax.set_yticks(range(len(heat.index)), heat.index)
 for i in range(heat.shape[0]):
@@ -1424,7 +1426,7 @@ for setting in ["as trained", "YaRN 4×"]:
 
 fig, axes = plt.subplots(1, 2, figsize=(8.6, 3.2), sharey=True)
 for ax, (setting, grid) in zip(axes, found.items()):
-    ax.imshow(grid, cmap="Greens", vmin=0, vmax=1, aspect="auto")
+    ax.imshow(grid, cmap=teal, vmin=0, vmax=1, aspect="auto")
     ax.set_xticks(range(len(needle_lengths)), [f"{n // 1024}k" for n in needle_lengths])
     ax.set_yticks(range(len(depths)), [f"{d:.0%}" for d in depths])
     ax.set_title(f"Qwen3-4B, {setting}")
@@ -1435,7 +1437,7 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/09/output-09.png" alt="Output of the code above" loading="lazy">
 
-Green is found, white is missed.
+Teal is found, white is missed.
 
 As trained, Qwen3-4B finds the needle at every depth up to 48k tokens, past the 32k it was trained on; at 64k it
 finds it only near the end of the text, close to the question. With YaRN it finds it everywhere.

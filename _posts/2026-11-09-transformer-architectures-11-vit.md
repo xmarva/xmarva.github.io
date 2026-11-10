@@ -82,6 +82,7 @@ import time
 import urllib.request
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap, to_rgb
 import numpy as np
 import pandas as pd
 import torch
@@ -170,7 +171,7 @@ axes[0].imshow(photos["bear"])
 axes[0].set_title(f"original, {photos['bear'].width}×{photos['bear'].height}", fontsize=10)
 axes[1].imshow((x.permute(1, 2, 0) * STD + MEAN).clamp(0, 1))
 axes[1].set_title("resized to 224×224", fontsize=10)
-for channel, color in zip(range(3), ["#D23F57", "#0F8C7E", "#4C6FD8"]):
+for channel, color in zip(range(3), [COLORS["dec"], COLORS["enc"], COLORS["att"]]):
     axes[2].hist(
         x[channel].flatten(), bins=60, color=color, alpha=0.6, label="RGB"[channel]
     )
@@ -270,7 +271,8 @@ ax.imshow(tile, interpolation="nearest")
 ax.set_title(f"patch {k}: row {row}, column {col}", fontsize=10)
 ax.axis("off")
 ax = fig.add_axes([0.2, 0.25, 0.79, 0.5])
-ax.imshow(patches[k][None], aspect="auto", cmap="gray", interpolation="nearest")
+greys = LinearSegmentedColormap.from_list("greys", [COLORS["ink"], COLORS["card"]])
+ax.imshow(patches[k][None], aspect="auto", cmap=greys, interpolation="nearest")
 for edge in [256, 512]:
     ax.axvline(edge - 0.5, color=COLORS["dec"], linewidth=1.5)
 ax.set_yticks([])
@@ -354,9 +356,12 @@ sequence = sequence + positions[0]
 print("class token:", tuple(cls_token.shape), " positions:", tuple(positions.shape))
 print("the sequence the encoder reads:", tuple(sequence.shape))
 
+# negative numbers in teal, positive in rose, zero white
+ends = [COLORS["enc"], COLORS["card"], COLORS["dec"]]
+signed = LinearSegmentedColormap.from_list("signed", ends)
 fig, ax = plt.subplots(figsize=(11, 2.6))
 ax.imshow(
-    sequence.T[:96], aspect="auto", cmap="RdBu_r", vmin=-3, vmax=3, interpolation="nearest"
+    sequence.T[:96], aspect="auto", cmap=signed, vmin=-3, vmax=3, interpolation="nearest"
 )
 ax.set_xlabel("position in the sequence: 0 is the class token, 1 to 196 the patches")
 ax.set_ylabel("first 96 of 768")
@@ -616,7 +621,7 @@ fig, axes = plt.subplots(len(picked), len(picked), figsize=(7.6, 7.6))
 for a, i in enumerate(picked):
     for b, j in enumerate(picked):
         axes[a, b].imshow(
-            similarity[i, j], cmap="viridis", vmin=-1, vmax=1, interpolation="nearest"
+            similarity[i, j], cmap=signed, vmin=-1, vmax=1, interpolation="nearest"
         )
         axes[a, b].set_xticks([])
         axes[a, b].set_yticks([])
@@ -628,7 +633,7 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/11/output-08.png" alt="Output of the code above" loading="lazy">
 
-Every map has a bright spot exactly where its position is, a glow around it, and bright bands along its own row and column.
+Every map is strongest exactly where its position is, with a halo around it and bands of rose along its own row and column.
 
 The model rediscovered the two-dimensional grid from a one-dimensional list of 196 slots, simply because knowing which patches are neighbours, and which share a row or a column, helps it classify. The ViT paper tried position embeddings designed for two dimensions and found no gain; this picture is why.
 
@@ -689,12 +694,15 @@ for block in vit.blocks:
     block.attn.keep = False
 maps = rollout[:, 0, 1:].reshape(n, grid, grid)
 
+violet = to_rgb(COLORS["att"])
+# from clear to violet, laid over the photo
+glow = LinearSegmentedColormap.from_list("glow", [(*violet, 0.0), (*violet, 0.9)])
 fig, axes = plt.subplots(1, n, figsize=(13, 2.9))
 for k, photo in enumerate(photos.values()):
     heat = (maps[k] / maps[k].max()).numpy()
-    axes[k].imshow(photo.resize((SIZE, SIZE)))
+    axes[k].imshow(photo.resize((SIZE, SIZE)).convert("L"), cmap=greys, alpha=0.75)
     axes[k].imshow(
-        heat, cmap="magma", alpha=0.55, extent=(0, SIZE, SIZE, 0), interpolation="bilinear"
+        heat, cmap=glow, extent=(0, SIZE, SIZE, 0), interpolation="bilinear"
     )
     axes[k].set_title(labels[ours[k].argmax().item()], fontsize=10)
     axes[k].axis("off")
@@ -703,7 +711,7 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/11/output-10.png" alt="Output of the code above" loading="lazy">
 
-The bright regions are the bear's head and the fish, the shuttle's nose rather than its plume, the orca's body, the hummingbird. The model was never told where the objects are; its answer simply rests on them.
+The violet regions are the bear's head and the fish, the shuttle's nose rather than its plume, the orca's body, the hummingbird. The model was never told where the objects are; its answer simply rests on them.
 
 Rollout is a rough tool, a product of averages that ignores the MLPs, but it is cheap and often right about where to look.
 
@@ -831,13 +839,14 @@ print("one map per head:", tuple(heads.shape))
 one map per head: (5, 6, 28, 28)</code></pre>
 
 ```python
+shades = LinearSegmentedColormap.from_list("shades", [COLORS["card"], COLORS["att"]])
 show = ["bear", "shuttle", "orca", "hummingbird"]
 fig, axes = plt.subplots(len(show), heads.shape[1] + 1, figsize=(13, 2.1 * len(show)))
 for r, name in enumerate(show):
     k = list(photos).index(name)
     axes[r, 0].imshow(photos[name].resize((SIZE, SIZE)))
     for h in range(heads.shape[1]):
-        axes[r, h + 1].imshow(heads[k, h], cmap="inferno", interpolation="nearest")
+        axes[r, h + 1].imshow(heads[k, h], cmap=shades, interpolation="nearest")
         if r == 0:
             axes[r, h + 1].set_title(f"head {h}", fontsize=10)
     for ax in axes[r]:
@@ -1128,7 +1137,7 @@ accuracy.columns = [f"{n:,} labels per class" for n in accuracy.columns]
 table(accuracy.reset_index(), digits=3)
 ```
 
-<div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">learner</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">10 labels per class</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">100 labels per class</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">1,620 labels per class</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ViT-B/16 pretrained</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.914</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.970</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.988</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">small ViT</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.586</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.815</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.932</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">small CNN</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.740</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.920</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.979</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">DINOv2 + linear probe</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.845</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.926</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.966</td></tr></tbody></table></div>
+<div class="tfs-table-wrap"><table class="tfs-table" style="border-collapse:collapse;font-family:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:13.5px;line-height:1.45;margin:4px 0 8px;"><thead><tr><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:left;">learner</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">10 labels per class</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">100 labels per class</th><th style="padding:7px 14px;border-bottom:2px solid #B9C0CB;font-weight:600;color:#5B6575;font-size:12px;letter-spacing:0.02em;text-align:right;">1,620 labels per class</th></tr></thead><tbody><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">ViT-B/16 pretrained</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.916</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.970</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.988</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">small ViT</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.586</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.815</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.932</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">small CNN</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.740</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.920</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.979</td></tr><tr><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:left;max-width:460px;white-space:normal;">DINOv2 + linear probe</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.845</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.926</td><td style="padding:7px 14px;border-bottom:1px solid #E6E9EE;vertical-align:top;text-align:right;font-variant-numeric:tabular-nums;max-width:460px;white-space:normal;">0.966</td></tr></tbody></table></div>
 
 ```python
 fig, ax = plt.subplots(figsize=(7.2, 3.8))
@@ -1174,7 +1183,7 @@ for t, p in zip(test_labels.tolist(), best.tolist()):
     confusion[t, p] += 1
 confusion = confusion / confusion.sum(1, keepdim=True)
 fig, ax = plt.subplots(figsize=(6.2, 5.4))
-ax.imshow(confusion, cmap="Purples", vmin=0, vmax=1)
+ax.imshow(confusion, cmap=shades, vmin=0, vmax=1)
 ax.set_xticks(range(10), classes, rotation=60, fontsize=8)
 ax.set_yticks(range(10), classes, fontsize=8)
 ax.set_xlabel("predicted")
@@ -1219,7 +1228,7 @@ plt.show()
 
 The mistakes are few, and many of them involve herbaceous vegetation, taken for pasture, for crops or for forest: scrub, meadow and young trees are the same green-brown texture at this scale.
 
-Another kind is a tile with a road across it: a river, a factory or a suburb with a highway through it becomes a highway. Look at the tiles and you will hesitate too; at 10 metres a pixel, an orchard and a field of wheat can look the same.
+Annual and permanent crops are taken for each other too, and now and then a tile with a road across it is called a highway. Look at the tiles and you will hesitate too; at 10 metres a pixel, an orchard and a field of wheat can look the same.
 
 ## 8. Where the ViT is today
 
