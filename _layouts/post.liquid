@@ -68,6 +68,9 @@ layout: default
     {% endif %}
     <div id="markdown-content">
       {{ content }}
+      {% if url_beginning == '/blog/' %}
+        {% include post_cite.liquid lesson_number=lesson_number lesson_course=lesson_course %}
+      {% endif %}
     </div>
   </article>
 
@@ -75,10 +78,6 @@ layout: default
     <p class="post-tags-end">
       {% for tag in page.tags %}<a href="{{ tag | slugify | prepend: '/blog/tag/' | append: '/' | relative_url }}">#{{ tag }}</a>{% endfor %}
     </p>
-  {% endif %}
-
-  {% if page.citation %}
-    {% include citation.liquid %}
   {% endif %}
 
   {% if page.related_publications %}
