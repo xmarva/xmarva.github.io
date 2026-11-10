@@ -1,5 +1,5 @@
 /*******************************************************************************
- * The site's own design on top of the theme: Source Serif 4 for reading, Inter for titles and the interface, IBM Plex
+ * The site's own design on top of the theme: Charter (Charis SIL) for reading, Inter for titles and the interface, IBM Plex
  * Mono (the covers' and figures' mono) for code and labels; a warm
  * paper light theme and a dark "lab" theme in the course's palette, the red dot as the site's mark, an article-like
  * post header, numbered figures and notebook-like code cells, and a colour per blog category.
@@ -9,7 +9,7 @@
 
 :root {
   --font-sans: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-serif: "Charis SIL", Charter, "Bitstream Charter", Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --global-code-font: var(--font-mono);
   --c-mono: var(--font-mono);
@@ -56,7 +56,7 @@ samp {
   details.method p,
   details.method li {
     font-family: var(--font-serif);
-    font-size: 1.19rem;
+    font-size: 1.16rem;
     font-weight: 400; // the theme's 300 came from light Roboto; a serif reads at its regular weight
     line-height: 1.66;
   }
@@ -66,12 +66,15 @@ samp {
   }
 
   h2 {
-    font-weight: 650;
-    letter-spacing: -0.02em;
+    font-family: var(--font-sans);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
   }
 
   h3 {
-    font-weight: 650;
+    font-family: var(--font-sans);
+    font-weight: 600;
     letter-spacing: -0.01em;
   }
 }
@@ -181,11 +184,11 @@ footer,
     align-items: center;
     gap: 0.5rem;
     margin: 0 0 1.1rem;
-    padding: 0.28rem 0.7rem;
-    border: 1px solid var(--global-divider-color);
-    border-radius: 7px;
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--global-text-color-light);
 
     a {
@@ -194,8 +197,8 @@ footer,
 
     &::before {
       content: "";
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--global-theme-color);
     }
@@ -203,25 +206,26 @@ footer,
 
   .post-title {
     margin-bottom: 0.7rem;
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 650;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-weight: 700;
     line-height: 1.12;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.015em;
   }
 
   .post-dek {
     max-width: 46rem;
     margin: 0 0 1rem;
     font-family: var(--font-serif);
-    font-size: 1.3rem;
+    font-size: 1.22rem;
     line-height: 1.5;
     color: var(--global-text-color-light);
   }
 
   .post-byline {
     margin: 0 0 1.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-family: var(--font-sans);
+    font-size: 0.86rem;
     color: var(--global-text-color-light);
   }
 
@@ -344,15 +348,15 @@ footer,
   figcaption {
     contain: inline-size; // the caption wraps at the picture's width instead of widening the figure
     margin-top: 0.55rem;
-    font-family: var(--font-sans);
-    font-size: 0.84rem;
+    font-family: var(--font-serif);
+    font-size: 0.98rem;
     line-height: 1.45;
     color: var(--global-text-color-light);
 
     b {
       margin-right: 0.35rem;
-      font-family: var(--font-mono);
-      font-weight: 500;
+      font-family: var(--font-sans);
+      font-weight: 700;
       color: var(--global-text-color);
     }
   }
