@@ -7,6 +7,7 @@ description: "What happens in a brain that has a new idea, where recombination s
 tags: [ai, neuroscience, creativity]
 categories: [cognitive-science, machine-learning]
 featured: true
+pin_order: 1
 thumbnail: /assets/posts/creative-ai/cover.png
 og_image: https://xmarva.github.io/assets/posts/creative-ai/cover.png
 stylesheets: [/assets/css/tfs-course.css]

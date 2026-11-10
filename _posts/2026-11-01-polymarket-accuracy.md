@@ -6,7 +6,8 @@ last_updated: 2026-11-05
 description: "Polymarket's prices checked against what happened across almost three million resolved markets: how well calibrated they are, what accuracy figures hide, where longshots and favourites are mispriced, insiders, oracles and the cost of trading"
 tags: [prediction-markets, polymarket, calibration, forecasting, trading]
 categories: [finance, crypto]
-featured: false
+featured: true
+pin_order: 3
 thumbnail: /assets/posts/polymarket-accuracy/cover.png
 og_image: https://xmarva.github.io/assets/posts/polymarket-accuracy/cover.png
 stylesheets: [/assets/css/tfs-course.css]

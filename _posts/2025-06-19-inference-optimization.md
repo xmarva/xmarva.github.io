@@ -6,7 +6,8 @@ last_updated: 2026-11-02
 description: "Why generating text is limited by memory rather than arithmetic, measured on a free GPU, and what serving engines like vLLM do about it: the KV cache, continuous batching, quantization and speculative decoding"
 tags: [machine-learning, transformers, production, optimization, high-load]
 categories: [system-design, machine-learning]
-featured: false
+featured: true
+pin_order: 2
 thumbnail: /assets/posts/inference-optimization/cover.png
 og_image: https://xmarva.github.io/assets/posts/inference-optimization/cover.png
 stylesheets: [/assets/css/tfs-course.css]
