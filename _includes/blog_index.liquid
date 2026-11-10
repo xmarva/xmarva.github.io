@@ -138,23 +138,21 @@
   .bh-meta a:hover { color: var(--global-theme-color); }
   .bh-dot { opacity: 0.6; }
 
-  /* the posts by month, as the issues of a journal; the counts follow the chosen topic (the script below) */
+  /* the posts by month, as the issues of a journal: the month as a muted label like those above the titles, over a
+     hairline, so that it orders the list without competing with them; the counts follow the chosen topic (the script
+     below) */
   .bh-issue {
     display: flex;
     align-items: baseline;
-    gap: 1rem;
-    margin: 2.6rem 0 0;
-    padding-bottom: 0.6rem;
-    border-bottom: 2px solid var(--global-text-color);
+    gap: 0.7rem;
+    margin: 2.4rem 0 0;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--bh-border);
   }
-  .bh-issue b { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
-  .bh-issue span {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--bh-muted);
-  }
+  .bh-issue b, .bh-issue span { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bh-muted); }
+  .bh-issue b { font-weight: 600; }
+  .bh-issue span { opacity: 0.7; }
+  .bh-issue span::before { content: "·"; margin-right: 0.7rem; }
   .bh-row.first-in-issue { border-top: 0; }
 
 
