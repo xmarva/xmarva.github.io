@@ -92,6 +92,7 @@ ieee_id: # your ieeexplore.ieee.org/author/id
 inspirehep_id: # Inspire HEP author ID
 instagram_id: # your instagram id
 kaggle_id: qmarva # your kaggle id
+huggingface_id: xmarva # your Hugging Face user name (structured data only)
 keybase_username: # your keybase user name
 lastfm_id: # your lastfm id
 lattes_id: # your ID on Lattes (Brazilian Lattes CV)

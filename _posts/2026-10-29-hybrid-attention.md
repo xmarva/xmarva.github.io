@@ -3,6 +3,8 @@ layout: post
 title: "Hybrid attention: why new LLMs keep full attention in only a few layers"
 date: 2026-01-15 12:00:00
 last_updated: 2026-11-02
+doi: 10.5281/zenodo.24114949
+doi_date: 2026-11-10
 description: "Linear attention, the delta rule and Gated DeltaNet in PyTorch, a recall test, GPU timings, and why Qwen3-Next and Kimi Linear keep few attention layers"
 tags: [machine-learning, transformers, attention, linear-attention, llm]
 categories: machine-learning

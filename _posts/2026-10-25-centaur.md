@@ -3,6 +3,8 @@ layout: post
 title: "Is Centaur a model of the mind? An LLM fine-tuned on 160 psychology experiments"
 date: 2025-10-15 12:00:00
 last_updated: 2026-11-02
+doi: 10.5281/zenodo.24114953
+doi_date: 2026-11-10
 permalink: /blog/2026/centaur/
 description: "In 1973 Allen Newell asked psychology for one system that performs all its tasks. In 2025 a Llama fine-tuned on 160 experiments was presented as that system. What Centaur predicts, what happens when you take away its instructions, and why its own authors went on to beat it with half a million parameters"
 seo_description: "Centaur, a Llama fine-tuned on 160 psychology experiments, was presented in Nature as a model of human cognition: what it predicts and what it leaves out."

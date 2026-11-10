@@ -3,6 +3,8 @@ layout: post
 title: "LLM inference optimization: where the time and memory go"
 date: 2025-05-07 10:00:00
 last_updated: 2026-11-02
+doi: 10.5281/zenodo.24114957
+doi_date: 2026-11-10
 description: "Why generating text is limited by memory rather than arithmetic, measured on a free GPU, and what serving engines like vLLM do about it: the KV cache, continuous batching, quantization and speculative decoding"
 tags: [machine-learning, transformers, production, optimization, high-load]
 categories: [system-design, machine-learning]
