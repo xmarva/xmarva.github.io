@@ -238,6 +238,38 @@ html[data-theme="dark"] #markdown-content {
     }
   }
 
+  // ---- how to cite the post, at its end (_includes/post_cite.liquid): a folded method block with a "Cite" tag
+  details.method.cite {
+    margin-top: 3rem;
+
+    > summary::before {
+      content: "Cite";
+    }
+
+    > p.cite-ref {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    > p.cite-ref a {
+      overflow-wrap: anywhere;
+    }
+
+    // plain BibTeX, without the colour of inline code, on the ground of the other code blocks
+    pre {
+      padding: 0.9rem 1.1rem;
+      border-radius: 6px;
+      background: var(--global-code-bg-color);
+    }
+
+    pre code {
+      padding: 0;
+      background: none;
+      color: var(--global-text-color);
+      font-size: 0.85rem;
+    }
+  }
+
   // ---- the one-line conclusion of a chart or a section, after a thin red arrow
   .takeaway {
     position: relative;

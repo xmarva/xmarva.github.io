@@ -14,8 +14,9 @@
       const body = document.createElement("div");
       body.className = "post-references-body";
 
+      // the section ends at the next heading, or at the post's cite block (_includes/post_cite.liquid) after it
       let node = heading.nextSibling;
-      while (node && !(node.nodeType === Node.ELEMENT_NODE && node.tagName === "H2")) {
+      while (node && !(node.nodeType === Node.ELEMENT_NODE && (node.tagName === "H2" || node.matches("details.cite")))) {
         const next = node.nextSibling;
         body.appendChild(node);
         node = next;

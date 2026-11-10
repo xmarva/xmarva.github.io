@@ -101,6 +101,12 @@
       <meta property="article:modified_time" content="{{ page.last_updated | date_to_xmlschema }}">
     {% endif %}
     <meta property="article:author" content="{{ author_name }}">
+    {% comment %} for reference managers (Zotero, Mendeley) and Google Scholar, as in _includes/post_cite.liquid {% endcomment %}
+    <meta name="citation_title" content="{{ page.title | escape }}">
+    <meta name="citation_author" content="{{ site.last_name }}, {{ site.first_name }}">
+    <meta name="citation_publication_date" content="{{ page.date | date: '%Y/%m/%d' }}">
+    <meta name="citation_public_url" content="{{ page.url | absolute_url }}">
+    {% if page.doi %}<meta name="citation_doi" content="{{ page.doi }}">{% endif %}
   {% endif %}
 
   <!-- Twitter card: a large image when the page has its own cover -->
@@ -334,6 +340,7 @@
        "dateModified": {{ page.last_updated | default: page.date | date_to_xmlschema | jsonify }},
        {% if page.og_image %}"image": {{ page.og_image | jsonify }},{% endif %}
        {% if page.tags.size > 0 %}"keywords": {{ page.tags | join: ', ' | jsonify }},{% endif %}
+       {% if page.doi %}"identifier": {"@type": "PropertyValue", "propertyID": "DOI", "value": {{ page.doi | jsonify }}}, "sameAs": {{ page.doi | prepend: 'https://doi.org/' | jsonify }},{% endif %}
        {% if lesson_course %}"isPartOf": {"@type": "Course", "name": {{ lesson_course.title | jsonify }}, "url": {{ '/teaching/' | absolute_url | jsonify }}}, "position": {{ lesson_number }},{% endif %}
        "author": {{ person_json }}}
     {% else %}
