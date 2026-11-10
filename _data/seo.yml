@@ -21,3 +21,5 @@
 /blog/2026/transformer-architectures-06-modern/: "Grouped-query attention, sliding windows, attention sinks and QK-norm read from 14 LLM configs, then Qwen3 in PyTorch, fine-tuned with LoRA."
 /blog/2026/transformer-architectures-07-moe/: "Mixture-of-experts LLMs in PyTorch with OLMoE's official weights, which experts English, Python, maths and Russian use, expert pruning and caching."
 /blog/2026/transformer-architectures-08-kv/: "The KV cache budget of LLMs and DeepSeek's multi-head latent attention in PyTorch, with MiniCPM3's weights, a T4 context test and KV cache quantization."
+/blog/2026/transformer-architectures-09-long/: "Why LLMs break past their training length and how RoPE scaling fixes it, with PI, NTK, YaRN and Llama 3.1 in PyTorch and FlashAttention from the online softmax."
+/blog/2026/transformer-architectures-11-vit/: "How a Vision Transformer turns an image into patches and vectors, step by step in PyTorch with ViT-B/16, DINO attention maps, and ViT against a CNN on EuroSAT."

@@ -145,12 +145,22 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a08_kv.ipynb
       cover: assets/img/teaching/arch-08.png
       topics: "What a token costs in the cache of ten models, multi-head latent attention written in both forms, why rotary positions need their own dimensions, MiniCPM3-4B with its official weights, a latent cache against a rebuilt one on a T4, Qwen3 compressed without training, and a quantized cache"
-    - title: "Long context: RoPE scaling, YaRN and FlashAttention"
-      topics: "From Longformer to YaRN, position interpolation, NTK scaling, attention sinks, FlashAttention as tiled online softmax, a needle in a long haystack"
+    - title: "Long context with RoPE scaling, YaRN and FlashAttention"
+      short: "Long context"
+      url: /blog/2026/transformer-architectures-09-long/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-09-long-context
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a09_long.ipynb
+      cover: assets/img/teaching/arch-09.png
+      topics: "Eleven models' context windows read from their configs, TinyLlama's cliff at token 2,049 and the rotary pairs behind it, position interpolation, NTK, YaRN and Llama 3.1's scaling written from scratch and raced on books, FlashAttention built from the online softmax, and Qwen3-4B looking for a needle and answering questions about a whole novel"
     - title: "Beyond attention: Mamba, state space models and hybrids"
       topics: "Linear recurrences, the selective scan, mamba-130m in our code, associative recall, Jamba and Gated DeltaNet, Mamba on DNA"
-    - title: "Vision Transformer: images as sequences of patches"
-      topics: "Patch embeddings, the class token, why ViT needs data, DeiT's distillation token, DINOv2, ViT against a CNN on satellite images"
+    - title: "The Vision Transformer reads images as sequences of patches"
+      short: "Vision Transformer"
+      url: /blog/2026/transformer-architectures-11-vit/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-11-vision-transformer
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a11_vit.ipynb
+      cover: assets/img/teaching/arch-11.png
+      topics: "Every step from a photo to the 197 vectors the encoder reads, ViT-B/16 written from scratch with Google's weights, shuffled patches and learned positions, where the heads look, attention rollout, DINO's heads finding objects without labels, and ViT against a CNN and DINOv2 on satellite images with few labels"
     - title: "CLIP and SigLIP: one space for images and text"
       topics: "Contrastive and sigmoid losses, zero-shot classification, image search, typographic attacks"
     - title: "Vision-language models: from LLaVA to Qwen-VL"
