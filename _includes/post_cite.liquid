@@ -1,29 +1,39 @@
 {% comment %}
   How to cite a post, folded at its end: a reference in APA style and a BibTeX entry (whose code block gets the copy
   button of assets/js/copy_code.js). A lesson is cited as a part of its course; a post with `doi:` in its front matter
-  (the best articles, deposited on Zenodo) is cited by its DOI, the others by their address.
+  (the best articles, deposited on Zenodo) is cited as its Zenodo record, with the record's date (`doi_date`) and
+  Zenodo as the publisher, as in Zenodo's own BibTeX export; the others are cited by their address.
   include.lesson_number, include.lesson_course: the lesson's number and course, when the post is a lesson
 {% endcomment %}
 {% assign cite_url = page.url | absolute_url %}
 {% assign cite_slug = page.url | split: '/' | last %}
-{% assign cite_year = page.date | date: '%Y' %}
+{% assign cite_date = page.date %}
+{% if page.doi %}{% assign cite_date = page.doi_date | default: page.date %}{% endif %}
+{% assign cite_year = cite_date | date: '%Y' %}
 {% capture cite_key %}{{ site.last_name | downcase }}{{ cite_year }}{{ cite_slug | remove: '-' }}{% endcapture %}
 {% assign cite_title = page.title | replace: '\', '\textbackslash{}' | replace: '&', '\&' | replace: '%', '\%' | replace: '_', '\_' | replace: '#', '\#' | replace: '$', '\$' %}
 {% capture cite_where %}{% if include.lesson_course %}Lesson {{ include.lesson_number }} of the course ``{{ include.lesson_course.title }}''{% else %}{{ site.first_name }} {{ site.last_name }}'s blog{% endif %}{% endcapture %}
 <details class="method cite">
   <summary>Reference and BibTeX</summary>
   <p class="cite-ref">
-    {{ site.last_name }}, {{ site.first_name | slice: 0 }}. ({{ page.date | date: '%Y, %B %-d' }}). {{ page.title | escape }}.
-    {% if include.lesson_course %}In <em>{{ include.lesson_course.title | escape }}</em> (Lesson {{ include.lesson_number }}).{% else %}<em>{{ site.first_name }} {{ site.last_name }}'s blog</em>.{% endif %}
-    {% if page.doi %}<a href="https://doi.org/{{ page.doi }}">https://doi.org/{{ page.doi }}</a>{% else %}<a href="{{ cite_url }}">{{ cite_url }}</a>{% endif %}
+    {% if page.doi %}
+      {{ site.last_name }}, {{ site.first_name | slice: 0 }}. ({{ cite_year }}). <em>{{ page.title | escape }}</em>. Zenodo.
+      <a href="https://doi.org/{{ page.doi }}">https://doi.org/{{ page.doi }}</a>
+    {% else %}
+      {{ site.last_name }}, {{ site.first_name | slice: 0 }}. ({{ page.date | date: '%Y, %B %-d' }}). {{ page.title | escape }}.
+      {% if include.lesson_course %}In <em>{{ include.lesson_course.title | escape }}</em> (Lesson {{ include.lesson_number }}).{% else %}<em>{{ site.first_name }} {{ site.last_name }}'s blog</em>.{% endif %}
+      <a href="{{ cite_url }}">{{ cite_url }}</a>
+    {% endif %}
   </p>
 <pre><code class="language-bibtex">@misc{ {{- cite_key }},
   author       = {{ '{' }}{{ site.last_name }}, {{ site.first_name }}},
   title        = {{ '{{' }}{{ cite_title | escape }}}},
   year         = {{ '{' }}{{ cite_year }}},
-  month        = {{ page.date | date: '%b' | downcase }},
-  howpublished = {{ '{' }}{{ cite_where | escape }}},{% if page.doi %}
-  doi          = {{ '{' }}{{ page.doi }}},{% endif %}
-  url          = {{ '{' }}{{ cite_url }}}
+  month        = {{ cite_date | date: '%b' | downcase }},{% if page.doi %}
+  publisher    = {Zenodo},
+  doi          = {{ '{' }}{{ page.doi }}},
+  url          = {https://doi.org/{{ page.doi }}}{% else %}
+  howpublished = {{ '{' }}{{ cite_where | escape }}},
+  url          = {{ '{' }}{{ cite_url }}}{% endif %}
 }</code></pre>
 </details>

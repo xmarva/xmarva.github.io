@@ -222,6 +222,10 @@
     {% capture link %}https://stackoverflow.com/users/{{ site.stackoverflow_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
+  {% if site.huggingface_id %}
+    {% capture link %}https://huggingface.co/{{ site.huggingface_id }}{% endcapture %}
+    {% assign sameaslinks = sameaslinks | push: link %}
+  {% endif %}
   {% if site.kaggle_id %}
     {% capture link %}https://www.kaggle.com/{{ site.kaggle_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}

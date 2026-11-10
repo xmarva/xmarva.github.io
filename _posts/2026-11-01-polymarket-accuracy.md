@@ -3,6 +3,8 @@ layout: post
 title: "How accurate is Polymarket? Calibration, longshot bias and a volume trap"
 date: 2026-11-05 00:00:00
 last_updated: 2026-11-05
+doi: 10.5281/zenodo.24114942
+doi_date: 2026-11-10
 description: "Polymarket's prices checked against what happened across almost three million resolved markets: how well calibrated they are, what accuracy figures hide, where longshots and favourites are mispriced, insiders, oracles and the cost of trading"
 tags: [prediction-markets, polymarket, calibration, forecasting, trading]
 categories: [finance, crypto]
