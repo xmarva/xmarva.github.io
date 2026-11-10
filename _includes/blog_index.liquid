@@ -138,8 +138,9 @@
   .bh-meta a:hover { color: var(--global-theme-color); }
   .bh-dot { opacity: 0.6; }
 
-  /* the posts by month, as the issues of a journal: the month in the serif's italic over a hairline, both muted, so
-     that they order the list without competing with the titles; the counts follow the chosen topic (the script below) */
+  /* the posts by month, as the issues of a journal: the month as a muted label like those above the titles, over a
+     hairline, so that it orders the list without competing with them; the counts follow the chosen topic (the script
+     below) */
   .bh-issue {
     display: flex;
     align-items: baseline;
@@ -148,14 +149,10 @@
     padding-bottom: 0.55rem;
     border-bottom: 1px solid var(--bh-border);
   }
-  .bh-issue b { font-family: var(--font-serif); font-style: italic; font-size: 1.12rem; font-weight: 400; color: var(--bh-muted); }
-  .bh-issue span {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--bh-muted);
-    opacity: 0.75;
-  }
+  .bh-issue b, .bh-issue span { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bh-muted); }
+  .bh-issue b { font-weight: 600; }
+  .bh-issue span { opacity: 0.7; }
+  .bh-issue span::before { content: "·"; margin-right: 0.7rem; }
   .bh-row.first-in-issue { border-top: 0; }
 
 
