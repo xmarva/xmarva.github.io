@@ -41,6 +41,7 @@ layout: default
         <span aria-hidden="true">&middot;</span> updated {{ page.last_updated | date: '%B %-d, %Y' }}
       {% endif %}
       <span aria-hidden="true">&middot;</span> {{ read_time }} min read
+      {% include post_share.liquid %}
     </p>
     {% if page.thumbnail %}
       {% assign art_path = page.thumbnail | replace: 'cover.png', 'cover-art.png' %}
@@ -110,3 +111,4 @@ layout: default
 <script defer src="{{ '/assets/js/side-toc.js' | relative_url | bust_file_cache }}"></script>
 <script defer src="{{ '/assets/js/figures.js' | relative_url | bust_file_cache }}"></script>
 <script defer src="{{ '/assets/js/openers.js' | relative_url | bust_file_cache }}"></script>
+<script defer src="{{ '/assets/js/share.js' | relative_url | bust_file_cache }}"></script>
