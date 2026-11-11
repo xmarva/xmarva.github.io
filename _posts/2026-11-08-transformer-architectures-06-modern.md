@@ -7,7 +7,7 @@ description: "What Mistral, Gemma and Qwen changed after Llama, read from a doze
 tags: [transformer-architectures, qwen3, gqa, sliding-window-attention, qk-norm, lora, llm, nlp]
 categories: machine-learning
 thumbnail: /assets/posts/arch/06/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/06/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/06/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -257,7 +257,7 @@ Qwen3 8B: RoPE base 1,000,000</code></pre>
 
 ## 2. The decoder block they share
 
-Under the settings, the fourteen models are variations of one machine, the one [lesson 5 of the first course](https://xmarva.github.io/blog/2026/transformers-from-scratch-05-llama/) built step by step: a stack of decoder blocks with a residual connection around attention and around the feed-forward network, RMSNorm, rotary positions applied to queries and keys, a gated feed-forward network, and in most of them no biases at all.
+Under the settings, the fourteen models are variations of one machine, the one [lesson 5 of the first course](https://blog.korolevalab.com/blog/2026/transformers-from-scratch-05-llama/) built step by step: a stack of decoder blocks with a residual connection around attention and around the feed-forward network, RMSNorm, rotary positions applied to queries and keys, a gated feed-forward network, and in most of them no biases at all.
 
 Most put the norm before attention and before the feed-forward network and gate with SiLU, as Llama does. OLMo 2 normalises the outputs of the two instead of their inputs, Gemma 2 and 3 normalise both and gate with GELU, and gpt-oss replaces the feed-forward network with a mixture of experts, the subject of lesson 7.
 

@@ -7,7 +7,7 @@ description: "Why a language model breaks past the length it was trained on, and
 tags: [transformer-architectures, long-context, rope, yarn, flashattention, position-interpolation, qwen3, llm]
 categories: machine-learning
 thumbnail: /assets/posts/arch/09/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/09/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/09/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

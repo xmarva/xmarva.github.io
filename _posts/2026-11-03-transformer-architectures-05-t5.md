@@ -7,7 +7,7 @@ description: "T5 written from scratch and loaded with Google's weights: relative
 tags: [transformer-architectures, t5, bart, encoder-decoder, text-to-sql, spider, nlp]
 categories: machine-learning
 thumbnail: /assets/posts/arch/05/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/05/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/05/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

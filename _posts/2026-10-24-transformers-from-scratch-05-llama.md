@@ -8,7 +8,7 @@ description: "Pre-norm, RMSNorm, SwiGLU and RoPE: the changes Llama made to the 
 tags: [transformers-from-scratch, llama, rope, transformer, pytorch]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/05/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/05/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/05/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

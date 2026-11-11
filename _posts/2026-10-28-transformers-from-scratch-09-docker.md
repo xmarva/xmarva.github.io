@@ -8,7 +8,7 @@ description: "Ship a model so that it runs the same next year: a lock file with 
 tags: [transformers-from-scratch, docker, reproducibility, onnx, mlops]
 categories: [machine-learning, system-design]
 thumbnail: /assets/posts/tfs/09/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/09/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/09/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -1503,7 +1503,8 @@ Before a release, the fast tests, which now include the health check that names 
 ```
 
 <pre class="tfs-printed" markdown="0"><code>........................                                                 [100%]
-24 passed, 2 deselected in 6.97s</code></pre>
+24 passed, 2 deselected in 6.97s
+</code></pre>
 
 The release is a commit and a tag, `perevod-v0.3.1`, and the image is whatever CI builds from them. That gives the notebook one last check: are the files it wrote and edited the same as the release's?
 

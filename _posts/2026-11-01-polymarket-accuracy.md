@@ -11,7 +11,7 @@ categories: [finance, crypto]
 featured: true
 pin_order: 3
 thumbnail: /assets/posts/polymarket-accuracy/cover.png
-og_image: https://xmarva.github.io/assets/posts/polymarket-accuracy/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/polymarket-accuracy/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

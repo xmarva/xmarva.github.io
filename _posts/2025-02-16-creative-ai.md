@@ -9,7 +9,7 @@ categories: [cognitive-science, machine-learning]
 featured: true
 pin_order: 1
 thumbnail: /assets/posts/creative-ai/cover.png
-og_image: https://xmarva.github.io/assets/posts/creative-ai/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/creative-ai/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

@@ -8,7 +8,7 @@ tags: [nlp, llm, lora, linear-algebra, fine-tuning]
 categories: machine-learning
 featured: false
 thumbnail: /assets/posts/lora-algorithm-for-llms/cover.png
-og_image: https://xmarva.github.io/assets/posts/lora-algorithm-for-llms/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/lora-algorithm-for-llms/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

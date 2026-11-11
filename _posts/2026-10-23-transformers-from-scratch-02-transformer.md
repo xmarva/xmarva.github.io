@@ -8,7 +8,7 @@ description: "Attention, masks, heads, positions and the full encoder-decoder of
 tags: [transformers-from-scratch, attention, pytorch, nlp, deep-learning]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/02/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/02/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/02/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

@@ -11,7 +11,7 @@ categories: [system-design, machine-learning]
 featured: true
 pin_order: 2
 thumbnail: /assets/posts/inference-optimization/cover.png
-og_image: https://xmarva.github.io/assets/posts/inference-optimization/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/inference-optimization/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

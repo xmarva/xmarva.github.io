@@ -8,7 +8,7 @@ seo_description: "The hard problem of consciousness for physicalists, with Mary'
 tags: [consciousness, philosophy-of-mind, neuroscience, hard-problem, ai]
 categories: [cognitive-science, philosophy]
 thumbnail: /assets/posts/theories-of-consciousness/cover.png
-og_image: https://xmarva.github.io/assets/posts/theories-of-consciousness/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/theories-of-consciousness/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

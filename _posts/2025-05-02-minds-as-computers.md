@@ -8,7 +8,7 @@ tags: [cognitive-science, philosophy-of-mind, symbolic-systems, language-of-thou
 categories: [cognitive-science, philosophy]
 featured: false
 thumbnail: /assets/posts/minds-as-computers/cover.png
-og_image: https://xmarva.github.io/assets/posts/minds-as-computers/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/minds-as-computers/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

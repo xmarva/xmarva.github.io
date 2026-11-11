@@ -10,7 +10,7 @@ tags: [machine-learning, llm, crypto, trading, ai-agents]
 categories: [crypto, machine-learning, finance, cybersecurity]
 featured: false
 thumbnail: /assets/posts/ai-crypto-trading/cover.png
-og_image: https://xmarva.github.io/assets/posts/ai-crypto-trading/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/ai-crypto-trading/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

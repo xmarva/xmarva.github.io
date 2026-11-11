@@ -7,7 +7,7 @@ description: "State space models from the continuous equation up: discretisation
 tags: [transformer-architectures, mamba, state-space-models, ssm, selective-scan, mamba-2, hybrids, llm]
 categories: machine-learning
 thumbnail: /assets/posts/arch/10/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/10/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/10/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -1266,7 +1266,7 @@ table(pd.DataFrame(rows), digits=2)
 
 The shares cluster where the Mamba-2 paper found its optimum: one attention layer in four to one in ten, spread evenly through the depth. Two other designs exist.
 
-Falcon-H1 from TII runs attention and Mamba-2 heads *in parallel* inside every layer instead of alternating them, and Qwen3-Next and Kimi Linear replace Mamba with a different recurrence, the gated delta rule, which writes into its state more selectively; that family is the subject of [a separate post on hybrid attention](https://xmarva.github.io/blog/2026/hybrid-attention/).
+Falcon-H1 from TII runs attention and Mamba-2 heads *in parallel* inside every layer instead of alternating them, and Qwen3-Next and Kimi Linear replace Mamba with a different recurrence, the gated delta rule, which writes into its state more selectively; that family is the subject of [a separate post on hybrid attention](https://blog.korolevalab.com/blog/2026/hybrid-attention/).
 
 Not everyone stayed: MiniMax used linear attention in most layers of MiniMax-01 and went back to full attention in every layer for MiniMax-M2.
 

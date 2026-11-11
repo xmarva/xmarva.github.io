@@ -7,7 +7,7 @@ description: "BERT written in PyTorch from scratch and loaded with Google's weig
 tags: [transformer-architectures, bert, nlp, transformer, pytorch, ner]
 categories: machine-learning
 thumbnail: /assets/posts/arch/01/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/01/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/01/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

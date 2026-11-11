@@ -8,7 +8,7 @@ tags: [neuroscience, decision-making, emotions, cognition, psychology]
 categories: cognitive-science
 featured: false
 thumbnail: /assets/posts/antonio-damasio/cover.png
-og_image: https://xmarva.github.io/assets/posts/antonio-damasio/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/antonio-damasio/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

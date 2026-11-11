@@ -10,7 +10,7 @@ tags: [machine-learning, transformers, mixture-of-experts, llm, deepseek]
 categories: machine-learning
 featured: false
 thumbnail: /assets/posts/mixture-of-experts/cover.png
-og_image: https://xmarva.github.io/assets/posts/mixture-of-experts/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/mixture-of-experts/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

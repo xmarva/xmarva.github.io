@@ -12,7 +12,7 @@ tags: [cognitive-science, cognitive-modeling, llm, psychology]
 categories: [cognitive-science, machine-learning]
 featured: false
 thumbnail: /assets/posts/centaur/cover.png
-og_image: https://xmarva.github.io/assets/posts/centaur/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/centaur/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
