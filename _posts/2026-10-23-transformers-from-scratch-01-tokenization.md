@@ -8,7 +8,7 @@ description: "What GPT-4o actually receives when you type, why Russian costs mor
 tags: [transformers-from-scratch, tokenization, bpe, nlp, llm]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/01/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/01/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/01/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

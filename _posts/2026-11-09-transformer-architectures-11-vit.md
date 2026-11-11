@@ -7,7 +7,7 @@ description: "How a Transformer reads a photo: every step from pixels to a seque
 tags: [transformer-architectures, vision-transformer, vit, image-classification, dino, dinov2, eurosat, computer-vision]
 categories: machine-learning
 thumbnail: /assets/posts/arch/11/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/11/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/11/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

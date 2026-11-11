@@ -9,7 +9,7 @@ seo_description: "Karl Friston's free energy principle with exact formulas, from
 tags: [free-energy-principle, active-inference, predictive-coding, neuroscience, bayesian-brain]
 categories: [cognitive-science, machine-learning]
 thumbnail: /assets/posts/free-energy-principle/cover.png
-og_image: https://xmarva.github.io/assets/posts/free-energy-principle/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/free-energy-principle/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

@@ -7,7 +7,7 @@ description: "How a dozen production mixtures of experts are built, from Mixtral
 tags: [transformer-architectures, mixture-of-experts, moe, olmoe, routing, llm, pruning]
 categories: machine-learning
 thumbnail: /assets/posts/arch/07/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/07/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/07/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -24,7 +24,7 @@ In a dense model every token goes through every weight, so there is nothing to w
 
 Then you can act on what you saw, throw away the experts a job doesn't use, and keep a smaller model that still does the job.
 
-A [post on this blog](https://xmarva.github.io/blog/2026/mixture-of-experts/) built a mixture of experts from
+A [post on this blog](https://blog.korolevalab.com/blog/2026/mixture-of-experts/) built a mixture of experts from
 scratch, trained it next to dense models and compared the ways of keeping its experts busy. This lesson takes the
 next step, to a real model trained at scale: we read how nine production mixtures are built, write OLMoE in
 PyTorch, load the official weights and look inside.

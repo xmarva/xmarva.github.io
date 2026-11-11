@@ -8,7 +8,7 @@ description: "Spend an hour of a free GPU on hyperparameters: experiment trackin
 tags: [transformers-from-scratch, hyperparameter-tuning, wandb, pytorch, deep-learning]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/06/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/06/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/06/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

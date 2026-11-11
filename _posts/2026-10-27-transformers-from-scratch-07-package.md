@@ -8,7 +8,7 @@ description: "Turn a model from a notebook into a Python package anyone can inst
 tags: [transformers-from-scratch, python-packaging, pytest, github-actions, mlops]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/07/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/07/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/07/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -1228,7 +1228,8 @@ Mary has two brothers and a sister.
 
 <pre class="tfs-printed" markdown="0"><code>Memory is the diary we all carry about with us.|Матери — это дневник, который мы все берём с собой.
 |
-Mary has two brothers and a sister.|У Мэри два брата и сестра.</code></pre>
+Mary has two brothers and a sister.|У Мэри два брата и сестра.
+</code></pre>
 
 Three lines in, three lines out, the empty one still empty.
 
@@ -1512,7 +1513,8 @@ The fast tests, all of them:
 ```
 
 <pre class="tfs-printed" markdown="0"><code>..................                                                       [100%]
-18 passed in 0.80s</code></pre>
+18 passed in 0.80s
+</code></pre>
 
 Under a second, and none of them uses the real model. The last two kinds do.
 
@@ -1596,7 +1598,8 @@ def test_chrf_on_a_sample_of_the_test_set(published):
 ```
 
 <pre class="tfs-printed" markdown="0"><code>....................                                                     [100%]
-20 passed in 47.99s</code></pre>
+20 passed in 47.99s
+</code></pre>
 
 ## 11. Do the tests catch bugs?
 
@@ -1902,7 +1905,8 @@ def test_the_tiny_model_translates_what_it_learned(translator, pairs):
 ```
 
 <pre class="tfs-printed" markdown="0"><code>...................                                                      [100%]
-19 passed, 2 deselected in 12.99s</code></pre>
+19 passed, 2 deselected in 12.99s
+</code></pre>
 
 Still a matter of seconds, training included. And the same ten mutants against the improved tests:
 

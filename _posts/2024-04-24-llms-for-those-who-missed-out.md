@@ -8,7 +8,7 @@ tags: [nlp, llm]
 categories: [machine-learning, cybersecurity]
 featured: false
 thumbnail: /assets/posts/llms-for-those-who-missed-out/cover.png
-og_image: https://xmarva.github.io/assets/posts/llms-for-those-who-missed-out/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/llms-for-those-who-missed-out/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

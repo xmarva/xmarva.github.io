@@ -10,7 +10,7 @@ tags: [machine-learning, transformers, attention, linear-attention, llm]
 categories: machine-learning
 featured: false
 thumbnail: /assets/posts/hybrid-attention/cover.png
-og_image: https://xmarva.github.io/assets/posts/hybrid-attention/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/hybrid-attention/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

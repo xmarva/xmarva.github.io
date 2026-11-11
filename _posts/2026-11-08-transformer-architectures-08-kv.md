@@ -7,7 +7,7 @@ description: "What one token costs in the KV cache of ten models, and how DeepSe
 tags: [transformer-architectures, kv-cache, mla, multi-head-latent-attention, deepseek, gqa, minicpm3, llm]
 categories: machine-learning
 thumbnail: /assets/posts/arch/08/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/08/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/08/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

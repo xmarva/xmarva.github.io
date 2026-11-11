@@ -10,7 +10,7 @@ tags: [game-theory, ethics, philosophy, cooperation, prisoners-dilemma]
 categories: philosophy
 featured: false
 thumbnail: /assets/posts/game-theory-ethics/cover.png
-og_image: https://xmarva.github.io/assets/posts/game-theory-ethics/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/game-theory-ethics/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

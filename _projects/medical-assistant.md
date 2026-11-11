@@ -4,7 +4,7 @@ title: Medical Assistant
 description: "An assistant that reads the medical literature for a doctor: entities found in articles, mapped to medical vocabularies, stored as a graph and ranked by the strength of the evidence behind them"
 img: assets/img/projects/1_medical_assistant/figures/card.png
 cover: /assets/img/projects/1_medical_assistant/figures/cover.png
-og_image: https://xmarva.github.io/assets/img/projects/1_medical_assistant/figures/cover.png
+og_image: https://blog.korolevalab.com/assets/img/projects/1_medical_assistant/figures/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 importance: 5
 category: work

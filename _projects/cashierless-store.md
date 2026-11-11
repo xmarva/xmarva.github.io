@@ -4,7 +4,7 @@ title: Cashierless Store
 description: "A store without a checkout: ceiling cameras that follow every shopper on the floor plan, read where they stop and what they take, and send a receipt when they walk out"
 img: assets/img/projects/2_cachierless_store/figures/card.png
 cover: /assets/img/projects/2_cachierless_store/figures/cover.png
-og_image: https://xmarva.github.io/assets/img/projects/2_cachierless_store/figures/cover.png
+og_image: https://blog.korolevalab.com/assets/img/projects/2_cachierless_store/figures/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 importance: 3
 category: work

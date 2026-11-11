@@ -8,7 +8,7 @@ seo_description: "How the human brain compares with AI models in studies of lang
 tags: [neuroscience, ai, llm, brain, cognitive-science]
 categories: [cognitive-science, machine-learning]
 thumbnail: /assets/posts/brain-and-ai-models/cover.png
-og_image: https://xmarva.github.io/assets/posts/brain-and-ai-models/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/brain-and-ai-models/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

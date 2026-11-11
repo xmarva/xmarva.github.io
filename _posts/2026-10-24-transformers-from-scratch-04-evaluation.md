@@ -8,7 +8,7 @@ description: "Evaluate English–Russian translation with BLEU, chrF and COMET w
 tags: [transformers-from-scratch, machine-translation, evaluation, bleu, comet]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/04/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/04/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/04/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

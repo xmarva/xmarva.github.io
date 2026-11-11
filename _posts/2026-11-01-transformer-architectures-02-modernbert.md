@@ -7,7 +7,7 @@ description: "What seven years did to BERT: RoBERTa's training recipe, ELECTRA's
 tags: [transformer-architectures, roberta, electra, deberta, modernbert, nlp]
 categories: machine-learning
 thumbnail: /assets/posts/arch/02/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/02/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/02/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

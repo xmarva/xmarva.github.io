@@ -8,7 +8,7 @@ description: "Train a Transformer on half a million sentence pairs on a free GPU
 tags: [transformers-from-scratch, training, decoding, beam-search, pytorch]
 categories: machine-learning
 thumbnail: /assets/posts/tfs/03/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/03/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/03/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

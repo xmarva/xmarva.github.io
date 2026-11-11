@@ -4,7 +4,7 @@ title: AI Fashion App
 description: "Virtual try-on for digital and real clothes, built at a startup: pose estimation, garment warping, inpainting with GANs and Stable Diffusion, 3D bodies, cloth simulation and the system around them"
 img: assets/img/projects/4-ai-fashion-app/figures/card.png
 cover: /assets/img/projects/4-ai-fashion-app/figures/cover.png
-og_image: https://xmarva.github.io/assets/img/projects/4-ai-fashion-app/figures/cover.png
+og_image: https://blog.korolevalab.com/assets/img/projects/4-ai-fashion-app/figures/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 importance: 1
 category: work

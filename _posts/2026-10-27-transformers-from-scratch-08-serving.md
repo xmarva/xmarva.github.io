@@ -8,7 +8,7 @@ description: "Put a Transformer behind an HTTP API and measure it the way users 
 tags: [transformers-from-scratch, fastapi, inference, load-testing, queueing-theory]
 categories: [machine-learning, system-design]
 thumbnail: /assets/posts/tfs/08/cover.png
-og_image: https://xmarva.github.io/assets/posts/tfs/08/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/tfs/08/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -979,7 +979,8 @@ That's the right install for working on a package. The CI job that installs the 
   Getting requirements to build editable ... done
   Installing backend dependencies ... done
   Preparing editable metadata (pyproject.toml) ... done
-  Building editable for perevod (pyproject.toml) ... done</code></pre>
+  Building editable for perevod (pyproject.toml) ... done
+</code></pre>
 
 A service runs in its own process. `start_server` starts one, sends what it prints to a log file, and waits
 until `/health` answers; if the process exits first, the error shows the end of its log. Then a sentence, first
@@ -1667,7 +1668,8 @@ jobs:
   Preparing editable metadata (pyproject.toml) ... done
   Building editable for perevod (pyproject.toml) ... done
 ..........................                                               [100%]
-26 passed in 12.65s</code></pre>
+26 passed in 12.65s
+</code></pre>
 
 All of them, the slow ones included. The golden test of lesson 7 is the statement this release rests on: the cached beam search, the new decoding step and the reordered caches produce exactly what 0.1.0 produced on the twelve golden sentences, the chrF test keeps its floor, and section 3 compared 530 more sentences word for word.
 

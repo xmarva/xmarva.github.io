@@ -7,7 +7,7 @@ description: "How a search engine reads: BM25 written from scratch, Sentence-BER
 tags: [transformer-architectures, sentence-bert, colbert, embeddings, retrieval, search]
 categories: machine-learning
 thumbnail: /assets/posts/arch/03/cover.png
-og_image: https://xmarva.github.io/assets/posts/arch/03/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/arch/03/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true

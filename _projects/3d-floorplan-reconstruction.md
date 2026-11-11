@@ -4,7 +4,7 @@ title: 3D Floorplan Reconstruction
 description: "Turning an architectural floor plan, scanned, photographed or exported, into a furnished 3D apartment you can walk through in a game engine or a VR headset"
 img: assets/img/projects/3-vr-floorplan-reconstruction/figures/card.png
 cover: /assets/img/projects/3-vr-floorplan-reconstruction/figures/cover.png
-og_image: https://xmarva.github.io/assets/img/projects/3-vr-floorplan-reconstruction/figures/cover.png
+og_image: https://blog.korolevalab.com/assets/img/projects/3-vr-floorplan-reconstruction/figures/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 importance: 2
 category: work

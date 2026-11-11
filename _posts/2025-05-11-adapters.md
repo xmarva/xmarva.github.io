@@ -8,7 +8,7 @@ tags: [machine-learning, transformers, peft, lora, adapters, fine-tuning]
 categories: machine-learning
 featured: false
 thumbnail: /assets/posts/adapters/cover.png
-og_image: https://xmarva.github.io/assets/posts/adapters/cover.png
+og_image: https://blog.korolevalab.com/assets/posts/adapters/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
