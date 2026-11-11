@@ -14,13 +14,13 @@ home_title: Machine learning, LLMs and cognitive science # shown after the name 
 job_title: Researcher, engineer and investor
 person_description: >-
   Researcher, engineer and investor working across machine learning, cognitive science and markets. She leads
-  Koroleva Research, edits ML Samurai and teaches two open courses on Transformers.
+  Koroleva Lab, edits ML Samurai and teaches two open courses on Transformers.
 knows_about: [Machine learning, Large language models, Transformers, Natural language processing, Computer vision, Generative models, Cognitive science, Philosophy of mind, Forecasting, Prediction markets]
 # the Person's structured data (_includes/metadata.liquid): other forms of the name, education, organisations
 alternate_names: [Elizaveta Koroleva, E. V. Koroleva]
 alumni_of: { name: Kazan Federal University, url: "https://kpfu.ru/", same_as: "https://www.wikidata.org/wiki/Q113788" }
 works_for:
-  - { name: Koroleva Research, same_as: "https://www.crunchbase.com/organization/koroleva-research" }
+  - { name: Koroleva Lab, same_as: "https://www.crunchbase.com/organization/koroleva-research" }
   - { name: ML Samurai, url: "https://mlsamurai.substack.com/", same_as: "https://www.crunchbase.com/organization/ml-samurai" }
   - { name: Root of Trust Holdings, same_as: "https://www.crunchbase.com/organization/root-of-trust" }
 wikidata_item: Q142104051 # the Wikidata item of the author: structured data only, wikidata_id below would also draw an icon
