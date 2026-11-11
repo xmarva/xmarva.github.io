@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://xmarva.github.io/sitemap.xml
+Sitemap: https://blog.korolevalab.com/sitemap.xml
