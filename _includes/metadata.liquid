@@ -222,6 +222,14 @@
     {% capture link %}https://stackoverflow.com/users/{{ site.stackoverflow_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
+  {% if site.wikidata_item %}
+    {% capture link %}https://www.wikidata.org/wiki/{{ site.wikidata_item }}{% endcapture %}
+    {% assign sameaslinks = sameaslinks | push: link %}
+  {% endif %}
+  {% if site.crunchbase_person %}
+    {% capture link %}https://www.crunchbase.com/person/{{ site.crunchbase_person }}{% endcapture %}
+    {% assign sameaslinks = sameaslinks | push: link %}
+  {% endif %}
   {% if site.huggingface_id %}
     {% capture link %}https://huggingface.co/{{ site.huggingface_id }}{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
@@ -283,6 +291,9 @@
     {%- if site.job_title %}, "jobTitle": {{ site.job_title | jsonify }}{% endif %}
     {%- if site.person_description %}, "description": {{ site.person_description | strip | jsonify }}{% endif %}
     {%- if site.knows_about %}, "knowsAbout": {{ site.knows_about | jsonify }}{% endif %}
+    {%- if site.alternate_names %}, "alternateName": {{ site.alternate_names | jsonify }}{% endif %}
+    {%- if site.alumni_of %}, "alumniOf": {"@type": "CollegeOrUniversity", "name": {{ site.alumni_of.name | jsonify }}, "url": {{ site.alumni_of.url | jsonify }}, "sameAs": {{ site.alumni_of.same_as | jsonify }}}{% endif %}
+    {%- if site.works_for %}, "worksFor": [{% for org in site.works_for %}{"@type": "Organization", "name": {{ org.name | jsonify }}{% if org.url %}, "url": {{ org.url | jsonify }}{% endif %}{% if org.same_as %}, "sameAs": {{ org.same_as | jsonify }}{% endif %}}{% unless forloop.last %}, {% endunless %}{% endfor %}]{% endif %}
     {%- if sameaslinks != blank %}, "sameAs": {{ sameaslinks | join: '' }}{% endif %}}{% endcapture %}
   <script type="application/ld+json">
     {% if page.url == '/' %}
