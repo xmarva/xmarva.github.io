@@ -11,11 +11,20 @@ description: >- # ">-" folds the lines below into one and drops the trailing new
   Eva Koroleva, ML engineer and researcher in NLP, computer vision and generative models: projects, a Transformers course, and posts on ML and cognitive science.
 home_title: Machine learning, LLMs and cognitive science # shown after the name in the home page's title
 # who the site is about, for search engines: the Person in the structured data of every page (_includes/metadata.liquid)
-job_title: ML Engineer & Researcher
+job_title: Researcher, engineer and investor
 person_description: >-
-  ML engineer and researcher in NLP, computer vision and generative models, who writes about LLMs, Transformers and
-  cognitive science and teaches free courses on Transformers.
-knows_about: [Machine learning, Large language models, Transformers, Natural language processing, Computer vision, Generative models, Cognitive science, Philosophy of mind]
+  Researcher, engineer and investor working across machine learning, cognitive science and markets. She leads
+  Koroleva Research, edits ML Samurai and teaches two open courses on Transformers.
+knows_about: [Machine learning, Large language models, Transformers, Natural language processing, Computer vision, Generative models, Cognitive science, Philosophy of mind, Forecasting, Prediction markets]
+# the Person's structured data (_includes/metadata.liquid): other forms of the name, education, organisations
+alternate_names: [Elizaveta Koroleva, E. V. Koroleva]
+alumni_of: { name: Kazan Federal University, url: "https://kpfu.ru/", same_as: "https://www.wikidata.org/wiki/Q113788" }
+works_for:
+  - { name: Koroleva Research, same_as: "https://www.crunchbase.com/organization/koroleva-research" }
+  - { name: ML Samurai, url: "https://mlsamurai.substack.com/", same_as: "https://www.crunchbase.com/organization/ml-samurai" }
+  - { name: Root of Trust Holdings, same_as: "https://www.crunchbase.com/organization/root-of-trust" }
+wikidata_item: Q142104051 # the Wikidata item of the author: structured data only, wikidata_id below would also draw an icon
+crunchbase_person: eva-koroleva # the Crunchbase person profile (structured data only)
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
