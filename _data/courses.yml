@@ -166,8 +166,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a11_vit.ipynb
       cover: assets/img/teaching/arch-11.png
       topics: "Every step from a photo to the 197 vectors the encoder reads, ViT-B/16 written from scratch with Google's weights, shuffled patches and learned positions, where the heads look, attention rollout, DINO's heads finding objects without labels, and ViT against a CNN and DINOv2 on satellite images with few labels"
-    - title: "CLIP and SigLIP: one space for images and text"
-      topics: "Contrastive and sigmoid losses, zero-shot classification, image search, typographic attacks"
+    - title: "CLIP and SigLIP put images and text in one space"
+      short: "CLIP and SigLIP"
+      url: /blog/2026/transformer-architectures-12-clip/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-12-clip-and-siglip
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a12_clip.ipynb
+      cover: assets/img/teaching/arch-12.png
+      topics: "Both towers of CLIP ViT-B/32 written from scratch with OpenAI's weights, the contrastive loss and its temperature on a real batch, zero-shot geolocation over 211 countries checked against the paper, search over COCO's test photos, the modality gap, a word on a photo that changes the answer, SigLIP's sigmoid loss and attention pooling, and the two losses trained side by side"
     - title: "Vision-language models: from LLaVA to Qwen-VL"
       topics: "The projector, visual tokens and what they cost, dynamic resolution, a small model reading charts and receipts"
     - title: "Whisper: speech recognition as an encoder–decoder"
