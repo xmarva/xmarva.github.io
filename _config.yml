@@ -30,7 +30,7 @@ footer_text: >
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
 keywords: machine-learning, deep-learning, python, neural-networks, cognitive-science # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: 🧠 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: favicon.svg # the ML Samurai mark, in /assets/img/ (an emoji of up to 4 characters also works)
 
 url: https://blog.korolevalab.com # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root

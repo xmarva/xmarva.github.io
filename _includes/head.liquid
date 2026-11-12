@@ -63,7 +63,10 @@
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{{ site.icon }}</text></svg>"
   >
 {% elsif site.icon != blank %}
-  <link rel="shortcut icon" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache}}">
+  {% comment %} The ML Samurai mark: SVG for current browsers, PNG fallbacks for the rest and for iOS home screens, and /favicon.ico at the root for old clients {% endcomment %}
+  <link rel="icon" type="image/svg+xml" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/img/favicon-32.png' | relative_url | bust_file_cache }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/img/apple-touch-icon.png' | relative_url | bust_file_cache }}">
 {% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
 {% for stylesheet in page.stylesheets %}
