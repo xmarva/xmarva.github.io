@@ -20,7 +20,7 @@ knows_about: [Machine learning, Large language models, Transformers, Natural lan
 alternate_names: [Elizaveta Koroleva, E. V. Koroleva]
 alumni_of: { name: Kazan Federal University, url: "https://kpfu.ru/", same_as: "https://www.wikidata.org/wiki/Q113788" }
 works_for:
-  - { name: Koroleva Lab, url: "https://korolevalab.com/", same_as: "https://www.crunchbase.com/organization/koroleva-research" }
+  - { name: Koroleva Lab, id: "https://korolevalab.com/#organization", url: "https://korolevalab.com/", same_as: "https://www.crunchbase.com/organization/koroleva-research" } # id: the same entity korolevalab.com describes
   - { name: ML Samurai, url: "https://mlsamurai.substack.com/", same_as: "https://www.crunchbase.com/organization/ml-samurai" }
   - { name: Root of Trust Holdings, same_as: "https://www.crunchbase.com/organization/root-of-trust" }
 wikidata_item: Q142104051 # the Wikidata item of the author: structured data only, wikidata_id below would also draw an icon
