@@ -2,7 +2,7 @@
 layout: post
 title: "CLIP and SigLIP put images and text in one space"
 date: 2026-11-12 21:00:00
-last_updated: 2026-11-12
+last_updated: 2026-11-13
 description: "How CLIP and SigLIP put photos and sentences into one space: both towers written from scratch and checked against OpenAI's weights, the contrastive and the sigmoid losses on a real batch, zero-shot geolocation over the 211 countries of Country211 checked against the paper, search over COCO's 5,000 test photos, the modality gap, a word on a photo that changes the answer, and the two losses trained side by side from batches of 16 to 1,024."
 tags: [transformer-architectures, clip, siglip, contrastive-learning, zero-shot, image-search, multimodal, computer-vision]
 categories: machine-learning
@@ -16,21 +16,23 @@ toc:
 
 <p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 12 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-12-clip-and-siglip">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a12_clip.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
 
-Type "a fox in the snow" into the search box of the photo app on your phone, and it finds your foxes, although nobody ever labelled a single picture in your library. When Stable Diffusion draws from a prompt, the prompt is read by a text encoder taken from a model called CLIP.
+Type "a fox in the snow" into the search box of the photo app on your phone, and it finds your foxes, although nobody ever labelled a single picture in your library.
 
-When LLaVA describes a photo, it looks at it through CLIP's image encoder; Google's PaliGemma and Gemma 3 look through its successor, SigLIP. These two models are the bridge between pictures and words in much of what you use today.
+When Stable Diffusion draws from a prompt, the prompt is read by a text encoder taken from a model called CLIP<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Rombach, R., Blattmann, A., Lorenz, D., Esser, P., &amp; Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. CVPR 2022.">1</a>]</sup>.
 
-CLIP came out of OpenAI in January 2021, and its idea fits in a sentence. Take two encoders, one for images and one for text, and train them so that a photo and its caption end up as nearby vectors, and a photo and somebody else's caption end up far apart.
+When LLaVA describes a photo, it looks at it through CLIP's image encoder<sup class="cite">[<a href="#ref-2" id="cite-2" data-ref="2" aria-label="Reference 2: Liu, H., Li, C., Li, Y., &amp; Lee, Y. J. (2024). Improved baselines with visual instruction tuning. CVPR 2024.">2</a>]</sup>; Google's PaliGemma<sup class="cite">[<a href="#ref-3" id="cite-3" data-ref="3" aria-label="Reference 3: Beyer, L., Steiner, A., Pinto, A. S., et al. (2024). PaliGemma: a versatile 3B VLM for transfer. arXiv.">3</a>]</sup> and Gemma 3<sup class="cite">[<a href="#ref-4" id="cite-4" data-ref="4" aria-label="Reference 4: Gemma Team (2025). Gemma 3 technical report. arXiv.">4</a>]</sup> look through its successor, SigLIP. These two models are the bridge between pictures and words in much of what you use today.
+
+CLIP came out of OpenAI in January 2021<sup class="cite">[<a href="#ref-5" id="cite-5" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>, and its idea fits in a sentence. Take two encoders, one for images and one for text, and train them so that a photo and its caption end up as nearby vectors, and a photo and somebody else's caption end up far apart.
 
 The training set was 400 million images with the text that accompanied them on the web, alt texts, titles, captions, collected without anybody labelling anything.
 
 Its largest version classified ImageNet as well as a ResNet-50 trained on ImageNet's 1.28 million labelled images, without seeing one of them: the class names were simply turned into captions, and each photo went to the caption it was closest to.
 
-It also learned to read. Two months after the release, OpenAI's interpretability team stuck a paper note with the
-word "iPod" on a Granny Smith apple, and CLIP declared it an iPod. You'll repeat that experiment in section 8, with
-the name of a country written on holiday photos, and see why it isn't a bug that can be patched.
+It also learned to read. Two months after the release, OpenAI's interpretability team stuck a paper note with the word "iPod" on a Granny Smith apple, and CLIP declared it an iPod<sup class="cite">[<a href="#ref-6" id="cite-6" data-ref="6" aria-label="Reference 6: Goh, G., Cammarata, N., Voss, C., et al. (2021). Multimodal neurons in artificial neural networks. Distill.">6</a>]</sup>.
 
-SigLIP, from Google in 2023, changed the part that matters most, the loss. CLIP asks every photo to pick its caption out of the whole batch, a softmax over thousands of candidates.
+You'll repeat that experiment in section 8, with the name of a country written on holiday photos, and see why it isn't a bug that can be patched.
+
+SigLIP, from Google in 2023<sup class="cite">[<a href="#ref-7" id="cite-7" data-ref="7" aria-label="Reference 7: Zhai, X., Mustafa, B., Kolesnikov, A., &amp; Beyer, L. (2023). Sigmoid loss for language image pre-training. ICCV 2023.">7</a>]</sup>, changed the part that matters most, the loss. CLIP asks every photo to pick its caption out of the whole batch, a softmax over thousands of candidates.
 
 SigLIP asks every pair a separate yes-or-no question, a sigmoid, and that small change lets it train well on less hardware and with smaller batches. Its image tower has since become the eye of many open vision-language models.
 
@@ -119,11 +121,11 @@ diverging = LinearSegmentedColormap.from_list(
 
 ## 1. Two test sets from CLIP's paper
 
-CLIP's paper measured the model on 27 datasets, and two of them make this lesson. *Country211* was built by OpenAI for the paper to test geolocation: photos from YFCC100M, a public collection of a hundred million Flickr photos under Creative Commons licences, with the GPS position where each was taken; for each of 211 countries, 100 photos to test on.
+CLIP's paper measured the model on 27 datasets, and two of them make this lesson. [*Country211*](https://github.com/openai/CLIP/blob/main/data/country211.md) was built by OpenAI for the paper to test geolocation: photos from [YFCC100M](https://multimediacommons.wordpress.com/yfcc100m-core-dataset/), a public collection of a hundred million Flickr photos<sup class="cite">[<a href="#ref-8" id="cite-8" data-ref="8" aria-label="Reference 8: Thomee, B., Shamma, D. A., Friedland, G., et al. (2016). YFCC100M: the new data in multimedia research. Communications of the ACM, 59(2). The source of Country211&#x27;s photos.">8</a>]</sup> under Creative Commons licences, with the GPS position where each was taken; for each of 211 countries, 100 photos to test on.
 
-*COCO*, from Microsoft, is a set of everyday scenes, each photo described by five people who were asked to write one sentence each; 5,000 of its photos are the standard test of searching photos by text.
+[*COCO*](https://cocodataset.org/), from Microsoft<sup class="cite">[<a href="#ref-9" id="cite-9" data-ref="9" aria-label="Reference 9: Lin, T.-Y., Maire, M., Belongie, S., et al. (2014). Microsoft COCO: common objects in context. ECCV 2014. Annotations under CC BY 4.0; images from Flickr under their own licences.">9</a>]</sup>, is a set of everyday scenes, each photo described by five people who were asked to write one sentence each; 5,000 of its photos are the standard test of searching photos by text<sup class="cite">[<a href="#ref-10" id="cite-10" data-ref="10" aria-label="Reference 10: Karpathy, A., &amp; Fei-Fei, L. (2015). Deep visual-semantic alignments for generating image descriptions. CVPR 2015. The 5,000-photo test split of COCO used in section 6.">10</a>]</sup>.
 
-Both live on the Hugging Face Hub in the format of CLIP's evaluation code, WebDataset: a tar archive in which the files of one example share a name, `s0000123.jpg` with `s0000123.cls`, the country's number, or with `s0000123.txt`, the five captions.
+Both live on the Hugging Face Hub, as [Country211](https://huggingface.co/datasets/clip-benchmark/wds_country211) and [COCO captions](https://huggingface.co/datasets/clip-benchmark/wds_mscoco_captions), in the format of LAION's [CLIP_benchmark](https://github.com/LAION-AI/CLIP_benchmark) evaluation code, [WebDataset](https://github.com/webdataset/webdataset): a tar archive in which the files of one example share a name, `s0000123.jpg` with `s0000123.cls`, the country's number, or with `s0000123.txt`, the five captions.
 
 A tar archive is a plain sequence of files, one after another, so it can be read as it arrives from the network, without saving it. We keep each photo as a small JPEG, 256 pixels on its shorter side, a little more than either model will look at.
 
@@ -464,7 +466,7 @@ the caption as a sequence: (13, 512)</code></pre>
 
 **Step 3: twelve blocks with a causal mask.** This is the surprising part. CLIP's text tower is an *encoder*, it never generates anything, and yet each token attends only to itself and the tokens before it, as in GPT.
 
-The paper gives the reason: the mask kept open the option of starting the text tower from a pre-trained language model, or of training it to predict text as well, an exploration it left for future work.
+The paper gives the reason<sup class="cite">[<a href="#ref-5" id="cite-11" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>: the mask kept open the option of starting the text tower from a pre-trained language model, or of training it to predict text as well, an exploration it left for future work.
 
 The mask adds minus infinity above the diagonal of every attention score matrix, so those weights become zero after the softmax:
 
@@ -747,7 +749,7 @@ $$\mathcal{L} = \frac{1}{2N} \sum_{i=1}^{N} \left( -\log \frac{e^{s_{ii}}}{\sum_
 
 The first term inside the brackets is *photo $$i$$, find your caption among all $$N$$*; the second is *caption $$i$$, find your photo*.
 
-Each is the softmax cross-entropy of lesson 3 of the first course, with the right class on the diagonal. This family of losses is called *contrastive*, and this particular one *InfoNCE*: the other pairs of the batch serve as negative examples for free.
+Each is the softmax cross-entropy of lesson 3 of the first course, with the right class on the diagonal. This family of losses is called *contrastive*, and this particular one *InfoNCE*<sup class="cite">[<a href="#ref-11" id="cite-12" data-ref="11" aria-label="Reference 11: van den Oord, A., Li, Y., &amp; Vinyals, O. (2018). Representation learning with contrastive predictive coding. arXiv.">11</a>]</sup>: the other pairs of the batch serve as negative examples for free.
 
 Here are the same eight photos with their first captions, the table CLIP computes for them, and the loss:
 
@@ -847,7 +849,7 @@ Our batch also shows why the loss needs many examples at once. Its eight photos 
 
 Its one hard case, the clock tower's caption under the traffic light, is the kind of example the model learns from.
 
-OpenAI trained with batches of 32,768 pairs, so every photo met 32,767 wrong captions, and among so many some are nearly right, another dog with another toy. Those hard negatives are where the learning happens, which makes the batch size part of the loss's design, a point SigLIP will return to.
+OpenAI trained with batches of 32,768 pairs<sup class="cite">[<a href="#ref-5" id="cite-13" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>, so every photo met 32,767 wrong captions, and among so many some are nearly right, another dog with another toy. Those hard negatives are where the learning happens, which makes the batch size part of the loss's design, a point SigLIP will return to.
 
 ## 5. Where was this photo taken?
 
@@ -858,9 +860,9 @@ A photo's scores are its dot products with the rows, and the highest wins. No la
 <img class="tfs-figure tfs-light" src="/assets/posts/arch/12/zero-shot-light.png" width="760" alt="Zero-shot classification with CLIP. Each class name is put into a sentence, a photo i took in Iceland, in Japan, in Italy, in Brazil, and the text tower turns each sentence into a vector; together the vectors form the weight matrix of a classifier. A photo goes through the image tower; its vector&#x27;s dot product with each row is the score of that class, and the highest score is the answer. No photo of any of these countries was labelled for this" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/arch/12/zero-shot-dark.png" width="760" alt="Zero-shot classification with CLIP. Each class name is put into a sentence, a photo i took in Iceland, in Japan, in Italy, in Brazil, and the text tower turns each sentence into a vector; together the vectors form the weight matrix of a classifier. A photo goes through the image tower; its vector&#x27;s dot product with each row is the score of that class, and the highest score is the answer. No photo of any of these countries was labelled for this" loading="lazy">
 
-Our classes are the 211 countries of Country211. ImageNet was the headline test of CLIP's paper; a country is harder
-and more interesting, because no single object gives it away. A guess at random is right once in 211 times, and the
-paper reports 17.8% for this very model, ViT-B/32, which gives us something to check our code against.
+Our classes are the 211 countries of Country211. ImageNet was the headline test of CLIP's paper; a country is harder and more interesting, because no single object gives it away.
+
+A guess at random is right once in 211 times, and the paper reports 17.8% for this very model, ViT-B/32<sup class="cite">[<a href="#ref-5" id="cite-14" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>, which gives us something to check our code against.
 
 First, every photo of both sets through the image tower, once; the vectors serve the rest of the lesson.
 
@@ -1055,7 +1057,7 @@ The scores are close to each other, all around 0.3, the narrow band again; a sea
 
 The last query fails, and in an instructive way. It asks for two kinds of animals in given numbers, and the results have one kind in whatever number: zebras, and not a single giraffe.
 
-CLIP matched the strongest word and lost the rest. Its paper lists counting the objects in an image among the tasks it does worst.
+CLIP matched the strongest word and lost the rest. Its paper lists counting the objects in an image among the tasks it does worst<sup class="cite">[<a href="#ref-5" id="cite-15" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>.
 
 For a number rather than an impression, use COCO's own captions as queries. Each of the 25,010 captions has exactly one right photo among the 5,000, its own, and *recall at k* is the share of captions whose photo comes within the first k results.
 
@@ -1180,7 +1182,7 @@ plt.show()
 
 <img class="tfs-output" src="/assets/posts/arch/12/output-08.png" alt="photos and their captions in CLIP" loading="lazy">
 
-The two clouds don't overlap; the grey lines join ten photos to their captions, and every one of them crosses the gap. Liang and colleagues named this the *modality gap* in 2022 and traced it to three causes.
+The two clouds don't overlap; the grey lines join ten photos to their captions, and every one of them crosses the gap. Liang and colleagues named this the *modality gap* in 2022<sup class="cite">[<a href="#ref-12" id="cite-16" data-ref="12" aria-label="Reference 12: Liang, W., Zhang, Y., Kwon, Y., Yeung, S., &amp; Zou, J. (2022). Mind the gap: understanding the modality gap in multi-modal contrastive representation learning. NeurIPS 2022.">12</a>]</sup> and traced it to three causes.
 
 A freshly initialised network already maps all its inputs into a narrow cone; two towers with different random weights start in two different cones; and the contrastive loss then preserves the distance between the cones instead of closing it.
 
@@ -1326,7 +1328,7 @@ The four examples show the range: the night-time building goes to Japan with hig
 
 This is what the introduction meant by a bug that can't be patched. On the internet the words in a picture are very often the best clue to what it shows, and a model trained to match pictures with their captions learns to read them and to trust them, because trusting them lowers its loss.
 
-Goh and colleagues found single neurons in CLIP that respond to a concept whether it appears as a picture or as written text. Reading is one of CLIP's skills, and the attack is that skill turned against it.
+Goh and colleagues found single neurons in CLIP that respond to a concept whether it appears as a picture or as written text<sup class="cite">[<a href="#ref-6" id="cite-17" data-ref="6" aria-label="Reference 6: Goh, G., Cammarata, N., Voss, C., et al. (2021). Multimodal neurons in artificial neural networks. Distill.">6</a>]</sup>. Reading is one of CLIP's skills, and the attack is that skill turned against it.
 
 ## 9. SigLIP asks every pair for a yes or a no
 
@@ -1334,9 +1336,8 @@ CLIP's loss has a property that matters at scale: a row of the table can't be no
 
 With a batch of 32,768 spread over hundreds of accelerators, every device has to collect every other device's vectors before computing anything, and the batch size, which the loss depends on, is bounded by the memory for that $$N \times N$$ table.
 
-In 2023 Zhai, Mustafa, Kolesnikov and Beyer at Google replaced the softmax with a sigmoid. Each cell of the table
-becomes its own binary question, *do this photo and this caption belong together?*, with the answer $$z_{ij} = 1$$ on
-the diagonal and $$z_{ij} = -1$$ elsewhere:
+In 2023 Zhai, Mustafa, Kolesnikov and Beyer at Google replaced the softmax with a sigmoid<sup class="cite">[<a href="#ref-7" id="cite-18" data-ref="7" aria-label="Reference 7: Zhai, X., Mustafa, B., Kolesnikov, A., &amp; Beyer, L. (2023). Sigmoid loss for language image pre-training. ICCV 2023.">7</a>]</sup>. Each cell of the table becomes its own binary question, *do this photo and
+this caption belong together?*, with the answer $$z_{ij} = 1$$ on the diagonal and $$z_{ij} = -1$$ elsewhere:
 
 $$\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{j=1}^{N} \log \sigma\!\left( z_{ij} \,(t \, u_i \cdot v_j + b)\right),$$
 
@@ -1421,7 +1422,7 @@ What decides the answer is their ratio: a pair says yes when $$t\, u \cdot v + b
 
 **No class token.** SigLIP's image tower doesn't prepend a class token. After the blocks, one learned vector, the *probe*, attends to all 196 patch outputs as a single query; the result goes through a layer norm and an MLP with a residual connection.
 
-Google's Vision Transformer papers call it *multihead attention pooling*, MAP. It is attention with a sequence of queries of length one, and we can compute it by hand from the checkpoint's weights:
+Google's Vision Transformer papers call it *multihead attention pooling*, MAP<sup class="cite">[<a href="#ref-13" id="cite-19" data-ref="13" aria-label="Reference 13: Zhai, X., Kolesnikov, A., Houlsby, N., &amp; Beyer, L. (2022). Scaling vision transformers. CVPR 2022. Multihead attention pooling.">13</a>]</sup>. It is attention with a sequence of queries of length one, and we can compute it by hand from the checkpoint's weights:
 
 <img class="tfs-figure tfs-light" src="/assets/posts/arch/12/pooling-light.png" width="760" alt="Two ways to get one vector out of a Vision Transformer. CLIP&#x27;s image tower, like lesson 11&#x27;s ViT, puts a class token in front of the patches and takes its output. SigLIP has no class token: after the blocks a single learned query, the probe, attends to all the patch outputs, and its result, through a layer norm and an MLP with a residual connection, is the image&#x27;s vector" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/arch/12/pooling-dark.png" width="760" alt="Two ways to get one vector out of a Vision Transformer. CLIP&#x27;s image tower, like lesson 11&#x27;s ViT, puts a class token in front of the patches and takes its output. SigLIP has no class token: after the blocks a single learned query, the probe, attends to all the patch outputs, and its result, through a layer norm and an MLP with a residual connection, is the image&#x27;s vector" loading="lazy">
@@ -1558,8 +1559,8 @@ Nothing raises an error; the model simply reads its summary from the wrong posit
 ### CLIP and SigLIP on the same tasks
 
 The two models aren't a controlled comparison: SigLIP's image tower uses patches of 16 instead of 32, so it sees four
-times as many patches, and it was trained on Google's WebLI dataset, not on OpenAI's. With that caveat, here they
-are on geolocation, with the paper's five sentences, and on both directions of search:
+times as many patches, and it was trained on Google's WebLI dataset<sup class="cite">[<a href="#ref-14" id="cite-20" data-ref="14" aria-label="Reference 14: Chen, X., Wang, X., Changpinyo, S., et al. (2023). PaLI: a jointly-scaled multilingual language-image model. ICLR 2023. The WebLI dataset.">14</a>]</sup>, not on OpenAI's. With that caveat, here they are on geolocation, with the
+paper's five sentences, and on both directions of search:
 
 ```python
 siglip_geo = country_classifier(PAPER_TEMPLATES, encode=siglip_texts)
@@ -1597,7 +1598,7 @@ again.
 
 The two tasks rank the models differently. In search SigLIP is far ahead: for nearly half of the captions the right photo comes first, against almost a third for CLIP. In geolocation CLIP is slightly ahead, and not because it had seen the photos.
 
-Country211 was built from YFCC100M, part of which is in OpenAI's training data, and the paper checked: 21.5% of Country211's test photos turned up among the training images, yet they raised the score by only 0.2 points, because the text next to them rarely said where they were taken.
+Country211 was built from YFCC100M, part of which is in OpenAI's training data, and the paper checked <sup class="cite">[<a href="#ref-5" id="cite-21" data-ref="5" aria-label="Reference 5: Radford, A., Kim, J. W., Hallacy, C., et al. (2021). Learning transferable visual models from natural language supervision. ICML 2021.">5</a>]</sup>: 21.5% of Country211's test photos turned up among the training images, yet they raised the score by only 0.2 points, because the text next to them rarely said where they were taken.
 
 The rest of the difference most likely lies in the two training sets, OpenAI's collection and Google's WebLI, neither of which has been published.
 
@@ -1653,9 +1654,9 @@ Its finer grid of patches probably sees small letters better, which helps it rea
 
 The SigLIP paper's central claim is about batch size: the sigmoid loss is better than the softmax at small batches and as good at large ones.
 
-Training a CLIP from scratch takes far more than a notebook has, but the claim can be tested in miniature, in the spirit of Google's *LiT*, which keeps a pretrained image tower frozen. We go further and freeze both towers, training only what joins them.
+Training a CLIP from scratch takes far more than a notebook has, but the claim can be tested in miniature, in the spirit of Google's *LiT*<sup class="cite">[<a href="#ref-15" id="cite-22" data-ref="15" aria-label="Reference 15: Zhai, X., Wang, X., Mustafa, B., et al. (2022). LiT: zero-shot transfer with locked-image text tuning. CVPR 2022.">15</a>]</sup>, which keeps a pretrained image tower frozen. We go further and freeze both towers, training only what joins them.
 
-Our towers come from earlier lessons: DINOv2-small, the self-supervised ViT of lesson 11, for the photos, and all-MiniLM-L6-v2, the sentence encoder of lesson 3, for the captions. Neither has ever seen the other's kind of input.
+Our towers come from earlier lessons: [DINOv2-small](https://huggingface.co/facebook/dinov2-small), the self-supervised ViT of lesson 11<sup class="cite">[<a href="#ref-16" id="cite-23" data-ref="16" aria-label="Reference 16: Oquab, M., Darcet, T., Moutakanni, T., et al. (2024). DINOv2: learning robust visual features without supervision. Transactions on Machine Learning Research.">16</a>]</sup>, for the photos, and [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2), the sentence encoder of lesson 3, for the captions. Neither has ever seen the other's kind of input.
 
 The training pairs come from two of the fourteen shards of COCO's training set, none of whose photos is among the 5,000 we test on; the photos go from the stream straight into DINOv2, and only their vectors are kept.
 
@@ -1857,22 +1858,22 @@ Two linear layers on top of encoders that never met can't do what two towers tra
 
 ## 11. Where CLIP and SigLIP are today
 
-**Inside image generators.** Stable Diffusion 1 conditions its denoiser on the outputs of CLIP ViT-L/14's text
-tower, frozen; later versions use larger CLIP models and add other text encoders next to them. A prompt is read by
-a model that learned language from alt texts, which is probably part of why prompts work best as a list of visual
-descriptions.
+**Inside image generators.** Stable Diffusion 1 conditions its denoiser on the outputs of CLIP ViT-L/14's text tower, frozen<sup class="cite">[<a href="#ref-1" id="cite-24" data-ref="1" aria-label="Reference 1: Rombach, R., Blattmann, A., Lorenz, D., Esser, P., &amp; Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. CVPR 2022.">1</a>]</sup>; later versions use larger CLIP models and add other text encoders next to them.
 
-**Inside vision-language models.** LLaVA 1.5 sees through CLIP ViT-L/14 at 336 pixels; PaliGemma and Gemma 3 see
-through SigLIP's So400m tower. These models keep the patch vectors, not just the pooled one, and pass them to a
-language model, which is lesson 13.
+A prompt is read by a model that learned language from alt texts, which is probably part of why prompts work best as a list of visual descriptions.
 
-**SigLIP 2.** In February 2025 Google released a second generation: multilingual, trained with extra objectives
-(captioning, self-distillation, masked prediction) on top of the sigmoid loss, and with a variant that keeps a
-photo's aspect ratio. Its checkpoints have become a common eye for new open models.
+**Inside vision-language models.** LLaVA 1.5 sees through CLIP ViT-L/14 at 336 pixels<sup class="cite">[<a href="#ref-2" id="cite-25" data-ref="2" aria-label="Reference 2: Liu, H., Li, C., Li, Y., &amp; Lee, Y. J. (2024). Improved baselines with visual instruction tuning. CVPR 2024.">2</a>]</sup>; PaliGemma<sup class="cite">[<a href="#ref-3" id="cite-26" data-ref="3" aria-label="Reference 3: Beyer, L., Steiner, A., Pinto, A. S., et al. (2024). PaliGemma: a versatile 3B VLM for transfer. arXiv.">3</a>]</sup> and Gemma
+3<sup class="cite">[<a href="#ref-4" id="cite-27" data-ref="4" aria-label="Reference 4: Gemma Team (2025). Gemma 3 technical report. arXiv.">4</a>]</sup> see through SigLIP's So400m tower. These models keep the
+patch vectors, not just the pooled one, and pass them to a language model, which is lesson 13.
 
-**Open replications and data.** OpenCLIP retrained CLIP on LAION's open datasets, and later work found that
-how the image–text pairs are chosen matters as much as the loss or the architecture: MetaCLIP rebuilt CLIP's data
-recipe from the paper's description, and DataComp turned dataset curation into a benchmark of its own.
+**SigLIP 2.** In February 2025 Google released a second generation<sup class="cite">[<a href="#ref-17" id="cite-28" data-ref="17" aria-label="Reference 17: Tschannen, M., Gritsenko, A., Wang, X., et al. (2025). SigLIP 2: multilingual vision-language encoders with improved semantic understanding, localization, and dense features. arXiv.">17</a>]</sup>: multilingual, trained with extra objectives (captioning, self-distillation,
+masked prediction) on top of the sigmoid loss, and with a variant that keeps a photo's aspect ratio. Its checkpoints
+have become a common eye for new open models.
+
+**Open replications and data.** OpenCLIP retrained CLIP on LAION's open datasets<sup class="cite">[<a href="#ref-18" id="cite-29" data-ref="18" aria-label="Reference 18: Cherti, M., Beaumont, R., Wightman, R., et al. (2023). Reproducible scaling laws for contrastive language-image learning. CVPR 2023.">18</a>, <a href="#ref-19" id="cite-30" data-ref="19" aria-label="Reference 19: Schuhmann, C., Beaumont, R., Vencu, R., et al. (2022). LAION-5B: an open large-scale dataset for training next generation image-text models. NeurIPS 2022 Datasets and Benchmarks.">19</a>]</sup>, and later work
+found that how the image–text pairs are chosen matters as much as the loss or the architecture: MetaCLIP rebuilt
+CLIP's data recipe from the paper's description<sup class="cite">[<a href="#ref-20" id="cite-31" data-ref="20" aria-label="Reference 20: Xu, H., Xie, S., Tan, X. E., et al. (2024). Demystifying CLIP data. ICLR 2024.">20</a>]</sup>, and DataComp
+turned dataset curation into a benchmark of its own<sup class="cite">[<a href="#ref-21" id="cite-32" data-ref="21" aria-label="Reference 21: Gadre, S. Y., Ilharco, G., Fang, A., et al. (2023). DataComp: in search of the next generation of multimodal datasets. NeurIPS 2023.">21</a>]</sup>.
 
 CLIP ViT-B/32's passport, and the family tree with this lesson's branch:
 
@@ -1884,26 +1885,29 @@ CLIP ViT-B/32's passport, and the family tree with this lesson's branch:
 
 ## References
 
-1. {:#ref-1} Radford, A., Kim, J. W., Hallacy, C., et al. (2021). [Learning transferable visual models from natural language supervision](https://arxiv.org/abs/2103.00020). *ICML 2021*.
-2. {:#ref-2} Zhai, X., Mustafa, B., Kolesnikov, A., & Beyer, L. (2023). [Sigmoid loss for language image pre-training](https://arxiv.org/abs/2303.15343). *ICCV 2023*.
-3. {:#ref-3} Tschannen, M., Gritsenko, A., Wang, X., et al. (2025). [SigLIP 2: multilingual vision-language encoders with improved semantic understanding, localization, and dense features](https://arxiv.org/abs/2502.14786). *arXiv*.
-4. {:#ref-4} Goh, G., Cammarata, N., Voss, C., et al. (2021). [Multimodal neurons in artificial neural networks](https://distill.pub/2021/multimodal-neurons/). *Distill*.
-5. {:#ref-5} Liang, W., Zhang, Y., Kwon, Y., Yeung, S., & Zou, J. (2022). [Mind the gap: understanding the modality gap in multi-modal contrastive representation learning](https://arxiv.org/abs/2203.02053). *NeurIPS 2022*.
-6. {:#ref-6} van den Oord, A., Li, Y., & Vinyals, O. (2018). [Representation learning with contrastive predictive coding](https://arxiv.org/abs/1807.03748). *arXiv*.
-7. {:#ref-7} Zhai, X., Wang, X., Mustafa, B., et al. (2022). [LiT: zero-shot transfer with locked-image text tuning](https://arxiv.org/abs/2111.07991). *CVPR 2022*.
-8. {:#ref-8} Rombach, R., Blattmann, A., Lorenz, D., Esser, P., & Ommer, B. (2022). [High-resolution image synthesis with latent diffusion models](https://arxiv.org/abs/2112.10752). *CVPR 2022*.
-9. {:#ref-9} Liu, H., Li, C., Li, Y., & Lee, Y. J. (2024). [Improved baselines with visual instruction tuning](https://arxiv.org/abs/2310.03744). *CVPR 2024*.
-10. {:#ref-10} Beyer, L., Steiner, A., Pinto, A. S., et al. (2024). [PaliGemma: a versatile 3B VLM for transfer](https://arxiv.org/abs/2407.07726). *arXiv*.
-11. {:#ref-11} Gemma Team (2025). [Gemma 3 technical report](https://arxiv.org/abs/2503.19786). *arXiv*.
-12. {:#ref-12} Cherti, M., Beaumont, R., Wightman, R., et al. (2023). [Reproducible scaling laws for contrastive language-image learning](https://arxiv.org/abs/2212.07143). *CVPR 2023*.
-13. {:#ref-13} Xu, H., Xie, S., Tan, X. E., et al. (2024). [Demystifying CLIP data](https://arxiv.org/abs/2309.16671). *ICLR 2024*.
-14. {:#ref-14} Gadre, S. Y., Ilharco, G., Fang, A., et al. (2023). [DataComp: in search of the next generation of multimodal datasets](https://arxiv.org/abs/2304.14108). *NeurIPS 2023*.
-15. {:#ref-15} Oquab, M., Darcet, T., Moutakanni, T., et al. (2024). [DINOv2: learning robust visual features without supervision](https://arxiv.org/abs/2304.07193). *Transactions on Machine Learning Research*.
-16. {:#ref-16} Lin, T.-Y., Maire, M., Belongie, S., et al. (2014). [Microsoft COCO: common objects in context](https://arxiv.org/abs/1405.0312). *ECCV 2014*. Annotations under CC BY 4.0; images from Flickr under their own licences.
-17. {:#ref-17} Karpathy, A., & Fei-Fei, L. (2015). [Deep visual-semantic alignments for generating image descriptions](https://arxiv.org/abs/1412.2306). *CVPR 2015*. The 5,000-photo test split of COCO used in section 6.
-18. {:#ref-18} Thomee, B., Shamma, D. A., Friedland, G., et al. (2016). [YFCC100M: the new data in multimedia research](https://arxiv.org/abs/1503.01817). *Communications of the ACM*, 59(2). The source of Country211's photos.
-19. {:#ref-19} Ilharco, G., Wortsman, M., Wightman, R., et al. (2021). [OpenCLIP](https://github.com/mlfoundations/open_clip). *Zenodo*, doi:10.5281/zenodo.5143773. Benchmark results quoted in sections 5, 6 and 9.
-20. {:#ref-20} LAION (2022). [CLIP_benchmark](https://github.com/LAION-AI/CLIP_benchmark). The WebDataset copies of Country211 and COCO on the Hugging Face Hub.
+1. {:#ref-1} Rombach, R., Blattmann, A., Lorenz, D., Esser, P., & Ommer, B. (2022). [High-resolution image synthesis with latent diffusion models](https://arxiv.org/abs/2112.10752). *CVPR 2022*. <a class="ref-back" href="#cite-1" aria-label="Back to the text">&#8617;</a>
+2. {:#ref-2} Liu, H., Li, C., Li, Y., & Lee, Y. J. (2024). [Improved baselines with visual instruction tuning](https://arxiv.org/abs/2310.03744). *CVPR 2024*. <a class="ref-back" href="#cite-2" aria-label="Back to the text">&#8617;</a>
+3. {:#ref-3} Beyer, L., Steiner, A., Pinto, A. S., et al. (2024). [PaliGemma: a versatile 3B VLM for transfer](https://arxiv.org/abs/2407.07726). *arXiv*. <a class="ref-back" href="#cite-3" aria-label="Back to the text">&#8617;</a>
+4. {:#ref-4} Gemma Team (2025). [Gemma 3 technical report](https://arxiv.org/abs/2503.19786). *arXiv*. <a class="ref-back" href="#cite-4" aria-label="Back to the text">&#8617;</a>
+5. {:#ref-5} Radford, A., Kim, J. W., Hallacy, C., et al. (2021). [Learning transferable visual models from natural language supervision](https://arxiv.org/abs/2103.00020). *ICML 2021*. <a class="ref-back" href="#cite-5" aria-label="Back to the text">&#8617;</a>
+6. {:#ref-6} Goh, G., Cammarata, N., Voss, C., et al. (2021). [Multimodal neurons in artificial neural networks](https://distill.pub/2021/multimodal-neurons/). *Distill*. <a class="ref-back" href="#cite-6" aria-label="Back to the text">&#8617;</a>
+7. {:#ref-7} Zhai, X., Mustafa, B., Kolesnikov, A., & Beyer, L. (2023). [Sigmoid loss for language image pre-training](https://arxiv.org/abs/2303.15343). *ICCV 2023*. <a class="ref-back" href="#cite-7" aria-label="Back to the text">&#8617;</a>
+8. {:#ref-8} Thomee, B., Shamma, D. A., Friedland, G., et al. (2016). [YFCC100M: the new data in multimedia research](https://arxiv.org/abs/1503.01817). *Communications of the ACM*, 59(2). The source of Country211's photos. <a class="ref-back" href="#cite-8" aria-label="Back to the text">&#8617;</a>
+9. {:#ref-9} Lin, T.-Y., Maire, M., Belongie, S., et al. (2014). [Microsoft COCO: common objects in context](https://arxiv.org/abs/1405.0312). *ECCV 2014*. Annotations under CC BY 4.0; images from Flickr under their own licences. <a class="ref-back" href="#cite-9" aria-label="Back to the text">&#8617;</a>
+10. {:#ref-10} Karpathy, A., & Fei-Fei, L. (2015). [Deep visual-semantic alignments for generating image descriptions](https://arxiv.org/abs/1412.2306). *CVPR 2015*. The 5,000-photo test split of COCO used in section 6. <a class="ref-back" href="#cite-10" aria-label="Back to the text">&#8617;</a>
+11. {:#ref-11} van den Oord, A., Li, Y., & Vinyals, O. (2018). [Representation learning with contrastive predictive coding](https://arxiv.org/abs/1807.03748). *arXiv*. <a class="ref-back" href="#cite-12" aria-label="Back to the text">&#8617;</a>
+12. {:#ref-12} Liang, W., Zhang, Y., Kwon, Y., Yeung, S., & Zou, J. (2022). [Mind the gap: understanding the modality gap in multi-modal contrastive representation learning](https://arxiv.org/abs/2203.02053). *NeurIPS 2022*. <a class="ref-back" href="#cite-16" aria-label="Back to the text">&#8617;</a>
+13. {:#ref-13} Zhai, X., Kolesnikov, A., Houlsby, N., & Beyer, L. (2022). [Scaling vision transformers](https://arxiv.org/abs/2106.04560). *CVPR 2022*. Multihead attention pooling. <a class="ref-back" href="#cite-19" aria-label="Back to the text">&#8617;</a>
+14. {:#ref-14} Chen, X., Wang, X., Changpinyo, S., et al. (2023). [PaLI: a jointly-scaled multilingual language-image model](https://arxiv.org/abs/2209.06794). *ICLR 2023*. The WebLI dataset. <a class="ref-back" href="#cite-20" aria-label="Back to the text">&#8617;</a>
+15. {:#ref-15} Zhai, X., Wang, X., Mustafa, B., et al. (2022). [LiT: zero-shot transfer with locked-image text tuning](https://arxiv.org/abs/2111.07991). *CVPR 2022*. <a class="ref-back" href="#cite-22" aria-label="Back to the text">&#8617;</a>
+16. {:#ref-16} Oquab, M., Darcet, T., Moutakanni, T., et al. (2024). [DINOv2: learning robust visual features without supervision](https://arxiv.org/abs/2304.07193). *Transactions on Machine Learning Research*. <a class="ref-back" href="#cite-23" aria-label="Back to the text">&#8617;</a>
+17. {:#ref-17} Tschannen, M., Gritsenko, A., Wang, X., et al. (2025). [SigLIP 2: multilingual vision-language encoders with improved semantic understanding, localization, and dense features](https://arxiv.org/abs/2502.14786). *arXiv*. <a class="ref-back" href="#cite-28" aria-label="Back to the text">&#8617;</a>
+18. {:#ref-18} Cherti, M., Beaumont, R., Wightman, R., et al. (2023). [Reproducible scaling laws for contrastive language-image learning](https://arxiv.org/abs/2212.07143). *CVPR 2023*. <a class="ref-back" href="#cite-29" aria-label="Back to the text">&#8617;</a>
+19. {:#ref-19} Schuhmann, C., Beaumont, R., Vencu, R., et al. (2022). [LAION-5B: an open large-scale dataset for training next generation image-text models](https://arxiv.org/abs/2210.08402). *NeurIPS 2022 Datasets and Benchmarks*. <a class="ref-back" href="#cite-30" aria-label="Back to the text">&#8617;</a>
+20. {:#ref-20} Xu, H., Xie, S., Tan, X. E., et al. (2024). [Demystifying CLIP data](https://arxiv.org/abs/2309.16671). *ICLR 2024*. <a class="ref-back" href="#cite-31" aria-label="Back to the text">&#8617;</a>
+21. {:#ref-21} Gadre, S. Y., Ilharco, G., Fang, A., et al. (2023). [DataComp: in search of the next generation of multimodal datasets](https://arxiv.org/abs/2304.14108). *NeurIPS 2023*. <a class="ref-back" href="#cite-32" aria-label="Back to the text">&#8617;</a>
+22. {:#ref-22} Ilharco, G., Wortsman, M., Wightman, R., et al. (2021). [OpenCLIP](https://github.com/mlfoundations/open_clip). *Zenodo*, doi:10.5281/zenodo.5143773. Benchmark results quoted in sections 5, 6 and 9.
+23. {:#ref-23} LAION (2022). [CLIP_benchmark](https://github.com/LAION-AI/CLIP_benchmark). The WebDataset copies of Country211 and COCO on the Hugging Face Hub.
 {: .tfs-refs}
 
 
