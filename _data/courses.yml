@@ -173,8 +173,13 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a12_clip.ipynb
       cover: assets/img/teaching/arch-12.png
       topics: "Both towers of CLIP ViT-B/32 written from scratch with OpenAI's weights, the contrastive loss and its temperature on a real batch, zero-shot geolocation over 211 countries checked against the paper, search over COCO's test photos, the modality gap, a word on a photo that changes the answer, SigLIP's sigmoid loss and attention pooling, and the two losses trained side by side"
-    - title: "Vision-language models: from LLaVA to Qwen-VL"
-      topics: "The projector, visual tokens and what they cost, dynamic resolution, a small model reading charts and receipts"
+    - title: "How vision-language models read images, from LLaVA to Qwen2-VL"
+      short: "Vision-language models"
+      url: /blog/2026/transformer-architectures-13-vlm/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-13-vision-language
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a13_vlm.ipynb
+      cover: assets/img/teaching/arch-13.png
+      topics: "LLaVA-OneVision's tiles, projector and splice written from scratch and matched to the model's logits, image tokens through the logit lens, the price of a picture in six models, how often a centre crop cuts a receipt's total, Qwen2-VL's dynamic resolution and M-RoPE by hand, 95 receipts and 100 charts read under token budgets, and FastV's pruning against a random choice and a smaller image"
     - title: "Whisper: speech recognition as an encoder–decoder"
       topics: "The log-mel spectrogram from scratch, task tokens, timestamps, whisper-tiny in our code, word error rate in English and Russian, hallucinations on silence"
     - title: "Diffusion Transformers: DiT and Stable Diffusion 3"
