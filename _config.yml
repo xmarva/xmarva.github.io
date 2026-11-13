@@ -243,6 +243,7 @@ dropdown_menu: true
 include: ["_pages"]
 exclude:
   - bin/
+  - docs/
   - CONTRIBUTING.md
   - CUSTOMIZE.md
   - Dockerfile
