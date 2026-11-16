@@ -180,7 +180,12 @@
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a13_vlm.ipynb
       cover: assets/img/teaching/arch-13.png
       topics: "LLaVA-OneVision's tiles, projector and splice written from scratch and matched to the model's logits, image tokens through the logit lens, the price of a picture in six models, how often a centre crop cuts a receipt's total, Qwen2-VL's dynamic resolution and M-RoPE by hand, 95 receipts and 100 charts read under token budgets, and FastV's pruning against a random choice and a smaller image"
-    - title: "Whisper: speech recognition as an encoder–decoder"
-      topics: "The log-mel spectrogram from scratch, task tokens, timestamps, whisper-tiny in our code, word error rate in English and Russian, hallucinations on silence"
+    - title: "Whisper turns speech into text with an encoder–decoder Transformer"
+      short: "Whisper"
+      url: /blog/2026/transformer-architectures-14-whisper/
+      kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-14-whisper
+      colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a14_whisper.ipynb
+      cover: assets/img/teaching/arch-14.png
+      topics: "The log-mel front end and whisper-tiny's encoder and decoder written from scratch and matched to the model, spectrograms that play with a moving cursor, task tokens and language identification, word error rate from scratch for four sizes in English and Russian, why blind 30-second cuts drop whole sentences, the subtitle credits Whisper writes on silence and why its own silence rule lets them through, and word timings from the alignment heads with DTW"
     - title: "Diffusion Transformers: DiT and Stable Diffusion 3"
       topics: "Denoising diffusion and flow matching, adaLN-Zero, a small DiT trained on butterflies, MM-DiT"
