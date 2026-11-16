@@ -58,6 +58,13 @@ pre.tfs-printed code {
   margin: 1rem 0;
 }
 
+/* a long string without spaces (a model stuck repeating one letter) wraps instead of widening its column; the
+   minimum width keeps ordinary words whole on a phone, where the table scrolls inside its frame instead */
+.tfs-table-wrap td {
+  overflow-wrap: anywhere;
+  min-width: 7rem;
+}
+
 .tfs-table-wrap .tfs-table {
   color: var(--global-text-color);
   background: transparent;
@@ -100,4 +107,29 @@ article table:not(.tfs-table) {
 article table:not(.tfs-table) th,
 article table:not(.tfs-table) td {
   padding: 0.2rem 1rem 0.2rem 0;
+}
+
+/* sounds from the notebook: a plain player, and spectrograms whose playhead follows the sound (assets/js/audio-spec.js) */
+audio.tfs-audio {
+  display: block;
+  width: 100%;
+  margin: 0.75rem 0 1.25rem;
+}
+
+figure.tfs-audio-spec {
+  margin: 1.25rem 0;
+}
+
+figure.tfs-audio-spec img {
+  border-radius: 8px;
+  height: auto;
+}
+
+html[data-theme="dark"] figure.tfs-audio-spec img {
+  box-shadow: 0 0 0 6px #fff;
+}
+
+figure.tfs-audio-spec audio {
+  display: block;
+  margin-top: 0.6rem;
 }
