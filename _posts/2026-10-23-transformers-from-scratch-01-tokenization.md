@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 1 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 1 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 Chatbots used to be famously bad at one question: *how many r's are in "strawberry"?* It looks like a test of attention to detail.
 
@@ -56,7 +56,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -1730,7 +1730,7 @@ task_categories: [translation]
 # Tatoeba English–Russian, cleaned and split without leaks
 
 Built in lesson 1 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - train and validation: sentence-transformers/parallel-sentences-tatoeba (en-ru),
   revision `{TRAIN_REVISION[:7]}`
@@ -1762,7 +1762,7 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 # BPE tokenizer for English and Russian, {tokenizer.get_vocab_size()} tokens
 
 Built in lesson 1 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - byte-pair encoding over characters, trained with Hugging Face `tokenizers` on the training
   split of xmarva/tfs-tatoeba-en-ru, both languages together

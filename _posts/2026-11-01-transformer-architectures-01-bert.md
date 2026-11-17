@@ -14,7 +14,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 1 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-01-bert">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a01_bert.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 1 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-01-bert">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformer-architectures/blob/main/notebooks/colab/a01_bert.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformer-architectures">code on GitHub</a></p>
 
 In October 2019 Google changed the way its search engine reads queries. Its own example was the query "2019 brazil traveler to usa need a visa". The old system treated the little word *to* as noise and "returned results about U.S. citizens traveling to Brazil", which is the other way around.
 
@@ -55,7 +55,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 

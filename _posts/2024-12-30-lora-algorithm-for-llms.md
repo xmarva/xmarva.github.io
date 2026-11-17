@@ -294,7 +294,7 @@ The runs differ only in the algebra:
 
 The setting is that of the adapters post: 10,000 training sentences, three epochs, AdamW at a learning rate of $$5 \times 10^{-4}$$, batches of 32, three seeds per configuration, accuracy on the 872 validation sentences.
 
-The 48 runs took 40 minutes of training on a Kaggle T4 ([experiment.py](https://github.com/xmarva/transformers-from-scratch/blob/main/articles/lora/experiment.py)).
+The 48 runs took 40 minutes of training on a Kaggle T4 ([experiment.py](https://github.com/korolevalab/articles/tree/main/lora/experiment.py)).
 </details>
 
 ### Rank under the two scales

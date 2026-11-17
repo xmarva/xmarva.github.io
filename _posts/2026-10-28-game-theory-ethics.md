@@ -355,6 +355,6 @@ They do not answer the question Glaucon actually asked, which was whether justic
 - Skyrms, B. (1996). [*Evolution of the Social Contract*](https://doi.org/10.1017/CBO9780511806308). Cambridge University Press.
 - Binmore, K. (2005). [*Natural Justice*](https://doi.org/10.1093/acprof:oso/9780195178111.001.0001). Oxford University Press.
 
-The models, the simulations and the figures: [articles/game_theory](https://github.com/xmarva/transformers-from-scratch/tree/main/articles/game_theory).
+The models, the simulations and the figures: [articles/game_theory](https://github.com/korolevalab/articles/tree/main/game_theory).
 
 {% endraw %}

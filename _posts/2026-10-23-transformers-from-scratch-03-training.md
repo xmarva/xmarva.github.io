@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 3 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 3 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 Ask a chatbot the same question twice and you may get two different answers. Ask a translation model twice and you get the same translation both times. The networks inside are close relatives, so the difference isn't in the model.
 
@@ -55,7 +55,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -1696,7 +1696,7 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 # A small English→Russian Transformer, trained from scratch
 
 Built in lesson 3 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - the encoder-decoder Transformer of Vaswani et al. (2017) at half its base size
 - {layers}, d_model {CONFIG["d_model"]}
@@ -1706,7 +1706,7 @@ https://github.com/xmarva/transformers-from-scratch
 The model class is `tfs.model.Transformer` from the course repository:
 
 ```python
-# pip install git+https://github.com/xmarva/transformers-from-scratch
+# pip install git+https://github.com/mlsamurai/transformers-from-scratch
 import json
 
 from huggingface_hub import hf_hub_download

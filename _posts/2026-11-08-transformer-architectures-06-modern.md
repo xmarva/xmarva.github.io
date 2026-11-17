@@ -14,7 +14,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 6 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-06-modern-llms">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a06_modern.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 6 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-06-modern-llms">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformer-architectures/blob/main/notebooks/colab/a06_modern.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformer-architectures">code on GitHub</a></p>
 
 Give Llama 3.1 8B a long contract to read, 128,000 tokens of it, and before it writes the first word of its answer it has to keep the whole contract in GPU memory: a key and a value for every token, in every head of every one of its 32 layers.
 
@@ -58,7 +58,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 

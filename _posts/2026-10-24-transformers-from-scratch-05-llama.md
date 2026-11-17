@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 5 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 5 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 Llama 3.1, Meta's open model family, goes up to 405 billion parameters. Its blueprint is the Transformer of 2017, the one you built in lesson 2, with a handful of details changed.
 
@@ -54,7 +54,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -1396,14 +1396,14 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 # A small English→Russian Transformer with Llama's changes
 
 Built in lesson 5 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - lesson 3's encoder-decoder (3 + 3 layers, d_model 256, 4 heads) and its recipe
 - pre-norm with RMSNorm, SwiGLU feed-forward layers, rotary position embeddings
 - best validation cross-entropy: {best:.3f}
 
 ```python
-# pip install git+https://github.com/xmarva/transformers-from-scratch
+# pip install git+https://github.com/mlsamurai/transformers-from-scratch
 import json
 
 from huggingface_hub import hf_hub_download

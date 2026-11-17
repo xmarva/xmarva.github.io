@@ -129,7 +129,7 @@ My version pads every expert's queue to the length of the longest, rounded up to
 
 ## Same compute, more parameters
 
-What does a mixture buy? To see it on a small scale, I trained four models on a corpus of three kinds of text: English Wikipedia, Russian Wikipedia and the Python standard library, 8 million tokens of each, with a tokenizer of 8,192 tokens trained on the same mix ([code](https://github.com/xmarva/transformers-from-scratch/tree/main/articles/moe)).
+What does a mixture buy? To see it on a small scale, I trained four models on a corpus of three kinds of text: English Wikipedia, Russian Wikipedia and the Python standard library, 8 million tokens of each, with a tokenizer of 8,192 tokens trained on the same mix ([code](https://github.com/korolevalab/articles/tree/main/moe)).
 
 All four have 6 layers of width 256 with 4 attention heads, rotary positions and RMSNorm, and differ only in the feed-forward layers.
 

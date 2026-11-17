@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 9 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-09-reproducible-docker">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/09_docker.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 9 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-09-reproducible-docker">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/09_docker.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 On 16 June 2024 NumPy 2.0.0 came out, and code that nobody had touched started to fail. A model served with
 PyTorch 2.3.1 printed this on import, and stopped
@@ -67,7 +67,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -113,7 +113,7 @@ of the course repository.
 ```python
 REPO = WORK_DIR / "course"
 shutil.rmtree(REPO, ignore_errors=True)
-URL = "https://github.com/xmarva/transformers-from-scratch"
+URL = "https://github.com/mlsamurai/transformers-from-scratch"
 QUIET = ["-c", "advice.detachedHead=false"]
 subprocess.run(["git", *QUIET, "clone", "-q", "--depth", "1", "--branch", "perevod-v0.2.0",
                 "--filter=blob:none", "--sparse", URL, str(REPO)], check=True)
@@ -776,7 +776,7 @@ RUN python -c "from perevod import Translator; Translator.from_pretrained()" \\
 ENV HF_HUB_OFFLINE=1
 
 ARG VERSION=dev REVISION=unknown
-LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch \\
+LABEL org.opencontainers.image.source=https://github.com/mlsamurai/transformers-from-scratch \\
       org.opencontainers.image.version=$VERSION \\
       org.opencontainers.image.revision=$REVISION
 EXPOSE 8000
@@ -938,7 +938,7 @@ curl -X POST localhost:8000/translate -H "Content-Type: application/json" \\
 The model was trained on short everyday sentences""")
 ````
 
-A release tag starts the workflow ([its runs](https://github.com/xmarva/transformers-from-scratch/actions/workflows/image.yml)),
+A release tag starts the workflow ([its runs](https://github.com/mlsamurai/transformers-from-scratch/actions/workflows/image.yml)),
 and its log ends with two equal digests, or the job fails. The image it pushed is public, so the notebook can
 check the result itself. The registry is GitHub's this time, with the same four requests:
 
@@ -963,7 +963,7 @@ for name, value in configs["amd64"]["config"]["Labels"].items():
 
 <pre class="tfs-printed" markdown="0"><code>ghcr.io/xmarva/perevod:0.3.1 sha256:8b46a084770cc8cd7aac71ca30ffd1c95807ad79af9200f5e7fb28464b27839b
 org.opencontainers.image.revision = 1db63fa5a13dd09d00be9b7c6179850a1894500a
-org.opencontainers.image.source = https://github.com/xmarva/transformers-from-scratch
+org.opencontainers.image.source = https://github.com/mlsamurai/transformers-from-scratch
 org.opencontainers.image.version = 0.3.1</code></pre>
 
 The labels say which commit the image was built from. And the two architectures can be compared layer by
@@ -1460,7 +1460,7 @@ The novel has been translated into German. -&gt; Роман был переве�
 I wonder why you never told me about it. -&gt; Интересно, почему ты никогда мне об этом не рассказывал.
 Arguing is no way to go about it. -&gt; И спорить об этом нет.</code></pre>
 
-Word for word. The page itself is three small files in the course repository's [`space/`](https://github.com/xmarva/transformers-from-scratch/tree/main/space) folder, and only one of them is about the page.
+Word for word. The page itself is three small files in the course repository's [`space/`](https://github.com/mlsamurai/transformers-from-scratch/tree/main/space) folder, and only one of them is about the page.
 
 `translate.js` is the function above in JavaScript. `tokenizer.js` rewrites the tokenizer of lesson 1, whose `tokenizer.json` the page loads as it is, and it had one trap worth knowing.
 
