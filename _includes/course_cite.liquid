@@ -1,0 +1,36 @@
+{% comment %}
+  How to cite a course, folded, as a post's Cite block (_includes/post_cite.liquid): a reference in APA style and a
+  BibTeX entry. A course with a `doi` is cited as its Zenodo record, the others by the address of the course page.
+  The year is the first lesson's. include.course: an entry of _data/courses.yml
+{% endcomment %}
+{% assign cite_course = include.course %}
+{% assign cite_first = cite_course.lessons | where_exp: 'lesson', 'lesson.url' | first %}
+{% if cite_first %}
+  {% assign cite_post = site.posts | where: 'url', cite_first.url | first %}
+  {% assign cite_year = cite_post.date | date: '%Y' %}
+{% else %}
+  {% assign cite_year = site.time | date: '%Y' %}
+{% endif %}
+{% assign cite_url = cite_course.url | absolute_url %}
+{% capture cite_key %}{{ site.last_name | downcase }}{{ cite_year }}{{ cite_course.slug | remove: '-' }}{% endcapture %}
+<details class="method cite">
+  <summary>Reference and BibTeX</summary>
+  <p class="cite-ref">
+    {{ site.last_name }}, {{ site.first_name | slice: 0 }}. ({{ cite_year }}). <em>{{ cite_course.title | escape }}</em> [Online course].
+    {% if cite_course.doi %}
+      Zenodo. <a href="https://doi.org/{{ cite_course.doi }}">https://doi.org/{{ cite_course.doi }}</a>
+    {% else %}
+      <a href="{{ cite_url }}">{{ cite_url }}</a>
+    {% endif %}
+  </p>
+<pre><code class="language-bibtex">@misc{ {{- cite_key }},
+  author       = {{ '{' }}{{ site.last_name }}, {{ site.first_name }}},
+  title        = {{ '{{' }}{{ cite_course.title | escape }}}},
+  year         = {{ '{' }}{{ cite_year }}},
+  howpublished = {Online course},{% if cite_course.doi %}
+  publisher    = {Zenodo},
+  doi          = {{ '{' }}{{ cite_course.doi }}},
+  url          = {https://doi.org/{{ cite_course.doi }}}{% else %}
+  url          = {{ '{' }}{{ cite_url }}}{% endif %}
+}</code></pre>
+</details>

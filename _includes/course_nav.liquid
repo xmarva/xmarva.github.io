@@ -1,6 +1,6 @@
 {% comment %}
-  At the end of a lesson of a course on /teaching/ (_data/courses.yml): the previous lesson, the course page and
-  the next lesson. A next lesson without a url yet is shown as coming.
+  At the end of a lesson of a course (_data/courses.yml): the previous lesson, the course's page and the next
+  lesson. A next lesson without a url yet is shown as coming.
 {% endcomment %}
 {% for course in site.data.courses %}
   {% for lesson in course.lessons %}
@@ -18,7 +18,7 @@
           </a>
         {% endif %}
       </div>
-      <a class="course-nav-all" href="{{ '/teaching/' | relative_url }}">
+      <a class="course-nav-all" href="{{ course.url | default: '/teaching/' | relative_url }}">
         <span class="course-nav-label">Lesson {{ number }} of {{ course.lessons.size }}</span>
         <span class="course-nav-title">{{ course.title }}</span>
       </a>

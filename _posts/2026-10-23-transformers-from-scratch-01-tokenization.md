@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How language models read: tokenization and BPE from scratch"
+title: "Tokenization and BPE from scratch"
 date: 2025-06-19 10:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-01-tokenization/

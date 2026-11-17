@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "BERT from scratch: masked language modelling and fine-tuning"
+title: "BERT from scratch with masked language modelling and fine-tuning"
 date: 2026-02-27 10:00:00
 last_updated: 2026-11-02
 description: "BERT written in PyTorch from scratch and loaded with Google's weights: why reading in both directions needed a mask, what BERT knows and what its attention heads do, and a detector of personal data in long financial documents, against regular expressions."

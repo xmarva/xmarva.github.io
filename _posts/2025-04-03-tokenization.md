@@ -9,7 +9,7 @@ categories: machine-learning
 featured: false
 ---
 
-*This post is from the first version of my Transformer course. The current course covers the same ground from scratch, with every number checked and the tokenizers of GPT-4o and Llama 3 taken apart: [How language models read: tokenization and BPE](/blog/2026/transformers-from-scratch-01-tokenization/).*
+*This post is from the first version of my Transformer course. The current course covers the same ground from scratch, with every number checked and the tokenizers of GPT-4o and Llama 3 taken apart: [Tokenization and BPE from scratch](/blog/2026/transformers-from-scratch-01-tokenization/).*
 
 ## Tokenization
 

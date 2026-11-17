@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "GPT from scratch: GPT-2, the KV cache and a model that learns chess"
+title: "GPT-2 from scratch and a small GPT that learns chess"
 date: 2026-04-28 13:00:00
 last_updated: 2026-11-03
 description: "GPT-2 written from scratch and loaded with OpenAI's weights, generation with a KV cache, the logit lens, and a small GPT trained on Lichess games that learns to play legal chess and keeps a board inside, found with a linear probe."

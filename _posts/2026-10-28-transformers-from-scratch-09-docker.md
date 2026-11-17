@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "It works on my laptop: a reproducible Docker image of a model"
+title: "A reproducible Docker image for a machine learning model"
 date: 2025-12-31 18:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-09-docker/

@@ -8,7 +8,9 @@
 #
 # Only running text is touched: never links, code, headings, citations, tables, quotations, captions or the
 # reference list. A lesson's own line of links to its neighbours (p.tfs-neighbours) is dropped: the course
-# navigation after every lesson (_includes/course_nav.liquid) replaces it.
+# navigation after every lesson (_includes/course_nav.liquid) replaces it. In the lesson's line of links at the top
+# (p.tfs-links), "all lessons" leads to the course's own page (_plugins/course-pages.rb) instead of /teaching/, and the
+# course goes by its name on the site (_data/courses.yml), which may differ from the one in the course repository.
 require "nokogiri"
 require "set"
 
@@ -27,6 +29,13 @@ module InternalLinks
       courses[course["id"]] = lessons
     end
     courses
+  end
+
+  # the course a lesson belongs to
+  def self.course_of(site, url)
+    (site.data["courses"] || []).find do |course|
+      (course["lessons"] || []).any? { |lesson| lesson["url"] == url }
+    end
   end
 
   def self.skipped?(node)
@@ -71,6 +80,17 @@ module InternalLinks
       fragment.css("p.tfs-neighbours").each do |line|
         line.remove
         changed = true
+      end
+      course = course_of(site, own)
+      if course && course["url"]
+        fragment.css('p.tfs-links a[href="/teaching/"]').each do |link|
+          link["href"] = course["url"]
+          changed = true
+        end
+        fragment.css("p.tfs-links > strong:first-child").each do |name|
+          name.content = course["title"]
+          changed = true
+        end
       end
     end
     present = linked_urls(fragment)

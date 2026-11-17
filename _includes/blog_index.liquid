@@ -339,7 +339,7 @@
     {% endif %}
     {% assign category = post.categories | first %}
     {% assign read_time = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    {% assign lesson = nil %}{% assign badge = nil %}{% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% assign badge = c.badge | default: "Course" %}{% endif %}{% endfor %}{% endfor %}
+    {% assign lesson = nil %}{% assign badge = nil %}{% assign lesson_home = nil %}{% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == post.url %}{% assign lesson = forloop.index %}{% assign badge = c.badge | default: "Course" %}{% assign lesson_home = c.url %}{% endif %}{% endfor %}{% endfor %}
     <article class="bh-row" data-categories="{{ post.categories | join: ' ' }}" data-month="{{ month }}"{% unless on_page contains key %} data-other-page hidden{% else %}{% if include.pinned and pinned_urls contains key %} data-pinned hidden{% endif %}{% endunless %}>
       <a class="bh-cover" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
         {% if post.thumbnail %}
@@ -349,7 +349,7 @@
         {% endif %}
       </a>
       <div class="bh-text">
-        <p class="bh-kicker">{% if lesson %}<a href="{{ '/teaching/' | relative_url }}">{{ badge }} · lesson {{ lesson }}</a>{% elsif category %}<a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}</p>
+        <p class="bh-kicker">{% if lesson %}<a href="{{ lesson_home | default: '/teaching/' | relative_url }}">{{ badge }} · lesson {{ lesson }}</a>{% elsif category %}<a class="bh-cat" data-category="{{ category }}" href="{{ category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ category | replace: '-', ' ' }}</a>{% endif %}</p>
         <h2 class="bh-title"><a class="stretched-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         {% if post.description %}<p class="bh-desc">{{ post.description }}</p>{% endif %}
         <p class="bh-meta">

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
+title: "Training a Transformer and decoding with beam search"
 date: 2025-07-22 12:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-03-training/

@@ -1,0 +1,160 @@
+---
+layout: default
+---
+{% comment %}
+  A course's own page, /teaching/<slug>/, made for each shown course in _data/courses.yml by
+  _plugins/course-pages.rb: the course with its newest covers fanned out, the facts, what it is and what to know
+  first, the lessons by part, how to cite it, and its neighbours on the route. The markup for search engines is in
+  _includes/metadata.liquid; the styles are in _sass/_teaching.scss.
+{% endcomment %}
+{% assign course = site.data.courses | where: 'id', page.course_id | first %}
+{% assign routed = site.data.courses | where: 'show', true %}
+{% assign published = course.lessons | where_exp: 'lesson', 'lesson.url' %}
+{% assign total = course.lessons | size %}
+{% assign done = published | size %}
+{% assign recent = published | reverse %}
+{% assign latest = recent | first %}
+{% assign first_lesson = published | first %}
+{% include course_reading.liquid course=course %}
+
+<div class="post post-page course-page">
+  <header class="post-header course-hero{% unless latest %} is-new{% endunless %}">
+    <div class="course-hero-text">
+      <nav class="post-kicker course-crumbs" aria-label="Breadcrumbs">
+        <a href="{{ '/teaching/' | relative_url }}">Teaching</a>
+        <span aria-hidden="true">/</span>
+        <span>Course {{ course.number }} of {{ routed.size }}</span>
+      </nav>
+      <h1 class="post-title">{{ course.title }}</h1>
+      <p class="post-dek">{{ course.summary }}</p>
+      {% include course_progress.liquid course=course %}
+      <div class="course-actions">
+        {% if course.price and course.checkout %}
+          <a class="course-button" href="{{ course.checkout }}">Get the course · {{ course.price }} {{ course.currency }}</a>
+        {% elsif first_lesson %}
+          <a class="course-button" href="{{ first_lesson.url | relative_url }}">Start with lesson 1 <span aria-hidden="true">&rarr;</span></a>
+        {% endif %}
+        {% if latest and done > 1 %}
+          <a class="course-quiet" href="{{ latest.url | relative_url }}">Newest: lesson {{ done }}</a>
+        {% endif %}
+        <a class="course-quiet" href="{{ course.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code on GitHub</a>
+      </div>
+    </div>
+    {% if latest %}
+      <a class="course-fan" href="{{ latest.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% for lesson in recent limit: 3 %}
+          <span class="course-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=lesson.cover alt="" sizes="(min-width: 900px) 420px, 90vw" loading="eager" %}</span>
+        {% endfor %}
+      </a>
+    {% endif %}
+  </header>
+
+  <dl class="course-facts">
+    <div>
+      <dt>Lessons</dt>
+      <dd>{% if done == total %}{{ total }}{% elsif done > 0 %}{{ done }} of {{ total }} out{% else %}{{ total }} planned{% endif %}</dd>
+    </div>
+    {% if reading_hours > 0 %}
+      <div>
+        <dt>Reading</dt>
+        <dd>About {{ reading_hours }} hours</dd>
+      </div>
+    {% endif %}
+    <div>
+      <dt>Notebooks</dt>
+      <dd>Kaggle or Colab</dd>
+    </div>
+    <div>
+      <dt>Level</dt>
+      <dd>{{ course.level }}</dd>
+    </div>
+    <div>
+      <dt>Price</dt>
+      <dd>{% if course.price %}{{ course.price }} {{ course.currency }}{% else %}Free{% endif %}</dd>
+    </div>
+    <div>
+      <dt>Code</dt>
+      <dd>{{ course.license }} licence</dd>
+    </div>
+  </dl>
+
+  <div id="markdown-content" class="course-text">
+    <h2 id="about">About the course</h2>
+    {% for paragraph in course.about %}
+      <p>{{ paragraph }}</p>
+    {% endfor %}
+
+    <h2 id="before-you-start">Before you start</h2>
+    <p>{{ course.before }}</p>
+
+    <h2 id="lessons">Lessons</h2>
+    <div class="course-lessons">
+      {% assign has_parts = false %}
+      {% if course.parts.size > 0 %}{% assign has_parts = true %}{% endif %}
+      {% for lesson in course.lessons %}
+        {% assign number = forloop.index %}
+        {% if has_parts %}
+          {% for part in course.parts %}
+            {% if part.from == number %}
+              {% if number > 1 %}</ol>{% endif %}
+              {% assign next_part = course.parts[forloop.index] %}
+              {% if next_part %}{% assign part_end = next_part.from | minus: 1 %}{% else %}{% assign part_end = total %}{% endif %}
+              {% assign part_size = part_end | minus: number | plus: 1 %}
+              <p class="course-part" id="part-{{ forloop.index }}">Part {{ forloop.index }} · {{ part.title }} <span>· {{ part_size }} {% if part_size == 1 %}lesson{% else %}lessons{% endif %}</span></p>
+              <ol class="course-list" start="{{ number }}">
+            {% endif %}
+          {% endfor %}
+        {% elsif forloop.first %}
+          <ol class="course-list">
+        {% endif %}
+        <li class="course-lesson{% unless lesson.url %} is-soon{% endunless %}" id="lesson-{{ number }}">
+          <span class="course-num" aria-hidden="true">{{ number | prepend: '0' | slice: -2, 2 }}</span>
+          <div class="course-lesson-body">
+            <h3 class="course-lesson-title">{% if lesson.url %}<a href="{{ lesson.url | relative_url }}">{{ lesson.title }}</a>{% else %}{{ lesson.title }}{% endif %}</h3>
+            <p class="course-lesson-about">{{ lesson.about }}</p>
+            <p class="course-lesson-meta">
+              {% if lesson.url %}
+                {% assign post = site.posts | where: 'url', lesson.url | first %}
+                {% assign minutes = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+                <span class="course-minutes">{{ minutes }} min read</span>
+                <a class="course-chip course-kaggle" href="{{ lesson.kaggle }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ number }} on Kaggle"><span class="course-dot" aria-hidden="true"></span>Kaggle</a>
+                <a class="course-chip course-colab" href="{{ lesson.colab }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ number }} in Colab"><span class="course-dot" aria-hidden="true"></span>Colab</a>
+              {% else %}
+                <span class="course-soon">Coming</span>
+              {% endif %}
+            </p>
+          </div>
+        </li>
+        {% if forloop.last %}</ol>{% endif %}
+      {% endfor %}
+    </div>
+
+    {% include course_cite.liquid course=course %}
+  </div>
+
+  {% assign previous_index = course.number | minus: 2 %}
+  <nav class="course-nav" aria-label="Courses">
+    <div class="course-nav-side">
+      {% if course.number > 1 %}
+        {% assign other = routed[previous_index] %}
+        <a class="course-nav-link" href="{{ other.url | relative_url }}" rel="prev">
+          <span class="course-nav-label">&larr; Course {{ other.number }}</span>
+          <span class="course-nav-title">{{ other.title }}</span>
+        </a>
+      {% endif %}
+    </div>
+    <a class="course-nav-all" href="{{ '/teaching/' | relative_url }}">
+      <span class="course-nav-label">Course {{ course.number }} of {{ routed.size }}</span>
+      <span class="course-nav-title">All courses</span>
+    </a>
+    <div class="course-nav-side course-nav-side-next">
+      {% assign other = routed[course.number] %}
+      {% if other %}
+        <a class="course-nav-link" href="{{ other.url | relative_url }}" rel="next">
+          <span class="course-nav-label">Course {{ other.number }} &rarr;</span>
+          <span class="course-nav-title">{{ other.title }}</span>
+        </a>
+      {% endif %}
+    </div>
+  </nav>
+</div>

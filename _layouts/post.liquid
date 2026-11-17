@@ -22,7 +22,7 @@ layout: default
     {% for c in site.data.courses %}{% for l in c.lessons %}{% if l.url == page.url %}{% assign lesson_number = forloop.index %}{% assign lesson_course = c %}{% endif %}{% endfor %}{% endfor %}
     {% assign main_category = page.categories | first %}
     {% if lesson_course %}
-      <p class="post-kicker"><a href="{{ '/teaching/' | relative_url }}">{{ lesson_course.badge | default: 'Course' | downcase }} · lesson {{ lesson_number }} of {{ lesson_course.lessons.size }}</a></p>
+      <p class="post-kicker"><a href="{{ lesson_course.url | default: '/teaching/' | relative_url }}">{{ lesson_course.badge | default: 'Course' | downcase }} · lesson {{ lesson_number }} of {{ lesson_course.lessons.size }}</a></p>
     {% elsif main_category %}
       <p class="post-kicker"><a href="{{ main_category | slugify | prepend: '/blog/category/' | append: '/' | relative_url }}">{{ main_category | replace: '-', ' ' }}</a></p>
     {% endif %}
