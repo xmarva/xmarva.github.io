@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 8 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-08-serving-under-load">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 8 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-08-serving-under-load">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 In November 2006 Greg Linden, who had built Amazon's recommendations, gave a talk at Stanford. One slide said "+100 ms → −1% sales @ Amazon" and, next to it, "+500 ms → −20% traffic @ Google" <sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Linden, G. (2006). Make Data Useful, a talk at Stanford. The slide with Amazon&#x27;s 100 ms and Google&#x27;s 500 ms.">1</a>]</sup>.
 
@@ -56,7 +56,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -149,7 +149,7 @@ works:
 ```python
 REPO = WORK_DIR / "course"
 shutil.rmtree(REPO, ignore_errors=True)
-URL = "https://github.com/xmarva/transformers-from-scratch"
+URL = "https://github.com/mlsamurai/transformers-from-scratch"
 QUIET = ["-c", "advice.detachedHead=false"]
 subprocess.run(["git", *QUIET, "clone", "-q", "--depth", "1", "--branch", "perevod-v0.1.0",
                 "--filter=blob:none", "--sparse", URL, str(REPO)], check=True)
@@ -931,7 +931,7 @@ perevod = "perevod.cli:main"
 perevod-server = "perevod.server:main"
 
 [project.urls]
-Source = "https://github.com/xmarva/transformers-from-scratch/tree/main/perevod"
+Source = "https://github.com/mlsamurai/transformers-from-scratch/tree/main/perevod"
 Model = "https://huggingface.co/xmarva/perevod-en-ru"
 
 [build-system]
@@ -1421,7 +1421,7 @@ English to Russian with a small Transformer built from scratch in the course
 [Transformers: from scratch to production][course]. It was trained on short everyday
 sentences; its [model card][card] says where it fails.
 
-[course]: https://github.com/xmarva/transformers-from-scratch
+[course]: https://github.com/mlsamurai/transformers-from-scratch
 [card]: https://huggingface.co/xmarva/perevod-en-ru"""
 
 
@@ -1680,7 +1680,7 @@ and starts like this (on Linux without a GPU, add `--extra-index-url https://dow
 first command, or pip downloads gigabytes of CUDA libraries with PyTorch):
 
 ```bash
-pip install "perevod[demo] @ git+https://github.com/xmarva/transformers-from-scratch@perevod-v0.2.0#subdirectory=perevod"
+pip install "perevod[demo] @ git+https://github.com/mlsamurai/transformers-from-scratch@perevod-v0.2.0#subdirectory=perevod"
 perevod-server --port 8000 --demo
 ```
 

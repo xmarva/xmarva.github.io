@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 4 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 4 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 At WMT24, the main machine translation competition, Claude 3.5 Sonnet won 9 of the 11 language pairs. The verdict came from people who read the translations.
 
@@ -59,7 +59,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -1831,7 +1831,7 @@ tags: [translation, evaluation, comet]
 # Translations of the course's English–Russian test set, with COMET scores
 
 Made in lesson 4 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - test pairs: xmarva/tfs-tatoeba-en-ru (the Tatoeba Challenge test set, v2023-09-26)
 - "ours, greedy", "ours, beam": xmarva/tfs-transformer-en-ru, greedy and 4 beams

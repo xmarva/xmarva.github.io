@@ -14,7 +14,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 5 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-05-t5-bart">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a05_t5.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 5 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-05-t5-bart">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformer-architectures/blob/main/notebooks/colab/a05_t5.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformer-architectures">code on GitHub</a></p>
 
 In 1961 four researchers at MIT's Lincoln Laboratory fed a computer questions on punched cards, such as "Where did the Red Sox play on July 7?" Their program, BASEBALL, turned each one into a list, `Place = ? Team = Red Sox Month = July Day = 7`, looked the answer up in the results of one American League season and printed it<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Green, B. F., Wolf, A. K., Chomsky, C., &amp; Laughery, K. (1961). Baseball: an automatic question-answerer. Western Joint IRE-AIEE-ACM Computer Conference, 219–224.">1</a>]</sup>.
 
@@ -62,7 +62,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 

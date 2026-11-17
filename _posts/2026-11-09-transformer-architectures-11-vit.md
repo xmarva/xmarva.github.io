@@ -14,7 +14,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 11 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-11-vision-transformer">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a11_vit.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 11 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-11-vision-transformer">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformer-architectures/blob/main/notebooks/colab/a11_vit.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformer-architectures">code on GitHub</a></p>
 
 For eight years, from AlexNet in 2012 to 2020, every serious image classifier was a convolutional network. A
 convolution has two beliefs about images built into it: that nearby pixels belong together, and that a pattern means
@@ -60,7 +60,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -113,7 +113,7 @@ PHOTOS = ["bear", "shuttle", "lava", "orca", "hummingbird"]
 # the course's repository because Commons limits how often one address may download
 BASE = (
     "https://raw.githubusercontent.com/"
-    "xmarva/transformers-from-scratch/main/assets/photos/a11"
+    "mlsamurai/transformer-architectures/main/assets/photos/a11"
 )
 
 

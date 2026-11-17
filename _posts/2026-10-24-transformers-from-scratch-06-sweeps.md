@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 6 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 6 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 Meta trained Llama 3 405B on up to sixteen thousand H100 GPUs; its model card counts 30.84 million GPU hours. Nobody tunes a run like that by trying things out.
 
@@ -58,7 +58,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -775,7 +775,7 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 # A small English→Russian Transformer, tuned
 
 Built in lesson 6 of the course "Transformers: from scratch to production":
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - lesson 5's model (pre-norm, RMSNorm, SwiGLU, RoPE), hyperparameters from a search
 - the training hyperparameters: training.json

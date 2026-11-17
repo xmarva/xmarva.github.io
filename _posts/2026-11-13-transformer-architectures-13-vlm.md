@@ -13,7 +13,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 13 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-13-vision-language">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a13_vlm.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformer architectures: from BERT to diffusion</strong> · lesson 13 of 15 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformer-architectures-13-vision-language">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformer-architectures/blob/main/notebooks/colab/a13_vlm.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformer-architectures">code on GitHub</a></p>
 
 Photograph a receipt, ask a chat assistant how much you spent, and it answers with the number at the bottom. The language model that answers learned everything it knows from text.
 
@@ -74,7 +74,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 

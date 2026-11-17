@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 7 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-07-package-tests-ci">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/07_package.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 7 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-07-package-tests-ci">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/07_package.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 In 2019 a team at the Fluminense Federal University in Brazil collected over a million Jupyter notebooks from GitHub and ran them. Of 863,878 notebooks they could try, 24% ran to the end without an error, and 4% gave the results their authors had saved<sup class="cite">[<a href="#ref-1" id="cite-1" data-ref="1" aria-label="Reference 1: Pimentel, J. F., Murta, L., Braganholo, V., Freire, J. (2019). A Large-scale Study about Quality and Reproducibility of Jupyter Notebooks. MSR. 1,159,166 notebooks; 24.11% ran without errors, 4.03% reproduced.">1</a>]</sup>.
 
@@ -61,7 +61,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
@@ -230,7 +230,7 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 # A small English→Russian Transformer, tuned
 
 Built in lesson 6 of the course &quot;Transformers: from scratch to production&quot;:
-https://github.com/xmarva/transformers-from-scratch
+https://github.com/mlsamurai/transformers-from-scratch
 
 - lesson 5&#x27;s model (pre-norm, RMSNorm, SwiGLU, RoPE), hyperparameters from a search
 - the training hyperparameters: training.json
@@ -247,7 +247,7 @@ Everything the notebooks did by hand gets a permanent place:
 <img class="tfs-figure tfs-light" src="/assets/posts/tfs/07/plan-light.png" width="760" alt="Where the parts of the course&#x27;s notebooks go: the model and the decoding become model.py and decoding.py; config dictionaries become config.py; downloading and loading become translator.py; running a cell becomes the perevod command; asserts become tests; running the notebook becomes a CI workflow; and a three-line README becomes a model card" loading="lazy">
 <img class="tfs-figure tfs-dark" src="/assets/posts/tfs/07/plan-dark.png" width="760" alt="Where the parts of the course&#x27;s notebooks go: the model and the decoding become model.py and decoding.py; config dictionaries become config.py; downloading and loading become translator.py; running a cell becomes the perevod command; asserts become tests; running the notebook becomes a CI workflow; and a three-line README becomes a model card" loading="lazy">
 
-The package is called **perevod**, Russian for "translation", which also has the merit of being free on PyPI. It lives in a folder of the course's repository, [`perevod/`](https://github.com/xmarva/transformers-from-scratch/tree/main/perevod), and the next two lessons install it from there to serve and deploy it.
+The package is called **perevod**, Russian for "translation", which also has the merit of being free on PyPI. It lives in a folder of the course's repository, [`perevod/`](https://github.com/mlsamurai/transformers-from-scratch/tree/main/perevod), and the next two lessons install it from there to serve and deploy it.
 
 This notebook writes every file of it again, so you can read every one of them. We work in a folder laid out like the course repository: the package in `perevod/`, CI in `.github/`.
 
@@ -338,7 +338,7 @@ test = ["pytest>=8", "ruff>=0.6", "sacrebleu>=2.4", "pandas>=2.0", "pyarrow>=14"
 perevod = "perevod.cli:main"
 
 [project.urls]
-Source = "https://github.com/xmarva/transformers-from-scratch/tree/main/perevod"
+Source = "https://github.com/mlsamurai/transformers-from-scratch/tree/main/perevod"
 Model = "https://huggingface.co/xmarva/perevod-en-ru"
 
 [build-system]
@@ -376,7 +376,7 @@ English-to-Russian translation with the small Transformer built in the course
 Hugging Face Hub: [xmarva/perevod-en-ru](https://huggingface.co/xmarva/perevod-en-ru).
 
 ```bash
-REPO=https://github.com/xmarva/transformers-from-scratch
+REPO=https://github.com/mlsamurai/transformers-from-scratch
 pip install "perevod @ git+$REPO#subdirectory=perevod"
 perevod "I think, therefore I am."
 perevod --beam-size 1 < sentences.txt > translations.txt
@@ -395,7 +395,7 @@ trusting it with anything else.
 Tests: `pip install -e ".[test]"`, then `pytest -m "not slow"` (seconds, offline) or
 `pytest` (downloads the model).
 
-[course]: https://github.com/xmarva/transformers-from-scratch
+[course]: https://github.com/mlsamurai/transformers-from-scratch
 """)
 ````
 
@@ -2094,7 +2094,7 @@ print(check.stdout.strip())
 
 The package that runs comes from the wheel, not from our folder: whatever the tests passed against, this is what
 a user gets. The workflow's real runs are on the course repository's
-[Actions page](https://github.com/xmarva/transformers-from-scratch/actions/workflows/perevod.yml); a red cross on
+[Actions page](https://github.com/mlsamurai/transformers-from-scratch/actions/workflows/perevod.yml); a red cross on
 a pull request there means one of these three jobs found something.
 
 ## 13. A model card
@@ -2307,8 +2307,8 @@ stereotypical gender, not the pronoun.
 An empty input makes the model write a sentence; the package returns an empty translation
 instead. Inputs longer than 256 tokens are cut, with a warning.
 
-[course]: https://github.com/xmarva/transformers-from-scratch
-[package]: https://github.com/xmarva/transformers-from-scratch/tree/main/perevod
+[course]: https://github.com/mlsamurai/transformers-from-scratch
+[package]: https://github.com/mlsamurai/transformers-from-scratch/tree/main/perevod
 """
 Path("perevod-en-ru-README.md").write_text(CARD, encoding="utf-8")
 print(CARD)
@@ -2390,8 +2390,8 @@ stereotypical gender, not the pronoun.
 An empty input makes the model write a sentence; the package returns an empty translation
 instead. Inputs longer than 256 tokens are cut, with a warning.
 
-[course]: https://github.com/xmarva/transformers-from-scratch
-[package]: https://github.com/xmarva/transformers-from-scratch/tree/main/perevod</code></pre>
+[course]: https://github.com/mlsamurai/transformers-from-scratch
+[package]: https://github.com/mlsamurai/transformers-from-scratch/tree/main/perevod</code></pre>
 
 Notice what the card does not say: that the model is good. It says where it's usable and where it isn't, with the
 measurement next to each claim, so a reader can decide for their own case. That's the idea of Mitchell et al.:
@@ -2468,7 +2468,7 @@ trusted publishing from a GitHub workflow, uploads them.
 The next lessons install exactly this version from the course repository, by its tag:
 
 ```bash
-pip install "perevod @ git+https://github.com/xmarva/transformers-from-scratch@perevod-v0.1.0#subdirectory=perevod"
+pip install "perevod @ git+https://github.com/mlsamurai/transformers-from-scratch@perevod-v0.1.0#subdirectory=perevod"
 ```
 
 Lesson 8 puts it behind an HTTP API and measures how fast it answers when many people ask at once, and the start-up

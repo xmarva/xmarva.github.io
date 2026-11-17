@@ -267,6 +267,6 @@ After superhuman Go programs appeared, "novel decisions (i.e., previously unobse
 42. {:#ref-42} Shin, M., Kim, J., van Opheusden, B., & Griffiths, T. L. (2023). [Superhuman artificial intelligence can improve human decision-making by increasing novelty](https://doi.org/10.1073/pnas.2214840120). *PNAS*, 120(12), e2214840120. <a class="ref-back" href="#cite-43" aria-label="Back to the text">&#8617;</a>
 {: .tfs-refs}
 
-The figures, the temperature experiment and the data behind the charts: [articles/creative_ai](https://github.com/xmarva/transformers-from-scratch/tree/main/articles/creative_ai).
+The figures, the temperature experiment and the data behind the charts: [articles/creative_ai](https://github.com/korolevalab/articles/tree/main/creative_ai).
 
 {% endraw %}

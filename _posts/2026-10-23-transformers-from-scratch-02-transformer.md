@@ -15,7 +15,7 @@ toc:
 ---
 {% raw %}
 
-<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 2 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer">run on Kaggle</a> · <a href="https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb">open in Colab</a> · <a href="https://github.com/xmarva/transformers-from-scratch">code on GitHub</a></p>
+<p class="tfs-links"><strong>Transformers: from scratch to production</strong> · lesson 2 of 10 · <a href="/teaching/">all lessons</a> · <a href="https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer">run on Kaggle</a> · <a href="https://colab.research.google.com/github/mlsamurai/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb">open in Colab</a> · <a href="https://github.com/mlsamurai/transformers-from-scratch">code on GitHub</a></p>
 
 GPT-4o, Llama 3 and DeepSeek-V3 come from different companies, learned from different data and differ in size by
 orders of magnitude. Open any of them and you find the same thing: one block, stacked. Here are four real models
@@ -62,7 +62,7 @@ import importlib.util
 import subprocess
 import sys
 
-TFS = "git+https://github.com/xmarva/transformers-from-scratch@main"
+TFS = "git+https://github.com/mlsamurai/transformers-from-scratch@main"
 if importlib.util.find_spec("tfs") is None:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", TFS])
 
