@@ -49,7 +49,7 @@ The GPU did 0.3% of the arithmetic it is built for. Then I gave it 1,024 users a
 
 Inference optimization lives in the gap between these two runs. Below, in order: what a request does on the GPU, why generating text is limited by memory rather than by arithmetic, where the memory goes, and what serving engines such as [vLLM](https://github.com/vllm-project/vllm), [SGLang](https://github.com/sgl-project/sglang) and [TensorRT-LLM](https://github.com/NVIDIA/TensorRT-LLM) do about each part.
 
-Then the system around the engine: streaming, queues, scaling and the numbers to watch. Every measurement comes from [one script](https://github.com/korolevalab/articles/tree/main/inference_optimization/experiment.py) that runs on the same free GPU, and every figure is drawn from its output by [code](https://github.com/korolevalab/articles/tree/main/inference_optimization/figures.py) you can rerun.
+Then the system around the engine: streaming, queues, scaling and the numbers to watch. Every measurement comes from [one script](https://github.com/mlsamurai/articles/tree/main/inference_optimization/experiment.py) that runs on the same free GPU, and every figure is drawn from its output by [code](https://github.com/mlsamurai/articles/tree/main/inference_optimization/figures.py) you can rerun.
 
 ## Two phases of one request
 
@@ -488,6 +488,6 @@ For every request, log the time in the queue, in prefill and in decoding, and th
 22. {:#ref-22} Anthropic: [API pricing](https://platform.claude.com/docs/en/about-claude/pricing).
 {: .tfs-refs}
 
-The measurements: [experiment.py](https://github.com/korolevalab/articles/tree/main/inference_optimization/experiment.py) (Kaggle T4), [speculative.py](https://github.com/korolevalab/articles/tree/main/inference_optimization/speculative.py) (CPU), and the figures, [figures.py](https://github.com/korolevalab/articles/tree/main/inference_optimization/figures.py), with the data they were drawn from.
+The measurements: [experiment.py](https://github.com/mlsamurai/articles/tree/main/inference_optimization/experiment.py) (Kaggle T4), [speculative.py](https://github.com/mlsamurai/articles/tree/main/inference_optimization/speculative.py) (CPU), and the figures, [figures.py](https://github.com/mlsamurai/articles/tree/main/inference_optimization/figures.py), with the data they were drawn from.
 
 {% endraw %}
