@@ -280,7 +280,7 @@ Here the principle's defenders themselves concede that it says little about life
 
 If you take one thing from it, take the middle layer: the brain as a machine that predicts, weighs its errors by how much it trusts them, and acts to make its predictions come true. Unlike the principle, that picture makes predictions an experiment can refute.
 
-The calculations and the figures as code: [articles/friston](https://github.com/korolevalab/articles/tree/main/friston).
+The calculations and the figures as code: [articles/friston](https://github.com/mlsamurai/articles/tree/main/friston).
 
 ## References
 

@@ -267,6 +267,6 @@ We can open the model, read off the board it keeps for Othello or the geometry i
 32. {:#ref-32} Stanford Encyclopedia of Philosophy: [The Computational Theory of Mind](https://plato.stanford.edu/entries/computational-mind/), [The Chinese Room Argument](https://plato.stanford.edu/entries/chinese-room/), [The Language of Thought Hypothesis](https://plato.stanford.edu/entries/language-thought/), [Connectionism](https://plato.stanford.edu/entries/connectionism/).
 {: .tfs-refs}
 
-The measurement of colour in Qwen2.5-1.5B and the figures: [articles/minds_as_computers](https://github.com/korolevalab/articles/tree/main/minds_as_computers).
+The measurement of colour in Qwen2.5-1.5B and the figures: [articles/minds_as_computers](https://github.com/mlsamurai/articles/tree/main/minds_as_computers).
 
 {% endraw %}

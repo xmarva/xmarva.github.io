@@ -205,6 +205,6 @@ Elliot, with his intact intelligence and his lists of options, is a fair picture
 28. {:#ref-28} Damasio, A. R. (1994). [*Descartes' Error: Emotion, Reason, and the Human Brain*](https://archive.org/details/descarteserrorem00dama). Putnam.
 {: .tfs-refs}
 
-The figures, with the gambling task's schedule as code: [articles/damasio](https://github.com/korolevalab/articles/tree/main/damasio).
+The figures, with the gambling task's schedule as code: [articles/damasio](https://github.com/mlsamurai/articles/tree/main/damasio).
 
 {% endraw %}

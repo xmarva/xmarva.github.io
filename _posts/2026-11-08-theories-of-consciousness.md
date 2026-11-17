@@ -343,7 +343,7 @@ The science is progressing, mostly by eliminating things. Report is not experien
 
 The practical questions, which patients are conscious and whether a machine ever could be, won't wait for the philosophical one to be settled. The best we can do is to be clear about which theory each answer assumes.
 
-The figures as code: [articles/consciousness](https://github.com/korolevalab/articles/tree/main/consciousness).
+The figures as code: [articles/consciousness](https://github.com/mlsamurai/articles/tree/main/consciousness).
 
 ## References
 
