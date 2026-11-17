@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
+title: "What Llama changed in the Transformer with RoPE, RMSNorm and SwiGLU"
 date: 2025-09-01 14:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-05-llama/

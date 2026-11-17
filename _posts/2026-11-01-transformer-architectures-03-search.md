@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Embeddings and search: Sentence-BERT, cross-encoders and ColBERT"
+title: "Semantic search with Sentence-BERT, cross-encoders and ColBERT"
 date: 2026-04-08 12:00:00
 last_updated: 2026-11-02
 description: "How a search engine reads: BM25 written from scratch, Sentence-BERT's bi-encoder trained with in-batch negatives, a cross-encoder reranker and ColBERT's late interaction, each checked against the real weights and put together into a literature search over 64,000 machine-learning papers."

@@ -1,191 +1,245 @@
-# Courses on /teaching/, in this order. A course with `show: false` stays off the page.
-# A lesson with a `url` is published; one without is listed as coming soon.
-# `short` names the newest lesson in the course's "New" pill; `badge` names the course on the blog's lesson rows. `cover` is a copy of the post's cover in assets/img/teaching/, where the build makes responsive WebP versions.
+# The courses, in the order of the route on /teaching/. Every course with `show: true` gets its own page at
+# /teaching/<slug>/ (_plugins/course-pages.rb lays it out with _layouts/course.liquid); `show: false` keeps a course
+# off the site while its lessons stay ordinary posts. The markup for search engines is in _includes/metadata.liquid.
+#
+# A course:
+#   id, slug          a short name for the templates, and the address of the course page
+#   title             the course's name, one plain clause without a colon
+#   badge             names the course in a lesson's kicker and on the blog's rows (default "Course")
+#   summary           a sentence or two for the route on /teaching/ and the top of the course page
+#   about             the course page's opening paragraphs, one item per paragraph
+#   before            what to know first, and where the notebooks run
+#   level             Beginner, Intermediate or Advanced
+#   seo_title, seo_description   the course page's <title> (before " | name") and its meta description (≤ 155)
+#   github            the code
+#   license           the code's licence, as shown on the course page
+#   doi               optional: the course's Zenodo DOI (10.5281/zenodo.N), for the citation and the markup
+#   price, currency   optional: a paid course (price in the currency's units); without a price the course is free
+#   checkout          optional: where a paid course is bought, the course page's main button
+#   parts             optional: the course's parts, each a title and the number of the lesson it starts with
+#   lessons           in order
+# A lesson:
+#   title             as on the course page and in the navigation between lessons
+#   short             the lesson in the "New" pill, when it is the newest one
+#   about             a sentence or two on the course page
+#   url               set once the lesson is published; a lesson without one is listed as coming
+#   kaggle, colab     the notebook
+#   cover             a copy of the post's cover in assets/img/teaching/, where the build makes WebP versions
 
 - id: tfs
+  slug: transformers-from-scratch
   show: true
-  title: "Transformers: from scratch to production"
-  summary: "Build an English→Russian translator with a Transformer you write yourself, measure it honestly, improve it, and ship it as a tested package and a reproducible service."
-  facts:
-    - "Free GPU on Kaggle or Colab"
-    - "every lesson runs on its own"
-    - "open source"
+  title: "Transformers from scratch to production"
+  summary: "We write an English–Russian translator in PyTorch, starting from the tokenizer, and carry it all the way to a Docker image that anyone can run."
+  about:
+    - "The course follows one model from its first line of code to a running service. You write the tokenizer and the Transformer yourself, train them on half a million sentence pairs and check the translations with metrics that are themselves checked against professional translators."
+    - "Then the model gets what came after 2017: the changes Llama made, a tuned learning rate, a Python package with tests, an HTTP API measured under load and a Docker image that rebuilds to the same bytes."
+    - "Each lesson starts by downloading what the earlier ones produced, the tokenizer and the checkpoints, so any of them can be opened on its own."
+  before: "You need to read Python; the first lesson also uses a little pandas. Some PyTorch helps from lesson 2 on, but every step is explained. You don't need a GPU of your own: the lessons that train run on a free T4 on Kaggle or Colab, the rest on a CPU."
+  level: Beginner
+  seo_title: "Transformer from scratch in PyTorch, a free course"
+  seo_description: "A free course in ten lessons. Write an English–Russian Transformer translator in PyTorch, train it on a free GPU, evaluate it and ship it with Docker."
   github: https://github.com/xmarva/transformers-from-scratch
+  license: MIT
+  parts:
+    - title: "Build the model"
+      from: 1
+    - title: "Measure and improve it"
+      from: 4
+    - title: "Ship it"
+      from: 7
+    - title: "A better translator"
+      from: 10
   lessons:
-    - title: "How language models read: tokenization and BPE"
+    - title: "Tokenization and BPE from scratch"
       short: "Tokenization"
-      topics: "Inside the tokenizers of GPT-4o and Llama 3, cleaning parallel data, leak-free splits, BPE by hand, Hugging Face tokenizers"
+      about: "What GPT-4o and Llama 3 receive when you type, and why Russian costs more tokens than English. We clean the parallel data, split it without leaks and write byte-pair encoding by hand."
       url: /blog/2026/transformers-from-scratch-01-tokenization/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-01-tokenization
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/01_tokenization.ipynb
       cover: assets/img/teaching/tfs-01.png
-    - title: "Implementing the Transformer in PyTorch: why attention divides by √d_k"
+    - title: "A Transformer from scratch in PyTorch"
       short: "The Transformer"
-      topics: "Real models' blueprints, attention and why it divides by √d_k, masks, heads, positions, the encoder–decoder, checks against PyTorch"
+      about: "The encoder–decoder of the 2017 paper, from attention and masks to positions, with every part checked against real models. Along the way you'll see why attention divides by √d_k."
       url: /blog/2026/transformers-from-scratch-02-transformer/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-02-the-transformer
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/02_transformer.ipynb
       cover: assets/img/teaching/tfs-02.png
-    - title: "Training a Transformer: warm-up, label smoothing, beam search, sampling"
+    - title: "Training a Transformer and decoding with beam search"
       short: "Training & decoding"
-      topics: "Token-based batches, label smoothing, warm-up and what happens without it, mixed precision, greedy, beam search and sampling"
+      about: "The translator learns from half a million sentence pairs on a free GPU. We look at what warm-up and label smoothing do, then compare greedy search, beam search and sampling on its output."
       url: /blog/2026/transformers-from-scratch-03-training/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-03-training-decoding
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/03_training.ipynb
       cover: assets/img/teaching/tfs-03.png
     - title: "Evaluating machine translation with chrF and COMET"
       short: "BLEU, chrF, COMET"
-      topics: "BLEU and chrF from scratch, COMET by hand, sacreBLEU signatures, metrics against human judgments, the paired bootstrap, test-set contamination"
+      about: "BLEU and chrF written from scratch and COMET run by hand, then compared with the judgments of professional translators. The paired bootstrap tells a real gain from noise, and a test set seen in training shows what leakage does to the scores."
       url: /blog/2026/transformers-from-scratch-04-evaluation/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-04-bleu-chrf-comet
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/04_evaluation.ipynb
       cover: assets/img/teaching/tfs-04.png
-    - title: "What Llama changed in the Transformer: RoPE, RMSNorm, SwiGLU"
+    - title: "What Llama changed in the Transformer with RoPE, RMSNorm and SwiGLU"
       short: "What Llama changed"
-      topics: "Llama 3.1 from its config, pre-norm, RMSNorm, SwiGLU, RoPE, fused attention, a KV cache, an ablation ladder against the noise of random seeds"
+      about: "Pre-norm, RMSNorm, SwiGLU and RoPE go into the translator one at a time. Each change is measured against what a new random seed does on its own, and fused attention and a KV cache come last."
       url: /blog/2026/transformers-from-scratch-05-llama/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-05-what-llama-changed
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/05_llama.ipynb
       cover: assets/img/teaching/tfs-05.png
     - title: "Hyperparameter tuning on a free GPU with W&B Sweeps"
       short: "W&B Sweeps tuning"
-      topics: "Experiment tracking with W&B, a learning-rate range test, random search and successive halving from scratch, W&B Sweeps with Bayesian optimization"
+      about: "One hour of a free GPU spent on hyperparameters. We write a learning-rate range test, random search and successive halving, then hand the search to W&B Sweeps and check the gain against seeds."
       url: /blog/2026/transformers-from-scratch-06-sweeps/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-06-w-b-sweeps-tuning
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/06_sweeps.ipynb
       cover: assets/img/teaching/tfs-06.png
-    - title: "Your notebook is not a product: a Python package with tests and CI"
+    - title: "Turning a notebook into a Python package with tests and CI"
       short: "Package, tests, CI"
-      topics: "The src layout, pyproject.toml, configs that refuse bad values, a command line, four kinds of tests, mutation testing, GitHub Actions, a model card"
+      about: "The model leaves the notebook and becomes a package anyone can install, with a command line, tests checked by mutation testing and CI on GitHub Actions. Its model card lists what it can't do."
       url: /blog/2026/transformers-from-scratch-07-package/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-07-package-tests-ci
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/07_package.ipynb
       cover: assets/img/teaching/tfs-07.png
-    - title: "Serving a Transformer with FastAPI and Gradio: latency under load"
+    - title: "Serving a Transformer with FastAPI and measuring it under load"
       short: "Serving under load"
-      topics: "Where inference time goes, the KV cache in beam search, int8 quantization, FastAPI and asyncio, load tests without coordinated omission, queueing theory checked by simulation, dynamic batching, Gradio"
+      about: "The translator goes behind an HTTP API and is measured the way its users meet it. Open-loop load tests, queueing theory checked against the numbers, dynamic batching, and int8 quantization that doesn't pay off."
       url: /blog/2026/transformers-from-scratch-08-serving/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-08-serving-under-load
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/08_serving.ipynb
       cover: assets/img/teaching/tfs-08.png
-    - title: "It works on my laptop: a reproducible Docker image of a model"
+    - title: "A reproducible Docker image for a machine learning model"
       short: "Reproducible Docker"
-      topics: "Lock files with hashes, an image taken apart by hand (registries, manifests, layers, digests), reproducible builds, CI that rebuilds and compares, GitHub Container Registry, the image run without Docker, ONNX in the browser"
+      about: "An image that builds to the same bytes twice and runs the same next year. Lock files with hashes, digests, CI that rebuilds and compares, and an ONNX export for a demo in the browser."
       url: /blog/2026/transformers-from-scratch-09-docker/
       kaggle: https://www.kaggle.com/code/qmarva/transformers-from-scratch-09-reproducible-docker
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/09_docker.ipynb
       cover: assets/img/teaching/tfs-09.png
-    - title: "Knowledge distillation, data and scale: what makes a translator better"
-      topics: "Sequence-level distillation from opus-mt, synthetic in-domain data, a bigger student, checkpoint averaging and ensembles, NLLB and LLMs as reference points"
+    - title: "Making the translator better with distillation and more data"
+      about: "Which helps a small translator most, distillation from a bigger model, synthetic data from its domain, a bigger student or an ensemble. NLLB and LLMs serve as reference points."
 
 - id: arch
+  slug: transformer-architectures
   show: true
   badge: "Architectures"
-  title: "Transformer architectures: from BERT to diffusion"
-  summary: "Fifteen models built on the Transformer, one lesson each: what it changed and why, its key parts written from scratch and checked against the real weights, its history, and a practical task it does well."
-  facts:
-    - "Free GPU on Kaggle or Colab"
-    - "every lesson runs on its own"
-    - "open source"
+  title: "Transformer architectures from BERT to diffusion"
+  summary: "Fifteen models that grew out of the Transformer, one per lesson. Each time we write the key part in PyTorch, load the real weights into it to check that it is the real thing, and put the model to work on a task it does well."
+  about:
+    - "The lessons go from encoders that read text to models that see, listen and draw. Each one starts from a limit of an earlier model and shows how the new one removed it."
+    - "Every lesson follows the same plan. The story of the model comes first, then its key part written from scratch, with the official weights loaded into that code and matched to the reference implementation. A small experiment on a free T4 shows the idea at work, and a practical task uses a different dataset each time."
+    - "At the end of each lesson the model gets the same card as the ones before it, with its objective, attention, positions, normalisation and sizes, so the family can be compared side by side."
+  before: "Start here after the first course, or if you can already write attention and a training loop in PyTorch yourself. Most lessons need a free T4 on Kaggle or Colab, and two of them use Kaggle's pair of T4s."
+  level: Intermediate
+  seo_title: "Transformer architectures from BERT to diffusion"
+  seo_description: "A free course in fifteen lessons on the models built from the Transformer, from BERT, GPT and T5 to Mamba, CLIP, Whisper and DiT, each written in PyTorch."
   github: https://github.com/xmarva/transformers-from-scratch/tree/main/architectures
+  license: MIT
+  parts:
+    - title: "Encoders that understand text"
+      from: 1
+    - title: "Decoders and the encoder–decoder"
+      from: 4
+    - title: "Scale and efficiency"
+      from: 7
+    - title: "Beyond text"
+      from: 11
   lessons:
-    - title: "BERT from scratch: masked language modelling and fine-tuning"
+    - title: "BERT from scratch with masked language modelling and fine-tuning"
       short: "BERT"
+      about: "BERT written in PyTorch and loaded with Google's weights. Why reading in both directions needed a mask, what BERT knows, and a detector of personal data in long financial documents, set against regular expressions."
       url: /blog/2026/transformer-architectures-01-bert/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-01-bert
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a01_bert.ipynb
       cover: assets/img/teaching/arch-01.png
-      topics: "Why bidirectional needed a mask, WordPiece, the 80/10/10 mask, BERT-base's weights in our own encoder, what it knows and what its heads look at, a personal-data detector for long documents"
-    - title: "From RoBERTa to ModernBERT: what seven years did to BERT"
+    - title: "How BERT changed from RoBERTa to ModernBERT"
       short: "RoBERTa to ModernBERT"
+      about: "What seven years of research changed in BERT, from RoBERTa's training recipe to ModernBERT's block. Each model is checked against its real weights, and all four sort GitHub issues from projects they never saw."
       url: /blog/2026/transformer-architectures-02-modernbert/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-02-roberta-modernbert
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a02_modernbert.ipynb
       cover: assets/img/teaching/arch-02.png
-      topics: "RoBERTa's recipe, DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's local and global attention, three generations on one task"
-    - title: "Embeddings and search: Sentence-BERT, cross-encoders and ColBERT"
+    - title: "Semantic search with Sentence-BERT, cross-encoders and ColBERT"
       short: "Embeddings and search"
+      about: "BM25 from scratch, a Sentence-BERT bi-encoder trained on in-batch negatives, a cross-encoder reranker and ColBERT. Together they become a search engine over 58,000 machine-learning papers."
       url: /blog/2026/transformer-architectures-03-search/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-03-embeddings-search
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a03_search.ipynb
       cover: assets/img/teaching/arch-03.png
-      topics: "BM25 from scratch, why an encoder's own vectors can't search, in-batch negatives and InfoNCE, a model adapted to its corpus in ten minutes, a cross-encoder reranker, ColBERT's MaxSim, a hybrid search over 58,000 ML papers"
-    - title: "GPT from scratch: GPT-2, the KV cache and a model that learns chess"
+    - title: "GPT-2 from scratch and a small GPT that learns chess"
       short: "GPT and chess"
+      about: "GPT-2 written from scratch with OpenAI's weights, the KV cache and the logit lens. Then a small GPT trained on Lichess games learns legal chess, and a linear probe finds the board inside it."
       url: /blog/2026/transformer-architectures-04-gpt/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-04-gpt-chess
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a04_gpt.ipynb
       cover: assets/img/teaching/arch-04.png
-      topics: "GPT-1 to GPT-3, the GPT-2 block and OpenAI's weights in our code, the KV cache, the logit lens, a chess GPT trained on Lichess games, a 72-hour model transplanted, and the board found inside with a linear probe"
-    - title: "T5 and BART: the encoder–decoder, and a model that writes SQL"
+    - title: "T5 and BART from scratch and a T5 that writes SQL"
       short: "T5 and BART"
+      about: "T5 written from scratch with Google's weights, with its relative positions, cross-attention and span corruption, next to BART's text infilling. A T5 fine-tuned on Spider writes SQL, and every query is run on SQLite to check it."
       url: /blog/2026/transformer-architectures-05-t5/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-05-t5-bart
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a05_t5.ipynb
       cover: assets/img/teaching/arch-05.png
-      topics: "Text-to-text, T5 in our code with Google's weights, relative position buckets, cross-attention that aligns German with English, span corruption and BART's infilling, a T5 that writes SQL for 1,034 Spider questions, every query checked on SQLite, and why decoder-only models won"
     - title: "Modern LLM architecture and Qwen3 from scratch"
       short: "Modern LLMs"
+      about: "What Mistral, Gemma and Qwen changed after Llama, read from their configs. Qwen3-0.6B written from scratch with its official weights, and LoRA that turns voice commands into JSON in English and Russian."
       url: /blog/2026/transformer-architectures-06-modern/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-06-modern-llms
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a06_modern.ipynb
       cover: assets/img/teaching/arch-06.png
-      topics: "Fourteen model configs read side by side, grouped-query attention and the KV cache, small Transformers trained to diverge and saved by QK-norm, Qwen3 in PyTorch with the official weights, sliding windows and attention sinks, and LoRA that turns voice commands into JSON in English and Russian"
     - title: "Mixture-of-experts LLMs from scratch with OLMoE"
       short: "Mixture of experts"
+      about: "How mixtures of experts from Mixtral to gpt-oss are built. OLMoE with its official weights shows which experts English, Python, maths and Russian use, and then gets pruned for one kind of text."
       url: /blog/2026/transformer-architectures-07-moe/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-07-mixture-of-experts
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a07_moe.ipynb
       cover: assets/img/teaching/arch-07.png
-      topics: "Nine production mixtures read from their configs, the router written four ways, OLMoE in PyTorch with its official weights on two GPUs, which experts English, Python, maths and Russian use, a model pruned for one kind of text, and an expert cache measured on real routing"
     - title: "The KV cache budget and DeepSeek's latent attention"
       short: "KV cache and MLA"
+      about: "What one token costs in the KV cache of ten models, and how DeepSeek's latent attention cuts it. MLA in both of its forms, MiniCPM3-4B with its official weights, and Qwen3 compressed without training."
       url: /blog/2026/transformer-architectures-08-kv/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-08-kv-cache-and-mla
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a08_kv.ipynb
       cover: assets/img/teaching/arch-08.png
-      topics: "What a token costs in the cache of ten models, multi-head latent attention written in both forms, why rotary positions need their own dimensions, MiniCPM3-4B with its official weights, a latent cache against a rebuilt one on a T4, Qwen3 compressed without training, and a quantized cache"
     - title: "Long context with RoPE scaling, YaRN and FlashAttention"
       short: "Long context"
+      about: "Why a language model breaks past the length it was trained on, and how RoPE scaling fixes it. YaRN and Llama 3.1's scaling compared on TinyLlama, FlashAttention built from the online softmax, and Qwen3 searching a novel for a needle."
       url: /blog/2026/transformer-architectures-09-long/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-09-long-context
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a09_long.ipynb
       cover: assets/img/teaching/arch-09.png
-      topics: "Eleven models' context windows read from their configs, TinyLlama's cliff at token 2,049 and the rotary pairs behind it, position interpolation, NTK, YaRN and Llama 3.1's scaling written from scratch and raced on books, FlashAttention built from the online softmax, and Qwen3-4B looking for a needle and answering questions about a whole novel"
-    - title: "Beyond attention with Mamba, state space models and hybrids"
+    - title: "Mamba and state space models instead of attention"
       short: "Mamba and hybrids"
+      about: "State space models from the continuous equation to Mamba's selective scan, checked against mamba-130m. Mamba against Pythia on the same data, Mamba-2 as masked attention, and the layouts of hybrid models."
       url: /blog/2026/transformer-architectures-10-mamba/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-10-mamba-and-hybrids
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a10_mamba.ipynb
       cover: assets/img/teaching/arch-10.png
-      topics: "A state space model from its differential equation, Mamba's selective scan written from scratch with mamba-130m's weights, what its steps choose to remember, the parallel scan, generation with a state of fixed size, Mamba-2 as masked attention, Mamba against Pythia, the hybrid layouts of seven models, and selective copying trained from scratch"
     - title: "The Vision Transformer reads images as sequences of patches"
       short: "Vision Transformer"
+      about: "Every step from a photo to the 197 vectors the encoder reads, checked against Google's ViT-B/16. Where its heads look, how DINO finds objects without labels, and ViT against a CNN on satellite images with few labels."
       url: /blog/2026/transformer-architectures-11-vit/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-11-vision-transformer
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a11_vit.ipynb
       cover: assets/img/teaching/arch-11.png
-      topics: "Every step from a photo to the 197 vectors the encoder reads, ViT-B/16 written from scratch with Google's weights, shuffled patches and learned positions, where the heads look, attention rollout, DINO's heads finding objects without labels, and ViT against a CNN and DINOv2 on satellite images with few labels"
     - title: "CLIP and SigLIP put images and text in one space"
       short: "CLIP and SigLIP"
+      about: "Both towers of CLIP written from scratch with OpenAI's weights, and SigLIP's sigmoid loss next to the contrastive one. Zero-shot geolocation over 211 countries, the modality gap, and a word on a photo that changes the answer."
       url: /blog/2026/transformer-architectures-12-clip/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-12-clip-and-siglip
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a12_clip.ipynb
       cover: assets/img/teaching/arch-12.png
-      topics: "Both towers of CLIP ViT-B/32 written from scratch with OpenAI's weights, the contrastive loss and its temperature on a real batch, zero-shot geolocation over 211 countries checked against the paper, search over COCO's test photos, the modality gap, a word on a photo that changes the answer, SigLIP's sigmoid loss and attention pooling, and the two losses trained side by side"
     - title: "How vision-language models read images, from LLaVA to Qwen2-VL"
       short: "Vision-language models"
+      about: "LLaVA's tiles, projector and splice written from scratch and matched to LLaVA-OneVision. What an image costs in tokens, Qwen2-VL's dynamic resolution, and receipts and charts read under shrinking token budgets."
       url: /blog/2026/transformer-architectures-13-vlm/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-13-vision-language
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a13_vlm.ipynb
       cover: assets/img/teaching/arch-13.png
-      topics: "LLaVA-OneVision's tiles, projector and splice written from scratch and matched to the model's logits, image tokens through the logit lens, the price of a picture in six models, how often a centre crop cuts a receipt's total, Qwen2-VL's dynamic resolution and M-RoPE by hand, 95 receipts and 100 charts read under token budgets, and FastV's pruning against a random choice and a smaller image"
     - title: "Whisper turns speech into text with an encoder–decoder Transformer"
       short: "Whisper"
+      about: "Whisper's log-mel front end, encoder and decoder written from scratch and checked against whisper-tiny. Word error rates in English and Russian, subtitle credits written over silence, and word timings from cross-attention."
       url: /blog/2026/transformer-architectures-14-whisper/
       kaggle: https://www.kaggle.com/code/qmarva/transformer-architectures-14-whisper
       colab: https://colab.research.google.com/github/xmarva/transformers-from-scratch/blob/main/notebooks/colab/a14_whisper.ipynb
       cover: assets/img/teaching/arch-14.png
-      topics: "The log-mel front end and whisper-tiny's encoder and decoder written from scratch and matched to the model, spectrograms that play with a moving cursor, task tokens and language identification, word error rate from scratch for four sizes in English and Russian, why blind 30-second cuts drop whole sentences, the subtitle credits Whisper writes on silence and why its own silence rule lets them through, and word timings from the alignment heads with DTW"
-    - title: "Diffusion Transformers: DiT and Stable Diffusion 3"
-      topics: "Denoising diffusion and flow matching, adaLN-Zero, a small DiT trained on butterflies, MM-DiT"
+    - title: "Diffusion Transformers from DiT to Stable Diffusion 3"
+      about: "Denoising diffusion and flow matching, the adaLN-Zero block, a small DiT trained on butterflies, and the MM-DiT of Stable Diffusion 3."

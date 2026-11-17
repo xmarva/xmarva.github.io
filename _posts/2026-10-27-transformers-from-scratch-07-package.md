@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Your notebook is not a product: a Python package with tests and CI"
+title: "Turning a notebook into a Python package with tests and CI"
 date: 2025-11-04 16:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-07-package/

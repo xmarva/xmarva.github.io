@@ -1,0 +1,13 @@
+{% comment %}
+  The reading time of a course's published lessons, each counted as its post counts itself (180 words a minute):
+  sets reading_minutes and reading_hours (rounded). include.course: an entry of _data/courses.yml
+{% endcomment %}
+{% assign reading_minutes = 0 %}
+{% for reading_lesson in include.course.lessons %}
+  {% if reading_lesson.url %}
+    {% assign reading_post = site.posts | where: 'url', reading_lesson.url | first %}
+    {% assign reading_one = reading_post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
+    {% assign reading_minutes = reading_minutes | plus: reading_one %}
+  {% endif %}
+{% endfor %}
+{% assign reading_hours = reading_minutes | divided_by: 60.0 | round %}

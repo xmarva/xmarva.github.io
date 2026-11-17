@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Implementing the Transformer in PyTorch: why attention divides by √d_k"
+title: "A Transformer from scratch in PyTorch"
 date: 2025-07-03 11:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-02-transformer/

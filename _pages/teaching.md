@@ -2,239 +2,75 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Courses I teach, as notebooks that run on a free GPU and posts to read here
-seo_title: Free courses on Transformers
-seo_description: "Two free courses by Eva Koroleva: a Transformer translator from scratch to production, then the architectures from BERT to diffusion, on Kaggle and Colab."
+description: Courses on Transformers, in the order to take them, as notebooks on a free GPU and posts to read here
+seo_title: Free courses on Transformers in PyTorch
+seo_description: "Two free courses by Eva Koroleva. A Transformer translator from scratch to production, then the architectures from BERT to diffusion, in PyTorch."
 nav: true
 nav_order: 6
 hide_header: true
+own_heading: true
+og_image: https://blog.korolevalab.com/assets/img/teaching/card-teaching.png
+og_image_alt: Courses on Transformers by Eva Koroleva
 ---
 
-<style>
-  /* Same system as the portfolio: the site's red for the course's one action and its progress, cards that follow
-     the theme, the lesson covers (dark, red) as the only pictures. */
-  .tc { --tc-border: var(--global-divider-color); --tc-muted: var(--global-text-color-light); }
-  .tc-course { margin: 2.6rem 0 3.5rem; }
+{% comment %}
+  The route: every course of _data/courses.yml with `show: true`, in the order to take them, each a station with a
+  card that links to the course's own page (_layouts/course.liquid). Styles in _sass/_teaching.scss, markup for
+  search engines in _includes/metadata.liquid. A lesson counts as new for 45 days.
+{% endcomment %}
+{% assign routed = site.data.courses | where: 'show', true %}
+{% assign now = site.time | date: '%s' | plus: 0 %}
 
-  .tc-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: 2rem;
-    align-items: center;
-    padding: 2.25rem 2.25rem 2.25rem 2.5rem;
-    border: 1px solid var(--tc-border);
-    border-radius: 16px;
-    background: var(--global-card-bg-color);
-    overflow: hidden;
-  }
-  /* a course with no lesson out yet has no covers to fan out: its text takes the whole card */
-  .tc-hero.is-new { grid-template-columns: minmax(0, 1fr); }
-  .tc-hero-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; min-width: 0; }
+<div class="post-page teaching">
+  <header class="post-header teaching-head">
+    <p class="post-kicker">Teaching</p>
+    <h1 class="post-title">Courses on Transformers</h1>
+    <p class="post-dek">The courses are meant to be taken in this order. Every lesson is a notebook that runs on a free GPU on Kaggle or Colab, and a post on this site with all of its outputs and figures.</p>
+  </header>
 
-  .tc-new {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    max-width: 100%;
-    padding: 0.22rem 0.8rem 0.22rem 0.25rem;
-    border: 1px solid var(--tc-border);
-    border-radius: 999px;
-    font-size: 0.85rem;
-    color: var(--global-text-color) !important;
-    text-decoration: none !important;
-    transition: border-color 0.2s ease;
-  }
-  .tc-new:hover { border-color: color-mix(in srgb, var(--global-theme-color) 45%, var(--tc-border)); }
-  .tc-new-tag {
-    flex: none;
-    padding: 0.08rem 0.5rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--global-theme-color) 14%, transparent);
-    color: var(--global-theme-color);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .tc-new-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  .tc-title { margin: 0; font-size: 2.1rem; font-weight: 500; line-height: 1.18; color: var(--global-text-color); }
-  .tc-summary { margin: 0; font-size: 1.05rem; line-height: 1.6; color: var(--tc-muted); }
-  .tc-facts { margin: 0; font-size: 0.85rem; color: var(--tc-muted); }
-
-  .tc-progress { display: flex; align-items: center; gap: 0.85rem; }
-  .tc-bar { display: flex; gap: 4px; width: 200px; }
-  .tc-bar span { flex: 1; height: 6px; border-radius: 3px; background: var(--tc-border); }
-  .tc-bar span.on { background: var(--global-theme-color); }
-  .tc-progress-label { font-size: 0.85rem; color: var(--tc-muted); white-space: nowrap; }
-
-  .tc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.35rem; }
-  .tc-start {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.5rem 1.15rem;
-    border-radius: 999px;
-    background: var(--global-button-color);
-    color: #fff !important;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-decoration: none !important;
-    transition: filter 0.2s ease;
-  }
-  .tc-start:hover { filter: brightness(1.1); }
-  .tc-github { font-size: 0.95rem; color: var(--global-text-color) !important; text-decoration: none !important; }
-  .tc-github:hover { color: var(--global-theme-color) !important; }
-  .tc-github i { margin-right: 0.3rem; }
-
-  /* the latest lessons' covers, fanned out, the newest on top */
-  .tc-fan { position: relative; display: block; aspect-ratio: 4 / 3; }
-  .tc-fan-card {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 82%;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 14px 32px rgba(0, 0, 0, 0.22);
-    transform: translate(calc(var(--i) * -10%), calc(-50% - var(--i) * 10%)) rotate(calc(var(--i) * -4deg));
-    z-index: calc(3 - var(--i));
-    filter: brightness(calc(1 - var(--i) * 0.12));
-    transition: transform 0.35s ease;
-  }
-  .tc-fan-card figure, .tc-fan-card picture { display: block; margin: 0; }
-  .tc-fan-card img { display: block; width: 100%; height: auto; }
-  .tc-fan:hover .tc-fan-card {
-    transform: translate(calc(var(--i) * -13%), calc(-50% - var(--i) * 12%)) rotate(calc(var(--i) * -6deg));
-  }
-
-  .tc-section-head { margin: 3rem 0 1rem; }
-  .tc-section-head::before {
-    content: "";
-    display: block;
-    width: 28px;
-    height: 3px;
-    margin-bottom: 0.75rem;
-    background: var(--global-theme-color);
-  }
-  .tc-section-head h3 { margin: 0; font-size: 1.45rem; font-weight: 500; color: var(--global-text-color); }
-
-  .tc-lessons { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--tc-border); }
-  .tc-lesson {
-    display: grid;
-    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
-    column-gap: 1rem;
-    align-items: center;
-    padding: 1.05rem 0.25rem;
-    border-bottom: 1px solid var(--tc-border);
-  }
-  .tc-num {
-    align-self: start;
-    padding-top: 0.15rem;
-    font-family: var(--global-code-font-family, monospace);
-    font-size: 0.95rem;
-    color: var(--global-theme-color);
-  }
-  .tc-lesson-title { margin: 0; font-size: 1.1rem; font-weight: 500; line-height: 1.4; }
-  .tc-lesson-title a { color: var(--global-text-color); text-decoration: none; }
-  .tc-lesson-title a:hover { color: var(--global-theme-color); }
-  .tc-topics { margin: 0.2rem 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--tc-muted); }
-  .tc-links { display: flex; gap: 0.5rem; }
-  .tc-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.22rem 0.7rem;
-    border: 1px solid var(--tc-border);
-    border-radius: 999px;
-    font-size: 0.8rem;
-    color: var(--global-text-color) !important;
-    text-decoration: none !important;
-    transition: border-color 0.2s ease;
-  }
-  .tc-link:hover { border-color: var(--dot); }
-  .tc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot); }
-  .tc-kaggle { --dot: #20beff; }
-  .tc-colab { --dot: #f9ab00; }
-  .tc-lesson.is-soon .tc-num,
-  .tc-lesson.is-soon .tc-lesson-title { color: var(--tc-muted); }
-  .tc-soon { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tc-muted); }
-
-  @media (max-width: 860px) {
-    .tc-hero { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; padding: 1.5rem; }
-    .tc-fan { order: -1; aspect-ratio: auto; }
-    .tc-fan-card { position: relative; top: auto; width: 100%; transform: none; filter: none; }
-    .tc-fan-card:not(:first-child) { display: none; }
-    .tc-fan:hover .tc-fan-card { transform: none; }
-    .tc-title { font-size: 1.7rem; }
-  }
-  @media (max-width: 600px) {
-    .tc-progress { flex-wrap: wrap; row-gap: 0.45rem; }
-    .tc-progress-label { white-space: normal; }
-    .tc-lesson { grid-template-columns: 2.1rem minmax(0, 1fr); row-gap: 0.65rem; }
-    .tc-links { grid-column: 2; }
-  }
-</style>
-
-<div class="tc">
-{% for course in site.data.courses %}
-{% if course.show %}
-{% assign published = course.lessons | where_exp: "lesson", "lesson.url" %}
-{% assign total = course.lessons | size %}
-{% assign done = published | size %}
-{% assign recent = published | reverse %}
-{% assign latest = recent | first %}
-{% assign first_lesson = published | first %}
-<section class="tc-course" aria-labelledby="tc-{{ course.id }}">
-  <div class="tc-hero{% unless latest %} is-new{% endunless %}">
-    <div class="tc-hero-text">
+  <ol class="route">
+    {% for course in routed %}
+      {% assign published = course.lessons | where_exp: 'lesson', 'lesson.url' %}
+      {% assign done = published | size %}
+      {% assign recent = published | reverse %}
+      {% assign latest = recent | first %}
+      {% assign fresh = false %}
       {% if latest %}
-      <a class="tc-new" href="{{ latest.url | relative_url }}"><span class="tc-new-tag">New</span><span class="tc-new-text">Lesson {{ done }}: {{ latest.short | default: latest.title }}</span><span aria-hidden="true">→</span></a>
+        {% assign latest_post = site.posts | where: 'url', latest.url | first %}
+        {% assign age = latest_post.date | date: '%s' | plus: 0 %}
+        {% assign age = now | minus: age | divided_by: 86400 %}
+        {% if age < 45 %}{% assign fresh = true %}{% endif %}
       {% endif %}
-      <h2 class="tc-title" id="tc-{{ course.id }}">{{ course.title }}</h2>
-      <p class="tc-summary">{{ course.summary }}</p>
-      <p class="tc-facts">{{ course.facts | join: " · " }}</p>
-      <div class="tc-progress">
-        <span class="tc-bar" aria-hidden="true">{% for lesson in course.lessons %}<span{% if lesson.url %} class="on"{% endif %}></span>{% endfor %}</span>
-        <span class="tc-progress-label">{% if done > 0 %}{{ done }} of {{ total }} lessons out{% else %}{{ total }} lessons planned, the first one coming soon{% endif %}</span>
-      </div>
-      <div class="tc-actions">
-        {% if first_lesson %}<a class="tc-start" href="{{ first_lesson.url | relative_url }}">Start with lesson 1 <span aria-hidden="true">→</span></a>{% endif %}
-        <a class="tc-github" href="{{ course.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i>GitHub</a>
-      </div>
-    </div>
-    {% if latest %}
-    <a class="tc-fan" href="{{ latest.url | relative_url }}" tabindex="-1" aria-hidden="true">
-      {% for lesson in recent limit: 3 %}
-      <span class="tc-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=lesson.cover alt="" sizes="(min-width: 860px) 420px, 90vw" loading="eager" %}</span>
-      {% endfor %}
-    </a>
-    {% endif %}
-  </div>
-
-  <div class="tc-section-head"><h3>Lessons</h3></div>
-  <ol class="tc-lessons">
-    {% for lesson in course.lessons %}
-    <li class="tc-lesson{% unless lesson.url %} is-soon{% endunless %}">
-      <span class="tc-num">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
-      <div>
-        <h4 class="tc-lesson-title">{% if lesson.url %}<a href="{{ lesson.url | relative_url }}">{{ lesson.title }}</a>{% else %}{{ lesson.title }}{% endif %}</h4>
-        <p class="tc-topics">{{ lesson.topics }}</p>
-      </div>
-      <div class="tc-links">
-        {% if lesson.url %}
-        <a class="tc-link tc-kaggle" href="{{ lesson.kaggle }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ forloop.index }} on Kaggle"><span class="tc-dot" aria-hidden="true"></span>Kaggle</a>
-        <a class="tc-link tc-colab" href="{{ lesson.colab }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ forloop.index }} in Colab"><span class="tc-dot" aria-hidden="true"></span>Colab</a>
-        {% else %}
-        <span class="tc-soon">soon</span>
-        {% endif %}
-      </div>
-    </li>
+      {% include course_reading.liquid course=course %}
+      <li class="route-stop">
+        <span class="route-node" aria-hidden="true">{{ course.number }}</span>
+        <p class="route-label">Course {{ course.number }}{% if forloop.first %} · start here{% else %} · after course {{ course.number | minus: 1 }}{% endif %}</p>
+        <article class="route-card{% unless latest %} is-new{% endunless %}" aria-labelledby="course-{{ course.id }}">
+          <div class="route-text">
+            {% if fresh %}
+              <a class="course-new" href="{{ latest.url | relative_url }}"><span class="course-new-tag">New</span><span class="course-new-text">Lesson {{ done }} · {{ latest.short | default: latest.title }}</span><span aria-hidden="true">&rarr;</span></a>
+            {% endif %}
+            <h2 class="route-title" id="course-{{ course.id }}"><a href="{{ course.url | relative_url }}">{{ course.title }}</a></h2>
+            <p class="route-summary">{{ course.summary }}</p>
+            {% include course_progress.liquid course=course %}
+            <p class="route-facts">{{ course.level }}{% if reading_hours > 0 %} · about {{ reading_hours }} hours of reading{% endif %} · {% if course.price %}{{ course.price }} {{ course.currency }}{% else %}free{% endif %}</p>
+            <div class="course-actions">
+              <a class="course-button" href="{{ course.url | relative_url }}">Open the course <span aria-hidden="true">&rarr;</span></a>
+              {% assign first_lesson = published | first %}
+              {% if first_lesson %}<a class="course-quiet" href="{{ first_lesson.url | relative_url }}">Lesson 1</a>{% endif %}
+            </div>
+          </div>
+          {% if latest %}
+            <a class="course-fan route-fan" href="{{ course.url | relative_url }}" tabindex="-1" aria-hidden="true">
+              {% for lesson in recent limit: 3 %}
+                <span class="course-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=lesson.cover alt="" sizes="(min-width: 900px) 360px, 90vw" loading="lazy" %}</span>
+              {% endfor %}
+            </a>
+          {% endif %}
+        </article>
+      </li>
     {% endfor %}
   </ol>
-</section>
-{% endif %}
-{% endfor %}
 </div>
 
 {% comment %}

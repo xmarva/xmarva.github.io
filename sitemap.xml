@@ -31,6 +31,9 @@ sitemap: false
     {%- if page.canonical_first_page and page.canonical_first_page != page.url -%}{%- continue -%}{%- endif -%}
     <url>
       <loc>{{ page.url | replace: '/index.html', '/' | absolute_url | xml_escape }}</loc>
+      {%- if page.last_modified_at %}
+      <lastmod>{{ page.last_modified_at | date_to_xmlschema }}</lastmod>
+      {%- endif %}
     </url>
   {%- endfor -%}
 </urlset>

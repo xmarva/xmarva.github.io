@@ -45,7 +45,7 @@ So is a fine-tuning update low-rank or not? This post works through the linear a
 
 Then through LoRA itself: why it starts the way it does, what its gradients see, and why a constant that looks like bookkeeping, the scale $$\alpha / r$$, decides what a higher rank can do.
 
-Every formula is checked, by a few lines of code or on a real model: bert-base fine-tuned on SST-2 48 times, with ranks from 1 to 256, two scaling rules, two learning-rate ratios and one factor frozen at a time. (If the transformer itself needs a refresher, the course [Transformers: from scratch to production](/teaching/) builds one; the [adapters post](/blog/2025/adapters/) puts LoRA among its relatives.)
+Every formula is checked, by a few lines of code or on a real model: bert-base fine-tuned on SST-2 48 times, with ranks from 1 to 256, two scaling rules, two learning-rate ratios and one factor frozen at a time. (If the transformer itself needs a refresher, the course [Transformers from scratch to production](/teaching/transformers-from-scratch/) builds one; the [adapters post](/blog/2025/adapters/) puts LoRA among its relatives.)
 
 ## What a matrix does
 

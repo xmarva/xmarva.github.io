@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Serving a Transformer with FastAPI and Gradio: latency under load"
+title: "Serving a Transformer with FastAPI and measuring it under load"
 date: 2025-11-21 17:00:00
 last_updated: 2026-11-02
 permalink: /blog/2026/transformers-from-scratch-08-serving/
