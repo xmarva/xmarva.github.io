@@ -14,63 +14,44 @@ og_image_alt: Courses on Transformers by Eva Koroleva
 ---
 
 {% comment %}
-  The route: every course of _data/courses.yml with `show: true`, in the order to take them, each a station with a
-  card that links to the course's own page (_layouts/course.liquid). Styles in _sass/_teaching.scss, markup for
-  search engines in _includes/metadata.liquid. A lesson counts as new for 45 days.
+  The courses of _data/courses.yml with `show: true`, in the order to take them, shown as the blog shows its pinned
+  posts (_sass/_blog_index.scss): the newest lesson's picture on the left, the course on the right, all of it a link
+  to the course's own page (_layouts/course.liquid). As on the home page, the page's heading is only for screen
+  readers and search engines. Markup for search engines in _includes/metadata.liquid.
 {% endcomment %}
 {% assign routed = site.data.courses | where: 'show', true %}
-{% assign now = site.time | date: '%s' | plus: 0 %}
 
-<div class="post-page teaching">
-  <header class="post-header teaching-head">
-    <p class="post-kicker">Teaching</p>
-    <h1 class="post-title">Courses on Transformers</h1>
-    <p class="post-dek">The courses are meant to be taken in this order. Every lesson is a notebook that runs on a free GPU on Kaggle or Colab, and a post on this site with all of its outputs and figures.</p>
-  </header>
-
-  <ol class="route">
-    {% for course in routed %}
-      {% assign published = course.lessons | where_exp: 'lesson', 'lesson.url' %}
-      {% assign done = published | size %}
-      {% assign recent = published | reverse %}
-      {% assign latest = recent | first %}
-      {% assign fresh = false %}
-      {% if latest %}
-        {% assign latest_post = site.posts | where: 'url', latest.url | first %}
-        {% assign age = latest_post.date | date: '%s' | plus: 0 %}
-        {% assign age = now | minus: age | divided_by: 86400 %}
-        {% if age < 45 %}{% assign fresh = true %}{% endif %}
-      {% endif %}
-      {% include course_reading.liquid course=course %}
-      <li class="route-stop">
-        <span class="route-node" aria-hidden="true">{{ course.number }}</span>
-        <p class="route-label">Course {{ course.number }}{% if forloop.first %} · start here{% else %} · after course {{ course.number | minus: 1 }}{% endif %}</p>
-        <article class="route-card{% unless latest %} is-new{% endunless %}" aria-labelledby="course-{{ course.id }}">
-          <div class="route-text">
-            {% if fresh %}
-              <a class="course-new" href="{{ latest.url | relative_url }}"><span class="course-new-tag">New</span><span class="course-new-text">Lesson {{ done }} · {{ latest.short | default: latest.title }}</span><span aria-hidden="true">&rarr;</span></a>
-            {% endif %}
-            <h2 class="route-title" id="course-{{ course.id }}"><a href="{{ course.url | relative_url }}">{{ course.title }}</a></h2>
-            <p class="route-summary">{{ course.summary }}</p>
-            {% include course_progress.liquid course=course %}
-            <p class="route-facts">{{ course.level }}{% if reading_hours > 0 %} · about {{ reading_hours }} hours of reading{% endif %} · {% if course.price %}{{ course.price }} {{ course.currency }}{% else %}free{% endif %}</p>
-            <div class="course-actions">
-              <a class="course-button" href="{{ course.url | relative_url }}">Open the course <span aria-hidden="true">&rarr;</span></a>
-              {% assign first_lesson = published | first %}
-              {% if first_lesson %}<a class="course-quiet" href="{{ first_lesson.url | relative_url }}">Lesson 1</a>{% endif %}
-            </div>
-          </div>
-          {% if latest %}
-            <a class="course-fan route-fan" href="{{ course.url | relative_url }}" tabindex="-1" aria-hidden="true">
-              {% for lesson in recent limit: 3 %}
-                <span class="course-fan-card" style="--i: {{ forloop.index0 }}">{% include figure.liquid path=lesson.cover alt="" sizes="(min-width: 900px) 360px, 90vw" loading="lazy" %}</span>
-              {% endfor %}
-            </a>
-          {% endif %}
-        </article>
-      </li>
-    {% endfor %}
-  </ol>
+<div class="bh teaching">
+  <h1 class="sr-only">Courses on Transformers</h1>
+  {% for course in routed %}
+    {% assign published = course.lessons | where_exp: 'lesson', 'lesson.url' %}
+    {% assign done = published | size %}
+    {% assign total = course.lessons | size %}
+    {% assign latest = published | last %}
+    {% assign latest_post = nil %}
+    {% if latest %}{% assign latest_post = site.posts | where: 'url', latest.url | first %}{% endif %}
+    {% include course_reading.liquid course=course %}
+    <article class="bh-pin teaching-course">
+      <a class="bh-cover" href="{{ course.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% if latest_post.thumbnail %}
+          {% include cover_img.liquid src=latest_post.thumbnail plate=true priority=forloop.first lazy=forloop.last %}
+        {% else %}
+          <span class="bh-cover-text"><small>course {{ course.number }}</small><strong>{{ course.title }}</strong></span>
+        {% endif %}
+      </a>
+      <div class="bh-text">
+        <p class="bh-kicker">Course {{ course.number }} · {% if forloop.first %}start here{% else %}after course {{ course.number | minus: 1 }}{% endif %}</p>
+        <h2 class="bh-title"><a class="stretched-link" href="{{ course.url | relative_url }}">{{ course.title }}</a></h2>
+        <p class="bh-desc">{{ course.summary }}</p>
+        <p class="bh-meta">
+          <span>{% if done == total %}{{ total }} lessons{% elsif done > 0 %}{{ done }} of {{ total }} lessons{% else %}{{ total }} lessons planned{% endif %}<span class="bh-dot" aria-hidden="true">·</span></span>
+          <span>{{ course.level }}<span class="bh-dot" aria-hidden="true">·</span></span>
+          {% if reading_hours > 0 %}<span>about {{ reading_hours }} hours of reading<span class="bh-dot" aria-hidden="true">·</span></span>{% endif %}
+          <span>{% if course.price %}{{ course.price }} {{ course.currency }}{% else %}free{% endif %}</span>
+        </p>
+      </div>
+    </article>
+  {% endfor %}
 </div>
 
 {% comment %}
