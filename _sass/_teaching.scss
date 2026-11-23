@@ -453,22 +453,53 @@
   color: var(--t-muted);
 }
 
-// the notebooks: pills like the blog's topic chips, in the theme's colours
+// the notebooks: pills in soft tints of Kaggle's blue and Colab's amber, the text a deeper shade of the same hue
+// (at least 4.7:1 on the tint in both themes)
 .course-chip {
+  --chip-hue: var(--t-line);
+  --chip-ink: var(--t-ink);
+  --chip-fill: 10%;
+  --chip-fill-hover: 17%;
   display: inline-flex;
   align-items: center;
   padding: 0.18rem 0.7rem;
-  border: 1px solid var(--t-line);
+  border: 1px solid color-mix(in srgb, var(--chip-hue) 40%, transparent);
   border-radius: 999px;
+  background: color-mix(in srgb, var(--chip-hue) var(--chip-fill), transparent);
   font-size: 0.8rem;
   line-height: 1.4;
-  color: var(--t-ink) !important;
+  color: var(--chip-ink) !important;
   text-decoration: none !important;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    border-color: color-mix(in srgb, var(--t-accent) 45%, var(--t-line));
-    color: var(--t-accent) !important;
+    border-color: color-mix(in srgb, var(--chip-hue) 65%, transparent);
+    background: color-mix(in srgb, var(--chip-hue) var(--chip-fill-hover), transparent);
+  }
+}
+
+.course-kaggle {
+  --chip-hue: #20beff;
+  --chip-ink: #0b6e99;
+}
+
+.course-colab {
+  --chip-hue: #f9ab00;
+  --chip-ink: #94590a;
+}
+
+html[data-theme="dark"] {
+  .course-chip {
+    --chip-fill: 14%;
+    --chip-fill-hover: 21%;
+  }
+
+  .course-kaggle {
+    --chip-ink: #7fd4ff;
+  }
+
+  .course-colab {
+    --chip-ink: #f5c060;
   }
 }
 
