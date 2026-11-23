@@ -15,18 +15,15 @@ og_image_alt: Courses on Transformers by Eva Koroleva
 
 {% comment %}
   The route: every course of _data/courses.yml with `show: true`, in the order to take them, each a station with a
-  card that links to the course's own page (_layouts/course.liquid). Styles in _sass/_teaching.scss, markup for
-  search engines in _includes/metadata.liquid. A lesson counts as new for 45 days.
+  card that links to the course's own page (_layouts/course.liquid). As on the home page, the page's heading is only
+  for screen readers and search engines. Styles in _sass/_teaching.scss, markup for search engines in
+  _includes/metadata.liquid. A lesson counts as new for 45 days.
 {% endcomment %}
 {% assign routed = site.data.courses | where: 'show', true %}
 {% assign now = site.time | date: '%s' | plus: 0 %}
 
-<div class="post-page teaching">
-  <header class="post-header teaching-head">
-    <p class="post-kicker">Teaching</p>
-    <h1 class="post-title">Courses on Transformers</h1>
-    <p class="post-dek">The courses are meant to be taken in this order. Every lesson is a notebook that runs on a free GPU on Kaggle or Colab, and a post on this site with all of its outputs and figures.</p>
-  </header>
+<div class="teaching">
+  <h1 class="sr-only">Courses on Transformers</h1>
 
   <ol class="route">
     {% for course in routed %}

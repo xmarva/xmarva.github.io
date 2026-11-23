@@ -37,7 +37,6 @@ layout: default
         {% if latest and done > 1 %}
           <a class="course-quiet" href="{{ latest.url | relative_url }}">Newest: lesson {{ done }}</a>
         {% endif %}
-        <a class="course-quiet" href="{{ course.github }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code on GitHub</a>
       </div>
     </div>
     {% if latest %}
@@ -74,7 +73,7 @@ layout: default
     </div>
     <div>
       <dt>Code</dt>
-      <dd>{{ course.license }} licence</dd>
+      <dd><a href="{{ course.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>, {{ course.license }}</dd>
     </div>
   </dl>
 
@@ -117,8 +116,8 @@ layout: default
                 {% assign post = site.posts | where: 'url', lesson.url | first %}
                 {% assign minutes = post.content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
                 <span class="course-minutes">{{ minutes }} min read</span>
-                <a class="course-chip course-kaggle" href="{{ lesson.kaggle }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ number }} on Kaggle"><span class="course-dot" aria-hidden="true"></span>Kaggle</a>
-                <a class="course-chip course-colab" href="{{ lesson.colab }}" target="_blank" rel="noopener noreferrer" aria-label="Lesson {{ number }} in Colab"><span class="course-dot" aria-hidden="true"></span>Colab</a>
+                <a class="course-chip course-kaggle" href="{{ lesson.kaggle }}" target="_blank" rel="noopener noreferrer" aria-label="Run lesson {{ number }} on Kaggle">Kaggle</a>
+                <a class="course-chip course-colab" href="{{ lesson.colab }}" target="_blank" rel="noopener noreferrer" aria-label="Open lesson {{ number }} in Colab">Colab</a>
               {% else %}
                 <span class="course-soon">Coming</span>
               {% endif %}

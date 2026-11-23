@@ -12,13 +12,9 @@
   --t-accent: var(--global-theme-color);
 }
 
-// ---- the head of /teaching/, as a post's header
-.teaching .teaching-head {
-  margin-bottom: 2.6rem;
-
-  .post-dek {
-    margin-bottom: 0;
-  }
+// ---- /teaching/ has no visible head, as the home page: the route starts where the blog's list does
+.teaching {
+  margin-top: 2.4rem;
 }
 
 // ---- the newest covers, fanned out, the newest on top
@@ -296,12 +292,13 @@
   }
 }
 
+// the summary in the sans and the muted colour of a pinned post's description on the home page
 .route-summary {
   margin: 0;
-  font-family: var(--font-serif);
-  font-size: 1.08rem;
-  line-height: 1.55;
-  color: var(--post-ink);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--t-muted);
 }
 
 .route-facts {
@@ -449,41 +446,61 @@
   color: var(--t-muted);
 }
 
+// the reading time takes the same width in every row, so that the notebooks' links stand in one column
 .course-minutes {
-  margin-right: 0.35rem;
+  min-width: 5.6rem;
+  font-variant-numeric: tabular-nums;
   color: var(--t-muted);
 }
 
+// the notebooks: pills in soft tints of Kaggle's blue and Colab's amber, the text a deeper shade of the same hue
+// (at least 4.7:1 on the tint in both themes)
 .course-chip {
+  --chip-hue: var(--t-line);
+  --chip-ink: var(--t-ink);
+  --chip-fill: 10%;
+  --chip-fill-hover: 17%;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.18rem 0.65rem;
-  border: 1px solid var(--t-line);
+  padding: 0.18rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--chip-hue) 40%, transparent);
   border-radius: 999px;
+  background: color-mix(in srgb, var(--chip-hue) var(--chip-fill), transparent);
   font-size: 0.8rem;
-  color: var(--t-ink) !important;
+  line-height: 1.4;
+  color: var(--chip-ink) !important;
   text-decoration: none !important;
-  transition: border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    border-color: var(--dot);
+    border-color: color-mix(in srgb, var(--chip-hue) 65%, transparent);
+    background: color-mix(in srgb, var(--chip-hue) var(--chip-fill-hover), transparent);
   }
 }
 
-.course-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--dot);
-}
-
 .course-kaggle {
-  --dot: #20beff;
+  --chip-hue: #20beff;
+  --chip-ink: #0b6e99;
 }
 
 .course-colab {
-  --dot: #f9ab00;
+  --chip-hue: #f9ab00;
+  --chip-ink: #94590a;
+}
+
+html[data-theme="dark"] {
+  .course-chip {
+    --chip-fill: 14%;
+    --chip-fill-hover: 21%;
+  }
+
+  .course-kaggle {
+    --chip-ink: #7fd4ff;
+  }
+
+  .course-colab {
+    --chip-ink: #f5c060;
+  }
 }
 
 .course-lesson.is-soon {
